@@ -59,8 +59,10 @@ def simulate_emission_quadratic(δ, η, τ_1, ξ, σ_n,
 
     Returns
     -------
-    Et : (T, ) ndarray
+    Et : (T, ) ndarrays
         Emission trajectory.
+    r_grid, ϕ_grid, e_star : (N, ) ndarrays
+        Grids of reserve, ϕ and emission respectively.
 
     """
     τ_2 = (τ_1**2) * (σ_n**2) / (2*ξ)
