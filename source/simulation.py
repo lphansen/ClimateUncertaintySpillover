@@ -76,7 +76,10 @@ def simulate_emission_quadratic(δ, η, τ_1, ξ, σ_n,
     ϕ_der_grid = (ϕ_grid[1:]-ϕ_grid[:-1])/(r_grid[1:]-r_grid[:-1])
     r_grid = (r_grid[1:]+r_grid[:-1])/2
     ϕ_grid = (ϕ_grid[1:]+ϕ_grid[:-1])/2
-    e_star = δ*η/(τ_1 + ϕ_der_grid)
+    if τ_2 == 0:
+        e_star = δ*η/(τ_1 + ϕ_der_grid)
+    else:
+        e_star = (-τ_1-ϕ_der_grid+np.sqrt((τ_1+ϕ_der_grid)**2+4*δ*η*τ_2))/(2*τ_2)
     if np.max(r_grid) < r_start:
         warnings.warn("r_start exceeds the maximum value of the grid of r. Try changing the grid of log ell or decreasing r_start.")
     Et = _simulate_emission(e_star, r_grid, r_start=r_start, T=T)
