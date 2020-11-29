@@ -65,7 +65,7 @@ def simulate_emission_quadratic(δ, η, τ_1, ξ, σ_n,
         Grids of reserve, ϕ and emission respectively.
 
     """
-    τ_2 = (τ_1**2) * (σ_n**2) / (2*ξ)
+    τ_2 = (τ_1**2) * (σ_n**2) / ξ
     args = (δ, η, τ_1, τ_2)
 
     r_grid, ϕ_grid = trace_ϕ_r(*args_trace_ϕ, args)
