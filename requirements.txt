@@ -1,0 +1,13 @@
+# required packages for wrestling projects
+jupyterlab
+ipykernel
+numpy
+pandas
+scipy
+numba
+matplotlib
+plotly
+requests
+msgpack
+sympy
+xlrd
