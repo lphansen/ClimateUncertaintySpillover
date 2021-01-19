@@ -112,3 +112,48 @@ def _simulate_emission(e_grid, r_grid, r_start=9000, T=100):
         Et[i] = e_grid[loc]
         r_remain = r_remain - Et[i]
     return Et
+
+def simulate_logN_with_drift(λ, σ_n, Et, Ht, Ws, with_drift = True):
+    """
+    Simulate log damage with or without drift term.
+
+    Parameters
+    ----------
+    λ: (T, n)
+        pulse experiment results.
+    σ_n : float
+        Model parameters.
+    Et : (T, ) ndarray
+        Emission trajectory.
+    Ht: (T,)
+        drift term.
+    Ws : (N, T) ndarray
+        iid normal shocks for N paths.
+
+    Returns
+    -------
+    Ys : (T, ) ndarray
+        Simulated log damage.
+
+    """
+    Ys = np.zeros(Ws.shape)
+    if with_drift:
+        for path in range(Ws.shape[0]):
+            Y = 0.
+            for J in range(Ws.shape[1]):
+                log_N = 0.
+                for j in range(J):
+                    log_N += λ[j] * Et[J-j] * (1+σ_n*(Ws[path,J-j] + Ht[J-j]))
+
+                Ys[path, J] = log_N
+    else:
+        for path in range(Ws.shape[0]):
+            Y = 0.
+            for J in range(Ws.shape[1]):
+                log_N = 0.
+                for j in range(J):
+                    log_N += λ[j] * Et[J-j] * (1+σ_n*Ws[path,J-j])
+
+                Ys[path, J] = log_N
+
+        return Ys
