@@ -9,7 +9,7 @@ from utilities import find_nearest_value
 from solver import trace_ϕ_r
 
 
-@njit
+# @njit
 def simulate_log_damage(exp_avg_response, σ_n, Et, Ws):
     """
     Simulate log damage.
@@ -87,7 +87,7 @@ def simulate_emission_quadratic(δ, η, τ_1, ξ, σ_n,
     return Et, r_grid, ϕ_grid, e_star
 
 
-@njit(parallel=True)
+# @njit(parallel=True)
 def _simulate_emission(e_grid, r_grid, r_start=9000, T=100):
     """
     Simulate emission trajectory baesd on grids of emission and reserve.
