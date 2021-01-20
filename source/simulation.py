@@ -113,7 +113,7 @@ def _simulate_emission(e_grid, r_grid, r_start=9000, T=100):
         r_remain = r_remain - Et[i]
     return Et
 
-def simulate_logN_with_drift(λ, σ_n, Et, Ht, Ws, with_drift = True):
+def simulate_log_damage_with_drift(λ, σ_n, Et, Ht, Ws, with_drift = True):
     """
     Simulate log damage with or without drift term.
 

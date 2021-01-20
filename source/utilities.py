@@ -6,7 +6,7 @@ import numpy as np
 from numba import njit
 
 
-@njit
+# @njit
 def find_nearest_value(array, value):
     """
     Find nearest value for 

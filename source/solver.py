@@ -7,7 +7,7 @@ import numpy as np
 from numba import njit
 
 
-@njit(parallel=True)
+# @njit(parallel=True)
 def solve_ψ(ell=1., b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
     r"""
     Given :math:`\ell`, numerically solve for ψ on a grid of b from 0 to 1.
@@ -57,7 +57,7 @@ def solve_ψ(ell=1., b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
     return ψ_grid
 
 
-@njit
+# @njit
 def compute_ϕ_r(ell=1., d_step=1e-9, b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
     r"""
     Given :math:`\ell`, compute a pair of ϕ and r.
@@ -89,7 +89,7 @@ def compute_ϕ_r(ell=1., d_step=1e-9, b_step=1e-2, args=(0.01, 0.032, 0.00175 * 
     return r, ϕ
 
 
-@njit(parallel=True)
+# @njit(parallel=True)
 def trace_ϕ_r(log_ell_min=-20, log_ell_max=10, grid_size=1000,
             d_step=1e-9, b_step=1e-2,
             args=(0.01, 0.032, 0.00175 * 0.012, 0)):
