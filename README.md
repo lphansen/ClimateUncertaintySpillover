@@ -1,4 +1,3 @@
-
 # Wrestling with Uncertainty in Climate Economic Models
 This repository contains codes and a jupyter notebook which computes and demonstrates results of the example economy section in "Wrestling with Uncertainty in Climate Economic Models" by [William Brock][id1] and [Lars Peter Hansen][id2]. Latest version could be found [here][id4].
 
