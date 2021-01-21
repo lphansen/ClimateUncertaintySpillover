@@ -35,5 +35,5 @@ pip install -r requirements.txt
     jupyter notebook
     ```
 5.  Open ```Wrestling_with_Uncertainty_in_Climate_Economic_Models.ipynb```
-6.  Run notebook cell by cell or click <button type = "button" name = "buttton" class="btn">cell $\to$ Run All</button>
+6.  Run notebook cell by cell or click <button type = "button" name = "buttton" class="btn">cell -> Run All</button>
 
