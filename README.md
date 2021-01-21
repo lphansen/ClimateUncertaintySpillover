@@ -22,7 +22,7 @@ An alternative way is to store the notebook as well as codes in your local machi
     - If you don’t have github installed, try installing it from this page: https://git-scm.com/download.
     - You can do this by running below in the command prompt:
 ```
-git clone https://github.com/lphansen/Wrestling
+git clone https://github.com/lphansen/WrestlingClimate
 ```
 3.	Change directories into the ‘Wrestling’ folder and install the required packages:
 ```
