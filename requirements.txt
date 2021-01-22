@@ -11,3 +11,4 @@ requests
 msgpack
 sympy
 xlrd
+PTable
