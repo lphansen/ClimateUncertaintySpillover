@@ -61,4 +61,4 @@ def fig1(data, legend_list = [], xylabel=(), title=''):
     #                   sliders = sliders,
                      plot_bgcolor='rgb(255,255,255)',)
 
-    fig.show()
+    return fig

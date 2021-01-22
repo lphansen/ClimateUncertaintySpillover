@@ -9,23 +9,53 @@ from numba import njit
 # @njit
 def find_nearest_value(array, value):
     """
-    Find nearest value for 
-    
+    Find nearest value for
+
     """
     loc = np.abs(array - value).argmin()
     return loc
 
-def compute_h_hat(e, gamma_e, xi_e):
+def compute_h_hat(emission, γ, ξ, arg = (1.75/1000, 1.2)):
     """
     compute h hat
-    
+
+    Parameters
+    ----------
+    emission: array
+        simulated emission sequence
+    γ: float
+        damage model parameter
+    ξ: float
+        model misspecification parameter;
+        smaller the value, greater the concern for model misspecification
+
+    Returns
+    -------
+    h_hat, or drift distortion
     """
-    sigma_n = 1.2
-    median = 1.75/1000
-    eta = .032
-    gamma = gamma_e
-    xi = xi_e
-    h_hat = e*median*gamma*sigma_n/xi
-    h_hat = h_hat*median*1000*sigma_n/(1-eta)
-    
+    median, σ_n = arg
+    gamma = γ
+    xi = ξ
+    h_hat = emission*median*gamma*σ_n/xi
+    h_hat = h_hat*median*1000*σ_n
     return h_hat
+
+def compute_std(emission, time, arg = (1.75/1000, 1.2)):
+    """
+    compute standard deviation in table 1
+
+    Parameters
+    ----------
+    emission: array
+        simulated emission path
+    time: int
+        time span during which the standard deviation is considered
+
+    Returns
+    -------
+    implied standard deviation
+    """
+    median, σ_n = arg
+    emission_selected = emission[:time]
+    std = np.sqrt(np.sum(emission_selected**2))/emission_selected.sum()*σ_n*median*1000
+    return std
