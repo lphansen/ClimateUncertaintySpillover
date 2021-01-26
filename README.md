@@ -56,7 +56,7 @@ The simulated data are provided in`./data/e_smul` and the pre-generated plots ar
     The simulation for each emission path takes around 200s on the test machine.
 
 ## <a name="snapshot"></a>Snapshots of results
-The emission paths for $\gamma = .018$:
+The emission paths for γ = .018:
 <p align="center">
 <img src="./notebook/paper_plots/emission_base.png" width="600"/>
 </p>
