@@ -5,6 +5,11 @@ Utility functions to facilitate computation.
 import numpy as np
 from numba import njit
 
+@njit
+def find_nearest_value(array, value):
+    loc = np.abs(array - value).argmin()
+    return loc
+
 
 def compute_derivatives(data, dim, order, dlt):  
     # compute the central difference derivatives for given input and dimensions
