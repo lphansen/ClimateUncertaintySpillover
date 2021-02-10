@@ -1,6 +1,13 @@
+# -*- coding: utf-8 -*-
 """
-Functions to simulate deterministic or stochastic paths for variables of interest.
-
+Functions to simulate deterministic or stochastic paths
+includes:
+- simulate_log_damage
+- simulate_emission_quadratic
+- _simulate_emission
+- simulate_log_damage_with_drift
+- simulate_emssion (newly added)
+- simulate_ems_h
 """
 import warnings
 import numpy as np
@@ -157,3 +164,75 @@ def simulate_log_damage_with_drift(λ, σ_n, Et, Ht, Ws, with_drift = True):
                 Ys[path, J] = log_N
 
         return Ys
+
+def simulate_emission(ems, r, r_initial=1500, time = 500):
+    """simulate emission for a given z_2 value
+    Parameters
+    ----------
+    ems: array
+        emision array for a given z_2
+    r: array
+        reserve array for the same z_2
+    r_inital: float (Default 1500)
+        initial reserve
+    time: int (Default 500)
+        timespan for simulation
+    Returns
+    -------
+    ems_t: emission trajectory during time"""
+    ems_t = np.zeros(time)
+    r_remain = r_initial
+    for i in range(time):
+        loc = np.abs(r-r_remain).argmin()
+        ems_i =  ems[loc]
+        ems_t[i] = ems_i
+        r_remain = r_remain - ems_i
+    return ems_t
+
+
+# import global values
+from global_parameters import *
+def simulate_ems_h(dphi_dz, z_grid, z_idx , r, ems, sigma_2, xi, 
+               z = np.linspace(1e-5, 2, 20), 
+               r_initial = 1500, time = 500):
+    """simulate h over a timespan for given z
+    Parameters
+    ----------
+    dphi_dz: array, contains partial derivatives for modified z grid
+        dphi_dz computed
+    z_grid: array
+        modified z grid
+    z_idx: int
+        index for the given z_2 value
+    r: array
+        reserve for the same z_2
+    ems: array
+        emission grid for the same z_2
+    z: array
+        original z grid, pre-modification
+    r_initial: float
+        initial reserve
+    time: int
+        timespan for simulation
+    xi: float
+        xi_m value used in computing solutions and distortion
+    Returns
+    -------
+    ems_t: emission trajectory over time
+    h_t: distortion trajectory over time"""
+    r_remain = r_initial
+    z_idx = int(z_idx)
+    loc = np.abs(z_grid - z[z_idx]).argmin()    
+    dphi = dphi_dz[:,loc]
+    zvalue = z_grid[loc]
+    ems_t = np.zeros(time)
+    print(zvalue)
+    h_t = np.zeros(time)
+    for i in range(time):
+        loc = np.abs(r-r_remain).argmin()
+        ems_i = ems[loc]
+        ems_t[i] = ems_i
+        dphi_dz_i = dphi[loc]
+        h_t[i] = - dphi_dz_i*zvalue*sigma_2**2/xi
+        r_remain = r_remain - ems_i
+    return  ems_t, h_t

@@ -1,6 +1,13 @@
+# -*- coding: utf-8 -*-
 """
 Functions to numerically solve ψ and ϕ.
-
+includes:
+- solve_psi
+- compute_phi_r
+- trace_phi_r
+- compute_ell_r_phi
+- compute_sigma2
+- compute_h
 """
 
 import numpy as np
@@ -24,7 +31,7 @@ def solve_ψ(ell=1., b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
     Returns
     -------
     ψ_grid : (ell/b_step, ) ndarray
-        ψ values on the grid of b, given :math:`\ell`. 
+        ψ values on the grid of b, given :math:`\ell`.
 
     """
     δ, η, τ_1, τ_2 = args
@@ -46,7 +53,7 @@ def solve_ψ(ell=1., b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
         # Construct coefficient matrix A
         if i == 0:
             # Impose boundary condition ψ(0;ell)=0
-            A[i, i+1] = -δ*b/(2*b_step) 
+            A[i, i+1] = -δ*b/(2*b_step)
         elif i == b_size-1:
             A[i, i-1] = δ*b/b_step
             A[i, i] = - δ*b/b_step
@@ -61,7 +68,7 @@ def solve_ψ(ell=1., b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
 def compute_ϕ_r(ell=1., d_step=1e-9, b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
     r"""
     Given :math:`\ell`, compute a pair of ϕ and r.
-    
+
     Parameters
     ----------
     ell : float
@@ -117,7 +124,7 @@ def trace_ϕ_r(log_ell_min=-20, log_ell_max=10, grid_size=1000,
     r_grid_sorted : (grid_size, ) ndarray
         Grid of r sorted from low to high.
     ϕ_grid_sorted : (grid_size, ) ndarray
-        Grid of ϕ in the same order as r_grid_sorted.  
+        Grid of ϕ in the same order as r_grid_sorted.
 
     """
     log_ell_grid = np.linspace(log_ell_min, log_ell_max, grid_size)
@@ -131,3 +138,52 @@ def trace_ϕ_r(log_ell_min=-20, log_ell_max=10, grid_size=1000,
     r_grid_sorted = r_grid[sort_indices]
     ϕ_grid_sorted = ϕ_grid[sort_indices]
     return r_grid_sorted, ϕ_grid_sorted
+
+
+def compute_ell_r_phi(solu, log_ell=np.linspace(-13, -5, 200), ell_step=1e-7, z = np.linspace(1e-5, 2, 20)):
+    """compute sorted ell, r, and phi according to first order condition
+    Parameter
+    ---------
+    solu: dictionary, keys: ells, values: ems's and psi's
+    log_ell: original log grid of ell (default: np.linspace(-3,-5, 200))
+    ell_step: delta ell (Default: 1e-7)
+    Returns
+    -------
+    sorted grids of ell, r and phi
+    """
+    x_r,  = log_ell.shape
+    y_r, = z.shape
+    r = np.zeros((x_r, y_r))
+    phi = np.zeros((x_r, y_r))
+    ell_new = np.zeros(x_r)
+    for i, ell in enumerate(np.exp(log_ell)):
+        psi = solu[ell]["psi"][:, -1]
+        psi_next = solu[ell+ell_step]["psi"][:, -1]
+        dpsi = (psi_next - psi)/ell_step
+        psi_new = (psi + psi_next)/2
+        ell_new[i] = ell + ell_step/2
+        r[i] = - dpsi
+        phi[i] = psi_new + ell_new[i]*(-dpsi)
+    
+    index = np.argsort(r, axis=0)
+    phi_sorted = phi[index[:, 0]]
+    r_sorted = r[index[:, 0]]
+    ell_sorted = ell_new[index[:, 0]]
+    return ell_sorted, r_sorted, phi_sorted
+
+def compute_sigma2(rho, sigma_z, mu_2):
+    """
+    compute_sigma2
+    Parameters
+    ----------
+    rho: float
+    sigma_z: float
+    mu_2: float
+    """
+    return np.sqrt(2*sigma_z**2*rho/mu_2)
+
+from global_parameters import *
+SIGMA_2 = compute_sigma2(RHO, .21, .1)
+def compute_h(dphi_dz, z_new, args = (SIGMA_2, XI_M)):
+    sigma_2, xi_m = args
+    return - dphi_dz*z_new*sigma_2**2/xi_m
