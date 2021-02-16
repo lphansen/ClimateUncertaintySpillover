@@ -215,7 +215,7 @@ ells = ELLS
 start = time.time()
 parameters = ([z_mat, b_mat, y_mat], [hz, hb, hy], stateSpace, params)
 if __name__ == "__main__":
-    solution = Parallel(n_jobs=16)(delayed(one_ell)(ell, parameters) for ell in ells)
+    solution = Parallel(n_jobs=32)(delayed(one_ell)(ell, parameters) for ell in ells)
 end = time.time()
 print("time:{:.5f}s".format(end - start))
 
