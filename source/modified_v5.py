@@ -157,7 +157,7 @@ def falseTransient( ell, epsilon,tolerance, stateVariable, stateSteps, stateSpac
         C_zz = z_mat*sigma2**2/2
         C_bb = np.zeros(y_mat.shape)
         C_yy = np.zeros(y_mat.shape)
-        D = b_mat*( delta * eta * np.log(e)  - delta*(1-eta)*(gamma_1*y_mat*z_mat + .5*gamma_2*y_mat**2*z_mat**2) + xi_m*h2**2/2 ) - e*ell
+        D = b_mat*( delta * eta * np.log(e)  - delta*(1-eta)*(gamma_1*y_mat*z_mat  + gamma_2/2*y_mat**2*z_mat**2) + xi_m*h2**2/2 ) - e*ell
 
         print('here')
         out = PDESolver(stateSpace, A, B_z, B_b, B_y, C_zz, C_bb, C_yy, D, v0,
@@ -211,11 +211,11 @@ ells = ELLS
     # solution_20_200_200_v2[ell] = solution
     # solution_20_200_200_v2[ell+h_ell] = solution_next
 
-
+# ells = [0]
 start = time.time()
 parameters = ([z_mat, b_mat, y_mat], [hz, hb, hy], stateSpace, params)
 if __name__ == "__main__":
-    solution = Parallel(n_jobs=32)(delayed(one_ell)(ell, parameters) for ell in ells)
+    solution = Parallel(n_jobs=16)(delayed(one_ell)(ell, parameters) for ell in ells)
 end = time.time()
 print("time:{:.5f}s".format(end - start))
 

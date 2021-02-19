@@ -44,11 +44,96 @@ sigma2, (RHO, SIGMA_Z, MU_2)
 ```
 
 ```python
-solu_yy = pickle.load(open(data_dir + "solu_modified_10*10*20*50_0902-16:16", "rb"))
+solu_yy = pickle.load(open(data_dir + "solu_modified_50*100_1802-18:06", "rb"))
 ```
 
 ```python
-solu_yy.keys()
+solu_bbh= pickle.load(open(data_dir + "emission_bbh.pkl", "rb"))
+```
+
+```python
+solu_bbh[0]['y']
+```
+
+```python
+solu_yy[0]["e"].shape
+```
+
+```python
+yz = np.mean(solu_yy[0]["e"], axis=0)
+```
+
+```python
+plt.plot(Y_GRID, (solu_yy[0]["e"][24] + solu_yy[0]["e"][25])/2 )
+plt.xlabel('y')
+plt.ylabel('e', rotation=0, labelpad=30)
+plt.title(r'$e(y,z_2)$ with $z_2 \approx 1.86/1000$')
+# plt.savefig(figDir + 'e_yz.png')
+```
+
+```python
+Z_GRID[25]
+```
+
+```python
+def simulate_ems(Y, e, T=102, dt=1/4):
+    periods = int(T/dt)
+    et = np.zeros(periods)
+    yt = np.zeros(periods)
+    y = 870-580
+    yt[0]= y
+    for t in range(periods):
+        loc = (np.abs(Y - y)).argmin()
+        et[t] =  e[loc]
+        y = y + et[t]*dt
+        yt[t] = y
+    return et, yt
+```
+
+```python
+et, yt = simulate_ems(Y_GRID, yz)
+```
+
+```python
+et.shape
+```
+
+```python
+plt.plot(et, label="new HJB")
+plt.plot(solu_bbh[0]['y'], label="BBH")
+plt.legend()
+plt.xlabel('years')
+plt.ylabel('emission')
+plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
+plt.title(r'$e_t$ with $z_2 \approx 1.86/1000$')
+plt.savefig(figDir + 'e_t_rough.png')
+```
+
+```python
+plt.plot(et[:400] - solu_bbh[0]['y'], label="new HJB")
+```
+
+```python
+et[400-1] - solu_bbh[0]['y'][400-1]
+```
+
+```python
+et[0] - solu_bbh[0]['y'][0]
+```
+
+```python
+with open("../data/simulation/ems_modified_highrisk", "wb") as handle:
+    pickle.dump(et, handle, protocol=pickle.HIGHEST_PROTOCOL)
+```
+
+```python
+Y = np.linspace(0, 4000, 500)
+y0 = (870-580)*np.ones(20)
+np.abs(y - y0).argmin()
+```
+
+```python
+y[36]
 ```
 
 ```python

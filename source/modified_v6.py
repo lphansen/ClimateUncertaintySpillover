@@ -30,7 +30,7 @@ tau = .00175*gamma_base
 xi_m = .00256
 
 # state variable
-numz = 50
+numz = N_Z
 z2_min = Z_MIN
 z2_max = Z_MAX
 hz = (z2_max - z2_min)/numz
@@ -45,6 +45,8 @@ b = np.linspace(b_min, b_max, num=numb)
 
 gamma_1 = 0.00017675
 gamma_2 = 2*.0022
+gamma_bar = 2
+gamma_2_plus = 0
 numy = N_Y
 y_min = Y_MIN
 y_max = Y_MAX
@@ -82,7 +84,7 @@ def PDESolver_2d(stateSpace, A, B_r, B_f, C_rr, C_ff, D, v0, ε = 1, tol = -10, 
         out = SolveLinSys.solveFK(stateSpace, A, B, C, D, v0, iters)
         return out
 
-logFile = open('20*100_v4.log','a')
+logFile = open('20*100_v6.log','a')
 solution_20_100_v2 = dict()
 # solving the PDE
 start_time = time.time()
@@ -121,9 +123,9 @@ for i in range(1):
         # updating controls
         Converged = 0
         nums = 0
-        e =  - delta*eta/v0_dy
+        e =  - delta*eta/(v0_dy+(eta-1)*(gamma_1 + gamma_2*y_mat*z_mat + gamma_2_plus*(y_mat*z_mat -gamma_bar)*(y_mat*z_mat>gamma_2))*z_mat)
         e[e<0] = 1e-300
-        h2 = - v0_dz*np.sqrt(z_mat)*sigma2_100/xi_m
+        h2 = - (v0_dz*np.sqrt(z_mat)*sigma2_100+ (eta -1 )*(gamma_1 + gamma_2*y_mat*z_mat + gamma_2_plus*(y_mat*z_mat -gamma_bar)*(y_mat*z_mat>gamma_2))*y_mat*np.sqrt(z_mat)*sigma2_100)/xi_m
         print(np.min(e))
         # HJB coefficient
         A =  - delta*np.ones(y_mat.shape)
@@ -131,7 +133,7 @@ for i in range(1):
         B_y = e
         C_zz = z_mat*sigma2_100**2/2
         C_yy = np.zeros(z_mat.shape)
-        D =  delta*eta*np.log(e) - delta*(1 - eta)*(.00018*y_mat*z_mat + .0022*y_mat**2*z_mat**2 +0.0197*(y_mat*z_mat - 2)**2*(y_mat*z_mat - 2 >= 0) ) + xi_m*h2**2/2
+        D =  delta*eta*np.log(e) - (1 - eta)*((gamma_1 + gamma_2*y_mat*z_mat +  gamma_2_plus*(y_mat*z_mat - gamma_bar)*(y_mat*z_mat > gamma_bar))*(z_mat*e + y_mat*(-rho*(z_mat - mu2)) + y_mat*np.sqrt(z_mat)*sigma2_100*h2) +(gamma_2 + gamma_2_plus*(y_mat*z_mat>gamma_bar))*z_mat*y_mat**2*sigma2_100**2) + xi_m*h2**2/2
 
         print('here')
         out = PDESolver_2d(stateSpace, A, B_z, B_y, C_zz, C_yy, D, v0,
@@ -157,6 +159,9 @@ for i in range(1):
 
 # restore results
 import pickle
-dataFile = '../data/solution/solu_modified_20*10_v4_0218_high'
+from datetime import datetime
+nowtime = datetime.now()
+time_store = nowtime.strftime("%d%m-%H:%M")
+dataFile = '../data/solution/solu_modified_{}*{}_{}'.format(numz, numy, time_store)
 with open(dataFile, 'wb') as handle:
     pickle.dump(solution_20_100_v2, handle, protocol=pickle.HIGHEST_PROTOCOL)
