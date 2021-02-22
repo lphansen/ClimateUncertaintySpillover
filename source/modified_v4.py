@@ -10,13 +10,12 @@ from global_parameters import *
 delta = .01
 eta = .032
 mu2 = 1.86/1000
-sigma_z_50 = .30
 sigma_z_100 = .21/1000
-sigma_z_200 = .16
 gamma_base = .018
 gamma_low = .012
 gamma_high = .024
 rho = .9
+
 
 def compute_sigma2(rho, sigma_z, mu_2):
     """
@@ -27,24 +26,19 @@ def compute_sigma2(rho, sigma_z, mu_2):
 
 sigma2_100 = compute_sigma2(rho, sigma_z_100, mu2)
 tau = .00175*gamma_base
-xi_m = .00256
+xi_m = XI_M
 
 # state variable
-numz = 50
+numz = N_Z
 z2_min = Z_MIN
 z2_max = Z_MAX
 hz = (z2_max - z2_min)/numz
 z = np.linspace(z2_min, z2_max, num=numz)
 
-numb = 200
-b_min = 1e-6
-b_max = 1
-hb = (b_max - b_min)/numb
-b = np.linspace(b_min, b_max, num=numb)
-
-
 gamma_1 = 0.00017675
 gamma_2 = 2*.0022
+gamma_2_plus = 2*.0197
+gammaBar = 2
 numy = N_Y
 y_min = Y_MIN
 y_max = Y_MAX
@@ -55,108 +49,76 @@ hy = HY
 (z_mat, y_mat) = np.meshgrid(z, y, indexing = 'ij')
 stateSpace = np.hstack([z_mat.reshape(-1,1, order='F'), y_mat.reshape(-1,1,order='F')])
 
-def PDESolver_2d(stateSpace, A, B_r, B_f, C_rr, C_ff, D, v0, ε = 1, tol = -10, smartguess = False, solverType = 'False Transient'):
 
-    if solverType == 'False Transient':
-        A = A.reshape(-1,1,order = 'F')
-        B = np.hstack([B_r.reshape(-1,1,order = 'F'),B_f.reshape(-1,1,order = 'F')])
-        C = np.hstack([C_rr.reshape(-1,1,order = 'F'), C_ff.reshape(-1,1,order = 'F')])
-        D = D.reshape(-1,1,order = 'F')
-        v0 = v0.reshape(-1,1,order = 'F')
-        out = SolveLinSys.solveFT(stateSpace, A, B, C, D, v0, ε, tol)
-
-        return out
-
-    elif solverType == 'Feyman Kac':
-
-        if smartguess:
-            iters = 1
-        else:
-            iters = 400000
-
-        A = A.reshape(-1, 1, order='F')
-        B = np.hstack([B_r.reshape(-1, 1, order='F'), B_f.reshape(-1, 1, order='F')])
-        C = np.hstack([C_rr.reshape(-1, 1, order='F'), C_ff.reshape(-1, 1, order='F')])
-        D = D.reshape(-1, 1, order='F')
-        v0 = v0.reshape(-1, 1, order='F')
-        out = SolveLinSys.solveFK(stateSpace, A, B, C, D, v0, iters)
-        return out
-
-logFile = open('20*100_v4.log','a')
-solution_20_100_v2 = dict()
+solution_v4 = dict()
 # solving the PDE
 start_time = time.time()
 episode = 0
 tol = 1e-8
 epsilon = .3
-
-ells = np.linspace(1e-5, 100, num=5)
+FC_Err = 1
+v0 = - delta*eta*y_mat*z_mat # + (eta-1)*np.log(y_mat*z_mat)
 # ells = ELLS
-ells = [0]
-for i in range(1):
-    ell = ells[i]
-    while episode == 0 or FC_Err > tol:
-        print('Episode:{:d}'.format(episode), file = logFile)
-        if episode ==0:
-            v0 = - delta*eta*y_mat
-        else:
-            vold = v0.copy()
+while FC_Err > tol:
+    print('Episode:{:d}'.format(episode))
 
-        # time-varying dt
-        # if episode > 2000:
-            # epsilon = 0.1
-        # elif episode > 1000:
-            # epsilon = 0.2
-        # else:
-            # pass
+    vold = v0.copy()
 
-        # calculating partial derivatives
-        v0_dz = finiteDiff(v0,0,1,hz)
-        v0_dzz = finiteDiff(v0,0,2,hz)
-        #v0_dF[v0_dF < 1e-16] = 1e-16
-        # With only v0_dFF[v0_dFF < 1e-16] = 0
-        v0_dy = finiteDiff(v0,1,1,hy)
-        v0_dyy = finiteDiff(v0,1,2,hy)
-        print(v0_dy)
-        # updating controls
-        Converged = 0
-        nums = 0
-        e =  - delta*eta/v0_dy
-        e[e<0] = 1e-300
-        h2 = - v0_dz*np.sqrt(z_mat)*sigma2_100/xi_m
-        print(np.min(e))
-        # HJB coefficient
-        A =  - delta*np.ones(y_mat.shape)
-        B_z = - rho*(z_mat - mu2) + np.sqrt(z_mat)*sigma2_100*h2
-        B_y = e
-        C_zz = z_mat*sigma2_100**2/2
-        C_yy = np.zeros(z_mat.shape)
-        D =  delta*eta*np.log(e) - delta*(1 - eta)*(.00018*y_mat*z_mat + .0022*y_mat**2*z_mat**2 +0.0197*(y_mat*z_mat - 2)**2*(y_mat*z_mat - 2 >= 0) ) + xi_m*h2**2/2
+    # time-varying dt
+    # if episode > 2000:
+        # epsilon = 0.1
+    # elif episode > 1000:
+        # epsilon = 0.2
+    # else:
+        # pass
 
-        print('here')
-        out = PDESolver_2d(stateSpace, A, B_z, B_y, C_zz, C_yy, D, v0,
-                           epsilon, solverType = 'False Transient')
+    # calculating partial derivatives
+    v0_dz = finiteDiff(v0,0,1,hz)
+    v0_dzz = finiteDiff(v0,0,2,hz)
+    #v0_dF[v0_dF < 1e-16] = 1e-16
+    # With only v0_dFF[v0_dFF < 1e-16] = 0
+    v0_dy = finiteDiff(v0,1,1,hy)
+    v0_dyy = finiteDiff(v0,1,2,hy)
+    print(v0_dy)
+    # updating controls
+    Converged = 0
+    nums = 0
+    e =  - delta*eta/v0_dy
+    e[e<0] = 1e-300
+    h2 = - v0_dz*np.sqrt(z_mat)*sigma2_100/xi_m
+    print(np.min(e))
+    # HJB coefficient
+    A =  - delta*np.ones(y_mat.shape)
+    B_z = - rho*(z_mat - mu2) + np.sqrt(z_mat)*sigma2_100*h2
+    B_y = e
+    C_zz = z_mat*sigma2_100**2/2
+    C_yy = np.zeros(z_mat.shape)
+    D =  delta*eta*np.log(e) - delta*(1 - eta)*(gamma_1*y_mat*z_mat + .5*gamma_2*y_mat**2*z_mat**2 + .5*gamma_2_plus*(y_mat*z_mat - gammaBar)**2*(y_mat*z_mat>=gammaBar)) + xi_m*h2**2/2
 
-        out_comp = out[2].reshape(v0.shape,order = "F")
+    print('here')
+    out = PDESolver_2d(stateSpace, A, B_z, B_y, C_zz, C_yy, D, v0,
+                       epsilon, solverType = 'False Transient')
 
-        PDE_rhs = A*v0 + B_z*v0_dz + B_y*v0_dy + C_zz*v0_dzz + C_yy*v0_dyy + D
+    out_comp = out[2].reshape(v0.shape,order = "F")
 
-        PDE_Err = np.max(abs(PDE_rhs))
-        FC_Err = np.max(abs((out_comp - v0)))
-        #     if episode % 1 == 0:
-        print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode,
-              PDE_Err, FC_Err, out[0], out[1]))
-        episode += 1
+    PDE_rhs = A*v0 + B_z*v0_dz + B_y*v0_dy + C_zz*v0_dzz + C_yy*v0_dyy + D
 
-        v0 = out_comp
+    PDE_Err = np.max(abs(PDE_rhs))
+    FC_Err = np.max(abs((out_comp - v0)))
+    #     if episode % 1 == 0:
+    print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode,
+          PDE_Err, FC_Err, out[0], out[1]))
+    episode += 1
 
-    print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode, PDE_Err, FC_Err, out[0], out[1]), file = logFile)
-    print("--- %s seconds ---" % (time.time() - start_time))
+    v0 = out_comp
 
-    solution_20_100_v2[ell] = dict(e = e, psi = v0)
+print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode, PDE_Err, FC_Err, out[0], out[1]))
+print("--- %s seconds ---" % (time.time() - start_time))
+
+solution_v4 = dict(e = e, psi = v0)
 
 # restore results
 import pickle
-dataFile = '../data/solution/solu_modified_20*10_v4_0218_high'
+dataFile = '../data/solution/solu_modified_v4_0221'
 with open(dataFile, 'wb') as handle:
-    pickle.dump(solution_20_100_v2, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(solution_v4, handle, protocol=pickle.HIGHEST_PROTOCOL)

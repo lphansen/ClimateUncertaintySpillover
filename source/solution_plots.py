@@ -41,21 +41,36 @@ sigma2 = compute_sigma2(RHO, SIGMA_Z, MU_2)
 
 sigma2, (RHO, SIGMA_Z, MU_2)
 
-solu_yy = pickle.load(open(data_dir + "solu_modified_50*100_1802-18:06", "rb"))
+solu_yy = pickle.load(open(data_dir + "solu_modified_v6_21*20_0219-18:59", "rb"))
 
-solu_bbh= pickle.load(open(data_dir + "emission_bbh.pkl", "rb"))
+solu_yy[0.006737946999085467]['e'][10][0]
 
-solu_bbh[0]['y']
+plt.plot(np.linspace(0,2000,20), solu_yy[0.006737946999085467]['e'][10] )
+plt.xlabel('y')
+plt.ylabel('e')
+plt.title(r'$e(y,z_2)$, with $z_2 = 1.86/1000$', )
+plt.savefig('e_y_ambiguity.png')
+
+solu_yzeasy = pickle.load(open(data_dir + "solu_modified_50*100_1802-18:06", "rb"))
+
+solu_yzeasy[0]['e'].shape
+
+Y_GRID.shape
 
 solu_yy[0]["e"].shape
 
 yz = np.mean(solu_yy[0]["e"], axis=0)
 
-plt.plot(Y_GRID, (solu_yy[0]["e"][24] + solu_yy[0]["e"][25])/2 )
+plt.plot(np.linspace(1e-2, 3000,50), solu_yy[0]["e"][25] )
+plt.plot(np.linspace(100,2000, 100), solu_yzeasy[0]['e'][25], label="yesterday")
 plt.xlabel('y')
 plt.ylabel('e', rotation=0, labelpad=30)
 plt.title(r'$e(y,z_2)$ with $z_2 \approx 1.86/1000$')
 # plt.savefig(figDir + 'e_yz.png')
+
+solu_yy[0]["e"][24][2], solu_yzeasy[0]['e'][24][0]
+
+Y_GRID[0]
 
 Z_GRID[25]
 
@@ -85,7 +100,7 @@ plt.xlabel('years')
 plt.ylabel('emission')
 plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
 plt.title(r'$e_t$ with $z_2 \approx 1.86/1000$')
-plt.savefig(figDir + 'e_t_rough.png')
+# plt.savefig(figDir + 'e_t_rough.png')
 
 plt.plot(et[:400] - solu_bbh[0]['y'], label="new HJB")
 

@@ -9,20 +9,6 @@ from scipy.interpolate import RegularGridInterpolator, CubicSpline
 import pickle
 import SolveLinSys
 
-c_temp = 24
-k_temp = 5.35
-sigma_T = 8.4478e-7 ** 0.5
-gamma_bar = 2
-Q_0 = 342.5
-T_b = 273.15 + 13.9
-T0 = 284.15
-mu = 1
-Tc = 269
-sigma_ZG = 5.6697e-8
-
-Tb = T_b
-μ = 1
-σ = sigma_ZG
 
 def Ri(κ, Tb, T,μ = 1, c1 = 0.15, c2 = 0.7, Tc = 273):
     α = c1 + c2 / 2 * (1 - np.tanh(κ * (T + Tb - Tc)))
@@ -315,4 +301,31 @@ def PDESolver(stateSpace, A, B_r, B_f, B_k, C_rr, C_ff, C_kk, D, v0, ε = 1, tol
         v0 = v0.reshape(-1, 1, order='F')
         out = SolveLinSys.solveFK(stateSpace, A, B, C, D, v0, iters)
 
+        return out
+
+def PDESolver_2d(stateSpace, A, B_r, B_f, C_rr, C_ff, D, v0, ε = 1, tol = -10, smartguess = False, solverType = 'False Transient'):
+
+    if solverType == 'False Transient':
+        A = A.reshape(-1,1,order = 'F')
+        B = np.hstack([B_r.reshape(-1,1,order = 'F'),B_f.reshape(-1,1,order = 'F')])
+        C = np.hstack([C_rr.reshape(-1,1,order = 'F'), C_ff.reshape(-1,1,order = 'F')])
+        D = D.reshape(-1,1,order = 'F')
+        v0 = v0.reshape(-1,1,order = 'F')
+        out = SolveLinSys.solveFT(stateSpace, A, B, C, D, v0, ε, tol)
+
+        return out
+
+    elif solverType == 'Feyman Kac':
+
+        if smartguess:
+            iters = 1
+        else:
+            iters = 400000
+
+        A = A.reshape(-1, 1, order='F')
+        B = np.hstack([B_r.reshape(-1, 1, order='F'), B_f.reshape(-1, 1, order='F')])
+        C = np.hstack([C_rr.reshape(-1, 1, order='F'), C_ff.reshape(-1, 1, order='F')])
+        D = D.reshape(-1, 1, order='F')
+        v0 = v0.reshape(-1, 1, order='F')
+        out = SolveLinSys.solveFK(stateSpace, A, B, C, D, v0, iters)
         return out

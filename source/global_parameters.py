@@ -7,7 +7,7 @@ DELTA = .01
 ETA = .032
 MEDIAN = 1.75/1000
 GAMMA_BASE = .018
-XI_M = .00256/10
+XI_M = 1000
 # compute tau
 TAU = MEDIAN*GAMMA_BASE
 # setup for z_2 process
@@ -17,7 +17,7 @@ SIGMA_Z = .21/1000
 
 # grid setting
 ## z grid
-N_Z = 50
+N_Z = 201
 Z_MIN = MU_2 - 4*SIGMA_Z
 Z_MAX = MU_2 + 4*SIGMA_Z
 Z_GRID = np.linspace(Z_MIN, Z_MAX, N_Z)
@@ -30,8 +30,8 @@ B_GRID = np.linspace(B_MIN, B_MAX, N_B)
 HB = B_GRID[1] - B_GRID[0]
 ## y grid
 N_Y = 100
-Y_MIN = 10
-Y_MAX = 5000
+Y_MIN = 100
+Y_MAX = 2000
 Y_GRID = np.linspace(Y_MIN, Y_MAX, N_Y)
 HY = Y_GRID[1] - Y_GRID[0]
 ## ell grid

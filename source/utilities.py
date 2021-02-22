@@ -60,3 +60,67 @@ def compute_std(emission, time, arg = (1.75/1000, 1.2)):
     emission_selected = emission[:time]
     std = np.sqrt(np.sum(emission_selected**2))/emission_selected.sum()*σ_n*median*1000
     return std
+
+def dLambda(y_mat, z_mat, gamma1, gamma2, gamma2p, gammaBar):
+    """compute first derivative of Lambda, aka log damage function
+    :returns:
+    dlambda: (numz, numy) ndarray
+        first derivative of Lambda
+
+    """
+    dlambda = gamma1 + gamma2*y_mat*z_mat + gamma2p*(y_mat*z_mat - gammaBar)*(y_mat*z_mat>=gammaBar)
+    return dLambda
+
+def ddLambda(y_mat, z_mat, gamma2, gamma2p, gammaBar):
+    """compute second derivative of Lambda function
+
+    :gamma2: TODO
+    :gamma2p: TODO
+    :gammaBar: TODO
+    :returns: TODO
+    ddlambda: (numz, numy) ndarray
+        second derivative
+
+    """
+    ddlambda = gamma2 + gamma2p*(y_mat*z_mat>=gammaBar)
+    return ddlambda
+
+@njit
+def weightOfPi(y_mat, z_mat, e, PILast, gamma1, gamma2, gamma2p, gammaBar, xi_a, eta, rho, mu_2, sigma2, h2):
+    """compute weight on posterior
+
+    :y_mat: TODO
+    :z_mat: TODO
+    :PILast: TODO
+    :gamma1: TODO
+    :gamma2: TODO
+    :gamma2p: TODO
+    :gammaBar: TODO
+    :returns: TODO
+
+    """
+    numDmg, numz, numy = PILast.shape
+    PIThis = np.zeros(PILast.shape)
+    weight = np.zeros(PILast.shape)
+    for i in range(numDmg):
+        weight[i] = - (eta-1)/xi_a*gamma2p[i]*(y_mat*z_mat>=gammaBar)*((y_mat*z_mat-gammaBar)*(z_mat*e + y_mat*(-rho*(z_mat-mu_2)) + y_mat*np.sqrt(z_mat)*sigma2*h2) + .5*z_mat*y_mat**2*sigma2**2)
+        weight[i] = PILast[i]*np.exp(weight[i])
+
+    weight = weight/np.sum(weight, axis=0)
+    return weight
+
+@njit
+def relativeEntropy(PIThis, PILast, xi_a):
+    """compute relative entropy
+
+    :PIThis: TODO
+    :PILast: TODO
+    :xi_a: TODO
+    :returns: TODO
+
+    """
+    numDmg, _, _ = PIThis.shape
+    entrpy = np.zeros(PIThis.shape)
+    for i in range(numDmg):
+        entrpy[i] = PIThis[i]*(np.log(PIThis[i] - np.log(PILast[i])))
+    return xi_a*np.sum(entrpy, axis=0)
