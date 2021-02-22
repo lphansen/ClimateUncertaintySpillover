@@ -113,10 +113,10 @@ while episode == 0 or FC_Err > tol:
         PIThis = np.ones((numDmg, numz, numy))/numDmg
         PILast = PIThis
     else:
-        PISum = PILast[0]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + z_mat*y_mat**2*sigma2_100**2 )  ) + PILast[1]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + z_mat*y_mat**2*sigma2_100**2 )  )
+        PISum = PILast[0]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + 0.5*z_mat*y_mat**2*sigma2_100**2 )  ) + PILast[1]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )
         print(PISum.shape)
-        PIThis[0] = PILast[0]*np.exp(-1/xi_a*(eta-1)*gamma2pList[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + z_mat*y_mat**2*sigma2_100**2 )  )/PISum
-        PIThis[1] = PILast[1]*np.exp(-1/xi_a*(eta-1)*gamma2pList[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + z_mat*y_mat**2*sigma2_100**2 )  )/PISum
+        PIThis[0] = PILast[0]*np.exp(-1/xi_a*(eta-1)*gamma2pList[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )/PISum
+        PIThis[1] = PILast[1]*np.exp(-1/xi_a*(eta-1)*gamma2pList[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )/PISum
     print("entering control update")
     compute_start = time.time()
     e =  - delta*eta/(v0_dy+(eta-1)*(gamma_1 + gamma_2*y_mat*z_mat + np.sum(gamma2pMat*PIThis, axis=0)*(y_mat*z_mat - gamma_bar)*(y_mat*z_mat>=gamma_bar) )*z_mat)
