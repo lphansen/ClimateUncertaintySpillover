@@ -129,7 +129,7 @@ while episode == 0 or FC_Err > tol:
     B_y = e
     C_zz = z_mat*sigma2_100**2/2
     C_yy = np.zeros(z_mat.shape)
-    D =  delta*eta*np.log(e) - (1 - eta)*((gamma_1 + gamma_2*y_mat*z_mat +np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat - gamma_bar )*(y_mat*z_mat>=gamma_bar))*(z_mat*e + y_mat*(-rho*(z_mat - mu2)) + y_mat*np.sqrt(z_mat)*sigma2_100*h2) + 0.5*(gamma_2 + np.sum(PIThis*gamma2pMat, axis=0))*(y_mat*z_mat>=gamma_2)*z_mat*y_mat**2*sigma2_100**2) + xi_m*h2**2/2 + xi_a*np.sum(PIThis*(np.log(PIThis) -np.log(PILast)), axis=0)
+    D =  delta*eta*np.log(e) - (1 - eta)*((gamma_1 + gamma_2*y_mat*z_mat +np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat - gamma_bar )*(y_mat*z_mat>=gamma_bar))*(z_mat*e + y_mat*(-rho*(z_mat - mu2)) + y_mat*np.sqrt(z_mat)*sigma2_100*h2) + 0.5*(gamma_2 + np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat>=gamma_2) ) *z_mat*y_mat**2*sigma2_100**2) + xi_m*h2**2/2 + xi_a*np.sum(PIThis*(np.log(PIThis) -np.log(PILast)), axis=0)
     print("End of update, takes: {}".format(time.time() - compute_start))
     print('Entering PDE solver...')
     solve_start = time.time()
