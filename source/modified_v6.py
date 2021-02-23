@@ -38,6 +38,7 @@ gamma_1 = 0.00017675
 gamma_2 = 2*.0022
 gamma_bar = 2
 gamma2pList = np.array([0, 2*0.0197])
+v_n = eta - 1
 
 numy = N_Y
 y_min = Y_MIN
@@ -60,13 +61,16 @@ solution_v6 = dict()
 # solving the PDE
 start_time = time.time()
 episode = 0
-tol = 1e-6
-epsilon = .3
+tol = 1e-8
+epsilon = .5
 FC_Err = 1
 
 PIThis = np.ones((numDmg, numz, numy))/numDmg
 PILast = np.ones((numDmg, numz, numy))/numDmg
-v0 =  -delta*eta*y_mat*z_mat - (eta-1)*np.log(y_mat*z_mat)
+prior = PIThis
+dlambda = dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(PIThis*gamma2pMat, axis=0), gamma_bar)
+ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
+v0 =  -delta*eta*y_mat*z_mat
 
 while FC_Err > tol:
     print('Episode:{:d}'.format(episode))
@@ -76,10 +80,10 @@ while FC_Err > tol:
         # epsilon = .1
     # else:
         # pass
-    # if episode ==0:
-        # v0 =  - delta*y_mat*z_mat
-    # else:
-    vold = v0.copy()
+    if episode ==0:
+        v0 =  - delta*eta*y_mat*z_mat
+    else:
+        vold = v0.copy()
 
 
     # calculating partial derivatives
@@ -98,19 +102,24 @@ while FC_Err > tol:
         # PIThis[1] = PILast[1]*np.exp(-1/xi_a*(eta -1)*gamma2pList[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*B_z ) +.5* z_mat*y_mat**2*sigma2_100**2 )  )/PISum
     print("entering control update")
     compute_start = time.time()
-    e =  - delta*eta/(v0_dy+(eta-1)*(gamma_1 + gamma_2*y_mat*z_mat +np.sum(gamma2pMat*PIThis, axis=0)*(y_mat*z_mat - gamma_bar)*(y_mat*z_mat>=gamma_bar))*z_mat)
-    e[e<0] = 1e-300
-    h2 = - (v0_dz*np.sqrt(z_mat)*sigma2_100+ (eta -1 )*(gamma_1 + gamma_2*y_mat*z_mat + np.sum( PIThis*gamma2pMat*(y_mat*z_mat - gamma_bar)*(y_mat*z_mat>= gamma_bar)*y_mat*np.sqrt(z_mat)*sigma2_100, axis=0) ) ) /xi_m
+    # dlambda = dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(PIThis*gamma2pMat, axis=0), gamma_bar)
+    # ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
+    e =  - delta*eta/(v0_dy+v_n*dlambda*z_mat)
+    e[e<0] = 1e-16
+    h2 = - (v0_dz*np.sqrt(z_mat)*sigma2_100+ v_n*dlambda*y_mat*np.sqrt(z_mat)*sigma2_100)/xi_m
     print(np.min(e))
-    PIThis = weightOfPi(y_mat, z_mat, e, PILast, gamma_1, gamma_2, gamma2pList, gamma_bar, xi_a, eta, rho, mu2, sigma2_100, h2)
-    print(PIThis[:,0,0],PIThis[:, -1,50], PIThis[:, -1,-1])
+    PIThis = weightOfPi(y_mat, z_mat, e, prior , gamma_1, gamma_2, gamma2pList, gamma_bar, xi_a, eta, rho, mu2, sigma2_100, h2)
+    print(PIThis[:,0,0],PIThis[:, -1,int(numy/2)], PIThis[:, -1,-1])
+    # update intermediate terms
+    dlambda =  dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(PIThis*gamma2pMat, axis=0), gamma_bar)
+    ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
     # HJB coefficient
     A =  - delta*np.ones(y_mat.shape)
     B_z = - rho*(z_mat - mu2) + np.sqrt(z_mat)*sigma2_100*h2
     B_y = e
     C_zz = z_mat*sigma2_100**2/2
     C_yy = np.zeros(z_mat.shape)
-    D =  delta*eta*np.log(e) + (eta - 1)*((gamma_1 + gamma_2*y_mat*z_mat + np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat - gamma_bar )*(y_mat*z_mat>=gamma_bar))*(z_mat*e + y_mat*B_z) + (gamma_2 + np.sum(PIThis*gamma2pMat, axis=0) )*(y_mat*z_mat>=gamma_2)*y_mat**2*C_zz) + xi_m*h2**2/2 + relativeEntropy(PIThis, PILast, xi_a)
+    D =  delta*eta*np.log(e) + v_n*(dlambda*(z_mat*e + y_mat*B_z) + ddlambda*y_mat**2*C_zz) + xi_m*h2**2/2 + xi_a*relativeEntropy(PIThis, prior)
     print(h2)
     print("End of update, takes: {}".format(time.time() - compute_start))
     print('Entering PDE solver...')
@@ -129,13 +138,13 @@ while FC_Err > tol:
           PDE_Err, FC_Err, out[0], out[1]))
     episode += 1
     v0 = out_comp
-    PILast = PIThis
+    # PILast = PIThis
     print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
 
 print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode, PDE_Err, FC_Err, out[0], out[1]))
 print("--- %s seconds ---" % (time.time() - start_time))
 
-solution_v6 = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy)
+solution_v6 = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy, h2 = h2)
 
 # restore results
 from datetime import datetime

@@ -69,7 +69,7 @@ def dLambda(y_mat, z_mat, gamma1, gamma2, gamma2p, gammaBar):
 
     """
     dlambda = gamma1 + gamma2*y_mat*z_mat + gamma2p*(y_mat*z_mat - gammaBar)*(y_mat*z_mat>=gammaBar)
-    return dLambda
+    return dlambda
 
 def ddLambda(y_mat, z_mat, gamma2, gamma2p, gammaBar):
     """compute second derivative of Lambda function
@@ -85,8 +85,8 @@ def ddLambda(y_mat, z_mat, gamma2, gamma2p, gammaBar):
     ddlambda = gamma2 + gamma2p*(y_mat*z_mat>=gammaBar)
     return ddlambda
 
-@njit
-def weightOfPi(y_mat, z_mat, e, PILast, gamma1, gamma2, gamma2p, gammaBar, xi_a, eta, rho, mu_2, sigma2, h2):
+# @njit
+def weightOfPi(y_mat, z_mat, e, prior, gamma1, gamma2, gamma2p, gammaBar, xi_a, eta, rho, mu_2, sigma2, h2):
     """compute weight on posterior
 
     :y_mat: TODO
@@ -99,18 +99,19 @@ def weightOfPi(y_mat, z_mat, e, PILast, gamma1, gamma2, gamma2p, gammaBar, xi_a,
     :returns: TODO
 
     """
-    numDmg, numz, numy = PILast.shape
-    PIThis = np.zeros(PILast.shape)
-    weight = np.zeros(PILast.shape)
+    numDmg, numz, numy = prior.shape
+    PIThis = np.zeros(prior.shape)
+    weight = np.zeros(prior.shape)
     for i in range(numDmg):
         weight[i] = - (eta-1)/xi_a*gamma2p[i]*(y_mat*z_mat>=gammaBar)*((y_mat*z_mat-gammaBar)*(z_mat*e + y_mat*(-rho*(z_mat-mu_2)) + y_mat*np.sqrt(z_mat)*sigma2*h2) + .5*z_mat*y_mat**2*sigma2**2)
-        weight[i] = PILast[i]*np.exp(weight[i])
+    weight = weight - np.max(weight, axis=0)
+    weight_of_pi = prior*np.exp(weight)
 
-    weight = weight/np.sum(weight, axis=0)
-    return weight
+    PIThis = weight_of_pi/np.sum(weight_of_pi, axis=0)
+    return PIThis
 
 @njit
-def relativeEntropy(PIThis, PILast, xi_a):
+def relativeEntropy(PIThis, PILast):
     """compute relative entropy
 
     :PIThis: TODO
@@ -123,4 +124,4 @@ def relativeEntropy(PIThis, PILast, xi_a):
     entrpy = np.zeros(PIThis.shape)
     for i in range(numDmg):
         entrpy[i] = PIThis[i]*(np.log(PIThis[i] - np.log(PILast[i])))
-    return xi_a*np.sum(entrpy, axis=0)
+    return np.sum(entrpy, axis=0)

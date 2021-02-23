@@ -28,9 +28,9 @@ sigma2_100 = compute_sigma2(rho, sigma_z_100, mu2)
 xi_m = 1000
 xi_a = 1000
 # state variable
-numz = 50
-z2_min = mu2 - 3*sigma_z_100
-z2_max = mu2 + 3*sigma_z_100
+numz = 51
+z2_min = mu2 - 4*sigma_z_100
+z2_max = mu2 + 4*sigma_z_100
 z = np.linspace(z2_min, z2_max, numz)
 hz = z[1]-z[0]
 
@@ -86,16 +86,22 @@ def PDESolver_2d(stateSpace, A, B_r, B_f, C_rr, C_ff, D, v0, ε = 1, tol = -10, 
 # solving the PDE
 start_time = time.time()
 episode = 0
-tol = 1e-8
+tol = 1e-7
 epsilon = .5
 
 PI = PI0
-PIThis = np.zeros((numDmg, numz, numz))
-PILast = np.zeros((numDmg, numz, numz))
+PIThis = np.zeros((numDmg, numz, numy))
+PILast = np.zeros((numDmg, numz, numy))
+
+PIThis[0] = .5
+PIThis[1] = .5
+
+prior = PIThis
+
 while episode == 0 or FC_Err > tol:
     print('Episode:{:d}'.format(episode))
     if episode ==0:
-        v0 = - delta*eta*y_mat
+        v0 = - eta*y_mat*z_mat
     else:
         vold = v0.copy()
 
@@ -110,17 +116,18 @@ while episode == 0 or FC_Err > tol:
     print(v0_dy)
     # updating controls
     if episode == 0:
-        PIThis = np.ones((numDmg, numz, numy))/numDmg
-        PILast = PIThis
+        # PIThis = np.ones((numDmg, numz, numy))/numDmg
+        # PILast = PIThis
+        pass
     else:
-        PISum = PILast[0]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + 0.5*z_mat*y_mat**2*sigma2_100**2 )  ) + PILast[1]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )
+        PISum = prior[0]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + 0.5*z_mat*y_mat**2*sigma2_100**2 )  ) + prior[1]*np.exp(-1/xi_a*(eta-1)*gamma2pMat[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )
         print(PISum.shape)
-        PIThis[0] = PILast[0]*np.exp(-1/xi_a*(eta-1)*gamma2pList[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )/PISum
-        PIThis[1] = PILast[1]*np.exp(-1/xi_a*(eta-1)*gamma2pList[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )/PISum
+        PIThis[0] = prior[0]*np.exp(-1/xi_a*(eta-1)*gamma2pList[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )/PISum
+        PIThis[1] = prior[1]*np.exp(-1/xi_a*(eta-1)*gamma2pList[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )/PISum
     print("entering control update")
     compute_start = time.time()
     e =  - delta*eta/(v0_dy+(eta-1)*(gamma_1 + gamma_2*y_mat*z_mat + np.sum(gamma2pMat*PIThis, axis=0)*(y_mat*z_mat - gamma_bar)*(y_mat*z_mat>=gamma_bar) )*z_mat)
-    e[e<0] = 1e-300
+    e[e<0] = 1e-16
     h2 = - (v0_dz*np.sqrt(z_mat)*sigma2_100+ (eta -1 )*(gamma_1 + gamma_2*y_mat*z_mat + np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat - gamma_bar)*(y_mat*z_mat>= gamma_bar))*y_mat*np.sqrt(z_mat)*sigma2_100)/xi_m
     print(np.min(e))
     # HJB coefficient
@@ -129,7 +136,7 @@ while episode == 0 or FC_Err > tol:
     B_y = e
     C_zz = z_mat*sigma2_100**2/2
     C_yy = np.zeros(z_mat.shape)
-    D =  delta*eta*np.log(e) - (1 - eta)*((gamma_1 + gamma_2*y_mat*z_mat +np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat - gamma_bar )*(y_mat*z_mat>=gamma_bar))*(z_mat*e + y_mat*(-rho*(z_mat - mu2)) + y_mat*np.sqrt(z_mat)*sigma2_100*h2) + 0.5*(gamma_2 + np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat>=gamma_2) ) *z_mat*y_mat**2*sigma2_100**2) + xi_m*h2**2/2 + xi_a*np.sum(PIThis*(np.log(PIThis) -np.log(PILast)), axis=0)
+    D =  delta*eta*np.log(e) - (1 - eta)*((gamma_1 + gamma_2*y_mat*z_mat +np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat - gamma_bar )*(y_mat*z_mat>=gamma_bar))*(z_mat*e + y_mat*(-rho*(z_mat - mu2)) + y_mat*np.sqrt(z_mat)*sigma2_100*h2) + 0.5*(gamma_2 + np.sum(PIThis*gamma2pMat, axis=0)*(y_mat*z_mat>=gamma_2) ) *z_mat*y_mat**2*sigma2_100**2) + xi_m*h2**2/2 + xi_a*np.sum(PIThis*(np.log(PIThis) -np.log(prior)), axis=0)
     print("End of update, takes: {}".format(time.time() - compute_start))
     print('Entering PDE solver...')
     solve_start = time.time()
@@ -141,13 +148,13 @@ while episode == 0 or FC_Err > tol:
     PDE_rhs = A*v0 + B_z*v0_dz + B_y*v0_dy + C_zz*v0_dzz + C_yy*v0_dyy + D
 
     PDE_Err = np.max(abs(PDE_rhs))
-    FC_Err = np.max(abs((out_comp - v0)))
+    FC_Err = np.max(abs((out_comp - v0)/epsilon))
     #     if episode % 1 == 0:
     print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode,
           PDE_Err, FC_Err, out[0], out[1]))
     episode += 1
     v0 = out_comp
-    PILast = PIThis
+    # PILast = PIThis
     print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
 
 

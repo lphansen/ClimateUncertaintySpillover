@@ -44,27 +44,19 @@ sigma2, (RHO, SIGMA_Z, MU_2)
 ```
 
 ```python
-solu_yy = pickle.load(open(data_dir + "solu_modified_v6_21*20_0219-18:59", "rb"))
+solu_yy = pickle.load(open(data_dir + "solu_modified_v6_101*100_0222_16:51", "rb"))
 ```
 
 ```python
-solu_yy[0.006737946999085467]['e'][10][0]
+solu_yy['e'][50].shape
 ```
 
 ```python
-plt.plot(np.linspace(0,2000,20), solu_yy[0.006737946999085467]['e'][10] )
+plt.plot(np.linspace(1e-10, 2000, 100), solu_yy['e'][-1] )
 plt.xlabel('y')
 plt.ylabel('e')
 plt.title(r'$e(y,z_2)$, with $z_2 = 1.86/1000$', )
-plt.savefig('e_y_ambiguity.png')
-```
-
-```python
-solu_yzeasy = pickle.load(open(data_dir + "solu_modified_50*100_1802-18:06", "rb"))
-```
-
-```python
-solu_yzeasy[0]['e'].shape
+# plt.savefig('e_y_ambiguity.png')
 ```
 
 ```python
@@ -72,16 +64,8 @@ Y_GRID.shape
 ```
 
 ```python
-solu_yy[0]["e"].shape
-```
-
-```python
-yz = np.mean(solu_yy[0]["e"], axis=0)
-```
-
-```python
-plt.plot(np.linspace(1e-2, 3000,50), solu_yy[0]["e"][25] )
-plt.plot(np.linspace(100,2000, 100), solu_yzeasy[0]['e'][25], label="yesterday")
+plt.plot(np.linspace(1e-10, 2000, 100), solu_yy["e"][0] )
+# plt.plot(np.linspace(100,2000, 100), solu_yzeasy[0]['e'][25], label="yesterday")
 plt.xlabel('y')
 plt.ylabel('e', rotation=0, labelpad=30)
 plt.title(r'$e(y,z_2)$ with $z_2 \approx 1.86/1000$')
@@ -89,15 +73,11 @@ plt.title(r'$e(y,z_2)$ with $z_2 \approx 1.86/1000$')
 ```
 
 ```python
-solu_yy[0]["e"][24][2], solu_yzeasy[0]['e'][24][0]
-```
-
-```python
 Y_GRID[0]
 ```
 
 ```python
-Z_GRID[25]
+Z_GRID[50]
 ```
 
 ```python
@@ -108,30 +88,46 @@ def simulate_ems(Y, e, T=102, dt=1/4):
     y = 870-580
     yt[0]= y
     for t in range(periods):
-        loc = (np.abs(Y - y)).argmin()
-        et[t] =  e[loc]
+        loc = (np.abs(Y-y)).argmin()
+        et[t] = e[loc]
         y = y + et[t]*dt
         yt[t] = y
     return et, yt
 ```
 
 ```python
-et, yt = simulate_ems(Y_GRID, yz)
+def simulate_emsn(Y, e, T=102, dt=1/4):
+    periods = int(T/dt)
+    et = np.zeros(periods)
+    yt = np.zeros(periods)
+    y = 870-580
+    yt[0]= y
+    for t in range(periods):
+        et[t] = np.interp(y, Y, e)
+#         et[t] = e[loc]
+        y = y + et[t]*dt
+        yt[t] = y
+    return et, yt
 ```
 
 ```python
-et.shape
+et, yt = simulate_emsn(np.linspace(1e-10, 2000, 100), solu_yy['e'][-1])
 ```
 
 ```python
+et
+```
+
+```python
+# 300 represents number of points to make between T.min and T.max
 plt.plot(et, label="new HJB")
-plt.plot(solu_bbh[0]['y'], label="BBH")
-plt.legend()
+# plt.plot(solu_bbh[0]['y'], label="BBH")
+# plt.legend()
 plt.xlabel('years')
 plt.ylabel('emission')
 plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
-plt.title(r'$e_t$ with $z_2 \approx 1.86/1000$')
-# plt.savefig(figDir + 'e_t_rough.png')
+# plt.title(r'$e_t$ with $z_2 \approx 1.86/1000$')
+# # plt.savefig(figDir + 'e_t_rough.png')
 ```
 
 ```python
