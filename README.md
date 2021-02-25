@@ -65,3 +65,9 @@ Drift distortion:
 <p align="center">
 <img src="./notebook/paper_plots/h_hat_base.png" width="600"/>
 </p>
+
+## <a name="description"></a>Descriptions of files
+
+Description about files used for computation under `/source`: check out [description](source/sourceDescription.md)
+
+Descrition about files used for generating plots and tables under `notebook`: check out [descriptions about notebooks](notebook/nbDescription.md) 
