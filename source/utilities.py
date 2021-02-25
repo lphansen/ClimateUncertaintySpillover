@@ -123,5 +123,89 @@ def relativeEntropy(PIThis, PILast):
     numDmg, _, _ = PIThis.shape
     entrpy = np.zeros(PIThis.shape)
     for i in range(numDmg):
-        entrpy[i] = PIThis[i]*(np.log(PIThis[i] - np.log(PILast[i])))
+        entrpy[i] = PIThis[i]*(np.log(PIThis[i]) - np.log(PILast[i]))
     return np.sum(entrpy, axis=0)
+
+# weight of pi when climate models considered
+def weightPI(y_mat, z_mat, e, prior, modelParam, v0_dz, rho, gammaBar, v_n, xi_a, sigma2):
+    """compute pi j star with mu_2 ambiguity
+    :returns: TODO
+
+    """
+    numModel, _ = modelParam.shape
+    numz, numy = y_mat.shape
+    weight = np.zeros((numModel, numz, numy))
+    for i in range(numModel):
+        mu2, gamma2p = modelParam[i]
+        temp = (y_mat*z_mat - gammaBar)*(z_mat*e-y_mat*(z_mat-mu2))
+        temp += 1/2*z_mat*y_mat**2*sigma2**2
+        temp *= v_n*gamma2p*(y_mat*z_mat>=gammaBar)
+        temp += v0_dz*rho*mu2
+        temp *= -1/xi_a
+        weight[i] = temp
+    weight = weight - np.max(weight, axis=0)
+    weight = prior*np.exp(weight)
+    PIThis = weight/np.sum(weight, axis=0)
+    return PIThis
+
+@njit
+def damageDriftSingle(y_mat, z_mat, e, mu2, gamma2p, rho, gamma1, gamma2, gammaBar, sigma2):
+    """TODO: Docstring for damageDrift.
+
+    :y_mat: TODO
+    :z_mat: TODO
+    :e: TODO
+    :modelParam: TODO
+    :returns: TODO
+
+    """
+    temp1 = z_mat*e - y_mat*rho*(z_mat - mu2)
+    temp1 *= gamma1 + gamma2*y_mat*z_mat + gamma2p*(y_mat*z_mat-gammaBar)*(y_mat*z_mat>=gammaBar)
+    temp2 = 1/2*z_mat*y_mat**2*sigma2**2
+    temp2 *= gamma2 + gamma2p*(y_mat*z_mat>=gammaBar)
+    drift = temp1 + temp2
+    return drift
+
+@njit
+def damageDrift(y_mat, z_mat, e, modelParam, gamma1, gamma2, gammaBar, rho, sigma2):
+    """compute damage drift weighted by posteriors
+
+    :y_mat: TODO
+    :z_mat: TODO
+    :e: TODO
+    :modelParam: TODO
+    :gamma1: TODO
+    :gamma2: TODO
+    :gammaBar: TODO
+    :rho: TODO
+    :returns: TODO
+
+    """
+    numModel,_ = modelParam.shape
+    numz, numy = z_mat.shape
+    driftMat = np.zeros((numModel, numz, numy))
+    for i in range(numModel):
+        mu2, gamma2p = modelParam[i]
+        driftMat[i] = damageDriftSingle(y_mat, z_mat, e, mu2, gamma2p, rho, gamma1, gamma2, gammaBar, sigma2)
+
+    return driftMat
+
+@njit
+def zDrift(z_mat, modelParam, rho):
+    """computed drift term for v_dz
+
+    :y_mat: TODO
+    :z_mat: TODO
+    :modelParam: TODO
+    :v0_dz: TODO
+    :rho: TODO
+    :returns: TODO
+
+    """
+    numModel, _ = modelParam.shape
+    numz, numy = z_mat.shape
+    zDriftMat = np.zeros((numModel, numz, numy))
+    for i in range(numModel):
+        mu2 = modelParam[i,0]
+        zDriftMat[i] = -rho*(z_mat - mu2)
+    return zDriftMat

@@ -1,21 +1,24 @@
+# -*- coding: utf-8 -*-
 """
 module for modified model
+consider ambiguity only
 """
 import time
 import numpy as np
+import pandas as pd
 import SolveLinSys
 import pickle
-from supportfunctions import *
-from global_parameters import *
-from utilities import *
+from supportfunctions import PDESolver_2d, finiteDiff
+import global_parameters as gp
+from utilities import dLambda, ddLambda, weightOfPi, relativeEntropy, weightPI, damageDrift, zDrift
 ######################global variable
-delta = DELTA
-eta = ETA
-mu2 = MU_2
-sigma_z = SIGMA_Z
+delta = gp.DELTA
+eta = gp.ETA
+mu2 = gp.MU_2
+sigma_z = gp.SIGMA_Z
 gamma_low = .012
 gamma_high = .024
-rho = RHO
+rho =gp.RHO
 
 def compute_sigma2(rho, sigma_z, mu_2):
     """
@@ -24,15 +27,11 @@ def compute_sigma2(rho, sigma_z, mu_2):
     return np.sqrt(2*sigma_z**2*rho/mu_2)
 
 
-sigma2_100 = compute_sigma2(rho, sigma_z, mu2)
+sigma2 = compute_sigma2(rho, sigma_z, mu2)
+sigma2 = sigma2/3
 xi_m = 1000
 xi_a = 1000
 # state variable
-numz = N_Z
-z2_min = Z_MIN
-z2_max = Z_MAX
-hz = HZ
-z = Z_GRID
 
 gamma_1 = 0.00017675
 gamma_2 = 2*.0022
@@ -40,22 +39,36 @@ gamma_bar = 2
 gamma2pList = np.array([0, 2*0.0197])
 v_n = eta - 1
 
-numy = N_Y
-y_min = Y_MIN
-y_max = Y_MAX
-y = Y_GRID
-hy = HY
+numz = 101
+z2_min = gp.Z_MIN
+z2_max = gp.Z_MAX
+z = np.linspace(z2_min, z2_max, numz)
+hz = z[1] - z[0]
+
+numy = 50
+y_min = 1e-2
+y_max = 1500
+y = np.linspace(y_min, y_max, numy)
+hy = y[1]-y[0]
 
 # specify number of damage function
 numDmg = 2
-
 gamma2pMat = np.zeros((numDmg, numz, numy))
 gamma2pMat[0] = gamma2pList[0]
 gamma2pMat[1] = gamma2pList[1]
 
+# climate models
+mu2List = pd.read_excel("../data/model153.xlsx")[0]/1000
+# construct model parameters for damage and climate
+modelParam = list()
+for mu2Var in mu2List:
+    for gamma2p in gamma2pList:
+        modelParam.append([mu2Var, gamma2p])
+modelParam = np.array(modelParam)
+
+# mesh grid and construct state space
 (z_mat, y_mat) = np.meshgrid(z, y, indexing = 'ij')
 stateSpace = np.hstack([z_mat.reshape(-1,1, order='F'), y_mat.reshape(-1,1,order='F')])
-
 
 solution_v6 = dict()
 # solving the PDE
@@ -65,11 +78,13 @@ tol = 1e-8
 epsilon = .5
 FC_Err = 1
 
-PIThis = np.ones((numDmg, numz, numy))/numDmg
-PILast = np.ones((numDmg, numz, numy))/numDmg
+PIThis = np.ones((len(modelParam), numz, numy))/len(modelParam)
 prior = PIThis
-dlambda = dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(PIThis*gamma2pMat, axis=0), gamma_bar)
-ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
+gamma2pMat = np.zeros_like(PIThis)
+for i in range(len(modelParam)):
+    gamma2pMat[i] = modelParam[i,1]
+dlambda = dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
+# ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
 v0 =  -delta*eta*y_mat*z_mat
 
 while FC_Err > tol:
@@ -92,36 +107,32 @@ while FC_Err > tol:
     #v0_dF[v0_dF < 1e-16] = 1e-16
     # With only v0_dFF[v0_dFF < 1e-16] = 0
     v0_dy = finiteDiff(v0,1,1,hy)
-    # v0_dy[v0_dy >0] =0
+#     v0_dy[v0_dy >0] =0
     v0_dyy = finiteDiff(v0,1,2,hy)
     print(v0_dy)
     # updating controls
-        # PISum = PILast[0]*np.exp(-1/xi_a*(eta -1)*gamma2pMat[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  ) + PILast[1]*np.exp(-1/xi_a*(1-eta)*gamma2pMat[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*(-rho*(z_mat - mu2) ) + y_mat*np.sqrt(z_mat)*sigma2_100*h2 ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )
-        # print(PISum.shape)
-        # PIThis[0] = PILast[0]*np.exp(-1/xi_a*(eta - 1)*gamma2pList[0]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*B_z ) + .5*z_mat*y_mat**2*sigma2_100**2 )  )/PISum
-        # PIThis[1] = PILast[1]*np.exp(-1/xi_a*(eta -1)*gamma2pList[1]*(y_mat*z_mat>=gamma_bar)*((y_mat*z_mat - gamma_bar )*(z_mat*e + y_mat*B_z ) +.5* z_mat*y_mat**2*sigma2_100**2 )  )/PISum
     print("entering control update")
     compute_start = time.time()
-    # dlambda = dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(PIThis*gamma2pMat, axis=0), gamma_bar)
-    # ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
     e =  - delta*eta/(v0_dy+v_n*dlambda*z_mat)
     e[e<0] = 1e-16
-    h2 = - (v0_dz*np.sqrt(z_mat)*sigma2_100+ v_n*dlambda*y_mat*np.sqrt(z_mat)*sigma2_100)/xi_m
     print(np.min(e))
-    PIThis = weightOfPi(y_mat, z_mat, e, prior , gamma_1, gamma_2, gamma2pList, gamma_bar, xi_a, eta, rho, mu2, sigma2_100, h2)
-    print(PIThis[:,0,0],PIThis[:, -1,int(numy/2)], PIThis[:, -1,-1])
+    PIThis = weightPI(y_mat, z_mat, e, prior , modelParam, v0_dz, rho, gamma_bar, v_n, xi_a, sigma2)
+    # print(PIThis[:,0,0],PIThis[:, -1,int(numy/2)], PIThis[:, -1,-1])
+    print(np.sum(PIThis[:,-1,-1]))
     # update intermediate terms
     dlambda =  dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(PIThis*gamma2pMat, axis=0), gamma_bar)
-    ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
+    # ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
+    zDriftMat = zDrift(z_mat, modelParam, rho)
+    dmgDriftMat = damageDrift(y_mat, z_mat, e, modelParam, gamma_1, gamma_2, gamma_bar, rho, sigma2)
     # HJB coefficient
     A =  - delta*np.ones(y_mat.shape)
-    B_z = - rho*(z_mat - mu2) + np.sqrt(z_mat)*sigma2_100*h2
+    B_z =  np.sum(PIThis*zDriftMat, axis=0)
     B_y = e
-    C_zz = z_mat*sigma2_100**2/2
+    C_zz = z_mat*sigma2**2/2
     C_yy = np.zeros(z_mat.shape)
-    D =  delta*eta*np.log(e) + v_n*(dlambda*(z_mat*e + y_mat*B_z) + ddlambda*y_mat**2*C_zz) + xi_m*h2**2/2 + xi_a*relativeEntropy(PIThis, prior)
-    print(h2)
+    D =  delta*eta*np.log(e) + v_n*np.sum(PIThis*dmgDriftMat, axis=0) + xi_a*relativeEntropy(PIThis, prior)
     print("End of update, takes: {}".format(time.time() - compute_start))
+    # PDE solver
     print('Entering PDE solver...')
     solve_start = time.time()
     out = PDESolver_2d(stateSpace, A, B_z, B_y, C_zz, C_yy, D, v0,
@@ -141,15 +152,16 @@ while FC_Err > tol:
     # PILast = PIThis
     print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
 
+
 print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode, PDE_Err, FC_Err, out[0], out[1]))
 print("--- %s seconds ---" % (time.time() - start_time))
 
-solution_v6 = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy, h2 = h2)
+solution_v6 = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy,  yGrid=y, zGrid=z, pi =PIThis)
 
 # restore results
 from datetime import datetime
 nowtime = datetime.now()
 time_store = nowtime.strftime("%m%d_%H:%M")
-dataFile = '../data/solution/solu_modified_v6_{}*{}_{}'.format(numz, numy, time_store)
+dataFile = '../data/solution/solu_modified_v6_{}*{}_{}_{}'.format(numz, numy, xi_a, time_store)
 with open(dataFile, 'wb') as handle:
     pickle.dump(solution_v6, handle, protocol=pickle.HIGHEST_PROTOCOL)

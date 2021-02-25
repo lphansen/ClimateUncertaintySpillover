@@ -1,0 +1,15 @@
+for xi_a = 1000 experiment:
+- xi_m = 1/100, y in [1e-2, 2000] works
+- xi_m = 1/1000, y in [1e-2, 900]. y_max = 1000 fails.
+- xi_m = 1/4000, y in [100, 730]. y_max = 750 fails
+- xi_m = 1/10000, y in [1e-2, ]. y_max to be explored
+
+Another thought:
+cap v0_dy instead. This constraint is stricter than the cap on emission.
+- xi_m = 1/4000, y in [1e-2, 900]
+
+
+for xi_m = 1000, and different values of xi_m
+- xi_a = 1/100,
+- xi_a = 1/1000,
+- xi_a = 1/4000, this is the values in RFS

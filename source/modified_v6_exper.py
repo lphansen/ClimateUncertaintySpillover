@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 module for modified model
 """
@@ -5,17 +6,17 @@ import time
 import numpy as np
 import SolveLinSys
 import pickle
-from supportfunctions import *
-from global_parameters import *
-from utilities import *
+from supportfunctions import PDESolver_2d, finiteDiff
+import global_parameters as gp
+from utilities import dLambda, ddLambda, weightOfPi, relativeEntropy
 ######################global variable
-delta = DELTA
-eta = ETA
-mu2 = MU_2
-sigma_z = SIGMA_Z
+delta = gp.DELTA
+eta = gp.ETA
+mu2 = gp.MU_2
+sigma_z = gp.SIGMA_Z
 gamma_low = .012
 gamma_high = .024
-rho = RHO
+rho =gp.RHO
 
 def compute_sigma2(rho, sigma_z, mu_2):
     """
@@ -26,13 +27,8 @@ def compute_sigma2(rho, sigma_z, mu_2):
 
 sigma2_100 = compute_sigma2(rho, sigma_z, mu2)
 xi_m = 1000
-xi_a = 1000
+xi_a = 1/1000
 # state variable
-numz = N_Z
-z2_min = Z_MIN
-z2_max = Z_MAX
-hz = HZ
-z = Z_GRID
 
 gamma_1 = 0.00017675
 gamma_2 = 2*.0022
@@ -40,11 +36,17 @@ gamma_bar = 2
 gamma2pList = np.array([0, 2*0.0197])
 v_n = eta - 1
 
-numy = N_Y
-y_min = Y_MIN
-y_max = Y_MAX
-y = Y_GRID
-hy = HY
+numz = 51
+z2_min = gp.Z_MIN
+z2_max = gp.Z_MAX
+z = np.linspace(z2_min, z2_max, numz)
+hz = z[1] - z[0]
+
+numy = 50
+y_min = 1e-2
+y_max = 1000
+y = np.linspace(y_min, y_max, numy)
+hy = y[1]-y[0]
 
 # specify number of damage function
 numDmg = 2
@@ -92,7 +94,7 @@ while FC_Err > tol:
     #v0_dF[v0_dF < 1e-16] = 1e-16
     # With only v0_dFF[v0_dFF < 1e-16] = 0
     v0_dy = finiteDiff(v0,1,1,hy)
-    # v0_dy[v0_dy >0] =0
+#     v0_dy[v0_dy >0] =0
     v0_dyy = finiteDiff(v0,1,2,hy)
     print(v0_dy)
     # updating controls
@@ -141,15 +143,16 @@ while FC_Err > tol:
     # PILast = PIThis
     print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
 
+
 print("Episode {:d}: PDE Error: {:.10f}; False Transient Error: {:.10f}; Iterations: {:d}; CG Error: {:.10f}".format(episode, PDE_Err, FC_Err, out[0], out[1]))
 print("--- %s seconds ---" % (time.time() - start_time))
 
-solution_v6 = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy, h2 = h2)
+solution_v6 = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy, h2 = h2, yGrid=y, zGrid=z, pi =PIThis)
 
 # restore results
 from datetime import datetime
 nowtime = datetime.now()
 time_store = nowtime.strftime("%m%d_%H:%M")
-dataFile = '../data/solution/solu_modified_v6_{}*{}_{}'.format(numz, numy, time_store)
+dataFile = '../data/solution/solu_modified_v6_{}*{}_{}_{}_{}'.format(numz, numy, xi_m, xi_a, time_store)
 with open(dataFile, 'wb') as handle:
     pickle.dump(solution_v6, handle, protocol=pickle.HIGHEST_PROTOCOL)

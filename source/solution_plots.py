@@ -21,7 +21,7 @@ import sys
 sys.path.append(os.path.dirname(os.getcwd()) + '/source')
 import pickle
 import numpy as np
-from global_parameters import *
+import global_parameters as gp
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from solver import compute_ell_r_phi, compute_h, compute_sigma2
@@ -36,33 +36,22 @@ mpl.rcParams['figure.autolayout'] = True
 data_dir = os.path.dirname(os.getcwd()) + '/data/solution/'
 figDir = os.path.dirname(os.getcwd())+ '/figures/'
 
-sigma2 = compute_sigma2(RHO, SIGMA_Z, MU_2)
+sigma2 = compute_sigma2(gp.RHO, gp.SIGMA_Z, gp.MU_2)
 # -
 
-sigma2, (RHO, SIGMA_Z, MU_2)
+sigma2, (gp.RHO, gp.SIGMA_Z, gp.MU_2)
 
-solu_yy = pickle.load(open(data_dir + "solu_modified_v6_101*100_0222_16:51", "rb"))
+solu_yy = pickle.load(open(data_dir + "solu_modified_v6_101*50_1000_0224_21:20", "rb"))
 
-solu_yy['e'][50].shape
+solu_yy
 
-plt.plot(np.linspace(1e-10, 2000, 100), solu_yy['e'][-1] )
+plt.plot(solu_yy['yGrid'], solu_yy['e'][50] )
 plt.xlabel('y')
 plt.ylabel('e')
 plt.title(r'$e(y,z_2)$, with $z_2 = 1.86/1000$', )
-# plt.savefig('e_y_ambiguity.png')
+plt.savefig('../figures/e_y.png')
 
-Y_GRID.shape
-
-plt.plot(np.linspace(1e-10, 2000, 100), solu_yy["e"][0] )
-# plt.plot(np.linspace(100,2000, 100), solu_yzeasy[0]['e'][25], label="yesterday")
-plt.xlabel('y')
-plt.ylabel('e', rotation=0, labelpad=30)
-plt.title(r'$e(y,z_2)$ with $z_2 \approx 1.86/1000$')
-# plt.savefig(figDir + 'e_yz.png')
-
-Y_GRID[0]
-
-Z_GRID[50]
+np.sum(solu_yy['pi'][[2*x for x in range(153)]], axis=0)[0,0]
 
 
 def simulate_ems(Y, e, T=102, dt=1/4):
@@ -93,34 +82,110 @@ def simulate_emsn(Y, e, T=102, dt=1/4):
     return et, yt
 
 
-et, yt = simulate_emsn(np.linspace(1e-10, 2000, 100), solu_yy['e'][-1])
+def simulate_h(yt, h, Y):
+    ht = np.interp(yt, Y, h)
+    return ht
 
-et
+
+def simulate_pi(yt, pi, Y):
+    pit = np.interp(yt, Y, pi)
+    return pit
+
+
+et, yt = simulate_emsn(solu_yy['yGrid'], solu_yy['e'][50])
+
+et.shape
 
 # 300 represents number of points to make between T.min and T.max
-plt.plot(et, label="new HJB")
+plt.plot(et)
 # plt.plot(solu_bbh[0]['y'], label="BBH")
 # plt.legend()
 plt.xlabel('years')
 plt.ylabel('emission')
 plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
 # plt.title(r'$e_t$ with $z_2 \approx 1.86/1000$')
-# # plt.savefig(figDir + 'e_t_rough.png')
+plt.savefig(figDir + 'e_t.png')
 
-plt.plot(et[:400] - solu_bbh[0]['y'], label="new HJB")
+ht = simulate_h(yt, solu_yy['h2'][50], solu_yy['yGrid'])
 
-et[400-1] - solu_bbh[0]['y'][400-1]
+plt.plot(solu_yy['yGrid'], solu_yy['h2'][50])
+plt.xlabel('y')
+plt.ylabel('$h_2$', rotation=0, labelpad=30)
+plt.title(r'$h_2(y, z_2)$ with $z_2 = 1.86/1000$ and $\xi_m=1/100$')
+plt.savefig("h_y.png")
 
-et[0] - solu_bbh[0]['y'][0]
+# 300 represents number of points to make between T.min and T.max
+plt.plot(ht, label="new HJB")
+# plt.plot(solu_bbh[0]['y'], label="BBH")
+# plt.legend()
+plt.xlabel('years')
+plt.ylabel('$h_t$', rotation=0, labelpad=30)
+plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
+plt.title(r'$h_t$ with $z_2 = 1.86/1000$ and $\xi_m=1/100$')
+plt.savefig('ht.png')
 
-with open("../data/simulation/ems_modified_highrisk", "wb") as handle:
-    pickle.dump(et, handle, protocol=pickle.HIGHEST_PROTOCOL)
+solu = pickle.load(open(data_dir + "solu_modified_v6_101*40_0.001_0223_14:50", "rb"))
 
-Y = np.linspace(0, 4000, 500)
-y0 = (870-580)*np.ones(20)
-np.abs(y - y0).argmin()
+plt.plot(solu['yGrid'], solu['h2'][50])
+plt.xlabel('y')
+plt.ylabel('$h_2$', rotation=0, labelpad=30)
+plt.title(r'$h_2(y, z_2)$ with $z_2 = 1.86/1000$ and $\xi_m=1/1000$')
+# plt.savefig("h_y_1000.png")
 
-y[36]
+ett, ytt = simulate_emsn(solu['yGrid'], solu['e'][50])
+
+htt = simulate_h(ytt, solu['h2'][50], solu['yGrid'])
+
+# 300 represents number of points to make between T.min and T.max
+plt.plot(htt, label="new HJB")
+# plt.plot(solu_bbh[0]['y'], label="BBH")
+# plt.legend()
+plt.xlabel('years')
+plt.ylabel('$h_t$', rotation=0, labelpad=30)
+plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
+plt.title(r'$h_t$ with $z_2 = 1.86/1000$ and $\xi_m=1/1000$')
+# plt.savefig('ht_1000.png')
+
+solu2 = pickle.load(open(data_dir + "solu_modified_v6_101*50_0.00025_0223_15:52", "rb"))
+
+plt.plot(solu2['yGrid'], solu2['h2'][50])
+plt.xlabel('y')
+plt.ylabel(r'$h_2$', rotation=0, labelpad=50)
+plt.title(r'$h_2(y,z_2)$ with $z_2=1.86/1000$ and $\xi_m = 1/4000$')
+# plt.savefig('h_y_4000.png')
+
+plt.plot(solu2['yGrid'], solu2['e'][50])
+plt.xlabel('y')
+plt.ylabel(r'$e$', rotation=0, labelpad=50)
+plt.title(r'$h_2(y,z_2)$ with $z_2=1.86/1000$ and $\xi_m = 1/4000$')
+# plt.savefig('h_y_4000.png')
+
+et2, yt2 = simulate_emsn(solu2['yGrid'], solu2['e'][50], T=20)
+
+plt.plot(et2)
+
+ht2 = simulate_h(yt2, solu2['h2'][50], solu2['yGrid'])
+
+plt.plot(ht2)
+plt.xticks(np.arange(0,20*4+1,16), np.arange(0,20+1,4))
+plt.xlabel('years')
+plt.ylabel('$h_t$', rotation=0, labelpad=30)
+plt.title(r'$h_t$ with $\xi_m=1/4000$')
+plt.savefig('ht_4000.png')
+
+solu3 = pickle.load(open(data_dir + "solu_modified_v6_51*50_0.01_0.0001_0224_13:33", "rb"))
+
+solu3
+
+plt.plot(solu3['yGrid'],  solu3['e'][25])
+
+et3, yt3 = simulate_emsn(solu3['yGrid'], solu3['e'][75])
+
+ht3 = simulate_h(yt3, solu3['h2'][75], solu3['yGrid'])
+
+plt.plot(solu3['yGrid'],solu3['h2'][75])
+
+plt.plot(ht3)
 
 # +
 numz = 10
