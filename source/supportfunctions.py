@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
 from scipy.io import loadmat
@@ -274,6 +275,34 @@ def cap(x, lb, ub):
         else:
             return lb
 
+
+def ODE_solver(stateSpace, A, B_T, C_TT, D, v0, ε = 1, tol = -10, smartguess = False, solverType = 'False Transient'):
+
+    if solverType == 'False Transient':
+        A = A.reshape(-1,1,order = 'F')
+        B = np.hstack([B_T.reshape(-1,1,order = 'F')])
+        C = np.hstack([C_TT.reshape(-1,1,order = 'F')])
+        D = D.reshape(-1,1,order = 'F')
+        v0 = v0.reshape(-1,1,order = 'F')
+        out = SolveLinSys.solveFT(stateSpace, A, B, C, D, v0, ε, tol)
+
+        return out
+
+    elif solverType == 'Feyman Kac':
+
+        if smartguess:
+            iters = 1
+        else:
+            iters = 400000
+
+        A = A.reshape(-1, 1, order='F')
+        B = np.hstack([B_T.reshape(-1, 1, order='F')])
+        C = np.hstack([ C_TT.reshape(-1, 1, order='F')])
+        D = D.reshape(-1, 1, order='F')
+        v0 = v0.reshape(-1, 1, order='F')
+        out = SolveLinSys.solveFK(stateSpace, A, B, C, D, v0, iters)
+
+        return out
 
 def PDESolver(stateSpace, A, B_r, B_f, B_k, C_rr, C_ff, C_kk, D, v0, ε = 1, tol = -10, smartguess = False, solverType = 'False Transient'):
 

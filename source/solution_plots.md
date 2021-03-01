@@ -44,23 +44,21 @@ sigma2, (gp.RHO, gp.SIGMA_Z, gp.MU_2)
 ```
 
 ```python
-solu_yy = pickle.load(open(data_dir + "solu_modified_v6_101*50_1000_0224_21:20", "rb"))
+solu_yy = pickle.load(open(data_dir + "solu_modified_v6_51*50_1000_0.00025_0226_13:11", "rb"))
 ```
 
 ```python
-solu_yy
+solu_yy['solution_v6']['e'][25]
 ```
 
 ```python
-plt.plot(solu_yy['yGrid'], solu_yy['e'][50] )
+plt.plot(solu_yy['solution_v6']['yGrid'], solu_yy['solution_v6']['e'][25] )
+# plt.plot(solu['yGrid'], solu['e'][50])
 plt.xlabel('y')
 plt.ylabel('e')
-plt.title(r'$e(y,z_2)$, with $z_2 = 1.86/1000$', )
-plt.savefig('../figures/e_y.png')
-```
-
-```python
-np.sum(solu_yy['pi'][[2*x for x in range(153)]], axis=0)[0,0]
+plt.title(r'$e(y,z_2)$', )
+plt.ylim(0,14)
+# plt.savefig('../figures/e_y.png')
 ```
 
 ```python
@@ -79,18 +77,22 @@ def simulate_ems(Y, e, T=102, dt=1/4):
 ```
 
 ```python
-def simulate_emsn(Y, e, T=102, dt=1/4):
+def simulateEmsTemp(Y, e, Z, zloc = 50, T=102, dt=1/4):
     periods = int(T/dt)
     et = np.zeros(periods)
     yt = np.zeros(periods)
-    y = 870-580
+    y = 290*Z[zloc]
     yt[0]= y
     for t in range(periods):
         et[t] = np.interp(y, Y, e)
 #         et[t] = e[loc]
-        y = y + et[t]*dt
+        y = y + et[t]*Z[zloc]*dt
         yt[t] = y
     return et, yt
+```
+
+```python
+290*1.86/1000
 ```
 
 ```python
@@ -106,7 +108,18 @@ def simulate_pi(yt, pi, Y):
 ```
 
 ```python
-et, yt = simulate_emsn(solu_yy['yGrid'], solu_yy['e'][50])
+et, yt = simulateEmsTemp(solu_yy['solution_v6']['yGrid'], solu_yy['solution_v6']['e'][50], solu_yy['solution_v6']['zGrid'])
+```
+
+```python
+pit = simulate_pi(yt, solu_yy['pi'][1][50],solu_yy['yGrid'] )
+```
+
+```python
+plt.plot(pit)
+plt.xlabel('years')
+plt.ylabel('emission')
+plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
 ```
 
 ```python
@@ -122,7 +135,11 @@ plt.xlabel('years')
 plt.ylabel('emission')
 plt.xticks(np.arange(0,408,100), np.arange(0,102,25))
 # plt.title(r'$e_t$ with $z_2 \approx 1.86/1000$')
-plt.savefig(figDir + 'e_t.png')
+# plt.savefig(figDir + 'e_t.png')
+```
+
+```python
+et[0], et[-1]
 ```
 
 ```python
@@ -134,7 +151,7 @@ plt.plot(solu_yy['yGrid'], solu_yy['h2'][50])
 plt.xlabel('y')
 plt.ylabel('$h_2$', rotation=0, labelpad=30)
 plt.title(r'$h_2(y, z_2)$ with $z_2 = 1.86/1000$ and $\xi_m=1/100$')
-plt.savefig("h_y.png")
+# plt.savefig("h_y.png")
 ```
 
 ```python

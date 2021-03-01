@@ -30,7 +30,7 @@ def compute_sigma2(rho, sigma_z, mu_2):
 sigma2 = compute_sigma2(rho, sigma_z, mu2)
 sigma2 = sigma2/3
 xi_m = 1000
-xi_a = 1000
+xi_a = 1/100
 # state variable
 
 gamma_1 = 0.00017675

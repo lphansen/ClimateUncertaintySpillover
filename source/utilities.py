@@ -103,7 +103,7 @@ def weightOfPi(y_mat, z_mat, e, prior, gamma1, gamma2, gamma2p, gammaBar, xi_a, 
     PIThis = np.zeros(prior.shape)
     weight = np.zeros(prior.shape)
     for i in range(numDmg):
-        weight[i] = - (eta-1)/xi_a*gamma2p[i]*(y_mat*z_mat>=gammaBar)*((y_mat*z_mat-gammaBar)*(z_mat*e + y_mat*(-rho*(z_mat-mu_2)) + y_mat*np.sqrt(z_mat)*sigma2*h2) + .5*z_mat*y_mat**2*sigma2**2)
+        weight[i] = - (eta-1)/xi_a*gamma2p[i]*(y_mat>=gammaBar)*(y_mat-gammaBar)*z_mat*e
     weight = weight - np.max(weight, axis=0)
     weight_of_pi = prior*np.exp(weight)
 
@@ -136,10 +136,30 @@ def weightPI(y_mat, z_mat, e, prior, modelParam, v0_dz, rho, gammaBar, v_n, xi_a
     numz, numy = y_mat.shape
     weight = np.zeros((numModel, numz, numy))
     for i in range(numModel):
-        mu2, gamma2p = modelParam[i]
+        mu2, gamma2p = modelParam[i, :]
         temp = (y_mat*z_mat - gammaBar)*(z_mat*e-y_mat*(z_mat-mu2))
         temp += 1/2*z_mat*y_mat**2*sigma2**2
         temp *= v_n*gamma2p*(y_mat*z_mat>=gammaBar)
+        temp += v0_dz*rho*mu2
+        temp *= -1/xi_a
+        weight[i] = temp
+    weight = weight - np.max(weight, axis=0)
+    weight = prior*np.exp(weight)
+    PIThis = weight/np.sum(weight, axis=0)
+    return PIThis
+
+def weightPITemp(y_mat, z_mat, e, prior, modelParam, v0_dz, rho, gammaBar, v_n, xi_a, sigma2):
+    """compute pi j star with mu_2 ambiguity
+    :returns: TODO
+
+    """
+    numModel, _ = modelParam.shape
+    numz, numy = y_mat.shape
+    weight = np.zeros((numModel, numz, numy))
+    for i in range(numModel):
+        mu2, gamma2p = modelParam[i, :]
+        temp = (y_mat - gammaBar)*z_mat*e
+        temp *= v_n*gamma2p*(y_mat>=gammaBar)
         temp += v0_dz*rho*mu2
         temp *= -1/xi_a
         weight[i] = temp
@@ -159,12 +179,9 @@ def damageDriftSingle(y_mat, z_mat, e, mu2, gamma2p, rho, gamma1, gamma2, gammaB
     :returns: TODO
 
     """
-    temp1 = z_mat*e - y_mat*rho*(z_mat - mu2)
-    temp1 *= gamma1 + gamma2*y_mat*z_mat + gamma2p*(y_mat*z_mat-gammaBar)*(y_mat*z_mat>=gammaBar)
-    temp2 = 1/2*z_mat*y_mat**2*sigma2**2
-    temp2 *= gamma2 + gamma2p*(y_mat*z_mat>=gammaBar)
-    drift = temp1 + temp2
-    return drift
+    temp = z_mat*e
+    temp *= gamma1 + gamma2*y_mat + gamma2p*(y_mat-gammaBar)*(y_mat>=gammaBar)
+    return temp
 
 @njit
 def damageDrift(y_mat, z_mat, e, modelParam, gamma1, gamma2, gammaBar, rho, sigma2):
@@ -185,7 +202,7 @@ def damageDrift(y_mat, z_mat, e, modelParam, gamma1, gamma2, gammaBar, rho, sigm
     numz, numy = z_mat.shape
     driftMat = np.zeros((numModel, numz, numy))
     for i in range(numModel):
-        mu2, gamma2p = modelParam[i]
+        mu2, gamma2p = modelParam[i,:]
         driftMat[i] = damageDriftSingle(y_mat, z_mat, e, mu2, gamma2p, rho, gamma1, gamma2, gammaBar, sigma2)
 
     return driftMat
