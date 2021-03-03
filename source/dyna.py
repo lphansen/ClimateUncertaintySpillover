@@ -40,16 +40,16 @@ v_n = eta - 1
 
 
 sigma_z = np.sqrt(sigma2**2*mu2/2/rho)
-numz = 51
+numz = 21
 z2_min = mu2 - 4*sigma_z
 z2_max = mu2 + 4*sigma_z
 z_grid = np.linspace(z2_min, z2_max, numz)
 hz = z_grid[1] - z_grid[0]
 
-numy_bar = 21
+numy_bar = 51
 y_min = 0
 y_bar = 2
-y_max = 10
+y_max = 4
 hy = (y_bar - y_min)/(numy_bar-1)
 y_grid = np.arange(y_min, y_max+hy, hy)
 numy = len(y_grid)
@@ -102,17 +102,12 @@ dlambda = dLambda(y_mat, 1, gamma_1, gamma_2, np.sum(gamma2pMat*PIThis, axis=0),
 def false_transient(
     stateSpace, state_mat, state_step,
     gamma2p, gamma_1=0.00017675, gamma_2=2*0.0022, gamma_bar=2,
-    global_params=(.01, .032, .032-1, .9, 1.86/1000, np.sqrt(2*(.42/1000)**2*.9/(1.86/1000))/3),
+    global_params=(.01, .032, .032-1, .9, 1.86/1000, np.sqrt(2*(.21/1000)**2*.9/(1.86/1000))/3 ),
     tol = 1e-8, epsilon=.3):
 
     z_mat, y_mat = state_mat
     hz, hy = state_step
     delta, eta, v_n, rho, mu2, sigma2 = global_params
-    mu2Mat = np.zeros((len(mu2List), z_mat.shape[0], z_mat.shape[1]))
-    for i in range(len(mu2Mat)):
-        mu2Mat[i] = mu2List[i]
-
-    mean = -rho*(z_mat - mu2Mat)
     v0 =  -delta*eta*y_mat*z_mat
     e = delta*eta
     episode = 0
@@ -138,7 +133,7 @@ def false_transient(
         print(np.min(e))
         # HJB coefficient
         A =  - delta*np.ones(y_mat.shape)
-        B_z = -rho*(z_mat - mu2)
+        B_z =  -rho*(z_mat - mu2)
         B_y = e*z_mat
         C_zz = z_mat*sigma2**2/2
         C_yy = np.zeros(z_mat.shape)

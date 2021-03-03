@@ -13,7 +13,7 @@ TAU = MEDIAN*GAMMA_BASE
 # setup for z_2 process
 MU_2 = 1.86/1000
 RHO = .9
-SIGMA_Z = .21/1000
+SIGMA_Z = .42/1000
 
 # grid setting
 ## z grid

@@ -1,6 +1,6 @@
 """
 module for cumputing derivatives
-includes: 
+includes:
 - compute_dphidr
 - compted_dphidz
 
@@ -18,7 +18,7 @@ def compute_dphidr(phi, r, z = np.linspace(1e-5, 2, 20)):
     ----------
     phi: sorted phi grid
     r: sort r grid
-    z: original z grid used in computinng solution 
+    z: original z grid used in computinng solution
         (Default np.linspace(1e-5, 2, 20))
     Returns
     -------
@@ -49,3 +49,15 @@ def compute_dphidz(phi, z=np.linspace(1e-5, 2, 20)):
     dphi_dz = (phi[:, 1:] - phi[:, :-1])/(z[1:] - z[:-1])
     z_new = (z[1:] + z[:-1])/2
     return z_new, dphi_dz
+
+def derivatives_2d(data, dim, order, step):
+    """compute derivative matrix for a fuction space
+
+    :data: TODO
+    :dim: TODO
+    :order: TODO
+    :step: TODO
+    :returns: TODO
+
+    """
+    pass
