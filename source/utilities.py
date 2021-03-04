@@ -34,3 +34,30 @@ def compute_derivatives_2d(data, dim, order, dlt):
             res[:,-1] = (1 / dlt ** 2) * (data[:,-1] + data[:,-3] - 2 * data[:,-2])
             res[:,0] = (1 / dlt ** 2) * (data[:,2] + data[:,0] - 2 * data[:,1])    
     return res
+
+
+# @njit
+# def compute_derivatives_1d(data, order, dlt):
+#     res = np.zeros_like(data)
+#     if order == 1:                    # first order derivatives
+#         res[1:-1] = (1 / (2 * dlt)) * (data[2:] - data[:-2])
+#         res[-1] = (1 / dlt) * (data[-1] - data[-2])
+#         res[0] = (1 / dlt) * (data[1] - data[0])      
+#     elif order == 2:
+#         res[1:-1] = (1 / dlt ** 2) * (data[2:] + data[:-2] - 2 * data[1:-1])
+#         res[-1] = (1 / dlt ** 2) * (data[-1] + data[-3] - 2 * data[-2])
+#         res[0] = (1 / dlt ** 2) * (data[2] + data[0] - 2 * data[1])
+#     return res
+
+
+@njit
+def compute_derivatives_1d(data, order, dlt):
+    res = np.zeros_like(data)
+    if order == 1:                    # first order derivatives
+        res[1:] = (1 / dlt) * (data[1:] - data[:-1])
+        res[0] = (1 / dlt) * (data[1] - data[0])      
+    elif order == 2:
+        res[1:-1] = (1 / dlt ** 2) * (data[2:] + data[:-2] - 2 * data[1:-1])
+        res[-1] = (1 / dlt ** 2) * (data[-1] + data[-3] - 2 * data[-2])
+        res[0] = (1 / dlt ** 2) * (data[2] + data[0] - 2 * data[1])
+    return res
