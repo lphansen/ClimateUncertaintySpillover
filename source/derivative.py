@@ -70,11 +70,13 @@ def derivatives_2d(data, dim, order, step, onesided=True):
     }.get(derivative_spec, "error")    # 9 is default if x not found
 
 
-def deriv01(data, dim, order, step):
+def deriv01(data, dim, order, step, onesided):
     num_x, num_y = data.shape
     ddatadx = np.zeros(data.shape)
     for i in range(num_x):
         if i == 0:
             ddatadx[i] = (ddatadx[i+1] - ddatadx[i])/step
         elif i == num_x -1:
-            ddatadx[i] = (ddatadx)
+            if one
+            ddatadx[i] = (ddatadx[i] - data[i-1])/step
+        

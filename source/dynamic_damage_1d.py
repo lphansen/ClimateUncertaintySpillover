@@ -34,7 +34,7 @@ z = mu2
 numy_bar = 20
 y_min = 0
 y_bar = gamma_bar
-y_max = 4
+y_max = 10
 hy = (y_bar - y_min)/numy_bar
 y_grid = np.arange(y_min, y_max+hy, hy)
 
@@ -108,28 +108,29 @@ def false_transient_1d(
     gamma_1, gamma_2, gamma2pList, gamma_bar, dmg_weights = dmg_params
     delta, eta, mu2, sigma2, rho, v_n = model_params
     numy, = y_grid.shape
-    hz = y_grid[1] - y_grid[0]
+    hy = y_grid[1] - y_grid[0]
     dlambda = gamma_1 + gamma_2*y_grid\
     + np.sum(gamma2pList*dmg_weights,axis=0)*(y_grid-gamma_bar)*(y_grid>gamma_bar)
     # initiate v and control
-    ems = delta*eta
+    ems = -delta*eta/((eta-1)*dlambda*z)
     error = 1
     episode = 0
-    v0 = np.zeros(y_grid.shape)
+    v0 = - delta*eta*y_grid
     
     while error > tol and episode < max_iter:
         v0_old = v0.copy()
         v0_dy = derivative_1d(v0,1,hy, upwind=True)
         # control
-        ems = -delta*eta/(v0_dy*z + v_n*dlambda*z)*0.5 + ems*0.5
-        ems[ems<=0] = 1e-15
+        ems_new = -delta*eta/(v0_dy*z + v_n*dlambda*z)
+        ems_new[ems_new<=0] = 1e-15
+        ems = ems_new*.5 + ems*.5
         A = -delta*np.ones(y_grid.shape)
         By = z*ems
         Cyy = np.zeros(y_grid.shape)
         D = delta*eta*np.log(ems) + v_n*dlambda*z*ems
         # solve for ODE
         phi_grid = solve_ode(y_grid, A, By, Cyy, D, v0, bound_var, bounded, epsilon)
-        rhs = A*phi_grid + By*v0_dy  + D
+        rhs = A*phi_grid + By*v0_dy + D
         rhs_error = np.max(abs(rhs))
         error = np.max(abs((phi_grid-v0)/epsilon))
         v0 = phi_grid
@@ -137,6 +138,8 @@ def false_transient_1d(
         print('Episode: {:d}\t lhs error: {:.12f}\t rhs error: {:.12f}'.format(episode,error,rhs_error))
     return v0, ems
 
+
+gamma2pList, y_grid
 
 # +
 dmg_weights_list = np.array([[1,0],[0,1]])
@@ -154,6 +157,8 @@ plt.plot(y_grid, v_dict[0])
 plt.plot(y_grid, v_dict[1])
 # plt.plot(y_grid, v_dict[2])
 
+v_dict[0][-1]
+
 bd = (v_dict[0][numy_bar]+v_dict[1][numy_bar])/2
 bd
 
@@ -162,14 +167,14 @@ dmg_weights = np.array([0.5, 0.5])
 dmgParams = (gamma_1, gamma_2, gamma2pList, gamma_bar, dmg_weights)
 modelParams = (delta, eta, mu2, sigma2, rho, v_n)
 
-y_grid_cap = np.linspace(0,2,20)
+y_grid_cap = np.linspace(0,10,100)
 
 dmgParams, modelParams, bd
 # -
 
 v, ems = false_transient_1d(
-    y_grid=y_grid[:numy_bar+1], z=z, dmg_params=dmgParams, model_params=modelParams, 
-    bound_var=bd, bounded=True, max_iter=500_000)
+    y_grid=y_grid_cap, z=z, dmg_params=dmgParams, model_params=modelParams, 
+    bound_var=bd, bounded=False, max_iter=1_000)
 
 plt.plot(y_grid[:numy_bar+1],v)
 plt.plot(y_grid[numy_bar:], (v_dict[0][numy_bar:] + v_dict[1][numy_bar:])/2)
