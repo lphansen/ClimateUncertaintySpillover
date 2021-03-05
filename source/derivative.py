@@ -50,7 +50,7 @@ def compute_dphidz(phi, z=np.linspace(1e-5, 2, 20)):
     z_new = (z[1:] + z[:-1])/2
     return z_new, dphi_dz
 
-def derivatives_2d(data, dim, order, step):
+def derivatives_2d(data, dim, order, step, onesided=True):
     """compute derivative matrix for a fuction space
 
     :data: TODO
@@ -60,4 +60,21 @@ def derivatives_2d(data, dim, order, step):
     :returns: TODO
 
     """
-    pass
+    num_x, num_y = data.shape
+    derivative_spec = (dim, order)
+    return {
+        (0,1): deriv01(data, dim, order, step),
+        (0,2): deriv02(data, dim, order, step),
+        (1,1): deriv11(data, dim, order, step),
+        (1,2): deriv12(data, dim, order, step),
+    }.get(derivative_spec, "error")    # 9 is default if x not found
+
+
+def deriv01(data, dim, order, step):
+    num_x, num_y = data.shape
+    ddatadx = np.zeros(data.shape)
+    for i in range(num_x):
+        if i == 0:
+            ddatadx[i] = (ddatadx[i+1] - ddatadx[i])/step
+        elif i == num_x -1:
+            ddatadx[i] = (ddatadx)

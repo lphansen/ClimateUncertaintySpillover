@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import SolveLinSys
 import pickle
-from supportfunctions import PDESolver_2d, finiteDiff
+from supportfunctions import PDESolver_2d
 import global_parameters as gp
 from utilities import dLambda, ddLambda, weightPITemp, relativeEntropy, zDrift, damageDrift
 from joblib import Parallel, delayed
@@ -19,14 +19,7 @@ mu2 = gp.MU_2
 sigma_z = gp.SIGMA_Z
 rho =gp.RHO
 
-def compute_sigma2(rho, sigma_z, mu_2):
-    """
-    compute_sigma2
-    """
-    return np.sqrt(2*sigma_z**2*rho/mu_2)
-
-
-sigma2 = compute_sigma2(rho, sigma_z, mu2)
+sigma2 = np.sqrt(2*sigma_z**2*rho/mu2)
 # sigma2 = sigma2
 xi_m = 1000
 xi_a = 1/4000
@@ -97,26 +90,24 @@ gamma2pMat = np.zeros_like(PIThis)
 for i in range(len(modelParam)):
     gamma2pMat[i] = modelParam[i,1]
 
-dlambda = dLambda(y_mat, 1, gamma_1, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
+# dlambda = dLambda(y_mat, 1, gamma_1, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
 # ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
 def false_transient(
     stateSpace, state_mat, state_step,
     gamma2p, gamma_1=0.00017675, gamma_2=2*0.0022, gamma_bar=2,
-    global_params=(.01, .032, .032-1, .9, 1.86/1000, np.sqrt(2*(.42/1000)**2*.9/(1.86/1000))/3),
+    global_params=(.01, .032, .032-1, .9, 1.86/1000, np.sqrt(2*(.42/1000)**2*.9/(1.86/1000))),
     tol = 1e-8, epsilon=.3):
 
     z_mat, y_mat = state_mat
     hz, hy = state_step
     delta, eta, v_n, rho, mu2, sigma2 = global_params
-    mu2Mat = np.zeros((len(mu2List), z_mat.shape[0], z_mat.shape[1]))
-    for i in range(len(mu2Mat)):
-        mu2Mat[i] = mu2List[i]
 
-    mean = -rho*(z_mat - mu2Mat)
+    mean = -rho*(z_mat - mu2)
     v0 =  -delta*eta*y_mat*z_mat
     e = delta*eta
     episode = 0
     FC_Err = 1
+
     while FC_Err > tol:
         print('Episode:{:d}'.format(episode))
         vold = v0.copy()
@@ -171,6 +162,10 @@ def false_transient(
 
     solution = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy )
     return solution
+
+solve = false_transient(stateSpace, [z_mat, y_mat], [hz,hy], gamma2p=0)
+
+solve
 
 solu_dynamicdmg = dict()
 
