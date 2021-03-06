@@ -45,12 +45,11 @@ def hjb_modified(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_0
     return v0, e
 
 
-def hjb_modified_jump_process(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000):
-    η, δ, μ_2, λ_1, λ_2, λ_bar, ϕ_bar, K, ρ = model_paras
+
+def hjb_modified_jump(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000):
+    η, δ, μ_2, λ_1, λ_2, λ_bar, σ, ϕ_bar = model_paras
     Δ_y = y_grid[1] - y_grid[0]
     y_mat = y_grid
-    
-    jump_penalty = K*np.exp(ρ*(y_mat-λ_bar))/(1.-np.exp(ρ*(y_mat-λ_bar)))
 
     if v0 is None:
         v0 = -δ*η*y_mat
@@ -72,11 +71,12 @@ def hjb_modified_jump_process(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, 
         e_new[e_new<=0] = 1e-12
         e = e_new * 0.5 + e_old * 0.5
         e_old = e.copy()
-
-        A = np.ones_like(y_mat)*(-δ) - jump_penalty
+        
+        density = 1./(np.sqrt(2*np.pi)*σ)*np.exp(-(λ_bar-y_mat)**2/(2*σ**2))
+        A = np.ones_like(y_mat)*(-δ) - density
         B = μ_2*e
         C = np.zeros_like(y_mat)
-        D = δ*η*np.log(e) + (η-1)*d_Λ_z*e + jump_penalty*ϕ_bar
+        D = δ*η*np.log(e) + (η-1)*d_Λ_z*e + density*ϕ_bar
         v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
 
         rhs_error = A*v0 + B*v0_dy + D
