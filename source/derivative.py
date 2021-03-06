@@ -63,20 +63,64 @@ def derivatives_2d(data, dim, order, step, onesided=True):
     num_x, num_y = data.shape
     derivative_spec = (dim, order)
     return {
-        (0,1): deriv01(data, dim, order, step),
-        (0,2): deriv02(data, dim, order, step),
-        (1,1): deriv11(data, dim, order, step),
-        (1,2): deriv12(data, dim, order, step),
-    }.get(derivative_spec, "error")    # 9 is default if x not found
+        (0,1): deriv01(data, dim, order, step, onesided),
+        (0,2): deriv02(data, dim, order, step, onesided),
+        (1,1): deriv11(data, dim, order, step, onesided),
+        (1,2): deriv12(data, dim, order, step, onesided),
+    }.get(derivative_spec, "error") 
 
 
+# +
 def deriv01(data, dim, order, step, onesided):
-    num_x, num_y = data.shape
+    num_x, _ = data.shape
     ddatadx = np.zeros(data.shape)
     for i in range(num_x):
         if i == 0:
-            ddatadx[i] = (ddatadx[i+1] - ddatadx[i])/step
+            ddatadx[i] = (data[i+1] - data[i])/step
         elif i == num_x -1:
-            if one
-            ddatadx[i] = (ddatadx[i] - data[i-1])/step
-        
+            ddatadx[i] = (data[i] - data[i-1])/step
+        else:
+            if onesided == True:
+                ddatadx[i] = (data[i] - data[i-1])/step
+            else:
+                ddatadx[i] = (data[i+1] - data[i-1])/(2*step)
+    return ddatadx
+
+def deriv02(data, dim, order, step, onesided):
+    num_x, _ = data.shape
+    ddatadxx = np.zeros(data.shape)
+    for i in range(num_x):
+        if i == 0:
+            ddatadxx[i] = (data[i+2] -2*data[i+1] + data[i])/step**2
+        elif i == num_x -1:
+            ddatadxx[i] = (data[i] - 2*data[i-1] + data[i-2])/step**2
+        else:
+            ddatadxx[i] = (data[i+1] - 2*data[i] + data[i+1])/step**2
+    return ddatadxx
+
+def deriv11(data, dim, order, step, onesided):
+    _, num_y = data.shape
+    ddatady = np.zeros(data.shape)
+    for j in range(num_y):
+        if j == 0:
+            ddatady[:,j] = (ddatady[:,j+1] - ddatady[:,j])/step
+        elif j == num_y -1:
+            ddatady[:,j] = (ddatady[:,j] - ddatady[:,j-1])/step
+        else:
+            if onesided:
+                ddatady[:,j] = (ddatady[:,j] - ddatady[:,j-1])/step
+            else:
+                ddatady[:,j] = (ddatady[:,j+1] - ddatady[:,j-1])/(2*step)
+    return ddatady
+
+def deriv12(data, dim, order, step, onesided):
+    _, num_y = data.shape
+    ddatadyy = np.zeros(data.shape)
+    for j in range(num_y):
+        if j == 0:
+            ddatadyy[:,j] = (data[:,j+2] -2*data[:,j+1] + data[:,j])/step**2
+        elif j == num_y -1:
+            ddatadyy[:,j] = (data[:,j] -2*data[:,j-1] + data[:,j-2])/step**2
+        else:
+            ddatadyy[:,j] = (data[:,j+1] -2*data[:,j] + data[:,j-1])/step**2
+    return ddatadyy

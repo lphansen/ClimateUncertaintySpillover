@@ -28,7 +28,7 @@ xi_a = 1/4000
 gamma_1 = 0.00017675
 gamma_2 = 2*.0022
 gamma_bar = 2
-gamma2pList = np.array([0, 2*0.0197, 2*0.3853])
+gamma2pList = np.array([0, 2*0.0197])
 v_n = eta - 1
 
 
@@ -39,15 +39,15 @@ z2_max = mu2 + 4*sigma_z
 z_grid = np.linspace(z2_min, z2_max, numz)
 hz = z_grid[1] - z_grid[0]
 
-numy_bar = 21
+numy_bar = 20
 y_min = 0
 y_bar = 2
 y_max = 10
-hy = (y_bar - y_min)/(numy_bar-1)
+hy = (y_bar - y_min)/numy_bar
 y_grid = np.arange(y_min, y_max+hy, hy)
 numy = len(y_grid)
 # specify number of damage function
-numDmg = 3
+numDmg = 2
 
 gamma2pMat = np.zeros((numDmg, numz, numy))
 gamma2pMat[0] = gamma2pList[0]
@@ -125,7 +125,7 @@ def false_transient(
         # dlambda = dLambda(y_mat, z_mat, gamma_1, gamma_2, np.sum(PIThis*gamma2pMat, axis=0), gamma_bar)
         # ddlambda = ddLambda(y_mat, z_mat, gamma_2, np.sum(gamma2pMat*PIThis, axis=0), gamma_bar)
         e =  (- delta*eta/(v0_dy*z_mat + v_n*dlambda*z_mat))*0.5 + e*0.5
-        e[e<0] = 1e-16
+        e[e<=0] = 1e-16
         print(np.min(e))
         # HJB coefficient
         A =  - delta*np.ones(y_mat.shape)
@@ -163,10 +163,6 @@ def false_transient(
     solution = dict(e = e, phi = v0, dphidz = v0_dz, dphidy = v0_dy )
     return solution
 
-solve = false_transient(stateSpace, [z_mat, y_mat], [hz,hy], gamma2p=0)
-
-solve
-
 solu_dynamicdmg = dict()
 
 start = time.time()
@@ -200,6 +196,3 @@ file = open(dataFile, 'wb')
 pickle.dump(my_shelf, file)
 file.close()
 
-
-# with open(dataFile, 'wb') as handle:
-    # pickle.dump(solution_v6, handle, protocol=pickle.HIGHEST_PROTOCOL)
