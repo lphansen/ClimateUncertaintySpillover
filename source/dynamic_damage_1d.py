@@ -1,8 +1,4 @@
-# #!/bin/env python
-"""
-module for dynamic damages
-1d version
-"""
+# -*- coding: utf-8 -*-
 import numpy as np
 import os
 import sys
@@ -16,28 +12,6 @@ import matplotlib.pyplot as plt
 from numba import njit
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import bicg
-
-# global variables
-delta = gp.DELTA
-eta = gp.ETA
-mu2 = gp.MU_2
-sigma_z = gp.SIGMA_Z
-rho =gp.RHO
-sigma2 = np.sqrt(2*sigma_z**2*rho/mu2)
-gamma_1 = 0.00017675
-gamma_2 = 2*.0022
-gamma_bar = 2
-gamma2pList = np.array([0, 2*0.0197])
-v_n = eta - 1
-
-# grid setting
-z = mu2
-numy_bar = 20
-y_min = 0
-y_bar = gamma_bar
-y_max = 4
-hy = (y_bar - y_min)/numy_bar
-y_grid = np.arange(y_min, y_max+hy, hy)
 
 
 @njit
@@ -67,34 +41,33 @@ def derivative_1d(data, order, h_data, upwind=False):
     return ddata
 
 
-def get_coeff(y_grid, A, By, Cyy, D, v0, bound_var, bounded, epsilon):
-    numy, = y_grid.shape
-    hy = y_grid[1] - y_grid[0]
-    LHS = np.zeros((numy, numy))
-    RHS = np.zeros(numy)
-    RHS += - D - 1/epsilon*v0
-    for i in range(numy):
-        LHS[i,i] += A[i] - 1/epsilon
+@njit
+def get_coeff(A, Bx, Cxx, D, x_grid, ϕ_prev, ϵ, boundspec):
+    dx = x_grid[1] - x_grid[0]
+    numx = len(x_grid)
+    LHS = np.zeros((numx, numx))
+    RHS = -1/ϵ*ϕ_prev - D
+    for i in range(numx):
+        LHS[i,i] += - 1/ϵ + A[i]
         if i == 0:
-            LHS[i,i+1] += By[i]*(1/hy)
-            LHS[i,i] += - By[i]*(1/hy)
-        if i == numy -1:     
-            if bounded == True:
-                LHS[i] = 0
+            LHS[i,i] += - 1/dx*Bx[i]
+            LHS[i,i+1] += 1/dx*Bx[i]
+        elif i == numx-1:
+            if boundspec[0] == True:
                 LHS[i,i] = 1
-                RHS[i] = bound_var
+                RHS[i] = boundspec[1]
             else:
-                LHS[i,i] += By[i]*(1/hy)
-                LHS[i,i-1] += - By[i]*(1/hy)
+                LHS[i,i] += 1/dx*Bx[i]
+                LHS[i,i-1] += -1/dx*Bx[i]
         else:
-            LHS[i,i+1] += By[i]*(1/hy)*(By[i]>0) + Cyy[i]/(hy**2)
-            LHS[i,i] += By[i]*((-1/hy)*(By[i]>0) + (1/hy)*(By[i]<=0)) - 2*Cyy[i]/(hy**2)
-            LHS[i,i-1] += By[i]*(-1/hy)*(By[i]<=0) + Cyy[i]/(hy**2)
+            LHS[i,i+1] += Bx[i]*(1./dx)*(Bx[i]>0) + Cxx[i]/(dx**2)
+            LHS[i,i] += Bx[i]*((-1/dx)*(Bx[i]>0) + (1/dx)*(Bx[i]<0)) - 2*Cxx[i]/(dx**2)
+            LHS[i,i-1] += Bx[i]*(-1/dx)*(Bx[i]<0) + Cxx[i]/(dx**2)
     return LHS, RHS
 
 
-def solve_ode(y_grid, A, By, Cyy, D, v0, bound_var, bounded, epsilon):
-    LHS, RHS = get_coeff(y_grid, A, By, Cyy, D, v0, bound_var, bounded, epsilon)
+def solve_ode( A, By, Cyy, D, y_grid, ϕ_prev, ϵ, boundspec):
+    LHS, RHS = get_coeff( A, By, Cyy, D, y_grid, ϕ_prev, ϵ, boundspec)
     phi_grid, exit_code = bicg(csc_matrix(LHS), RHS)
 #     phi_grid = np.linalg.solve(LHS, RHS)
     return phi_grid
@@ -143,42 +116,134 @@ def false_transient_1d(
 
 
 # +
-dmg_weights_list = np.array([[1,0],[0,1]])
-modelParams = (delta, eta, mu2, sigma2, rho, v_n)
-dmgParamsPart = (gamma_1, gamma_2, gamma2pList, gamma_bar)
+δ = 0.01
+η = 0.032
+μ = 1.86/1000
 
-v_dict = dict()
-ems_dict = dict()
-for i in range(len(dmg_weights_list)):
-    dmgParams = (gamma_1, gamma_2, gamma2pList, gamma_bar, dmg_weights_list[i])
-    v_dict[i], ems_dict[i] = false_transient_1d(y_grid, z, dmgParams, modelParams)
+numy_bar = 20
+y_min = 0
+y_bar = gamma_bar
+y_max = 4
+hy = (y_bar - y_min)/numy_bar
+y_grid = np.arange(y_min, y_max+hy, hy)
+
+γ1 = 0.00017675
+γ2 = 2*0.0022
+γ2p = np.array([0, 2*0.0197])
+γbar = 2
+dmg_weight = np.array([1, 0])
+dΛ = γ1 + γ2*y_grid + np.average(γ2p, weights=dmg_weight)*(y_grid - γbar)*(y_grid>γbar)
+
+tol = 1e-8
+ϵ = .3
+lhs_error = 1
+
+ϕ = - δ*η*y_grid
+dy = y_grid[1] - y_grid[0]
+ems = -δ*η
+episode = 0
+while lhs_error > tol:
+    ϕ_old = ϕ.copy()
+    dϕdy = derivative_1d(ϕ, 1, dy, True)
+    dϕdyy = derivative_1d(ϕ, 2, dy, True)
+    ems = -δ*η/(dϕdy*μ + (η-1)*dΛ*μ)
+    A = -δ*np.ones(y_grid.shape)
+    By = μ*ems
+    Cyy = np.zeros(y_grid.shape)
+    D = δ*η*np.log(ems) + (η-1)*dΛ*μ*ems
+    ϕ_new = solve_ode(A, By, Cyy, D, y_grid, ϕ,  ϵ, (False,0))
+    rhs = A*ϕ_new + By*dϕdy + Cyy*dϕdyy + D
+    rhs_error = np.max(abs(rhs))
+    lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+    ϕ = ϕ_new
+    episode += 1
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
 # -
 
-plt.plot(y_grid, v_dict[0])
-plt.plot(y_grid, v_dict[1])
+ϕ_low = ϕ
+plt.plot(ϕ_low)
+
+# +
+dmg_weight = np.array([0, 1])
+dΛ = γ1 + γ2*y_grid + np.average(γ2p, weights=dmg_weight)*(y_grid - γbar)*(y_grid>γbar)
+
+tol = 1e-8
+ϵ = .3
+lhs_error = 1
+
+ϕ = - δ*η*y_grid
+dy = y_grid[1] - y_grid[0]
+ems = -δ*η
+episode = 0
+while lhs_error > tol:
+    ϕ_old = ϕ.copy()
+    dϕdy = derivative_1d(ϕ, 1, dy, True)
+    dϕdyy = derivative_1d(ϕ, 2, dy, True)
+    ems = -δ*η/(dϕdy*μ + (η-1)*dΛ*μ)
+    A = -δ*np.ones(y_grid.shape)
+    By = μ*ems
+    Cyy = np.zeros(y_grid.shape)
+    D = δ*η*np.log(ems) + (η-1)*dΛ*μ*ems
+    ϕ_new = solve_ode(A, By, Cyy, D, y_grid, ϕ,  ϵ, (False,0))
+    rhs = A*ϕ_new + By*dϕdy + Cyy*dϕdyy + D
+    rhs_error = np.max(abs(rhs))
+    lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+    ϕ = ϕ_new
+    episode += 1
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
+# -
+
+ϕ_high = ϕ
+
+plt.plot(y_grid, ϕ_low)
+plt.plot(y_grid, ϕ_high)
 # plt.plot(y_grid, v_dict[2])
 
-bd = (v_dict[0][numy_bar]+v_dict[1][numy_bar])/2
+bd = (ϕ_low[numy_bar]+ϕ_high[numy_bar])/2
 bd
 
 # +
-dmg_weights = np.array([0.5, 0.5])
-dmgParams = (gamma_1, gamma_2, gamma2pList, gamma_bar, dmg_weights)
-modelParams = (delta, eta, mu2, sigma2, rho, v_n)
-
+dmg_weight = np.array([0.5, 0.5])
 y_grid_cap = np.linspace(0,2,100)
+dΛ = γ1 + γ2*y_grid_cap + np.average(γ2p, weights=dmg_weight)*(y_grid_cap - γbar)*(y_grid_cap>γbar)
 
-dmgParams, modelParams, bd
+tol = 1e-8
+ϵ = .3
+lhs_error = 1
+
+ϕ = - δ*η*y_grid_cap
+dy = y_grid_cap[1] - y_grid_cap[0]
+ems = δ*η
+episode = 0
+while lhs_error > tol:
+    ϕ_old = ϕ.copy()
+    dϕdy = derivative_1d(ϕ, 1, dy, True)
+    dϕdyy = derivative_1d(ϕ, 2, dy, True)
+    ems = -δ*η/(dϕdy*μ + (η-1)*dΛ*μ)
+    ems[ems<=0] = 1e-15
+    A = -δ*np.ones(y_grid_cap.shape)
+    By = μ*ems
+    Cyy = np.zeros(y_grid_cap.shape)
+    D = δ*η*np.log(ems) + (η-1)*dΛ*μ*ems
+    ϕ_new = solve_ode(A, By, Cyy, D, y_grid_cap, ϕ,  ϵ, (True,bd))
+    rhs = A*ϕ_new + By*dϕdy + Cyy*dϕdyy + D
+    rhs_error = np.max(abs(rhs))
+    lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+    ϕ = ϕ_new
+    episode += 1
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
 # -
 
-v, ems = false_transient_1d(
-    y_grid=y_grid_cap, z=z, dmg_params=dmgParams, model_params=modelParams, 
-    bound_var=bd, bounded=True, max_iter=1_000)
+ϕ_pre = ϕ
+plt.plot(y_grid_cap, ϕ_pre)
 
-plt.plot(y_grid_cap,v)
-plt.plot(y_grid[numy_bar:], (v_dict[0][numy_bar:] + v_dict[1][numy_bar:])/2)
+ϕ_pre[-1]
+
+plt.plot(y_grid_cap,ϕ_pre)
+plt.plot(y_grid[numy_bar:], (ϕ_low[numy_bar:] + ϕ_high[numy_bar:])/2)
 plt.vlines(2, ymin=-.04, ymax=.1, color="black", linestyle="dashed")
 
+# # Jump of damage
 # $$
 # 0 = -\delta \phi + \frac{\partial \phi }{\partial y} \mu_2 e + \delta\eta\log (e) + (\eta-1)(\tau_1 + \tau_2 y) \mu_2 e +\frac{\exp\{\rho( y - \bar y)\}}{1 - \exp\{\rho( y -\bar y)\}} \cdot \left(\sum_{j=2}^{n}\pi_j\tilde \phi(y) - \phi(y)\right) \quad y \in [0, \bar y)
 # $$
@@ -200,116 +265,62 @@ plt.vlines(2, ymin=-.04, ymax=.1, color="black", linestyle="dashed")
 # \sigma = \bar y/10, \quad \bar y/50, \quad \bar y/100
 # $$
 
-np.pi
-
-
-def false_transient_jump(
-    y_grid, z, v_bar,
-    dmg_params, model_params, v0=None, bounded=False, bound_var=0, 
-    epsilon=.5, tol = 1e-8, max_iter=10_000,
-):
-    gamma_1, gamma_2, gamma2pList, gamma_bar, dmg_weights = dmg_params
-    delta, eta, mu2, sigma2, v_n , sigma = model_params
-    numy, = y_grid.shape
-    hy = y_grid[1] - y_grid[0]
-    dlambda = gamma_1 + gamma_2*y_grid\
-    + np.sum(gamma2pList*dmg_weights,axis=0)*(y_grid-gamma_bar)*(y_grid>gamma_bar)
-    # initiate v and control
-    ems = delta*eta
-    error = 1
-    episode = 0
-    if v0 == None:
-        v0 = - delta*eta*y_grid
-    while error > tol and episode < max_iter:
-        v0_old = v0.copy()
-        v0_dy = derivative_1d(v0,1,hy, upwind=True)
-        # control
-        ems = (-delta*eta/(v0_dy*z + v_n*dlambda*z))*.5 + ems*0.5
-        ems[ems<=0] = 1e-16
-        A = -delta*np.ones(y_grid.shape) \
-        - 1/(np.sqrt(np.pi*2)*sigma)*np.exp(-(y_grid - gamma_bar)**2/(2*sigma**2))
-        By = z*ems
-        Cyy = np.zeros(y_grid.shape)
-        D = delta*eta*np.log(ems) + v_n*dlambda*z*ems\
-        + 1/(np.sqrt(np.pi*2)*sigma)*np.exp(-(y_grid - gamma_bar)**2/(2*sigma**2))*v_bar
-        # solve for ODE
-        phi_grid2 = solve_ode(y_grid, A, By, Cyy, D, v0, bound_var, bounded, epsilon)
-        phi_grid = false_transient_one_iteration_python(
-            A, By, Cyy, D, v0, epsilon, hy, (0,bound_var), (False, bounded))
-        diff = np.max(abs(phi_grid - phi_grid2))
-        rhs = A*phi_grid + By*v0_dy  + D
-        rhs_error = np.max(abs(rhs))
-        error = np.max(abs((phi_grid-v0)/epsilon))
-        v0 = phi_grid
-        episode += 1
-        print('Episode: {:d}\t lhs error: {:.12f}\t rhs error: {:.12f}\t diff: {:.12f}'.format(episode,error,rhs_error,diff))
-    return v0, ems
-
-
-v_bar = np.average([v_dict[0], v_dict[1]], axis=0, weights=[.5,.5])
-
-v_bar_short = v_bar[:numy_bar]
-y_grid_short = y_grid[:numy_bar]
-
-modelParams, z, dmgParams, y_grid_short.shape,z, v_bar_short[-1],bd
-
-# +
-dmg_weights = np.array([0.5, 0.5])
-dmgParams = (gamma_1, gamma_2, gamma2pList, gamma_bar, dmg_weights)
-
-v_try = dict()
-for divide in [10,50, 100]:
-    modelParams = (delta, eta, mu2, sigma2, v_n, gamma_bar/divide)
-    v_try[divide], ems = false_transient_jump(y_grid=y_grid_short, z=z, v_bar=v_bar_short, 
-                                             dmg_params=dmgParams, model_params=modelParams, 
-                                             bound_var=bd, bounded=True, max_iter=10_000)
-
-# +
-plt.figure(figsize=(10,8))
-for divide in [10, 50, 100]:
-    plt.plot(y_grid_short, v_try[divide], label="$\\sigma = \\bar y/{}$".format(divide))
-    
-
-# plt.plot(y_grid[numy_bar:], v_dict[0][numy_bar:], linestyle="dotted", color="black", label="low damage")
-plt.plot(y_grid[numy_bar:], (v_dict[0][numy_bar:] + v_dict[1][numy_bar:])/2, color ="black", label="equally weighted")
-# plt.plot(y_grid[numy_bar:], v_dict[1][numy_bar:], linestyle="--", color="black", label="high damage")
-plt.vlines(2, ymin=-0.02, ymax=.06, color="black", linewidth=1)
-plt.legend(loc=3, fontsize=18)
-plt.xlim(0,4)
-plt.ylim(-.02,.06)
-plt.xlabel("y", fontsize=18)
-plt.ylabel("$\\phi$", rotation=0, fontsize=18)
-plt.title('$\phi(y)$', fontsize=18)
-plt.savefig("phi_rho.png", dpi=None, facecolor='w', edgecolor='w',
-        orientation='portrait', format=None,
-        transparent=False, bbox_inches='tight', pad_inches=0.1,
-        metadata=None )
-# -
-
 y_dense = np.arange(0,2,1/20000)
-def get_intensity(y_grid, sigma, gamma_bar=2):
-    temp = 1/(np.sqrt(np.pi*2)*sigma)*np.exp(-(y_grid - gamma_bar)**2/(2*sigma**2))
+def get_intensity(y_grid, σ, γbar=2):
+    temp = 1/(np.sqrt(np.pi*2)*σ)*np.exp(-(y_grid - γbar)**2/(2*σ**2))
 #     temp *= v_bar - v_new
     return temp
 
 
-y_dense.shape
+# +
+dmg_weight = np.array([0.5, 0.5])
+y_grid_cap = np.linspace(0,2,20)
+dΛ = γ1 + γ2*y_grid_cap + np.average(γ2p, weights=dmg_weight)*(y_grid_cap - γbar)*(y_grid_cap>γbar)
 
-inten = dict()
-for sigma in [gamma_bar/10, gamma_bar/50, gamma_bar/100]:
-    inten[sigma] = get_intensity(y_dense,  sigma)
 
-plt.plot(v_bar_short)
+ϕ_average = np.average([ϕ_low[:numy_bar], ϕ_high[:numy_bar]], axis=0, weights=dmg_weight)
+tol = 1e-8
 
-inten
 
-for sigma in [gamma_bar/10, gamma_bar/50, gamma_bar/100]:
-    plt.plot(y_dense,inten[sigma], label="$\\sigma = {}$".format(sigma))
-# plt.xlim(1.988 ,2)
+ϕ = - δ*η*y_grid_cap
+dy = y_grid_cap[1] - y_grid_cap[0]
+ems = δ*η
+episode = 0
+
+ϕ_dict = dict()
+for σ in [γbar/10, γbar/50, γbar/100]:
+    ϕ = - δ*η*y_grid_cap
+    dy = y_grid_cap[1] - y_grid_cap[0]
+    ems = δ*η
+    episode = 0
+    ϵ = .3
+    lhs_error = 1
+    while lhs_error > tol:
+        ϕ_old = ϕ.copy()
+        dϕdy = derivative_1d(ϕ, 1, dy, True)
+        dϕdyy = derivative_1d(ϕ, 2, dy, True)
+        ems = -δ*η/(dϕdy*μ + (η-1)*dΛ*μ)
+        ems[ems<=0] = 1e-15
+        A = -δ*np.ones(y_grid_cap.shape) - get_intensity(y_grid_cap, σ)
+        By = μ*ems
+        Cyy = np.zeros(y_grid_cap.shape)
+        D = δ*η*np.log(ems) + (η-1)*dΛ*μ*ems + get_intensity(y_grid_cap, σ)*ϕ_average
+        ϕ_new = solve_ode(A, By, Cyy, D, y_grid_cap, ϕ, ϵ, (True, bd))
+        rhs = -δ*ϕ_new + By*dϕdy + Cyy*dϕdyy + D
+        rhs_error = np.max(abs(rhs))
+        lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+        ϕ = ϕ_new
+        episode += 1
+        print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
+    ϕ_dict[σ] = ϕ
+# -
+
+ϕ_dict
+
+for σ in [γbar/10, γbar/50, γbar/100]:
+    plt.plot(y_grid_cap,ϕ_dict[σ], label=σ)
 plt.legend()
-plt.title("intensity function")
-plt.xlabel("y")
-# plt.savefig("inten.png", dpi=None, facecolor='w', edgecolor='w',
-#         orientation='portrait', format=None,
-#         transparent=False, bbox_inches='tight', pad_inches=0.1,
-#         metadata=None)
+plt.plot(y_grid[numy_bar:], (ϕ_low[numy_bar:] + ϕ_high[numy_bar:])/2)
+plt.vlines(2, ymin=-.04, ymax=.1, color="black", linestyle="dashed")
+
+plt.plot(ϕ_average)
