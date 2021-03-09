@@ -435,8 +435,8 @@ ems = - δ*η/((η-1)*(γ1 + γ2*y_grid)*θ)
 ems_old = ems
 while lhs_error > tol:
     ϕ_old = ϕ.copy()
-    dϕdy = derivative_1d(ϕ, 1, hy, False)
-    dϕdyy = derivative_1d(ϕ, 2, hy, False)
+    dϕdy = derivative_1d(ϕ, 1, hy)
+    dϕdyy = derivative_1d(ϕ, 2, hy)
     ems_new = - δ*η/(dϕdy*θ + (η-1)*(γ1 + γ2*y_grid)*θ)
     ems_new[ems_new <= 0] = 1e-15
     ems = ems_new*0.5 + ems_old*0.5
