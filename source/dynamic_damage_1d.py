@@ -119,12 +119,12 @@ def false_transient_1d(
 δ = 0.01
 η = 0.032
 μ = 1.86/1000
+ȳ = 2
 
-numy_bar = 20
+numy_bar = 100
 y_min = 0
-y_bar = gamma_bar
 y_max = 4
-hy = (y_bar - y_min)/numy_bar
+hy = (ȳ - y_min)/numy_bar
 y_grid = np.arange(y_min, y_max+hy, hy)
 
 γ1 = 0.00017675
@@ -163,9 +163,11 @@ while lhs_error > tol:
 ϕ_low = ϕ
 plt.plot(ϕ_low)
 
+plt.plot(ems)
+
 # +
 dmg_weight = np.array([0, 1])
-dΛ = γ1 + γ2*y_grid + np.average(γ2p, weights=dmg_weight)*(y_grid - γbar)*(y_grid>γbar)
+dΛ = γ1 + γ2*y_grid + np.average(γ2p, weights=dmg_weight)*(y_grid - ȳ)*(y_grid > ȳ)
 
 tol = 1e-8
 ϵ = .3
@@ -205,7 +207,7 @@ bd
 # +
 dmg_weight = np.array([0.5, 0.5])
 y_grid_cap = np.linspace(0,2,100)
-dΛ = γ1 + γ2*y_grid_cap + np.average(γ2p, weights=dmg_weight)*(y_grid_cap - γbar)*(y_grid_cap>γbar)
+dΛ = γ1 + γ2*y_grid_cap + np.average(γ2p, weights=dmg_weight)*(y_grid_cap - γbar)*(y_grid_cap > ȳ)
 
 tol = 1e-8
 ϵ = .3
@@ -214,6 +216,7 @@ lhs_error = 1
 ϕ = - δ*η*y_grid_cap
 dy = y_grid_cap[1] - y_grid_cap[0]
 ems = δ*η
+ems_old = ems
 episode = 0
 while lhs_error > tol:
     ϕ_old = ϕ.copy()
@@ -221,6 +224,7 @@ while lhs_error > tol:
     dϕdyy = derivative_1d(ϕ, 2, dy, True)
     ems = -δ*η/(dϕdy*μ + (η-1)*dΛ*μ)
     ems[ems<=0] = 1e-15
+    ems = ems*0.5 + ems_old*0.5
     A = -δ*np.ones(y_grid_cap.shape)
     By = μ*ems
     Cyy = np.zeros(y_grid_cap.shape)
@@ -230,6 +234,7 @@ while lhs_error > tol:
     rhs_error = np.max(abs(rhs))
     lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
     ϕ = ϕ_new
+    ems_old = ems
     episode += 1
     print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
 # -
@@ -274,11 +279,11 @@ def get_intensity(y_grid, σ, γbar=2):
 
 # +
 dmg_weight = np.array([0.5, 0.5])
-y_grid_cap = np.linspace(0,2,20)
+y_grid_cap = y_grid[:numy_bar+1]
 dΛ = γ1 + γ2*y_grid_cap + np.average(γ2p, weights=dmg_weight)*(y_grid_cap - γbar)*(y_grid_cap>γbar)
 
 
-ϕ_average = np.average([ϕ_low[:numy_bar], ϕ_high[:numy_bar]], axis=0, weights=dmg_weight)
+ϕ_average = np.average([ϕ_low[:numy_bar+1], ϕ_high[:numy_bar+1]], axis=0, weights=dmg_weight)
 tol = 1e-8
 
 
@@ -292,6 +297,7 @@ for σ in [γbar/10, γbar/50, γbar/100]:
     ϕ = - δ*η*y_grid_cap
     dy = y_grid_cap[1] - y_grid_cap[0]
     ems = δ*η
+    ems_old = ems
     episode = 0
     ϵ = .3
     lhs_error = 1
@@ -301,6 +307,7 @@ for σ in [γbar/10, γbar/50, γbar/100]:
         dϕdyy = derivative_1d(ϕ, 2, dy, True)
         ems = -δ*η/(dϕdy*μ + (η-1)*dΛ*μ)
         ems[ems<=0] = 1e-15
+        ems = 0.5*ems + 0.5*ems_old
         A = -δ*np.ones(y_grid_cap.shape) - get_intensity(y_grid_cap, σ)
         By = μ*ems
         Cyy = np.zeros(y_grid_cap.shape)
@@ -311,16 +318,147 @@ for σ in [γbar/10, γbar/50, γbar/100]:
         lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
         ϕ = ϕ_new
         episode += 1
+        ems_old = ems
         print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
     ϕ_dict[σ] = ϕ
 # -
 
-ϕ_dict
-
 for σ in [γbar/10, γbar/50, γbar/100]:
     plt.plot(y_grid_cap,ϕ_dict[σ], label=σ)
 plt.legend()
+plt.plot(y_grid_cap, ϕ_average)
 plt.plot(y_grid[numy_bar:], (ϕ_low[numy_bar:] + ϕ_high[numy_bar:])/2)
 plt.vlines(2, ymin=-.04, ymax=.1, color="black", linestyle="dashed")
 
 plt.plot(ϕ_average)
+
+# # new setup
+# $$
+# \begin{aligned}
+# 0 = \max_{\tilde e}\min_h & - \delta \phi(y) + \delta\eta \log\tilde e \\
+#                            &  + \frac{\xi_m}{2} h'h + \frac{d\phi(y)}{dy} \tilde e (\theta + \sigma_y h) + \frac{1}{2}\frac{d^2\phi(y)}{dy^2}|\sigma_y|^2(\tilde e)^2\\
+#                            & + (\eta -1 )\cdot(\gamma_1 + \gamma_2 y)\cdot\tilde e\cdot (\theta + \sigma_y h)
+# \end{aligned}
+# $$
+#
+# $$
+# \begin{aligned}
+# 0 = \min_h & - \delta \psi(z_2) - \delta \eta \log(z_2) + \frac{\xi_m}{2} h'h\\
+#  & + \frac{d\psi(z_2)}{dz_2}\left[ - \rho(z_2 - \mu_2) + \sqrt{z_2}\sigma_2 h \right] + \frac{z_2|\sigma_2|^2}{2}\frac{d^2\psi(z_2)}{dz_2^2}
+# \end{aligned}
+# $$
+#
+# $$
+#     h^* = -\frac{\frac{d\psi(z_2)}{dz_2} \sqrt{z_2}\sigma_2}{\xi_m}
+# $$
+
+# z2 grid
+ρ = 0.9
+ξₘ = 1/10000
+σz = 0.42/1000
+σ2 = np.sqrt(2*ρ*σz**2/μ)
+num_z = 100
+z2_min = μ - 4*σz
+z2_max = μ + 4*σz
+z2_grid = np.linspace(z2_min, z2_max, num_z)
+hz = z2_grid[1] - z2_grid[0]
+# ODE for z_2
+episode = 0
+ϵ = .3
+tol = 1e-8
+lhs_error = 1
+ψ = δ*z2_grid
+h_star = -δ*np.sqrt(z2_grid)*σ2/ξₘ
+while lhs_error > tol:
+    ψ_old = ψ.copy()
+    dψdz = derivative_1d(ψ, 1, hz)
+    dψdzz = derivative_1d(ψ, 2, hz)
+    h_star = - dψdz*np.sqrt(z2_grid)*σz/ξₘ*0.5 + h_star*0.5
+    A = -δ*np.ones(z2_grid.shape)
+    B = - ρ*(z2_grid - μ) + np.sqrt(z2_grid)*σ2*h_star
+    C = z2_grid*σ2**2/2
+    D = - δ*η*np.log(z2_grid) + 1/2*ξₘ*h_star**2
+    ψ_new = solve_ode(A, B, C, D, z2_grid, ψ, ϵ, (False, 0))
+    rhs = -δ*ψ_new + B*dψdz + C*dψdzz + D
+    rhs_error = np.max(abs(rhs))
+    lhs_error = np.max(abs((ψ_new - ψ_old)/ϵ))
+    ψ = ψ_new
+    episode += 1
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
+
+plt.figure(figsize=(20,6))
+plt.subplot(121)
+plt.plot(z2_grid, ψ)
+plt.title("$\\psi(z)$")
+plt.subplot(122)
+plt.plot(z2_grid, h_star)
+plt.title("$h_z$")
+
+# ## ODE for y
+# $$
+# \begin{aligned}
+# 0 = \max_{\tilde e}\min_h & - \delta \phi(y) + \delta\eta \log\tilde e \\
+# &  + \frac{\xi_m}{2} h'h + \frac{d\phi(y)}{dy} \tilde e (\theta + \sigma_y h) + \frac{1}{2}\frac{d^2\phi(y)}{dy^2}|\sigma_y|^2(\tilde e)^2\\
+#                            & + (\eta -1 )\cdot(\gamma_1 + \gamma_2 y)\cdot\tilde e\cdot (\theta + \sigma_y h)
+# \end{aligned}
+# $$
+#
+# $$
+# h^* = - \frac{\frac{d\phi(y)}{dy}\tilde e \sigma_y + (\eta - 1)(\gamma_1 + \gamma_2 y)\tilde e \sigma_y}{\xi_m}
+# $$
+#
+# First order condition for $\tilde e ^*$:
+# $$
+# \frac{\delta\eta}{\tilde e} + \frac{d^2\phi(y)}{dy^2}|\sigma_y|^2\tilde e + \frac{d\phi(y)}{dy} (\theta + \sigma_y h) + (\eta - 1)(\gamma_1 + \gamma_2 y)(\theta + \sigma_y h) = 0
+# $$
+#
+# Temporarily set $\theta = 1$ , $\sigma_y = 0$, then $h^* = 0$:
+# $$
+# \frac{\delta\eta}{e} + \frac{d\phi(y)}{dy}\theta + (\eta - 1)(\gamma_1 + \gamma_2 y)\theta = 0
+# $$
+
+# +
+# y grid
+θ = 1
+num_y = 100
+y_min = 0
+y_max = 10
+y_grid = np.linspace(y_min, y_max, num_y)
+hy = y_grid[1] - y_grid[0]
+# ODE for z_2
+episode = 0
+ϵ = .3
+tol = 1e-8
+lhs_error = 1
+ϕ =  - δ*η*y_grid
+ems = - δ*η/((η-1)*(γ1 + γ2*y_grid)*θ)
+ems_old = ems
+while lhs_error > tol:
+    ϕ_old = ϕ.copy()
+    dϕdy = derivative_1d(ϕ, 1, hy, False)
+    dϕdyy = derivative_1d(ϕ, 2, hy, False)
+    ems_new = - δ*η/(dϕdy*θ + (η-1)*(γ1 + γ2*y_grid)*θ)
+    ems_new[ems_new <= 0] = 1e-15
+    ems = ems_new*0.5 + ems_old*0.5
+    A = -δ*np.ones(y_grid.shape)
+    B = ems*θ
+    C = np.zeros(y_grid.shape)
+    D = δ*η*np.log(ems) + (η - 1)*(γ1 + γ2*y_grid)*ems*θ
+    ϕ_new = solve_ode(A, B, C, D, y_grid, ϕ, ϵ, (False, 0))
+    rhs = -δ*ϕ_new + B*dϕdy + C*dϕdyy + D
+    rhs_error = np.max(abs(rhs))
+    lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+    ϕ = ϕ_new
+    ems_old = ems
+    episode += 1
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
+    
+ϕ̃  = ϕ
+ems̃ = ems
+# -
+
+plt.plot(y_grid, ϕ̃ )
+plt.title("ϕ(y)")
+
+plt.plot(y_grid, ems̃)
+plt.title("e(y)")
