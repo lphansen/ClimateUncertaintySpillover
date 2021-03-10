@@ -1,106 +1,138 @@
 import numpy as np
-from utilities import compute_derivatives_2d
-from solver import false_transient_one_iteration_cpp, false_transient_one_iteration_python
+from utilities import compute_derivatives
+from solver import false_transient_one_iteration_python
 
 
-def hjb_modified(z_grid, y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000,
-                                 use_python=False, bc=None, impose_bc=None):
-    η, δ, μ_2, ρ, σ_2, λ_1, λ_2, λ_bar, λ_2p = model_paras
-    Δ_z = z_grid[1] - z_grid[0]
+def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
+    η, δ, θ, σ_y, ξ_1m, γ_1, γ_2, γ_2p, y_bar = model_paras
     Δ_y = y_grid[1] - y_grid[0]
-    (z_mat, y_mat) = np.meshgrid(z_grid, y_grid, indexing = 'ij')
-    stateSpace = np.hstack([z_mat.reshape(-1, 1, order='F'), y_mat.reshape(-1, 1, order='F')])
+
     if v0 is None:
-        v0 = -δ*η*y_mat
+        v0 = -δ*η*(y_grid+y_grid**2)
 
-    d_Λ = λ_1 + λ_2*y_mat + λ_2p*(y_mat>λ_bar)*(y_mat-λ_bar)
-    d_Λ_z = d_Λ * z_mat
-
-    mean = - ρ*(z_mat-μ_2)
-    std = np.sqrt(z_mat)*σ_2
-    var = std**2/2.
-    e = - δ*η / ((η-1)*d_Λ_z)
-    e_old = e.copy()
+    d_Λ = γ_1 + γ_2*y_grid + γ_2p*(y_grid>y_bar)*(y_grid-y_bar)
 
     count = 1
     error = 1.
 
     while error > tol and count < max_iter:
         v_old = v0.copy()
-        v0_dz = compute_derivatives_2d(v0, 0, 1, Δ_z, central_diff=True)
-        v0_dzz = compute_derivatives_2d(v0, 0, 2, Δ_z)
-        v0_dy = compute_derivatives_2d(v0, 1, 1, Δ_y)
 
-        e_new = - δ*η / (v0_dy*z_mat + (η-1)*d_Λ_z)
-        e_new[e_new<=0] = 1e-12
-        e = e_new * 0.5 + e_old * 0.5
-        e_old = e.copy()
+        v0_dy = compute_derivatives(v0, 1, Δ_y, central_diff=True)
+        v0_dyy = compute_derivatives(v0, 2, Δ_y)
 
-        A = np.ones_like(z_mat)*(-δ)
-        B_z = mean
-        B_y = z_mat*e
-        C_zz = var
-        C_yy = np.zeros_like(z_mat)
-        D = δ*η*np.log(e) + (η-1)*d_Λ_z*e
-        if use_python:
-            v0 = false_transient_one_iteration_python(A, B_z, B_y, C_zz, C_yy, D, v0, ε, Δ_z, Δ_y, bc, impose_bc)
-        else:
-            v0 = false_transient_one_iteration_cpp(stateSpace, A, B_z, B_y, C_zz, C_yy, D, v0, ε)
-
-        rhs_error = A*v0 + B_z*v0_dz + B_y*v0_dy + C_zz*v0_dzz + D
-        rhs_error = np.max(abs(rhs_error))
-        lhs_error = np.max(abs((v0 - v_old)/ϵ))
-        error = lhs_error
-        print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-        count += 1
-    return v0, e
-
-
-def hjb_modified_jump(z_grid, y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000):
-    η, δ, μ_2, ρ, σ_2, λ_1, λ_2, λ_bar, σ, ϕ_bar = model_paras
-    Δ_z = z_grid[1] - z_grid[0]
-    Δ_y = y_grid[1] - y_grid[0]
-    (z_mat, y_mat) = np.meshgrid(z_grid, y_grid, indexing = 'ij')
-    stateSpace = np.hstack([z_mat.reshape(-1, 1, order='F'), y_mat.reshape(-1, 1, order='F')])
-    if v0 is None:
-        v0 = -δ*η*y_mat
-
-    d_Λ = λ_1 + λ_2*y_mat
-    d_Λ_z = d_Λ * z_mat
-
-    mean = - ρ*(z_mat-μ_2)
-    std = np.sqrt(z_mat)*σ_2
-    var = std**2/2.
-    e = - δ*η / ((η-1)*d_Λ_z)
-    e_old = e.copy()
-
-    count = 1
-    error = 1.
-
-    while error > tol and count < max_iter:
-        v_old = v0.copy()
-        v0_dz = compute_derivatives_2d(v0, 0, 1, Δ_z, central_diff=True)
-        v0_dzz = compute_derivatives_2d(v0, 0, 2, Δ_z)
-        v0_dy = compute_derivatives_2d(v0, 1, 1, Δ_y)
-
-        e_new = - δ*η / (v0_dy*z_mat + (η-1)*d_Λ_z)
-        e_new[e_new<=0] = 1e-12
-        e = e_new * 0.5 + e_old * 0.5
-        e_old = e.copy()
+        G = v0_dy + (η-1)*d_Λ
         
-        density = 1./(np.sqrt(2*np.pi)*σ)*np.exp(-(λ_bar-y_mat)**2/(2*σ**2))
-        A = np.ones_like(z_mat)*(-δ) - density
-        B_z = mean
-        B_y = z_mat*e
-        C_zz = var
-        C_yy = np.zeros_like(z_mat)
-        D = δ*η*np.log(e) + (η-1)*d_Λ_z*e + density*ϕ_bar
-        v0 = false_transient_one_iteration_cpp(stateSpace, A, B_z, B_y, C_zz, C_yy, D, v0, ε)
+        if σ_y == 0:
+            e_tilde = -δ*η/(G*θ)
+        else:
+            temp = σ_y**2*(v0_dyy-G**2/ξ_1m)
+            e_tilde = (-G*θ - np.sqrt(θ**2*G**2 - 4*δ*η*temp)) / (2*temp)
+        e_tilde[e_tilde<=0] = 1e-12
 
-        rhs_error = A*v0 + B_z*v0_dz + B_y*v0_dy + C_zz*v0_dzz + D
+        A = np.ones_like(y_grid)*(-δ)
+        B = e_tilde * θ
+        C = .5 * σ_y**2 * e_tilde**2
+        D = δ*η*np.log(e_tilde) - C*G**2/ξ_1m + (η-1)*d_Λ*e_tilde*θ
+        v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
+
+        rhs_error = A*v0 + B*v0_dy + C*v0_dyy + D
         rhs_error = np.max(abs(rhs_error))
         lhs_error = np.max(abs((v0 - v_old)/ϵ))
         error = lhs_error
-        print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+        if print_all:
+            print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
         count += 1
-    return v0, e
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+    return v0, e_tilde
+
+
+def ode_z(z_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
+    η, δ, ρ, μ_2, σ_2, ξ_1m = model_paras
+    Δ_z = z_grid[1] - z_grid[0]
+
+    if v0 is None:
+        v0 = -δ*η*(z_grid+z_grid**2)
+
+    h = np.zeros_like(z_grid)
+
+    count = 1
+    error = 1.
+
+    while error > tol and count < max_iter:
+        v_old = v0.copy()
+        h_old = h.copy()
+
+        v0_dz = compute_derivatives(v0, 1, Δ_z)
+        v0_dzz = compute_derivatives(v0, 2, Δ_z)
+
+        h = -(v0_dz*np.sqrt(z_grid)*σ_2)/ξ_1m
+        h = h * .5 + h_old * .5
+
+        AA = np.zeros_like(z_grid)
+        BB = -ρ*(z_grid-μ_2) + np.sqrt(z_grid)*σ_2*h
+        CC = .5 * σ_2**2 * z_grid
+        DD = -δ*η*np.log(z_grid) + .5*ξ_1m*h**2
+        v0 = false_transient_one_iteration_python(AA, BB, CC, DD, v0, ε, Δ_z, (0, 0), (False, False))
+
+        rhs_error = AA*v0 + BB*v0_dz + CC*v0_dzz + DD
+        rhs_error = np.max(abs(rhs_error))
+        lhs_error = np.max(abs((v0 - v_old)/ϵ))
+        error = lhs_error
+        if print_all:
+            print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+        count += 1
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+    return v0
+
+
+def ode_y_jump_approach_one(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
+    η, δ, θ, σ_y, ξ_1m, ξ_2m, ς, γ_1, γ_2, y_bar, ϕ_i, πd_o = model_paras
+    Δ_y = y_grid[1] - y_grid[0]
+
+    if v0 is None:
+        v0 = -δ*η*(y_grid+y_grid**2)
+
+    d_Λ = γ_1 + γ_2*y_grid
+
+    π = np.ones((len(πd_o), len(y_grid)))
+    for i in range(π.shape[0]):
+        π[i] = πd_o[i]
+    πd_o = π
+
+    count = 1
+    error = 1.
+
+    while error > tol and count < max_iter:
+        v_old = v0.copy()
+
+        v0_dy = compute_derivatives(v0, 1, Δ_y, central_diff=True)
+        v0_dyy = compute_derivatives(v0, 2, Δ_y)
+
+        G = v0_dy + (η-1)*d_Λ
+        
+        if σ_y == 0:
+            e_tilde = -δ*η/(G*θ)
+        else:
+            temp = σ_y**2*(v0_dyy-G**2/ξ_1m)
+            e_tilde = (-G*θ - np.sqrt(θ**2*G**2 - 4*δ*η*temp)) / (2*temp)
+        e_tilde[e_tilde<=0] = 1e-12
+
+        density = 1./(np.sqrt(2*np.pi)*ς)*np.exp(-(y_bar-y_grid)**2/(2*ς**2))
+
+        A = np.ones_like(y_grid)*(-δ) - density
+        B = e_tilde * θ
+        C = .5 * σ_y**2 * e_tilde**2
+        D = δ*η*np.log(e_tilde) - C*G**2/ξ_1m + (η-1)*d_Λ*e_tilde*θ\
+            - ξ_2m*density*np.log(np.sum(πd_o*np.exp(1./ξ_2m*(-ϕ_i)), axis=0))
+        v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
+
+        rhs_error = A*v0 + B*v0_dy + C*v0_dyy + D
+        rhs_error = np.max(abs(rhs_error))
+        lhs_error = np.max(abs((v0 - v_old)/ϵ))
+        error = lhs_error
+        if print_all:
+            print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+        count += 1
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))        
+    return v0, e_tilde
