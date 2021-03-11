@@ -20,7 +20,7 @@ def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
     πc_o = πc.copy()
     θ = θ_reshape
 
-    count = 1
+    count = 0
     error = 1.
     
     while error > tol and count < max_iter:
@@ -58,11 +58,20 @@ def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         rhs_error = np.max(abs(rhs_error))
         lhs_error = np.max(abs((v0 - v_old)/ϵ))
         error = lhs_error
+        count += 1
         if print_all:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-        count += 1
+
     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-    return v0, e_tilde, πc, c_entropy
+
+    res = {'v0': v0,
+           'v0_dy': v0_dy,
+           'v0_dyy': v0_dyy,
+           'e_tilde': e_tilde,
+           'πc': πc,
+           'c_entropy': c_entropy,
+           'd_Λ': d_Λ}
+    return res
 
 
 def ode_z(z_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
@@ -74,14 +83,14 @@ def ode_z(z_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
 
     h = np.zeros_like(z_grid)
 
-    count = 1
+    count = 0
     error = 1.
 
     while error > tol and count < max_iter:
         v_old = v0.copy()
         h_old = h.copy()
 
-        v0_dz = compute_derivatives(v0, 1, Δ_z)
+        v0_dz = compute_derivatives(v0, 1, Δ_z, central_diff=True)
         v0_dzz = compute_derivatives(v0, 2, Δ_z)
 
         h = -(v0_dz*np.sqrt(z_grid)*σ_2)/ξ_1m
@@ -97,9 +106,10 @@ def ode_z(z_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         rhs_error = np.max(abs(rhs_error))
         lhs_error = np.max(abs((v0 - v_old)/ϵ))
         error = lhs_error
+        count += 1
         if print_all:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-        count += 1
+
     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
     return v0
 
@@ -126,7 +136,7 @@ def ode_y_jump_approach_one(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
     πc_o = πc.copy()
     θ = θ_reshape
 
-    count = 1
+    count = 0
     error = 1.
 
     while error > tol and count < max_iter:
@@ -168,11 +178,12 @@ def ode_y_jump_approach_one(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         rhs_error = np.max(abs(rhs_error))
         lhs_error = np.max(abs((v0 - v_old)/ϵ))
         error = lhs_error
+        count += 1
         if print_all:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-        count += 1
+
     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))        
-    return v0, e_tilde, πc, c_entropy
+    return v0, e_tilde, πc, c_entropy, g
 
 
 def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
@@ -197,7 +208,7 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
     πc_o = πc.copy()
     θ = θ_reshape
 
-    count = 1
+    count = 0
     error = 1.
 
     while error > tol and count < max_iter:
@@ -221,7 +232,7 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         πc_ratio = log_πc_ratio - np.max(log_πc_ratio, axis=0)
         πc = np.exp(πc_ratio) * πc_o
         πc = πc/np.sum(πc, axis=0)
-        πc[πc<=0] = 1e-16        
+        πc[πc<=0] = 1e-16
         c_entropy = np.sum(πc*(np.log(πc)-np.log(πc_o)), axis=0)
 
         intensity = 1./(np.sqrt(2*np.pi)*ς)*np.exp(-(y_bar-y_grid)**2/(2*ς**2))
@@ -240,8 +251,9 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         rhs_error = np.max(abs(rhs_error))
         lhs_error = np.max(abs((v0 - v_old)/ϵ))
         error = lhs_error
+        count += 1
         if print_all:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-        count += 1
+
     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))        
-    return v0, e_tilde, πc, c_entropy
+    return v0, e_tilde, πc, c_entropy, g
