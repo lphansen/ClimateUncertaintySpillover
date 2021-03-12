@@ -182,8 +182,16 @@ def ode_y_jump_approach_one(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         if print_all:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
-    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))        
-    return v0, e_tilde, πc, c_entropy, g
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))     
+    res = {'v0': v0,
+           'v0_dy': v0_dy,
+           'v0_dyy': v0_dyy,
+           'e_tilde': e_tilde,
+           'πc': πc,
+           'g': g,
+           'c_entropy': c_entropy,
+           'd_Λ': d_Λ}
+    return res
 
 
 def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
@@ -255,5 +263,15 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         if print_all:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
-    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))        
-    return v0, e_tilde, πc, c_entropy, g
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))    
+    
+    res = {'v0': v0,
+           'v0_dy': v0_dy,
+           'v0_dyy': v0_dyy,
+           'e_tilde': e_tilde,
+           'πc': πc,
+           'g': g,
+           'c_entropy': c_entropy,
+           'd_Λ': d_Λ}
+
+    return res
