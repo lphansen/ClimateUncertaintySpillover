@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# +
 import numpy as np
 import os
 import sys
@@ -12,7 +13,16 @@ import matplotlib.pyplot as plt
 from numba import njit
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import bicg
+from derivative import derivatives_2d
 
+import SolveLinSys
+import time
+from supportfunctions import PDESolver_2d, finiteDiff
+import global_parameters as gp
+from utilities import dLambda, ddLambda, weightOfPi, relativeEntropy, weightPI, damageDrift, zDrift
+
+
+# -
 
 @njit
 def derivative_1d(data, order, h_data, upwind=False):
@@ -137,6 +147,7 @@ dΛ = γ1 + γ2*y_grid + np.average(γ2p, weights=dmg_weight)*(y_grid - γbar)*(
 tol = 1e-8
 ϵ = .3
 lhs_error = 1
+# -
 
 ϕ = - δ*η*y_grid
 dy = y_grid[1] - y_grid[0]
@@ -158,7 +169,6 @@ while lhs_error > tol:
     ϕ = ϕ_new
     episode += 1
     print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
-# -
 
 ϕ_low = ϕ
 plt.plot(ϕ_low)
@@ -406,44 +416,79 @@ plt.title("$h_z$")
 # $$
 # h^* = - \frac{\frac{d\phi(y)}{dy}\tilde e \sigma_y + (\eta - 1)(\gamma_1 + \gamma_2 y)\tilde e \sigma_y}{\xi_m}
 # $$
+# Plug it  back to the HJB:
+# $$
+# \begin{aligned}
+#  0 = \max_{\tilde e} \quad - & \delta\phi(y) + \delta\eta \log\tilde e \\
+#  & + \frac{d\phi(y)}{dy}\tilde e \theta +  (\eta -1 )(\gamma_1 + \gamma_2 y)\tilde e \theta \\ 
+#  & + \left[- \frac{1}{2\xi_m}\left( \frac{d\phi(y)}{dy}  + (\eta -1)(\gamma_1 + \gamma_2 y) \right)^2 + \frac{1}{2}\frac{d^2\phi(y)}{dy^2}\right] \cdot (\tilde e)^2 |\sigma_y|^2
+# \end{aligned}
+# $$
 #
 # First order condition for $\tilde e ^*$:
 # $$
-# \frac{\delta\eta}{\tilde e} + \frac{d^2\phi(y)}{dy^2}|\sigma_y|^2\tilde e + \frac{d\phi(y)}{dy} (\theta + \sigma_y h) + (\eta - 1)(\gamma_1 + \gamma_2 y)(\theta + \sigma_y h) = 0
+#   \left[- \frac{1}{\xi_m}\left( \frac{d\phi(y)}{dy}  + (\eta -1)(\gamma_1 + \gamma_2 y) \right)^2 + \frac{d^2\phi(y)}{dy^2}\right] \cdot|\sigma_y|^2\cdot(\tilde e)^2 + \left[\frac{d\phi(y)}{dy} + (\eta - 1)(\gamma_1 + \gamma_2 y)\right]\theta\tilde e + \delta\eta = 0
 # $$
 #
-# Temporarily set $\theta = 1$ , $\sigma_y = 0$, then $h^* = 0$:
 # $$
-# \frac{\delta\eta}{e} + \frac{d\phi(y)}{dy}\theta + (\eta - 1)(\gamma_1 + \gamma_2 y)\theta = 0
+# A = \left[- \frac{1}{\xi_m}\left( \frac{d\phi(y)}{dy}  + (\eta -1)(\gamma_1 + \gamma_2 y) \right)^2 + \frac{d^2\phi(y)}{dy^2}\right] \cdot|\sigma_y|^2
+# $$
+#
+# $$
+# B = \left[\frac{d\phi(y)}{dy} + (\eta - 1)(\gamma_1 + \gamma_2 y)\right]\theta
+# $$
+#
+# $$
+# C = \delta\eta
+# $$
+#
+# $$
+# \tilde e^* = \cfrac{-B - \sqrt{B^2  - 4AC}}{2A}
 # $$
 
 # +
 # y grid
-θ = 1
-num_y = 100
-y_min = 0
+ξₘ = 1/400
+μ = 1.86/1000
+θ = μ
+σy = 1.2*θ
+num_y = 50
+y_min = 1e-10
 y_max = 10
 y_grid = np.linspace(y_min, y_max, num_y)
 hy = y_grid[1] - y_grid[0]
-# ODE for z_2
-episode = 0
 ϵ = .3
 tol = 1e-8
+# ODE for z_2
+ϕ_dict = dict()
+ems_dict = dict()
+
+episode = 0
 lhs_error = 1
-ϕ =  - δ*η*y_grid
-ems = - δ*η/((η-1)*(γ1 + γ2*y_grid)*θ)
+dΛ = γ1 + γ2*y_grid
+ϕ =  - δ*η*y_grid**2
+ems = - δ*η/((η-1)*dΛ*θ)
 ems_old = ems
+h_star = 0
 while lhs_error > tol:
     ϕ_old = ϕ.copy()
     dϕdy = derivative_1d(ϕ, 1, hy)
     dϕdyy = derivative_1d(ϕ, 2, hy)
-    ems_new = - δ*η/(dϕdy*θ + (η-1)*(γ1 + γ2*y_grid)*θ)
-    ems_new[ems_new <= 0] = 1e-15
-    ems = ems_new*0.5 + ems_old*0.5
+
+    a = dϕdyy*σy**2 - (dϕdy + (η-1)*dΛ)**2*σy**2/ξₘ 
+    b = (dϕdy + (η-1)*dΛ)*θ
+    c = δ*η
+    Δ = b**2 - 4*a*c
+    ems_new = (-b - np.sqrt(Δ))/(2*a)
+    ems_new[ems_new <= 1e-15] = 1e-15    
+    ems = ems_new*1 + ems_old*0
+    # coefficients
+    temp = dϕdy + (η-1)*dΛ
     A = -δ*np.ones(y_grid.shape)
     B = ems*θ
-    C = np.zeros(y_grid.shape)
-    D = δ*η*np.log(ems) + (η - 1)*(γ1 + γ2*y_grid)*ems*θ
+    C = σy**2*ems**2/2
+    D = δ*η*np.log(ems) + (η-1)*dΛ*ems*θ - 1/(2*ξₘ)*temp**2*ems**2*σy**2
+
     ϕ_new = solve_ode(A, B, C, D, y_grid, ϕ, ϵ, (False, 0))
     rhs = -δ*ϕ_new + B*dϕdy + C*dϕdyy + D
     rhs_error = np.max(abs(rhs))
@@ -452,13 +497,277 @@ while lhs_error > tol:
     ems_old = ems
     episode += 1
     print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
-    
-ϕ̃  = ϕ
-ems̃ = ems
 # -
 
-plt.plot(y_grid, ϕ̃ )
-plt.title("ϕ(y)")
+ems_1d = ems
+plt.plot(y_grid, ems_1d)
+plt.xlabel('y')
+plt.title("$\\tilde e(y)$")
 
-plt.plot(y_grid, ems̃)
-plt.title("e(y)")
+ϕ_1d = ϕ
+plt.plot(y_grid, ϕ_1d)
+plt.xlabel('y')
+plt.title('ϕ(y)')
+
+
+# compute hˢ
+def compute_h_star(ϕ, ems, y_grid, args=(η, σy, γ1, γ2, ξₘ)):
+    η, σy, γ1, γ2, ξₘ = args
+    dy = y_grid[1] - y_grid[0]
+    dϕdy = derivative_1d(ϕ, 1, dy)
+    dΛ = γ1 + γ2*y_grid
+    h_star = dϕdy + (η-1)*dΛ
+    h_star *= ems*σy
+    h_star *= - 1/ξₘ
+    return h_star
+
+
+args = (η, σy, γ1, γ2, ξₘ)
+h_1d = compute_h_star(ϕ_1d, ems_1d, y_grid, args)
+
+plt.plot(y_grid, h_1d)
+plt.xlabel('y')
+plt.title("h")
+
+plt.plot( (dϕdy + (η-1)*(γ1 + γ2*y_grid))*ems_1d)
+
+ems_1d
+
+plt.plot(y_grid, dϕdyy)
+plt.hlines(y=0, xmin=0, xmax=10)
+
+# # With reserve constraint
+# $$
+# \begin{aligned}
+# 0 = \max_{\tilde e}\min_h & \quad b \delta\eta \log\tilde e \\
+# &  + b \frac{\xi_m}{2} h'h + \frac{dV}{dy} \tilde e (\theta + \sigma_y h) - \delta b \frac{dV}{db} + \frac{1}{2}\frac{d^2V}{dy^2}|\sigma_y|^2(\tilde e)^2\\
+#                            & + b(\eta -1 )\cdot(\gamma_1 + \gamma_2 y)\cdot\tilde e\cdot (\theta + \sigma_y h) - \ell \tilde e
+# \end{aligned}
+# $$
+#
+# $$
+# h^* = - \frac{\frac{dV}{dy} + b(\eta-1)(\gamma_1 + \gamma_2 y)}{b \xi_m} \cdot \tilde e \sigma_y
+# $$
+# Plug back into the HJB:
+# $$
+# \begin{aligned}
+# 0 = \max_{\tilde e } \quad & b \delta\eta \log \tilde e + \frac{dV}{dy} \tilde e \theta - \delta b \frac{dV}{db} + \frac{1}{2}\frac{d^2V}{dy^2}|\sigma_y|^2(\tilde e)^2 \\ 
+# & +  b(\eta -1 )\cdot(\gamma_1 + \gamma_2 y)\cdot\tilde e\cdot \theta - \ell \tilde e \\
+# & -\frac{1}{2b\xi_m}\left(\frac{dV}{dy} + b(\eta-1)(\gamma_1 + \gamma_2 y)\right)^2 (\tilde e)^2 |\sigma_y|^2
+# \end{aligned}
+# $$
+# First order condition for $\tilde e ^*$:
+# $$
+#   \left[- \frac{1}{b\xi_m}\left( \frac{dV}{dy}  + b(\eta -1)(\gamma_1 + \gamma_2 y) \right)^2 + \frac{d^2V}{dy^2}\right] \cdot|\sigma_y|^2\cdot(\tilde e)^2 + \left[\frac{dV}{dy}\theta + b(\eta - 1)(\gamma_1 + \gamma_2 y)\theta - \ell \right]\tilde e + b \delta\eta = 0
+# $$
+#
+# $$
+# A =  \left[- \frac{1}{b\xi_m}\left( \frac{dV}{dy}  + b(\eta -1)(\gamma_1 + \gamma_2 y) \right)^2 + \frac{d^2V}{dy^2}\right] \cdot|\sigma_y|^2
+# $$
+#
+# $$
+# B = \left[\frac{dV}{dy} + b(\eta - 1)(\gamma_1 + \gamma_2 y)\right]\theta - \ell
+# $$ 
+#
+# $$
+# C = b \delta\eta
+# $$
+# And
+# $$
+# \tilde e^* = \frac{-B -  \sqrt{B^2 - 4AC}}{2A}
+# $$
+
+b_grid = np.linspace(1e-10, 1, 100)
+y_grid = np.linspace(1e-10, 10, 100)
+# mesh grid and construct state space
+(y_mat, b_mat) = np.meshgrid(y_grid, b_grid, indexing = 'ij')
+stateSpace = np.hstack([y_mat.reshape(-1,1, order='F'), b_mat.reshape(-1,1,order='F')])
+hb = b_grid[1] - b_grid[0]
+hy = y_grid[1] - y_grid[0]
+
+# +
+# 2 state HJB with constraints
+θ = μ
+δ = 0.01
+η = 0.032
+
+ϵ = 0.3
+# ℓ = 1e-12
+ξₘ = 1/400
+σy = 1.2*θ
+
+tol = 1e-8
+dΛ = γ1 + γ2*y_mat
+
+
+v_dict = dict()
+ems_dict = dict()
+ℓ_step = 1e-16
+
+for ℓ in [1e-12, 1e-5]:
+    episode = 0
+    lhs_error = 1
+    ems = - δ*η/(b_mat*(η-1)*dΛ*θ)
+    ems_old = ems
+    while lhs_error > tol:
+        if episode ==0:
+            v0 =  - δ*η*y_mat**2
+        else:
+            vold = v0.copy()
+        v0_dy = derivatives_2d(v0,0,1,hy)
+        v0_dyy = derivatives_2d(v0,0,2,hy)
+        v0_db = derivatives_2d(v0,1,1,hb)
+        # updating controls
+
+        print(np.min(ems))
+        temp = v0_dy + b_mat*(η-1)*dΛ
+        a = v0_dyy*σy**2 - temp**2/(b_mat*ξₘ)*σy**2
+        b = temp*θ  - ℓ
+        c = δ*η*b_mat
+        Δ = b**2 - 4*c*a
+        Δ[Δ<0] = 0
+        ems_new =  -b/(2*a) - np.sqrt(Δ)/(2*a)
+        ems_new[ems_new <= 0] = 1e-15
+        ems = ems_new
+        # HJB coefficient
+        A =  np.zeros(y_mat.shape)
+        B_y =  ems*θ
+        B_b = - δ*b_mat
+        C_yy = ems**2*σy**2/2
+        C_bb = np.zeros(y_mat.shape)
+        D = b_mat*δ*η*np.log(ems) + b_mat*(η-1)*dΛ*ems*θ - ℓ*ems - temp**2*ems**2*σy**2/(2*b_mat*ξₘ)
+        # PDE solver
+        solve_start = time.time()
+        out = PDESolver_2d(stateSpace, A, B_y, B_b, C_yy, C_bb, D, v0, ϵ, solverType = 'False Transient')
+        out_comp = out[2].reshape(v0.shape,order = "F")
+        rhs = A*v0 + B_y*v0_dy + B_b*v0_db + C_yy*v0_dyy + D
+        rhs_error = np.max(abs(rhs))
+        lhs_error = np.max(abs((out_comp - v0)))
+        #     if episode % 1 == 0:
+        print("Episode {:d}: PDE Error: {:.12f}; False Transient Error: {:.12f}; Iterations: {:d}; CG Error: {:.12f}".format(episode,
+              rhs_error, lhs_error, out[0], out[1]))
+        episode += 1
+        v0 = out_comp
+        ems_old = ems
+        print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
+    
+    v_dict[ℓ] = v0
+    ems_dict[ℓ] = ems
+# -
+
+# plt.plot(y_grid, ϕ_1d, label="no constraint")
+plt.plot(y_mat[:,0], v_dict[1e-12][:,-1], label="$ℓ = 10^{-12}$")
+# plt.plot(y_mat[:,0], v_dict[1e-5][:,-1], label="$ℓ = 10^{-5}$")
+plt.legend()
+plt.xlabel('y')
+plt.title('ϕ(y)')
+# plt.savefig("phi.png", dpi=148, facecolor='w', edgecolor='w',
+#         orientation='portrait', format=None,
+#         transparent=False, bbox_inches="tight", pad_inches=0.1,)
+
+# plt.plot(y_grid, ems_1d, label="no contrainst")
+plt.plot(y_mat[:,0], ems_dict[1e-12][:,-1], label="$ℓ = 10^{-12}$")
+# plt.plot(y_mat[:,0], ems_dict[1e-5][:,-1], label="$ℓ = 10^{-5}$")
+plt.legend()
+plt.title('$\\tilde e(y)$')
+# plt.savefig("e_tilde.png", dpi=148, facecolor='w', edgecolor='w',
+#         orientation='portrait', format=None,
+#         transparent=False, bbox_inches="tight", pad_inches=0.1,)
+
+def compute_h_2d(ϕ, y_mat, b_mat, ems, args=(η, σy, γ1, γ2, ξₘ)):
+    η, σy, γ1, γ2, ξₘ = args
+    dΛ = γ1 + γ2*y_mat
+    dy = y_mat[1,0] - y_mat[0,0]
+    dϕdy = derivatives_2d(ϕ, 0, 1, dy)
+    h_star = dϕdy + b_mat*(η-1)*dΛ
+    h_star *= ems*σy
+    h_star *= - 1/(b_mat*ξₘ)
+    return h_star
+
+
+args=(η, σy, γ1, γ2, ξₘ)
+h_2d_dict = dict()
+for ℓ in [1e-12, 1e-5]:
+    h_2d_dict[ℓ] = compute_h_2d(v_dict[ℓ], y_mat, b_mat, ems_dict[ℓ], args)
+
+# plt.plot(y_grid[:], h_1d[:], label="no constraint")
+plt.plot(y_mat[:,0], h_2d_dict[1e-12][:,-1], label="$ℓ = 10^{-12}$")
+# plt.plot(y_mat[:,0], h_2d_dict[1e-5][:,-1], label="$ℓ = 10^{-5}$")
+plt.legend()
+plt.xlabel('y')
+plt.title('h')
+# plt.savefig("h_star.png", dpi=148, facecolor='w', edgecolor='w',
+#         orientation='portrait', format=None,
+#         transparent=False, bbox_inches="tight", pad_inches=0.1,)
+
+# 2 state HJB with constraints
+ℓ_step = 1e-20
+dΛ = γ1 + γ2*y_mat
+V_dict = dict()
+E_dict = dict()
+for ℓ in [1e-12, ℓ_step + 1e-12]:
+    episode = 0
+    lhs_error = 1
+    ems = - δ*η/(b_mat*(η-1)*dΛ*θ)
+    ems_old = ems
+    while lhs_error > tol:
+        if episode ==0:
+            v0 =  - δ*η*y_mat**2
+        else:
+            vold = v0.copy()
+        v0_dy = derivatives_2d(v0,0,1,hy)
+        v0_dyy = derivatives_2d(v0,0,2,hy)
+        v0_db = derivatives_2d(v0,1,1,hb)
+        # updating controls
+
+        print(np.min(ems))
+        temp = v0_dy + b_mat*(η-1)*dΛ
+        a = v0_dyy*σy**2 - temp**2/(b_mat*ξₘ)*σy**2
+        b = temp*θ  - ℓ
+        c = δ*η*b_mat
+        Δ = b**2 - 4*c*a
+        Δ[Δ<0] = 0
+        ems_new =  -b/(2*a) - np.sqrt(Δ)/(2*a)
+        ems_new[ems_new <= 0] = 1e-15
+        ems = ems_new
+        # HJB coefficient
+        A =  np.zeros(y_mat.shape)
+        B_y =  ems*θ
+        B_b = - δ*b_mat
+        C_yy = ems**2*σy**2/2
+        C_bb = np.zeros(y_mat.shape)
+        D = b_mat*δ*η*np.log(ems) + b_mat*(η-1)*dΛ*ems*θ - ℓ*ems - temp**2*ems**2*σy**2/(2*b_mat*ξₘ)
+        # PDE solver
+        solve_start = time.time()
+        out = PDESolver_2d(stateSpace, A, B_y, B_b, C_yy, C_bb, D, v0, ϵ, solverType = 'False Transient')
+        out_comp = out[2].reshape(v0.shape,order = "F")
+        rhs = A*v0 + B_y*v0_dy + B_b*v0_db + C_yy*v0_dyy + D
+        rhs_error = np.max(abs(rhs))
+        lhs_error = np.max(abs((out_comp - v0)))
+        #     if episode % 1 == 0:
+        print("Episode {:d}: PDE Error: {:.12f}; False Transient Error: {:.12f}; Iterations: {:d}; CG Error: {:.12f}".format(episode,
+              rhs_error, lhs_error, out[0], out[1]))
+        episode += 1
+        v0 = out_comp
+        ems_old = ems
+        print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
+    
+    V_dict[ℓ] = v0
+    E_dict[ℓ] = ems
+
+# $$
+#  - \frac{\partial V}{\partial \ell} (y,1;\ell) = r
+# $$
+
+plt.plot(E_dict[1e-12][:,-1])
+
+y_mat.shape
+
+(V_dict[1e-12][:,-1] -  V_dict[1e-12+ℓ_step][:,-1])/ℓ_step
+
+plt.plot(y_mat[:,0], - (V_dict[1e-12+ℓ_step][:,-1] - V_dict[1e-12][:,-1])/ℓ_step)
+plt.title('r')
+plt.xlabel('y')
+plt.savefig("r.png", dpi=148, facecolor='w', edgecolor='w',
+        orientation='portrait', format=None,
+        transparent=False, bbox_inches="tight", pad_inches=0.1,)

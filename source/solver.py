@@ -96,6 +96,7 @@ def compute_ϕ_r(ell=1., d_step=1e-9, b_step=1e-2, args=(0.01, 0.032, 0.00175 * 
     return r, ϕ
 
 
+# +
 # @njit(parallel=True)
 def trace_ϕ_r(log_ell_min=-20, log_ell_max=10, grid_size=1000,
             d_step=1e-9, b_step=1e-2,
@@ -104,9 +105,6 @@ def trace_ϕ_r(log_ell_min=-20, log_ell_max=10, grid_size=1000,
     Compute pairs of ϕ and r based on a grid of :math:`\log \ell`.
 
     Parameters
-   47 """
-   46 module for dynamic damages experiment
-   45 currently with three z's
     ----------
     log_ell_min : float
         Minimum value of the grid for :math:`\log \ell`.

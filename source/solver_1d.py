@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Functions to numerically solve 1d HJB.
 

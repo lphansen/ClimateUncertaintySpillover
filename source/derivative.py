@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 module for cumputing derivatives
 includes:
@@ -5,11 +6,13 @@ includes:
 - compted_dphidz
 
 """
-
 import numpy as np
-from global_parameters import *
+import global_parameters as gp
+from numba import njit
 # define tau
-tau = MEDIAN*GAMMA_BASE
+tau = gp.MEDIAN*gp.GAMMA_BASE
+
+
 # start of fuction def
 # compute dphidr
 def compute_dphidr(phi, r, z = np.linspace(1e-5, 2, 20)):
@@ -71,6 +74,7 @@ def derivatives_2d(data, dim, order, step, onesided=True):
 
 
 # +
+@njit
 def deriv01(data, step, onesided):
     num_x, _ = data.shape
     ddatadx = np.zeros(data.shape)
@@ -86,6 +90,7 @@ def deriv01(data, step, onesided):
                 ddatadx[i] = (data[i+1, :] - data[i-1,:])/(2*step)
     return ddatadx
 
+@njit
 def deriv02(data, step, onesided):
     num_x, _ = data.shape
     ddatadxx = np.zeros(data.shape)
@@ -97,7 +102,7 @@ def deriv02(data, step, onesided):
         else:
             ddatadxx[i] = (data[i+1,:] - 2*data[i,:] + data[i-1,:])/(step**2)
     return ddatadxx
-
+@njit
 def deriv11(data, step, onesided):
     _, num_y = data.shape
     ddatady = np.zeros(data.shape)
@@ -112,7 +117,7 @@ def deriv11(data, step, onesided):
             else:
                 ddatady[:,j] = (data[:,j+1] - data[:,j-1])/(2*step)
     return ddatady
-
+@njit
 def deriv12(data, step, onesided):
     _, num_y = data.shape
     ddatadyy = np.zeros(data.shape)
@@ -124,3 +129,33 @@ def deriv12(data, step, onesided):
         else:
             ddatadyy[:,j] = (data[:,j+1] -2*data[:,j] + data[:,j-1])/(step**2)
     return ddatadyy
+
+
+# -
+
+# derivative 1d
+@njit
+def derivative_1d(ϕ, order, dx, upwind=False):
+    num, = ϕ.shape
+    dϕ = np.zeros_like(ϕ)
+    if order == 1:
+        for i in range(num):
+            if i == 0:
+                dϕ[i] = (ϕ[i+1]-ϕ[i])/dx
+            elif i == num-1:
+                dϕ[i] = (ϕ[i]-ϕ[i-1])/dx
+            else: 
+                if upwind == True:
+                    dϕ[i] = (ϕ[i]-ϕ[i-1])/dx
+                else:
+                    dϕ[i] = (ϕ[i+1]-ϕ[i-1])/(2*dx)
+    elif order == 2:
+        for i in range(num):
+            if i == 0:
+                dϕ[i] = (ϕ[i+2]-2*ϕ[i+1] + ϕ[i])/(dx**2)
+            elif i == num -1:
+                dϕ[i] = (ϕ[i]-2*ϕ[i-1] + ϕ[i-2])/(dx**2)
+            else:
+                dϕ[i] = (ϕ[i+1]- 2*ϕ[i] + ϕ[i-1])/(dx**2)
+    
+    return dϕ
