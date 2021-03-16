@@ -12,6 +12,7 @@ def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         v0 = -δ*η*(y_grid+y_grid**2)
 
     d_Λ = γ_1 + γ_2*y_grid + γ_2p*(y_grid>y_bar)*(y_grid-y_bar)
+    dd_Λ = γ_2 + γ_2p*(y_grid>y_bar)
 
     πc = np.ones((len(πc_o), len(y_grid)))
     θ_reshape = np.ones_like(πc)
@@ -35,7 +36,7 @@ def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         if σ_y == 0:
             e_tilde = -δ*η/(G*np.sum(πc*θ, axis=0))
         else:
-            temp = σ_y**2*(v0_dyy-G**2/ξ_1m)
+            temp = σ_y**2*(v0_dyy+(η-1.)*dd_Λ-G**2/ξ_1m)
             root = np.sum(πc*θ, axis=0)**2*G**2 - 4*δ*η*temp
             root[root<0] = 0.
             e_tilde = (-G*np.sum(πc*θ, axis=0) - np.sqrt(root)) / (2*temp)
@@ -47,12 +48,12 @@ def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         πc = πc/np.sum(πc, axis=0)
         πc[πc<=0] = 1e-16
         c_entropy = np.sum(πc*(np.log(πc)-np.log(πc_o)), axis=0)
-        
+
         A = np.ones_like(y_grid)*(-δ)
         B = e_tilde * np.sum(πc*θ, axis=0)
         C = .5 * σ_y**2 * e_tilde**2
         D = δ*η*np.log(e_tilde) - C*G**2/ξ_1m + (η-1)*d_Λ*e_tilde*np.sum(πc*θ, axis=0)\
-            + ξ_a*c_entropy
+            + .5*(η-1)*dd_Λ*σ_y**2*e_tilde**2 + ξ_a*c_entropy
         v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
 
         rhs_error = A*v0 + B*v0_dy + C*v0_dyy + D
@@ -123,6 +124,7 @@ def ode_y_jump_approach_one(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         v0 = -δ*η*(y_grid+y_grid**2)
 
     d_Λ = γ_1 + γ_2*y_grid
+    dd_Λ = γ_2
 
     πd = np.ones((len(πd_o), len(y_grid)))
     for i in range(πd.shape[0]):
@@ -151,7 +153,7 @@ def ode_y_jump_approach_one(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         if σ_y == 0:
             e_tilde = -δ*η/(G*np.sum(πc*θ, axis=0))
         else:
-            temp = σ_y**2*(v0_dyy-G**2/ξ_1m)
+            temp = σ_y**2*(v0_dyy+(η-1.)*dd_Λ-G**2/ξ_1m)
             root = np.sum(πc*θ, axis=0)**2*G**2 - 4*δ*η*temp
             root[root<0] = 0.
             e_tilde = (-G*np.sum(πc*θ, axis=0) - np.sqrt(root)) / (2*temp)
@@ -173,7 +175,7 @@ def ode_y_jump_approach_one(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         C = .5 * σ_y**2 * e_tilde**2
         D = δ*η*np.log(e_tilde) - C*G**2/ξ_1m + (η-1)*d_Λ*e_tilde*np.sum(πc*θ, axis=0)\
             + intensity*np.sum(πd_o*g*ϕ_i, axis=0) + ξ_2m*intensity*np.sum(πd_o*(1-g+g*np.log(g)), axis=0)\
-            + ξ_a*c_entropy
+            + .5*(η-1)*dd_Λ*σ_y**2*e_tilde**2 + ξ_a*c_entropy
         v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
 
         rhs_error = A*v0 + B*v0_dy + C*v0_dyy + D
@@ -204,6 +206,7 @@ def ode_y_jump_approach_one_boundary(y_grid, model_paras=(), v0=None, ϵ=.5, tol
         v0 = -δ*η*(y_grid+y_grid**2)
 
     d_Λ = γ_1 + γ_2*y_grid
+    dd_Λ = γ_2
 
     πd = np.ones((len(πd_o), len(y_grid)))
     for i in range(πd.shape[0]):
@@ -235,7 +238,7 @@ def ode_y_jump_approach_one_boundary(y_grid, model_paras=(), v0=None, ϵ=.5, tol
         if σ_y == 0:
             e_tilde = -δ*η/(G*np.sum(πc*θ, axis=0))
         else:
-            temp = σ_y**2*(v0_dyy-G**2/ξ_1m)
+            temp = σ_y**2*(v0_dyy+(η-1.)*dd_Λ-G**2/ξ_1m)
             root = np.sum(πc*θ, axis=0)**2*G**2 - 4*δ*η*temp
             root[root<0] = 0.
             e_tilde = (-G*np.sum(πc*θ, axis=0) - np.sqrt(root)) / (2*temp)
@@ -253,13 +256,11 @@ def ode_y_jump_approach_one_boundary(y_grid, model_paras=(), v0=None, ϵ=.5, tol
         intensity = 1./np.sqrt(ς)*np.exp(-(y_bar-y_grid)**2/(2*ς**2))
         g = np.exp(1./ξ_2m*(v0-ϕ_i))
 
-#         A = np.ones_like(y_grid)*(-δ) - intensity
         A = np.ones_like(y_grid)*(-δ)
         B = e_tilde * np.sum(πc*θ, axis=0)
         C = .5 * σ_y**2 * e_tilde**2
         D = δ*η*np.log(e_tilde) - C*G**2/ξ_1m + (η-1)*d_Λ*e_tilde*np.sum(πc*θ, axis=0)\
-            + ξ_a*c_entropy\
-#             + intensity*np.sum(πd_o*g*ϕ_i, axis=0) + ξ_2m*intensity*np.sum(πd_o*(1-g+g*np.log(g)), axis=0)\
+            + .5*(η-1)*dd_Λ*σ_y**2*e_tilde**2 + ξ_a*c_entropy\
 
         bc = -ξ_2m*np.log(np.sum(πd_o[:, -1]*np.exp(-1./ξ_2m*ϕ_i[:, -1])))
 
@@ -293,6 +294,7 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         v0 = -δ*η*(y_grid+y_grid**2)
 
     d_Λ = γ_1 + γ_2*y_grid
+    dd_Λ = γ_2
 
     πd = np.ones((len(πd_o), len(y_grid)))
     for i in range(πd.shape[0]):
@@ -321,7 +323,7 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         if σ_y == 0:
             e_tilde = -δ*η/(G*np.sum(πc*θ, axis=0))
         else:
-            temp = σ_y**2*(v0_dyy-G**2/ξ_1m)
+            temp = σ_y**2*(v0_dyy+(η-1.)*dd_Λ-G**2/ξ_1m)
             root = np.sum(πc*θ, axis=0)**2*G**2 - 4*δ*η*temp
             root[root<0] = 0.
             e_tilde = (-G*np.sum(πc*θ, axis=0) - np.sqrt(root)) / (2*temp)
@@ -343,7 +345,7 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
         C = .5 * σ_y**2 * e_tilde**2
         D = δ*η*np.log(e_tilde) - C*G**2/ξ_1m + (η-1)*d_Λ*e_tilde*np.sum(πc*θ, axis=0)\
             + intensity*np.sum(πd_o*g*ϕ_i, axis=0) + ξ_2m*intensity*np.sum(πd_o*g*np.log(g), axis=0)\
-            + ξ_a*c_entropy
+            + .5*(η-1)*dd_Λ*σ_y**2*e_tilde**2 + ξ_a*c_entropy
         v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
 
         rhs_error = A*v0 + B*v0_dy + C*v0_dyy + D
