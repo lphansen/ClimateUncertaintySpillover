@@ -1,7 +1,6 @@
 import numpy as np
 from utilities import compute_derivatives
-from solver import false_transient_one_iteration_python
-from solver_ode import solve_ode, derivative_1d
+from solver import false_transient_one_iteration_python, solve_lienar_ode_python
 
 
 def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
@@ -370,8 +369,42 @@ def ode_y_jump_approach_two(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, ma
     return res
 
 
-def ode_y_jump_approach_one_boundary(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
-    η, δ, θ, πc_o, σ_y, ξ_1m, ξ_2m, ξ_a, ς, γ_1, γ_2, y_bar, ϕ_i, πd_o = model_paras
+def solve_with_emission_boundary(y_grid, model_paras=()):
+    η, δ, θ, πc_o, σ_y, γ_1, γ_2, ϕ_i, πd_o, e_tilde = model_paras
+    Δ_y = y_grid[1] - y_grid[0]
+
+    d_Λ = γ_1 + γ_2*y_grid
+    dd_Λ = γ_2
+
+    A = np.ones_like(y_grid)*(-δ)
+    B = (πc_o@θ)*e_tilde
+    C = .5*σ_y**2*e_tilde**2
+    D = δ*η*np.log(e_tilde) + (η-1)*d_Λ*e_tilde*(πc_o@θ) + .5*(η-1)*dd_Λ*σ_y**2*e_tilde**2
+
+    bc = np.average(ϕ_i, axis=0, weights=πd_o)
+    bc = bc[-1]
+
+    v0 = solve_lienar_ode_python(A, B, C, D, 0., Δ_y, (0, bc), (False, True))
+
+    v0_dy = compute_derivatives(v0, 1, Δ_y, central_diff=False)
+    v0_dyy = compute_derivatives(v0, 2, Δ_y)
+
+    error = np.max(abs(A*v0 + B*v0_dy + C*v0_dyy + D))
+    
+    ME = -(v0_dy+(η-1)*d_Λ)*(πc_o@θ) - (v0_dyy+(η-1)*dd_Λ)*σ_y**2*e_tilde
+
+    print("Solved. PDE error: %s" % (error))  
+
+    res = {'v0': v0,
+           'v0_dy': v0_dy,
+           'v0_dyy': v0_dyy,
+           'ME': ME}
+
+    return res
+
+
+def uncertainty_decomposition(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
+    η, δ, θ, πc_o, σ_y, ξ_w, ξ_p, ξ_a, ς, γ_1, γ_2, y_bar, ϕ_i, πd_o = model_paras
     Δ_y = y_grid[1] - y_grid[0]
 
     if v0 is None:
@@ -410,7 +443,7 @@ def ode_y_jump_approach_one_boundary(y_grid, model_paras=(), v0=None, ϵ=.5, tol
         if σ_y == 0:
             e_tilde = -δ*η/(G*np.sum(πc*θ, axis=0))
         else:
-            temp = σ_y**2*(v0_dyy+(η-1.)*dd_Λ-G**2/ξ_1m)
+            temp = σ_y**2*(v0_dyy+(η-1.)*dd_Λ-G**2/ξ_w)
             root = np.sum(πc*θ, axis=0)**2*G**2 - 4*δ*η*temp
             root[root<0] = 0.
             e_tilde = (-G*np.sum(πc*θ, axis=0) - np.sqrt(root)) / (2*temp)
@@ -426,15 +459,15 @@ def ode_y_jump_approach_one_boundary(y_grid, model_paras=(), v0=None, ϵ=.5, tol
         c_entropy = np.sum(πc*(np.log(πc)-np.log(πc_o)), axis=0)
 
         intensity = 1./np.sqrt(ς)*np.exp(-(y_bar-y_grid)**2/(2*ς**2))
-        g = np.exp(1./ξ_2m*(v0-ϕ_i))
+        g = np.exp(1./ξ_p*(v0-ϕ_i))
 
         A = np.ones_like(y_grid)*(-δ)
         B = e_tilde * np.sum(πc*θ, axis=0)
         C = .5 * σ_y**2 * e_tilde**2
-        D = δ*η*np.log(e_tilde) - C*G**2/ξ_1m + (η-1)*d_Λ*e_tilde*np.sum(πc*θ, axis=0)\
+        D = δ*η*np.log(e_tilde) - C*G**2/ξ_w + (η-1)*d_Λ*e_tilde*np.sum(πc*θ, axis=0)\
             + .5*(η-1)*dd_Λ*σ_y**2*e_tilde**2 + ξ_a*c_entropy\
 
-        bc = -ξ_2m*np.log(np.sum(πd_o[:, -1]*np.exp(-1./ξ_2m*ϕ_i[:, -1])))
+        bc = -ξ_p*np.log(np.sum(πd_o[:, -1]*np.exp(-1./ξ_p*ϕ_i[:, -1])))
 
         v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, bc), (False, True))
 
@@ -456,3 +489,5 @@ def ode_y_jump_approach_one_boundary(y_grid, model_paras=(), v0=None, ϵ=.5, tol
            'c_entropy': c_entropy,
            'd_Λ': d_Λ}
     return res
+
+
