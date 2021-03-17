@@ -60,6 +60,40 @@ def get_coeff(A, Bx, Cxx, D, x_grid, ϕ_prev, ϵ, boundspec):
     return LHS, RHS
 
 
+@njit
+def get_coeff_one(A, Bx, Cxx, D, x_grid, boundspec):
+    dx = x_grid[1] - x_grid[0]
+    numx = len(x_grid)
+    LHS = np.zeros((numx, numx))
+    RHS =  - D
+    for i in range(numx):
+        LHS[i,i] +=  A[i]
+        if i == 0:
+            LHS[i,i] += - 1/dx*Bx[i] + Cxx[i]/(dx**2)
+            LHS[i,i+1] += 1/dx*Bx[i] - 2*Cxx[i]/(dx**2)
+            LHS[i, i+1] += + Cxx[i]/(dx**2)
+        elif i == numx-1:
+            if boundspec[0] == True:
+                LHS[i,i] = 1
+                RHS[i] = boundspec[1]
+            else:
+                LHS[i,i] += 1/dx*Bx[i] + Cxx[i]/(dx**2)
+                LHS[i,i-1] += -1/dx*Bx[i]  - 2*Cxx[i]/(dx**2)
+                LHS[i, i+1] += Cxx[i]/(dx**2)
+        else:
+            LHS[i,i+1] += Bx[i]*(1./dx)*(Bx[i]>0) + Cxx[i]/(dx**2)
+            LHS[i,i] += Bx[i]*((-1/dx)*(Bx[i]>0) + (1/dx)*(Bx[i]<0)) - 2*Cxx[i]/(dx**2)
+            LHS[i,i-1] += Bx[i]*(-1/dx)*(Bx[i]<0) + Cxx[i]/(dx**2)
+    return LHS, RHS
+
+
+def solve_ode_one( A, By, Cyy, D, y_grid,  boundspec):
+    LHS, RHS = get_coeff_one( A, By, Cyy, D, y_grid,  boundspec)
+    phi_grid, exit_code = bicg(csc_matrix(LHS), RHS)
+#     phi_grid = np.linalg.solve(LHS, RHS)
+    return phi_grid
+
+
 def solve_ode( A, By, Cyy, D, y_grid, ϕ_prev, ϵ, boundspec):
     LHS, RHS = get_coeff( A, By, Cyy, D, y_grid, ϕ_prev, ϵ, boundspec)
     phi_grid, exit_code = bicg(csc_matrix(LHS), RHS)
