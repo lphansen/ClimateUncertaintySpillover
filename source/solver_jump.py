@@ -97,6 +97,7 @@ def solve_smooth(y_grid, args, max_iter, tol, ϵ,):
     return ϕ, ems, π, h
 
 
+# + ξₘ*get_intensity(y_grid_cap,ς)*(πᵈo@(1 - g_list))\
 # solve for approach 2, step two
 def solve_jump(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
     """
@@ -148,7 +149,6 @@ def solve_jump(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
         By = (θ_list@πᶜ)*ems
         Cyy = ems**2*σy**2/2
         D = δ*η*np.log(ems) + θ_list@πᶜ*(η-1)*dΛ*ems\
-# + ξₘ*get_intensity(y_grid_cap,ς)*(πᵈo@(1 - g_list))\
         + ξa*np.sum(πᶜ*(np.log(πᶜ) - np.log(πᶜo)), axis=0) \
         - 1/(2*ξw)*temp**2*ems**2*σy**2\
         + 1/2*(η-1)*ddΛ*ems**2*σy**2

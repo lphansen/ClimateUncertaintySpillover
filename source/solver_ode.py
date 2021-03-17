@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+# +
 """
 module for solving ode
 """
+
 import numpy as np
 from numba import njit
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import bicg
 
+
+# -
 
 @njit
 def derivative_1d(data, order, h_data, upwind=False):
@@ -88,7 +92,7 @@ def get_coeff_one(A, Bx, Cxx, D, x_grid, boundspec):
 
 
 def solve_ode_one( A, By, Cyy, D, y_grid,  boundspec):
-    LHS, RHS = get_coeff_one( A, By, Cyy, D, y_grid,  boundspec)
+    LHS, RHS = get_coeff_one( A, By, Cyy, D, y_grid, boundspec)
     phi_grid, exit_code = bicg(csc_matrix(LHS), RHS)
 #     phi_grid = np.linalg.solve(LHS, RHS)
     return phi_grid
