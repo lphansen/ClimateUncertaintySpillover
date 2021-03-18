@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-# +
 """
 module for solving ode
 """
-
 import numpy as np
 from numba import njit
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import bicg
 
-
-# -
 
 @njit
 def derivative_1d(data, order, h_data, upwind=False):
@@ -48,15 +44,17 @@ def get_coeff(A, Bx, Cxx, D, x_grid, ϕ_prev, ϵ, boundspec):
     for i in range(numx):
         LHS[i,i] += - 1/ϵ + A[i]
         if i == 0:
-            LHS[i,i] += - 1/dx*Bx[i]
-            LHS[i,i+1] += 1/dx*Bx[i]
+            LHS[i,i] += - 1/dx*Bx[i] + Cxx[i]/(dx**2)
+            LHS[i,i+1] += 1/dx*Bx[i] - 2*Cxx[i]/(dx**2)
+            LHS[i,i+2] += Cxx[i]/(dx**2)
         elif i == numx-1:
             if boundspec[0] == True:
                 LHS[i,i] = 1
                 RHS[i] = boundspec[1]
             else:
-                LHS[i,i] += 1/dx*Bx[i]
-                LHS[i,i-1] += -1/dx*Bx[i]
+                LHS[i,i] += 1/dx*Bx[i] + Cxx[i]/(dx**2)
+                LHS[i,i-1] += -1/dx*Bx[i] - 2*Cxx[i]/(dx**2)
+                LHS[i,i-2] += Cxx[i]/(dx**2)
         else:
             LHS[i,i+1] += Bx[i]*(1./dx)*(Bx[i]>0) + Cxx[i]/(dx**2)
             LHS[i,i] += Bx[i]*((-1/dx)*(Bx[i]>0) + (1/dx)*(Bx[i]<0)) - 2*Cxx[i]/(dx**2)

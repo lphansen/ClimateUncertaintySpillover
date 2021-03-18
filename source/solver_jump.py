@@ -161,7 +161,9 @@ def solve_jump(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
         episode += 1
         ems_old = ems
     print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
-    
+    dϕdy = derivative_1d(ϕ, 1, dy, True)
+    dϕdyy = derivative_1d(ϕ, 2, dy, True)
+    temp = dϕdy + (η-1)*dΛ 
     h =  - temp*ems*σy/ξw
     ι, πᵈ = get_ι(πᵈo, g_list)
     penalty = ξp*get_intensity(y_grid_cap, ς)*(πᵈo@(1 - g_list))
