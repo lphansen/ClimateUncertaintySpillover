@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Functions to numerically solve a nonlinear ODE via false transient scheme.
 

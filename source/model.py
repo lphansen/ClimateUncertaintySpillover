@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Functions that solve the HJBs in the draft paper.
 
@@ -42,11 +43,11 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         e_tilde : (N,) ndarray
             :math:`\tilde{e}` on the grid of y.
         πc : (M, N) ndarray
-            Distorted probabilities of θ.            
+            Distorted probabilities of θ.
         h : (N,) ndarray
             Implied drift distortion.
         y : (N,) ndarray
-            Grid of y.            
+            Grid of y.
         model_args : tuple
             Model parameters.
     """
@@ -153,13 +154,13 @@ def solve_hjb_z(z, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         dvddz : (N,) ndarray
             Second order derivative of the value function.
         h : (N,) ndarray
-            Implied drift distortion.              
+            Implied drift distortion.
         z : (N,) ndarray
             Grid of z.
         model_args : tuple
-            Model parameters.            
-    """    
-    
+            Model parameters.
+    """
+
     η, δ, ρ, μ_2, σ_2, ξ_w = model_args
     dz = z[1] - z[0]
 
@@ -250,11 +251,11 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
         bc : float
             The boundary condition that we impose on the HJB.
         y : (N,) ndarray
-            Grid of y.            
+            Grid of y.
         model_args : tuple
             Model parameters.
-    """    
-    
+    """
+
     η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, θ, πc_o, ϕ_i, πd_o, ξ_w, ξ_p, ξ_a = model_args
     dy = y[1] - y[0]
 
@@ -269,7 +270,7 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
     πc_o = np.array([np.ones_like(y) * temp for temp in πc_o])
     πc = πc_o.copy()
     θ = np.array([np.ones_like(y) * temp for temp in θ])
-    
+
     e0_tilde = 0.
 
     count = 0
@@ -322,8 +323,9 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
 
     h = - (dvdy + (η - 1) * d_Λ) * e_tilde * σ_y / ξ_w
     g = np.exp(1. / ξ_p * (v - ϕ_i))
-
-    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))     
+    ι = np.sum(πd_o*g, axis=0)
+    πd  = πd_o*g/ι
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
     res = {'v': v,
            'dvdy': dvdy,
            'dvddy': dvddy,
@@ -331,7 +333,8 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
            'h': h,
            'πc': πc,
            'g': g,
-           'bc': bc
+           'πd': πd,
+           'bc': bc,
            'y': y,
            'model_args': model_args}
     return res
