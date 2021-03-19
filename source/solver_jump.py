@@ -54,8 +54,8 @@ def solve_smooth(y_grid, args, max_iter, tol, ϵ,):
     episode = 0
     while lhs_error > tol and episode < max_iter:
         ϕ_old = ϕ.copy()
-        dϕdy = derivative_1d(ϕ, 1, dy)
-        dϕdyy = derivative_1d(ϕ, 2, dy)
+        dϕdy = derivative_1d(ϕ, 1, dy, "up")
+        dϕdyy = derivative_1d(ϕ, 2, dy, "up")
         temp = dϕdy + (η-1)*dΛ
         # update belief
         weight = np.array([ - 1/ξa*temp*ems*θ for θ in θ_list])
@@ -120,8 +120,8 @@ def solve_jump(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
     πᶜo = np.ones((len(θ_list), len(y_grid_cap)))/len(θ_list)
     while lhs_error > tol and episode < max_iter:
         ϕ_old = ϕ.copy()
-        dϕdy = derivative_1d(ϕ, 1, dy, True)
-        dϕdyy = derivative_1d(ϕ, 2, dy, True)
+        dϕdy = derivative_1d(ϕ, 1, dy, "up")
+        dϕdyy = derivative_1d(ϕ, 2, dy, "up")
         # update control
         temp = dϕdy + (η-1)*dΛ 
         weight = np.array([ - 1/ξa*temp*ems*θ for θ in θ_list])
@@ -161,8 +161,8 @@ def solve_jump(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
         episode += 1
         ems_old = ems
     print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
-    dϕdy = derivative_1d(ϕ, 1, dy, True)
-    dϕdyy = derivative_1d(ϕ, 2, dy, True)
+    dϕdy = derivative_1d(ϕ, 1, dy, "up")
+    dϕdyy = derivative_1d(ϕ, 2, dy, "up")
     temp = dϕdy + (η-1)*dΛ 
     h =  - temp*ems*σy/ξw
     ι, πᵈ = get_ι(πᵈo, g_list)
