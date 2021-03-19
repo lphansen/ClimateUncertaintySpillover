@@ -480,6 +480,9 @@ def uncertainty_decomposition(y_grid, model_paras=(), e_tilde=None, h=None, πc=
     """
     if e_tilde is None:
         print("e_tilde is needed.")
+    minimize_h = True if h is None else False
+    minimize_πc = True if πc is None else False
+    minimize_bc = True if bc is None else False
 
     η, δ, θ, πc_o, σ_y, ξ_w, ξ_p, ξ_a, γ_1, γ_2, ϕ_i, πd_o = model_paras
     Δ_y = y_grid[1] - y_grid[0]
@@ -511,7 +514,7 @@ def uncertainty_decomposition(y_grid, model_paras=(), e_tilde=None, h=None, πc=
         F = v0_dyy + (η-1)*dd_Λ
 
         # Minimize over πc if πc is not specified
-        if πc is None:
+        if minimize_πc:
             log_πc_ratio = -G*e_tilde*θ/ξ_a
             πc_ratio = log_πc_ratio - np.max(log_πc_ratio, axis=0)
             πc = np.exp(πc_ratio) * πc_o
@@ -520,7 +523,7 @@ def uncertainty_decomposition(y_grid, model_paras=(), e_tilde=None, h=None, πc=
         c_entropy = np.sum(πc*(np.log(πc)-np.log(πc_o)), axis=0)
 
         # Minimize over h if h is not specified
-        if h is None:
+        if minimize_h:
             h = -(v0_dy+(η-1)*d_Λ)*e_tilde*σ_y/ξ_w
 
         A = np.ones_like(y_grid)*(-δ)
@@ -531,7 +534,7 @@ def uncertainty_decomposition(y_grid, model_paras=(), e_tilde=None, h=None, πc=
             + ξ_a*c_entropy
 
         # Use certainty equivalent if bc is not specified
-        if bc is None:
+        if minimize_bc:
             bc = -ξ_p*np.log(np.sum(πd_o*np.exp(-1./ξ_p*ϕ_i[:, -1])))
 
         v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, bc), (False, True))
@@ -545,7 +548,6 @@ def uncertainty_decomposition(y_grid, model_paras=(), e_tilde=None, h=None, πc=
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
     ME = -(v0_dy+(η-1)*d_Λ)*(np.sum(πc*θ, axis=0)+σ_y*h) - (v0_dyy+(η-1)*dd_Λ)*σ_y**2*e_tilde
-
     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))     
     res = {'v0': v0,
            'v0_dy': v0_dy,
