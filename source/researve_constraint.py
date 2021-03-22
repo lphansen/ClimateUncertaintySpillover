@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# +
 import numpy as np
 import os
 import sys
@@ -14,15 +13,13 @@ from numba import njit
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import bicg
 from derivative import derivatives_2d
-
+import time
 import SolveLinSys
 import time
 from supportfunctions import PDESolver_2d, finiteDiff
 import global_parameters as gp
 from utilities import dLambda, ddLambda, weightOfPi, relativeEntropy, weightPI, damageDrift, zDrift
 
-
-# -
 
 @njit
 def derivative_1d(data, order, h_data, upwind=True):
@@ -317,7 +314,7 @@ for ℓ in [1e-12, 1e-5]:
         episode += 1
         v0 = out_comp
         ems_old = ems
-        print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
+#         print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
     
     v_dict[ℓ] = v0
     ems_dict[ℓ] = ems
@@ -372,63 +369,66 @@ ddΛ = γ2 + π_p@γ3_list*(y_mat >ȳ)
 R_max = 9000
 
 tol = 1e-7
-ℓ = 1e-15
-ℓ_step = 1e-15
+ℓ = 1e-5
+ℓ_step = 1e-12
 
-ℓ_list = [ℓ, ℓ+ℓ_step]
-# ℓ_list = np.linspace(1e-20,1e-10 , 10)
+# ℓ_list = [ℓ, ℓ+ℓ_step]
+power_ℓ_list = np.linspace(-5, 3, 10)
+ℓ_list = 10**power_ℓ_list
+# -
+
+# numbe V_ℓ
 V_dict = dict()
 E_dict = dict()
-
-for ℓ_i in ℓ_list:
-    episode = 0
-    lhs_error = 1
-    ems = - δ*η/(b_mat*(η-1)*dΛ*θ)
-    ems_old = ems
-    while lhs_error > tol:
-        if episode ==0:
-            v0 =  - δ*η*y_mat**2
-        else:
-            vold = v0.copy()
-        v0_dy = derivatives_2d(v0,0,1,hy)
-        v0_dyy = derivatives_2d(v0,0,2,hy)
-        v0_db = derivatives_2d(v0,1,1,hb)
-        # updating controls
-
-        print(np.min(ems))
-        temp = v0_dy + b_mat*(η-1)*dΛ
-        a = v0_dyy*σy**2 - temp**2/(b_mat*ξₘ)*σy**2+ b_mat*(η - 1)*ddΛ*σy**2
-        b = temp*θ  - ℓ_i*θ 
-        c = δ*η*b_mat
-        Δ = b**2 - 4*c*a
-        Δ[Δ<0] = 0
-        ems_new =  -b/(2*a) - np.sqrt(Δ)/(2*a)
-        ems_new[ems_new <= 0] = 1e-15
-        ems = ems_new
-        # HJB coefficient
-        A =  np.zeros(y_mat.shape)
-        B_y =  ems*θ
-        B_b = - δ*b_mat
-        C_yy = ems**2*σy**2/2
-        C_bb = np.zeros(y_mat.shape)
-        D = b_mat*δ*η*np.log(ems) +  b_mat*(η-1)*(dΛ*ems*θ + 1/2*ddΛ*ems**2*σy**2)\
-        - ℓ_i*ems*θ - temp**2*ems**2*σy**2/(2*b_mat*ξₘ)
-        # PDE solver
-        solve_start = time.time()
-        out = PDESolver_2d(stateSpace, A, B_y, B_b, C_yy, C_bb, D, v0, ϵ, solverType = 'False Transient')
-        out_comp = out[2].reshape(v0.shape,order = "F")
-        rhs = A*v0 + B_y*v0_dy + B_b*v0_db + C_yy*v0_dyy + D
-        rhs_error = np.max(abs(rhs))
-        lhs_error = np.max(abs((out_comp - v0)))
-        #     if episode % 1 == 0:
-        print("Episode {:d}: PDE Error: {:.12f}; False Transient Error: {:.12f}; Iterations: {:d}; CG Error: {:.12f}".format(episode, rhs_error, lhs_error, out[0], out[1]))
-        episode += 1
-        v0 = out_comp
+for ℓ in ℓ_list:
+    for ℓ_i in [ℓ, ℓ + ℓ_step]:
+        episode = 0
+        lhs_error = 1
+        ems = - δ*η/(b_mat*(η-1)*dΛ*θ)
         ems_old = ems
-        print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
-    
-    V_dict[ℓ_i] = v0
-# -
+        while lhs_error > tol:
+            if episode ==0:
+                v0 =  - δ*η*y_mat**2
+            else:
+                vold = v0.copy()
+            v0_dy = derivatives_2d(v0,0,1,hy)
+            v0_dyy = derivatives_2d(v0,0,2,hy)
+            v0_db = derivatives_2d(v0,1,1,hb)
+            # updating controls
+
+            print(np.min(ems))
+            temp = v0_dy + b_mat*(η-1)*dΛ
+            a = v0_dyy*σy**2 - temp**2/(b_mat*ξₘ)*σy**2+ b_mat*(η - 1)*ddΛ*σy**2
+            b = temp*θ  - ℓ_i*θ 
+            c = δ*η*b_mat
+            Δ = b**2 - 4*c*a
+            Δ[Δ<0] = 0
+            ems_new =  -b/(2*a) - np.sqrt(Δ)/(2*a)
+            ems_new[ems_new <= 0] = 1e-15
+            ems = ems_new
+            # HJB coefficient
+            A =  np.zeros(y_mat.shape)
+            B_y =  ems*θ
+            B_b = - δ*b_mat
+            C_yy = ems**2*σy**2/2
+            C_bb = np.zeros(y_mat.shape)
+            D = b_mat*δ*η*np.log(ems) +  b_mat*(η-1)*(dΛ*ems*θ + 1/2*ddΛ*ems**2*σy**2)\
+            - ℓ_i*ems*θ - temp**2*ems**2*σy**2/(2*b_mat*ξₘ)
+            # PDE solver
+            solve_start = time.time()
+            out = PDESolver_2d(stateSpace, A, B_y, B_b, C_yy, C_bb, D, v0, ϵ, solverType = 'False Transient')
+            out_comp = out[2].reshape(v0.shape,order = "F")
+            rhs = A*v0 + B_y*v0_dy + B_b*v0_db + C_yy*v0_dyy + D
+            rhs_error = np.max(abs(rhs))
+            lhs_error = np.max(abs((out_comp - v0)))
+            #     if episode % 1 == 0:
+            print("Episode {:d}: PDE Error: {:.12f}; False Transient Error: {:.12f}; Iterations: {:d}; CG Error: {:.12f}".format(episode, rhs_error, lhs_error, out[0], out[1]))
+            episode += 1
+            v0 = out_comp
+            ems_old = ems
+            print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
+
+        V_dict[ℓ_i] = v0
 
 V_list = list()
 for ℓ_i in ℓ_list:
@@ -438,12 +438,6 @@ plt.plot(ℓ_list,  np.array(V_list)+ℓ_list )
 plt.xlabel('ℓ')
 plt.title('ϕ')
 
-V_dict[ℓ_list[0]][25, -1]/9000  , V_dict[ℓ_list[1]][25, -1]/9000, 
-
-V_list
-
-ℓ_list
-
 # $$
 #  V( \ell)  = \min_{\ell \geqslant 0} \tilde V(\ell) + \ell r
 # $$
@@ -452,8 +446,6 @@ V_list
 #  - \frac{\partial V}{\partial \ell} (\ell) = r
 # $$
 
-ℓ_list[1] - ℓ_list[0]
-
 plt.plot(y_mat[:,0], - (V_dict[ℓ_list[1]][:,-1] - V_dict[ℓ_list[0]][:,-1])/ℓ_step/θ)
 plt.title('r')
 plt.xlabel('y')
@@ -461,12 +453,54 @@ plt.xlabel('y')
 #         orientation='portrait', format=None,
 #         transparent=False, bbox_inches="tight", pad_inches=0.1,)
 
-- (V_dict[ℓ_list[1]][12,-1] - V_dict[ℓ_list[0]][12,-1])/ℓ_step
-
 # plt.plot(y_mat[:,0], V_dict[0][:,-1])
 plt.plot(y_mat[:,0], V_dict[ℓ][:,-1])
 plt.plot(y_mat[:,0], V_dict[ℓ+ℓ_step][:,-1])
 plt.title('ϕ')
 plt.xlabel('y')
 
-5/9000, 20/9000
+episode = 0
+lhs_error = 1
+ems = - δ*η/(b_mat*(η-1)*dΛ*θ)
+ems_old = ems
+while lhs_error > tol:
+    if episode ==0:
+        v0 =  - δ*η*y_mat**2
+    else:
+        vold = v0.copy()
+    v0_dy = derivatives_2d(v0,0,1,hy)
+    v0_dyy = derivatives_2d(v0,0,2,hy)
+    v0_db = derivatives_2d(v0,1,1,hb)
+    # updating controls
+
+    print(np.min(ems))
+    temp = v0_dy + b_mat*(η-1)*dΛ
+    a = v0_dyy*σy**2 - temp**2/(b_mat*ξₘ)*σy**2+ b_mat*(η - 1)*ddΛ*σy**2
+    b = temp*θ  - ℓ_i*θ 
+    c = δ*η*b_mat
+    Δ = b**2 - 4*c*a
+    Δ[Δ<0] = 0
+    ems_new =  -b/(2*a) - np.sqrt(Δ)/(2*a)
+    ems_new[ems_new <= 0] = 1e-15
+    ems = ems_new
+    # HJB coefficient
+    A =  np.zeros(y_mat.shape)
+    B_y =  ems*θ
+    B_b = - δ*b_mat
+    C_yy = ems**2*σy**2/2
+    C_bb = np.zeros(y_mat.shape)
+    D = b_mat*δ*η*np.log(ems) +  b_mat*(η-1)*(dΛ*ems*θ + 1/2*ddΛ*ems**2*σy**2)\
+    - ℓ_i*ems*θ - temp**2*ems**2*σy**2/(2*b_mat*ξₘ)
+    # PDE solver
+    solve_start = time.time()
+    out = PDESolver_2d(stateSpace, A, B_y, B_b, C_yy, C_bb, D, v0, ϵ, solverType = 'False Transient')
+    out_comp = out[2].reshape(v0.shape,order = "F")
+    rhs = A*v0 + B_y*v0_dy + B_b*v0_db + C_yy*v0_dyy + D
+    rhs_error = np.max(abs(rhs))
+    lhs_error = np.max(abs((out_comp - v0)))
+    #     if episode % 1 == 0:
+    print("Episode {:d}: PDE Error: {:.12f}; False Transient Error: {:.12f}; Iterations: {:d}; CG Error: {:.12f}".format(episode, rhs_error, lhs_error, out[0], out[1]))
+    episode += 1
+    v0 = out_comp
+    ems_old = ems
+    print("End of PDE solver, takes time: {}".format(time.time() - solve_start))
