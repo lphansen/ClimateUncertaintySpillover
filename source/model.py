@@ -338,3 +338,89 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
            'y': y,
            'model_args': model_args}
     return res
+
+
+def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, bc=None,
+                              v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_iteration=True):
+    """
+    Solve the PDE with a given e_tile. If h is not given, minimize over h; if πc is not given,
+    minimize over πc; if bc is not given, use certainty equivalent as bc.
+    
+    """
+    if e_tilde is None:
+        print("e_tilde is needed.")
+    minimize_h = True if h is None else False
+    minimize_πc = True if πc is None else False
+    minimize_bc = True if bc is None else False
+
+    η, δ, σ_y, γ_1, γ_2, θ, πc_o, ϕ_i, πd_o, ξ_w, ξ_p, ξ_a = model_args
+    dy = y[1] - y[0]
+
+    if v0 is None:
+        v0 = -η * ( y + y**2)
+
+    d_Λ = γ_1 + γ_2 * y
+    dd_Λ = γ_2
+
+    πc_o = np.array([np.ones_like(y) * temp for temp in πc_o])
+    θ = np.array([np.ones_like(y) * temp for temp in θ])
+
+    count = 0
+    error = 1.
+
+    while error > tol and count < max_iter:
+        dvdy = compute_derivatives(v0, 1, dy)
+        dvddy = compute_derivatives(v0, 2, dy)
+
+        G = dvdy + (η - 1.) / δ * d_Λ
+        F = dvddy + (η - 1.) / δ * dd_Λ
+
+        # Minimize over πc if πc is not specified
+        if minimize_πc:
+            log_πc_ratio = - G * e_tilde * θ / ξ_a
+            πc_ratio = log_πc_ratio - np.max(log_πc_ratio, axis=0)
+            πc = np.exp(πc_ratio) * πc_o
+            πc = πc / np.sum(πc, axis=0)
+            πc[πc <= 0] = 1e-16
+        c_entropy = np.sum(πc * (np.log(πc) - np.log(πc_o)), axis=0)
+
+        # Minimize over h if h is not specified
+        if minimize_h:
+            h = -(dvdy + (η - 1.) / δ * d_Λ) * e_tilde * σ_y / ξ_w
+
+        A = np.ones_like(y) * (-δ)
+        B = e_tilde * (np.sum(πc * θ, axis=0) + σ_y * h)
+        C = .5 * σ_y**2 * e_tilde**2
+        D = η * np.log(e_tilde) + (η - 1.) / δ * d_Λ * e_tilde * (np.sum(πc * θ, axis=0) + σ_y * h)\
+            + .5 * (η - 1.) / δ * dd_Λ * σ_y**2 * e_tilde**2 + ξ_w /2. * h**2\
+            + ξ_a * c_entropy
+
+        # Use certainty equivalent if bc is not specified
+        if minimize_bc:
+            bc = - ξ_p * np.log(np.sum(πd_o * np.exp(-1. / ξ_p * ϕ_i[:, -1])))
+
+        v = false_transient(A, B, C, D, v0, ε, dy, (0, bc), (False, True))
+
+        rhs_error = A * v0 + B * dvdy + C * dvddy + D
+        rhs_error = np.max(abs(rhs_error))
+        lhs_error = np.max(abs((v0 - v_old)/ϵ))
+        error = lhs_error
+
+        v0 = v
+        count += 1
+        if print_iteration:
+            print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+
+    ME = - (dvdy + (η - 1.) / δ * d_Λ) * (np.sum(πc * θ, axis=0) + σ_y * h)\
+         - (dvddy + (η - 1.) / δ * dd_Λ) * σ_y**2 * e_tilde
+
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))     
+
+    res = {'v': v,
+           'dvdy': dvdy,
+           'dvddy': dvddy,
+           'y': y,
+           'ME': ME}
+    return res
+
+
