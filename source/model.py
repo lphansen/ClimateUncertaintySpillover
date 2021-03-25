@@ -8,7 +8,7 @@ from utilities import compute_derivatives
 from solver import false_transient
 
 
-def solve_hjb_y(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_iteration=True):
+def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, print_iteration=True):
     r"""
     Solve the HJB that is only related to y.
     y is the accumulative change of temperature.
@@ -55,7 +55,7 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
     dy = y[1] - y[0]
 
     if v0 is None:
-        v0 = - δ * η * (y + y**2)
+        v0 = - η * (y + y**2)
 
     d_Λ = γ_1 + γ_2 * y + γ_2p * (y > y_bar) * (y - y_bar)
     dd_Λ = γ_2 + γ_2p * (y > y_bar)
@@ -71,13 +71,13 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         dvdy = compute_derivatives(v0, 1, dy)
         dvddy = compute_derivatives(v0, 2, dy)
 
-        G = dvdy + (η - 1) * d_Λ
+        G = dvdy + (η - 1) / δ * d_Λ
 
         if σ_y == 0:
-            e_tilde = - δ * η / (G * np.sum(πc * θ, axis=0))
+            e_tilde = - η / (G * np.sum(πc * θ, axis=0))
         else:
-            temp = σ_y**2 * (dvddy + (η - 1.) * dd_Λ - G**2 / ξ_w)
-            square = np.sum(πc*θ, axis=0)**2 * G**2 - 4 * δ * η * temp
+            temp = σ_y**2 * (dvddy + (η - 1.) / δ * dd_Λ - G**2 / ξ_w)
+            square = np.sum(πc*θ, axis=0)**2 * G**2 - 4 * η * temp
             square[square < 0] = 0.
             e_tilde = (- G * np.sum(πc * θ, axis=0) - np.sqrt(square)) / (2 * temp)
 
@@ -92,9 +92,9 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         A = np.ones_like(y) * (- δ)
         B = e_tilde * np.sum(πc * θ, axis=0)
         C = .5 * σ_y**2 * e_tilde**2
-        D = δ * η * np.log(e_tilde) -  C * G**2 / ξ_w\
-            + (η-1) * d_Λ * e_tilde * np.sum(πc * θ, axis=0)\
-            + .5 * (η - 1) * dd_Λ * σ_y**2 * e_tilde**2 + ξ_a * c_entropy
+        D = η * np.log(e_tilde) -  C * G**2 / ξ_w\
+            + (η-1) / δ * d_Λ * e_tilde * np.sum(πc * θ, axis=0)\
+            + .5 * (η - 1) / δ * dd_Λ * σ_y**2 * e_tilde**2 + ξ_a * c_entropy
 
         v = false_transient(A, B, C, D, v0, ε, dy, (0, 0), (False, False))
 
@@ -108,7 +108,7 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         if print_iteration:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
-    h = - (dvdy + (η - 1) * d_Λ) * e_tilde * σ_y / ξ_w
+    h = - (dvdy + (η - 1) / δ * d_Λ) * e_tilde * σ_y / ξ_w
 
     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
@@ -165,7 +165,7 @@ def solve_hjb_z(z, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
     dz = z[1] - z[0]
 
     if v0 is None:
-        v0 = - δ * η * (z + z**2)
+        v0 = - η * (z + z**2)
 
     h0 = np.zeros_like(z)
 
@@ -182,7 +182,7 @@ def solve_hjb_z(z, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         A = np.zeros_like(z)
         B = - ρ * (z - μ_2) + np.sqrt(z) * σ_2 * h
         C = .5 * σ_2**2 * z
-        D = - δ * η * np.log(z) + .5 * ξ_w * h**2
+        D = - η * np.log(z) + .5 * ξ_w * h**2
         v = false_transient(A, B, C, D, v0, ε, dz, (0, 0), (False, False))
 
         rhs_error = A * v + B * dvdz + C * dvddz + D
@@ -260,7 +260,7 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
     dy = y[1] - y[0]
 
     if v0 is None:
-        v0 = - δ * η * (y + y**2)
+        v0 = - η * (y + y**2)
 
     d_Λ = γ_1 + γ_2 * y
     dd_Λ = γ_2
@@ -280,13 +280,13 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
         dvdy = compute_derivatives(v0, 1, dy)
         dvddy = compute_derivatives(v0, 2, dy)
 
-        G = dvdy + (η - 1) * d_Λ
+        G = dvdy + (η - 1) / δ * d_Λ
 
         if σ_y == 0:
-            e_tilde = - δ * η / (G * np.sum(πc * θ, axis=0))
+            e_tilde = - η / (G * np.sum(πc * θ, axis=0))
         else:
-            temp = σ_y**2*(dvddy + (η-1.) * dd_Λ - G**2 / ξ_w)
-            root = np.sum(πc * θ, axis=0)**2 * G**2 - 4 * δ * η * temp
+            temp = σ_y**2*(dvddy + (η - 1.) / δ * dd_Λ - G**2 / ξ_w)
+            root = np.sum(πc * θ, axis=0)**2 * G**2 - 4 * η * temp
             root[root < 0] = 0.
             e_tilde = (- G * np.sum(πc * θ, axis=0) - np.sqrt(root)) / (2 * temp)
 
@@ -302,9 +302,9 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
         A = np.ones_like(y) * (- δ)
         B = e_tilde * np.sum(πc*θ, axis=0)
         C = .5 * σ_y**2 * e_tilde**2
-        D = δ * η * np.log(e_tilde) - C * G**2 / ξ_w\
-            + (η - 1) * d_Λ * e_tilde * np.sum(πc * θ, axis=0)\
-            + .5 * (η-1) * dd_Λ * σ_y**2 * e_tilde**2 + ξ_a * c_entropy
+        D = η * np.log(e_tilde) - C * G**2 / ξ_w\
+            + (η - 1.) / δ * d_Λ * e_tilde * np.sum(πc * θ, axis=0)\
+            + .5 * (η - 1.) / δ * dd_Λ * σ_y**2 * e_tilde**2 + ξ_a * c_entropy
 
         bc = - ξ_p * np.log(np.sum(πd_o[:, -1] * np.exp(- 1. / ξ_p * ϕ_i[:, -1])))
 
@@ -321,10 +321,10 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
         if print_iteration:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
-    h = - (dvdy + (η - 1) * d_Λ) * e_tilde * σ_y / ξ_w
+    h = - (dvdy + (η - 1.) / δ * d_Λ) * e_tilde * σ_y / ξ_w
     g = np.exp(1. / ξ_p * (v - ϕ_i))
-    ι = np.sum(πd_o*g, axis=0)
-    πd  = πd_o*g/ι
+    ι = np.sum(πd_o * g, axis=0)
+    πd  = πd_o * g / ι
     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
     res = {'v': v,
            'dvdy': dvdy,
