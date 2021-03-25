@@ -227,7 +227,7 @@ def uncertainty_decomposition(y_grid, model_paras=(), e_tilde=None, h=None, πc=
     Δ_y = y_grid[1] - y_grid[0]
 
     if v0 is None:
-        v0 = -δ*η*(y_grid+y_grid**2)
+        v0 = -η*(y_grid+y_grid**2)
 
     d_Λ = γ_1 + γ_2*y_grid
     dd_Λ = γ_2
