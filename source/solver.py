@@ -12,6 +12,8 @@ includes:
 
 import numpy as np
 from numba import njit
+from scipy.sparse import csc_matrix
+from scipy.sparse.linalg import bicg
 
 
 # @njit(parallel=True)
@@ -188,3 +190,75 @@ SIGMA_2 = compute_sigma2(RHO, .21, .1)
 def compute_h(dphi_dz, z_new, args = (SIGMA_2, XI_M)):
     sigma_2, xi_m = args
     return - dphi_dz*z_new*sigma_2**2/xi_m
+
+
+# -
+
+@njit
+def get_coeff(v0, z_mat, y_mat, A, Bz, By, Czz, Cyy, D, epsilon, boundspec=()):
+    numz, numy = z_mat.shape
+    hz = z_mat[1,0] - z_mat[0,0]
+    hy = y_mat[0,1] - y_mat[0,0]
+    # coefficient matrix
+    LHS = np.zeros((numy*numz, numy*numz))
+    RHS = -D -1/epsilon*v0
+    for i in range(numz):
+        for j in range(numy):
+            idx = i*numy + j
+            idx_yp1 = idx + 1
+            idx_yp2 = idx + 2
+            idx_ym1 = idx - 1
+            idx_ym2 = idx - 2
+            idx_zp1 = (i+1)*numy + j
+            idx_zp2 = (i+2)*numy + j
+            idx_zm1 = (i-1)*numy + j
+            idx_zm2 = (i-2)*numy + j
+            LHS[idx, idx] += A[i,j] - 1/epsilon
+            # assign coefficient
+            # z grid relevant
+            if i == 0:
+                LHS[idx, idx] += -Bz[i,j]/hz + Czz[i,j]/(hz**2)  
+                LHS[idx, idx_zp1] += Bz[i,j]/hz - Czz[i,j]*2/(hz**2)
+                LHS[idx, idx_zp2] += Czz[i,j]/(hz**2)
+            elif i == numz-1:
+                if boundspec[0] == 1:
+                    LHS[idx, :] = 0 
+                    LHS[idx, idx] = 1
+                    RHS[idx] = boundspec[1][j]
+                else:
+                    LHS[idx, idx] += Bz[i,j]/hz + Czz[i,j]/(hz**2)
+                    LHS[idx, idx_zm1] += -Bz[i,j]/hz - 2*Czz[i,j]/(hz**2)
+                    LHS[idx, idx_zm2] += Czz[i,j]/(hz**2)            
+            else:
+                LHS[idx, idx_zp1] += Bz[i,j]*(1/hz)*(Bz[i,j] > 0) + Czz[i,j]/(hz**2)
+                LHS[idx, idx] += Bz[i,j]*((-1/hz)*(Bz[i,j] > 0) + (1/hz)*(Bz[i,j] <= 0))- 2*Czz[i,j]/(hz**2) 
+                LHS[idx, idx_zm1] +=  Bz[i,j]*(-1/hz)*(Bz[i,j] <= 0)+ Czz[i,j]/(hz**2)
+            # y grid relevant
+            if j == 0:
+                LHS[idx, idx_yp2] += Cyy[i,j]/(hy**2)
+                LHS[idx, idx_yp1] += By[i,j]/hy - 2*Cyy[i,j]/(hy**2)
+                LHS[idx, idx] +=  - By[i,j]/hy + Cyy[i,j]/(hy**2)
+            elif j == numy-1:  
+                if boundspec[0] == 2:
+                    LHS[idx, :] = 0 
+                    LHS[idx, idx] = 1
+                    RHS[idx] = boundspec[1][i]
+                else:
+                    LHS[idx, idx] += By[i,j]/hy + Cyy[i,j]/(hy**2)
+                    LHS[idx, idx_ym1] += -By[i,j]/hy - 2*Cyy[i,j]/(hy**2)
+                    LHS[idx, idx_ym2] += Cyy[i,j]/(hy**2)
+            else:
+                LHS[idx, idx_yp1] += By[i,j]*(1/hy)*(By[i,j] > 0) + Cyy[i,j]/(hy**2)
+                LHS[idx, idx] += By[i,j]*((-1/hy)*(By[i,j] > 0) + (1/hy)*(By[i,j] <= 0)) - 2*Cyy[i,j]/(hy**2)
+                LHS[idx, idx_ym1] += By[i,j]*(-1/hy)*(By[i,j] <= 0) + Cyy[i,j]/(hy**2)  
+#    phi_grid = np.linalg.solve(LHS, RHS) 
+    return LHS, RHS # phi_grid
+
+
+def pde_solve(v0, z_mat, y_mat, A, Bz, By, Czz, Cyy, D, epsilon, boundspec):
+    v0long = v0.reshape(-1)
+    D_long = D.reshape(-1)
+    LHS, RHS = get_coeff(v0long, z_mat, y_mat, A, Bz, By, Czz, Cyy, D_long, epsilon, boundspec)
+    phi_grid, exit_code = bicg(csc_matrix(LHS), RHS)
+    phi_mat = phi_grid.reshape(v0.shape)
+    return phi_mat
