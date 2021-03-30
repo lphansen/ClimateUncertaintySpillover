@@ -296,6 +296,77 @@ def uncertainty_decomposition(y_grid, model_paras=(), e_tilde=None, h=None, πc=
     return res
 
 
+def ode_y_damage_ambiguity_conditional(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
+    η, δ, θ, πc_o, σ_y, ξ_a, γ_1, γ_2, γ_2p, y_bar = model_paras
+    Δ_y = y_grid[1] - y_grid[0]
+
+    if v0 is None:
+        v0 = -η*(y_grid+y_grid**2)
+
+    πc = np.ones((len(πc_o), len(y_grid)))
+    θ_reshape = np.ones_like(πc)
+    for i in range(πc.shape[0]):
+        πc[i] = πc_o[i]
+        θ_reshape[i] = θ[i]
+    πc_o = πc.copy()
+    θ = θ_reshape
+
+    d_Λ = γ_1 + γ_2*y_grid + γ_2p*(y_grid>y_bar)*(y_grid-y_bar)
+    dd_Λ = γ_2 + γ_2p*(y_grid>y_bar)    
+
+    count = 0
+    error = 1.
+    
+    while error > tol and count < max_iter:
+        v_old = v0.copy()
+
+        v0_dy = compute_derivatives(v0, 1, Δ_y, central_diff=False)
+        v0_dyy = compute_derivatives(v0, 2, Δ_y)
+
+        G = v0_dy + (η-1)/δ*d_Λ
+
+        if σ_y == 0:
+            e_tilde = -η/(np.sum(G*πc*θ, axis=0))
+        else:
+            temp = σ_y**2*(v0_dyy+(η-1.)/δ*np.sum(dd_Λ*πc, axis=0))
+            root = np.sum(πc*θ*G, axis=0)**2 - 4*η*temp
+            root[root<0] = 0.
+            e_tilde = (-np.sum(G*πc*θ, axis=0) - np.sqrt(root)) / (2*temp)
+        e_tilde[e_tilde<=0] = 1e-16
+
+        log_πc_ratio = -(G*e_tilde*θ + .5*(η-1)/δ*dd_Λ*σ_y**2*e_tilde**2)/ξ_a
+        πc_ratio = log_πc_ratio - np.max(log_πc_ratio, axis=0)
+        πc = np.exp(πc_ratio) * πc_o
+        πc = πc/np.sum(πc, axis=0)
+        πc[πc<=0] = 1e-16
+        c_entropy = np.sum(πc*(np.log(πc)-np.log(πc_o)), axis=0)
+
+        A = np.ones_like(y_grid)*(-δ)
+        B = e_tilde * np.sum(πc*θ, axis=0)
+        C = .5 * σ_y**2 * e_tilde**2
+        D = η*np.log(e_tilde) + (η-1)/δ*e_tilde*np.sum(πc*θ*d_Λ, axis=0)\
+            + .5*(η-1)/δ*np.sum(dd_Λ*πc, axis=0)*σ_y**2*e_tilde**2 + ξ_a*c_entropy
+        v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
+
+        rhs_error = A*v0 + B*v0_dy + C*v0_dyy + D
+        rhs_error = np.max(abs(rhs_error))
+        lhs_error = np.max(abs((v0 - v_old)/ϵ))
+        error = lhs_error
+        count += 1
+        if print_all:
+            print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+
+    res = {'v0': v0,
+           'v0_dy': v0_dy,
+           'v0_dyy': v0_dyy,
+           'e_tilde': e_tilde,
+           'y_grid': y_grid,
+           'πc': πc}
+    return res
+
+
 def ode_y_damage_ambiguity(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
     η, δ, θ, πc_o, σ_y, ξ_a, γ_1, γ_2, γ_2p, y_bar = model_paras
     Δ_y = y_grid[1] - y_grid[0]
@@ -367,4 +438,72 @@ def ode_y_damage_ambiguity(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max
            'e_tilde': e_tilde,
            'y_grid': y_grid,
            'πc': πc}
+    return res
+
+
+def uncertainty_decomposition_damage_ambiguity(y_grid, e_tilde, model_paras=(), v0=None,
+                                               ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
+    η, δ, θ, πc_o, σ_y, ξ_a, γ_1, γ_2, γ_2p, y_bar = model_paras
+    Δ_y = y_grid[1] - y_grid[0]
+
+    if v0 is None:
+        v0 = -η*(y_grid+y_grid**2)
+
+    πc = np.ones((len(πc_o), len(y_grid)))
+    θ_reshape = np.ones_like(πc)
+    γ_2p_reshape = np.ones_like(πc)
+    for i in range(πc.shape[0]):
+        πc[i] = πc_o[i]
+        θ_reshape[i] = θ[i]
+        γ_2p_reshape[i] = γ_2p[i]
+    πc_o = πc.copy()
+    θ = θ_reshape
+    γ_2p = γ_2p_reshape
+
+    d_Λ = γ_1 + γ_2*y_grid + γ_2p*(y_grid>y_bar)*(y_grid-y_bar)
+    dd_Λ = γ_2 + γ_2p*(y_grid>y_bar)    
+
+    count = 0
+    error = 1.
+    
+    while error > tol and count < max_iter:
+        v_old = v0.copy()
+
+        v0_dy = compute_derivatives(v0, 1, Δ_y, central_diff=False)
+        v0_dyy = compute_derivatives(v0, 2, Δ_y)
+
+        G = v0_dy + (η-1)/δ*d_Λ
+
+        log_πc_ratio = -(G*e_tilde*θ + .5*(η-1)/δ*dd_Λ*σ_y**2*e_tilde**2)/ξ_a
+        πc_ratio = log_πc_ratio - np.max(log_πc_ratio, axis=0)
+        πc = np.exp(πc_ratio) * πc_o
+        πc = πc/np.sum(πc, axis=0)
+        πc[πc<=0] = 1e-16
+        c_entropy = np.sum(πc*(np.log(πc)-np.log(πc_o)), axis=0)
+
+        A = np.ones_like(y_grid)*(-δ)
+        B = e_tilde * np.sum(πc*θ, axis=0)
+        C = .5 * σ_y**2 * e_tilde**2
+        D = η*np.log(e_tilde) + (η-1)/δ*e_tilde*np.sum(πc*θ*d_Λ, axis=0)\
+            + .5*(η-1)/δ*np.sum(dd_Λ*πc, axis=0)*σ_y**2*e_tilde**2 + ξ_a*c_entropy
+        v0 = false_transient_one_iteration_python(A, B, C, D, v0, ε, Δ_y, (0, 0), (False, False))
+
+        rhs_error = A*v0 + B*v0_dy + C*v0_dyy + D
+        rhs_error = np.max(abs(rhs_error))
+        lhs_error = np.max(abs((v0 - v_old)/ϵ))
+        error = lhs_error
+        count += 1
+        if print_all:
+            print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+    
+    ME = - np.sum((v0_dy+(η-1)/δ*d_Λ)*πc*θ, axis=0) - np.sum(πc*(v0_dyy+(η-1)/δ*dd_Λ)*σ_y**2*e_tilde, axis=0)
+    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+
+    res = {'v0': v0,
+           'v0_dy': v0_dy,
+           'v0_dyy': v0_dyy,
+           'e_tilde': e_tilde,
+           'y_grid': y_grid,
+           'πc': πc,
+           'ME': ME}
     return res

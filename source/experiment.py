@@ -4,7 +4,7 @@ from model import ode_y, ode_y_jump_approach_one_boundary, uncertainty_decomposi
 from utilities import find_nearest_value
 
 
-def solve_value_function(ξ_w, ξ_p, ξ_a, damage_setting={'γ_2p': np.array([0, .0197*2, .3853*2]),
+def solve_value_function(ξ_w, ξ_p, ξ_a, damage_setting={'γ_2p': np.array([0, .0197*2*2, .3853*2]),
                                                         'πd_o': np.array([1./3, 1./3, 1./3])}):
     η = .032
     δ = .01
@@ -51,7 +51,7 @@ def solve_value_function(ξ_w, ξ_p, ξ_a, damage_setting={'γ_2p': np.array([0,
 
 
 def solve_alternative_ME(ξ_w, ξ_p, ξ_a, baseline_w, baseline_p, baseline_a,
-                         damage_setting={'γ_2p': np.array([0, .0197*2, .3853*2]),
+                         damage_setting={'γ_2p': np.array([0, .0197*2*2, .3853*2]),
                                          'πd_o': np.array([1./3, 1./3, 1./3])}):
     η = .032
     δ = .01
