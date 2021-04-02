@@ -324,16 +324,22 @@ def solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
 
 
 # solve for approach one
-def approach_one_100(y_grid, numy_bar, args, ϵ=0.3, tol=1e-8, max_iter=10_000):
+def approach_one_100(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=10_000):
     δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ς, ξp, ξa, ξw, σy = args
     ϕ_list = list()
+    π_list = list()
     for γ3 in γ3_list:
         args_post = (δ, η, θ_list, σy, γ1, γ2, γ3, ȳ, ξa, ξw)
-        ϕ, _, _ , _ = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
+        ϕ, _, π , _ = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
         ϕ_list.append(ϕ)
+        π_list.append(π)
     ϕ_list = np.array(ϕ_list)
+    π_list = np.array(π_list)
     solution = solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter)
-    return solution, ϕ_list
+    if report_π == True:
+        return solution, ϕ_list, π_list
+    else:
+        return solution, ϕ_list
 
 
 def generate_weight(params, ems, dϕdy, y_grid, args_weight=()):
@@ -351,7 +357,6 @@ def generate_weight(params, ems, dϕdy, y_grid, args_weight=()):
     return weight
 
 
-# +
 def solve_smooth_unreveal(y_grid, args, max_iter, tol, ϵ,):
     """
     solve for step one, ϕⱼ for individual damage function
@@ -416,7 +421,7 @@ def solve_smooth_unreveal(y_grid, args, max_iter, tol, ϵ,):
         D = η*np.log(ems) + ξa*np.sum(π*(np.log(π) - np.log(πo)), axis=0)\
             + (η-1)/δ*dmg_drift
 #         - 1/(2*ξw)*temp**2*ems**2*σy**2\
-#         + 1/2*(η-1)/δ*ddΛ*ems**2*σy**2
+# + 1/2*(η-1)/δ*ddΛ*ems**2*σy**2
         ϕ_new = solve_ode(A, B, C, D, y_grid, ϕ, ϵ, (False, 0))
         rhs = -δ*ϕ_new + B*dϕdy + C*dϕdyy + D
         rhs_error = np.max(abs(rhs))
