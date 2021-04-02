@@ -1,8 +1,9 @@
-# Wrestling with Uncertainty in Climate Economic Models
-This repository contains codes and jupyter notebooks which compute and demonstrate results of the example economy section in "Wrestling with Uncertainty in Climate Economic Models" by [William Brock][id1] and [Lars Peter Hansen][id2]. Latest version could be found [here][id4].
+# Climate Change Uncertainty Spillover in the Macroeconomy
+This repository contains codes and jupyter notebooks which compute and demonstrate results of "Climate Change Uncertainty Spillover in the Macroeconomy" by [Micheal Barnett][id1], [William Brock][id2] and [Lars Peter Hansen][id3]. Latest version could be found [here][id4].
 
-[id1]: https://economics.missouri.edu/people/brock
-[id2]: https://larspeterhansen.org/
+[id1]: to
+[id2]: https://economics.missouri.edu/people/brock
+[id3]: https://larspeterhansen.org/
 [id4]: https://larspeterhansen.org/research/papers/
 
 ## Table of contents
@@ -39,3 +40,7 @@ An alternative way is to store the notebook as well as codes in your local machi
     $ pip install -r requirements.txt
     ```
 ## <a name="quick-guide"></a>Quick user's guide
+description of notebooks' contents
+
+## <a name="snapshot"></a> Snapshots of results
+selected plots
