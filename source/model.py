@@ -248,6 +248,8 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
             Distorted probabilities of θ.
         g : (K, N) ndarray
             Change in damage probability and intensity.
+        πd : (K, N) ndarray
+            Distorted probabilities of damage functions.
         bc : float
             The boundary condition that we impose on the HJB.
         y : (N,) ndarray
