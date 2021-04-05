@@ -42,5 +42,13 @@ An alternative way is to store the notebook as well as codes in your local machi
 ## <a name="quick-guide"></a>Quick user's guide
 description of notebooks' contents
 
+The notebooks are separated according to section in the paper.
+- Section 0: Environment setup
+- Section 1 - 4: Introduction to example economy
+- Section 5: [Uncertainty aversion](sec5_UncertaintyAversion.ipynb)
+- Section 6: [Climate components of a planner's decision problem](sec6_DecisionProblem.ipynb)
+- Section 7: [Sensitivity](sec7_Sensitivity.ipynb)
+- Section 8: [Uncertainty decomposition](sec8_UncertaintyDecomposition.ipynb)
+
 ## <a name="snapshot"></a> Snapshots of results
 selected plots
