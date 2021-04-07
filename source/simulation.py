@@ -106,3 +106,33 @@ def simulate_jump(model_res, θ_list, ME=None,  y_start=1,  T=100, dt=1):
     else:
         simulation_res = dict(yt=yt, et=et, πct=πct, πdt=πdt, ht=ht)
     return simulation_res
+
+
+def simulate_me(y_grid, e_grid, ratio_grid, θ=1.86/1000., y_start=1, T=100):
+    """
+    simulate log(ME_new/ME_baseline)*1000.
+    
+    Parameters
+    ----------
+    y_grid:
+    e_grid:
+    ratio_grid:
+    θ:
+    y_start:
+    T
+    
+    Returns
+    -------
+    Et:
+    yt:
+    ratio_t:
+    """
+    Et = np.zeros(T+1)
+    yt = np.zeros(T+1)
+    ratio_t = np.zeros(T+1)
+    for i in range(T+1):
+        Et[i] = np.interp(y_start, y_grid, e_grid)
+        ratio_t[i] = np.interp(y_start, y_grid, ratio_grid)
+        yt[i] = y_start
+        y_start = y_start + Et[i]*θ
+    return Et, yt, ratio_t

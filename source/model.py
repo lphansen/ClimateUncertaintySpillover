@@ -110,7 +110,7 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, pri
 
     h = - (dvdy + (η - 1) / δ * d_Λ) * e_tilde * σ_y / ξ_w
 
-    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+    print("Converged. Total iteration: %s;\t LHS Error: %s;\t RHS Error %s" % (count, lhs_error, rhs_error))
 
     res = {'v': v,
            'dvdy': dvdy,
@@ -327,7 +327,7 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
     g = np.exp(1. / ξ_p * (v - ϕ_i))
     ι = np.sum(πd_o * g, axis=0)
     πd  = πd_o * g / ι
-    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+    print("Converged. Total iteration: %s;\t LHS Error: %s;\t RHS Error %s" % (count, lhs_error, rhs_error))
     res = {'v': v,
            'dvdy': dvdy,
            'dvddy': dvddy,
@@ -371,6 +371,7 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
     error = 1.
 
     while error > tol and count < max_iter:
+        v_old = v0.copy()
         dvdy = compute_derivatives(v0, 1, dy)
         dvddy = compute_derivatives(v0, 2, dy)
 
@@ -405,7 +406,7 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
 
         rhs_error = A * v0 + B * dvdy + C * dvddy + D
         rhs_error = np.max(abs(rhs_error))
-        lhs_error = np.max(abs((v0 - v_old)/ϵ))
+        lhs_error = np.max(abs((v - v_old)/ϵ))
         error = lhs_error
 
         v0 = v
@@ -416,7 +417,7 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
     ME = - (dvdy + (η - 1.) / δ * d_Λ) * (np.sum(πc * θ, axis=0) + σ_y * h)\
          - (dvddy + (η - 1.) / δ * dd_Λ) * σ_y**2 * e_tilde
 
-    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))     
+    print("Converged. Total iteration: %s;\t LHS Error: %s;\t RHS Error %s" % (count, lhs_error, rhs_error))     
 
     res = {'v': v,
            'dvdy': dvdy,
