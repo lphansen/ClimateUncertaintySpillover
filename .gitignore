@@ -69,7 +69,34 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+# docs/_build/
+## packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+## compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+## log and database
+*.log
+*.sql
+*.sqlite
+## OS generated files
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+## editor backup files
+*~
 
 # PyBuilder
 target/
