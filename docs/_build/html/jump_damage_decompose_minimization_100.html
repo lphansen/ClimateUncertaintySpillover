@@ -1,0 +1,1051 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Jump model of damages &#8212; doc_suri  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/material.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Damage function" href="DamageFunction.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=blue-grey data-md-color-accent=blue>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#jump_damage_decompose_minimization_100" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="doc_suri  documentation"
+           class="md-header-nav__button md-logo">
+          
+            &nbsp;
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Uncertainty spillover</span>
+          <span class="md-header-nav__topic"> Jump model of damages </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty spillover on Github
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="doc_suri documentation" class="md-nav__button md-logo">
+      
+        <img src="_static/" alt=" logo" width="48" height="48">
+      
+    </a>
+    <a href="index.html"
+       title="doc_suri documentation">Uncertainty spillover</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty spillover on Github
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="DamageFunction.html" class="md-nav__link">Damage function</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Jump model of damages </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Jump model of damages</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/jump_damage_decompose_minimization_100.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#scc-uncertainty-decomposition-pre-jump" class="md-nav__link">SCC uncertainty decomposition: pre jump</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#id1" class="md-nav__link">SCC uncertainty decomposition: pre jump</a>
+      <ul class="md-nav__list"> 
+    <li class="md-nav__item">
+    
+    
+      <a href="#with-minimization-over-climate-models" class="md-nav__link">With minimization over climate models</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#minimize-over-pi-c" class="md-nav__link">Minimize over <span class="math notranslate nohighlight">\(\pi^c\)</span></a>
+      
+    
+    </li></ul>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#minimize-over-g-i" class="md-nav__link">Minimize over <span class="math notranslate nohighlight">\(g_i\)</span></a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#computation" class="md-nav__link">Computation</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/jump_damage_decompose_minimization_100.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># packages</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span> <span class="o">+</span> <span class="s1">'/source'</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">solver_1d</span> <span class="kn">import</span> <span class="n">false_transient_one_iteration_python</span>
+<span class="kn">from</span> <span class="nn">supportfunctions</span> <span class="kn">import</span> <span class="n">PDESolver_2d</span><span class="p">,</span> <span class="n">finiteDiff</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csc_matrix</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">bicg</span>
+<span class="kn">from</span> <span class="nn">derivative</span> <span class="kn">import</span> <span class="n">derivatives_2d</span>
+<span class="kn">import</span> <span class="nn">SolveLinSys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">solver_ode</span> <span class="kn">import</span> <span class="n">solve_ode</span><span class="p">,</span> <span class="n">solve_ode_one</span><span class="p">,</span> <span class="n">derivative_1d</span>
+<span class="kn">from</span> <span class="nn">solver_jump</span> <span class="kn">import</span> <span class="n">approach_one_100</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'axes.spines.right'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'axes.spines.top'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">"lines.linewidth"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'legend.frameon'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parameters</span>
+<span class="n">δ</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">η</span> <span class="o">=</span> <span class="mf">0.032</span>
+<span class="n">θ_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/model144.csv"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">θ_list</span> <span class="o">=</span> <span class="n">θ_list</span><span class="o">/</span><span class="mi">1000</span>
+<span class="n">σy</span> <span class="o">=</span> <span class="mf">1.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span>
+<span class="n">ς</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="c1"># damage function</span>
+<span class="n">ȳ</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">γ1</span> <span class="o">=</span> <span class="mf">0.00017675</span>
+<span class="n">γ2</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.0022</span>
+<span class="n">γ3_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.0197</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.3853</span><span class="p">])</span>
+<span class="c1"># y grid</span>
+<span class="n">numy_bar</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">y_min</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">y_max</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">hy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ȳ</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span><span class="o">/</span><span class="n">numy_bar</span>
+<span class="n">y_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="o">+</span><span class="n">hy</span><span class="p">,</span> <span class="n">hy</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_grid</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">2.0</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># capital parameters</span>
+<span class="n">invkap</span> <span class="o">=</span> <span class="mf">0.09</span>
+<span class="n">α</span> <span class="o">=</span> <span class="mf">0.115</span>
+<span class="n">αₖ</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">0.043</span>
+<span class="n">σₖ</span> <span class="o">=</span> <span class="mf">0.0085</span>
+<span class="n">κ</span> <span class="o">=</span> <span class="mf">6.667</span>
+<span class="n">k0</span> <span class="o">=</span> <span class="mi">80</span><span class="o">/</span><span class="n">α</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_temp</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">n_carb</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">θ_mat</span> <span class="o">=</span> <span class="n">θ_list</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_temp</span><span class="p">,</span> <span class="n">n_carb</span><span class="p">)</span>
+<span class="n">θtemp_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">θ_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">θcarb_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">θ_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+
+<h1 id="jump-damage-decompose-minimization-100--page-root">Jump model of damages<a class="headerlink" href="#jump-damage-decompose-minimization-100--page-root" title="Permalink to this headline">¶</a></h1>
+<p>Intensity function:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathcal{I}(y) = \begin{cases}
+(\frac{1}{\sqrt{2\pi} \varsigma})\exp\left[- \frac{(y - \bar y)^2}{2\varsigma^2}\right], \quad y \leqslant \bar y\\
+(\frac{1}{\sqrt{2\pi}\varsigma}), \quad y &gt; \bar y
+\end{cases}\end{split}\]</div>
+<p>HJB</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \max_{\tilde e} \min_{\pi^d} &amp;- \delta \phi(y) + \eta \log\tilde e \\
+    &amp; +  \frac{d\phi}{dy} \theta \tilde e  + \frac{1}{2} \frac{d^2 \phi}{dy^2}(\tilde e)^2 |\sigma_y|^2 + \frac{1}{2} \frac{(\eta - 1)}{\delta} \gamma_2 (\tilde e)^2 |\sigma_y|^2\\
+&amp; + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y) \tilde e \theta + \mathcal{I}(y)\sum_j \pi^d_j \left[\phi_j(y) - \phi(y) \right] \\
+&amp;  + \textbf{relative entropy}
+\end{aligned}\end{split}\]</div>
+<p>## Approach one:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \max_{\tilde e} \min_{g_j} &amp;- \delta \phi(y) + \eta \log\tilde e + \frac{1}{2} \frac{d^2 \phi}{dy^2}(\tilde e)^2 |\sigma_y|^2  + \frac{\xi_m}{2} h'h\\
+&amp; + [ \frac{d\phi}{dy}    + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)]\cdot \tilde e \sigma_y h +\frac{1}{2} \frac{(\eta - 1)}{\delta} \gamma_2 (\tilde e)^2 |\sigma_y|^2\\
+&amp; + \sum_i \pi_i^c \frac{d\phi}{dy} \theta_i \tilde e  + \sum_i \pi_i^c \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y) \tilde e \theta_i + \xi_a \sum_i \hat\pi^c_i(\log \pi^c_i - \log \hat\pi^c_i)\\
+&amp;  + \mathcal{I}(y)\sum_j\hat\pi_j^d g_j\left[\phi_j(y) - \phi(y) \right]  + \xi_m \mathcal{I}(y) \sum_j \hat\pi_j^d [1 - g_j + g_j \log g_j]
+\end{aligned}\end{split}\]</div>
+<p>The optimal <span class="math notranslate nohighlight">\(g_j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[g_j^* = \exp\{\frac{1}{\xi_m}\left( \phi(y) - \phi_j(y)\right)\}\]</div>
+<p>Plug back in</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \max_{\tilde e} \min_{g_j} &amp;- \delta \phi(y) + \eta \log\tilde e + \frac{1}{2} \frac{d^2 \phi}{dy^2}(\tilde e)^2 |\sigma_y|^2 + \frac{1}{2}\frac{(\eta -1)}{\delta}\gamma_2(\tilde e)^2 |\sigma_y|^2\\
+&amp; + \sum_i \pi_i^c \left[\frac{d\phi}{dy}  + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)\right] \tilde e \theta_i + \xi_a \sum_i \hat\pi^c_i(\log \pi^c_i - \log \hat\pi^c_i) \\
+&amp;  +  \xi_m \mathcal{I}(y) \sum_j \hat\pi_j^d [1 - g_j^* ]
+\end{aligned}\end{split}\]</div>
+<p>Intensity altered to be <span class="math notranslate nohighlight">\(\iota^*(y) \mathcal{I} (y)\)</span> where:</p>
+<div class="math notranslate nohighlight">
+\[\iota^*(y)  = \sum_j \hat\pi_j g_j^*\]</div>
+<p>Distorted probability:</p>
+<div class="math notranslate nohighlight">
+\[\pi^*_j  = \frac{\exp\left(-\frac{1}{\xi_m} [\phi_j(y) - \phi(y)] \right) \hat\pi_j}{\iota^*(y)}\]</div>
+<p>### Equivalent to:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \max_{\tilde e} \min_{g_j} &amp;- \delta \phi(y) + \eta \log\tilde e + \frac{1}{2} \frac{d^2 \phi}{dy^2}(\tilde e)^2 |\sigma_y|^2 + \frac{1}{2}\frac{(\eta -1)}{\delta}\gamma_2(\tilde e)^2 |\sigma_y|^2\\
+&amp; + \sum_i \pi_i^c \left[\frac{d\phi}{dy}  + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)\right] \tilde e \theta_i + \xi_a \sum_i \hat\pi^c_i(\log \pi^c_i - \log \hat\pi^c_i) \\
+\end{aligned}\end{split}\]</div>
+<p>With boundary condititon:</p>
+<div class="math notranslate nohighlight">
+\[\phi(\bar y) \approx - \xi_p \log \left( \sum_i {\pi^d_j} \exp ( - \frac{1}{\xi_p}\phi_j(\bar y) )\right)\]</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME</span><span class="p">,</span>  <span class="n">θ_list</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="c1">#     ems = solu["ems"]</span>
+    <span class="n">ems</span> <span class="o">=</span> <span class="n">ems_star</span>
+    <span class="n">πᶜ</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s2">"πc"</span><span class="p">]</span>
+    <span class="n">πᵈ</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s2">"πd"</span><span class="p">]</span>
+    <span class="n">ι</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s2">"ι"</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="o">/</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">et</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+    <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+    <span class="n">πᶜt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">periods</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)))</span>
+    <span class="n">πᵈt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">periods</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">πᵈ</span><span class="p">)))</span>
+    <span class="n">ιt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+    <span class="n">ht</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ME</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">me_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+    <span class="c1"># interpolate</span>
+    <span class="n">get_πᵈ</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">πᵈ</span><span class="p">)</span>
+    <span class="n">get_πᶜ</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">πᶜ</span><span class="p">)</span>
+<span class="c1">#     y = np.mean(θ_list)*290</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">periods</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y_grid</span><span class="p">):</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ems_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">ems</span><span class="p">)</span>
+            <span class="n">πᵈ_list</span> <span class="o">=</span> <span class="n">get_πᵈ</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">πᶜ_list</span> <span class="o">=</span> <span class="n">get_πᶜ</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">ι_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">ι</span><span class="p">)</span>
+            <span class="n">h_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ME</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">me_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">ME</span><span class="p">)</span>
+                <span class="n">me_t</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">me_point</span>
+            <span class="n">et</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">ems_point</span>
+            <span class="n">πᵈt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">πᵈ_list</span>
+            <span class="n">πᶜt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">πᶜ_list</span>
+            <span class="n">ιt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">ι_point</span>
+            <span class="n">ht</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_point</span>
+            <span class="n">yt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="n">ems_point</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="k">if</span> <span class="n">ME</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">yt</span><span class="p">,</span> <span class="n">et</span><span class="p">,</span> <span class="n">πᵈt</span><span class="p">,</span> <span class="n">πᶜt</span><span class="p">,</span> <span class="n">ιt</span><span class="p">,</span> <span class="n">ht</span><span class="p">,</span> <span class="n">me_t</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">yt</span><span class="p">,</span> <span class="n">et</span><span class="p">,</span> <span class="n">πᵈt</span><span class="p">,</span> <span class="n">πᶜt</span><span class="p">,</span> <span class="n">ιt</span><span class="p">,</span> <span class="n">ht</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_solu</span><span class="p">(</span><span class="n">ht</span><span class="p">,</span> <span class="n">πᵈt</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s1">'φ'</span><span class="p">]</span>
+    <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">numy_bar</span> <span class="o">=</span> <span class="n">args</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\xi_a = </span><span class="si">{}</span><span class="s1">, \quad  \xi_w =1/</span><span class="si">{}</span><span class="s1">, \quad \xi_p = 1/</span><span class="si">{}</span><span class="s1"> $'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ξa</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">ξw</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">ξp</span><span class="p">)))</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ht</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'years'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'h'</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">πᵈt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][</span><span class="n">πᵈt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"high damage"</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">πᵈt</span><span class="p">[:,</span><span class="mi">0</span><span class="p">][</span><span class="n">πᵈt</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"low damage"</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">πᵈt</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"extreme"</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'years'</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'πᵈ'</span><span class="p">)</span>
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">ξp</span><span class="o">*</span><span class="n">ϕ_list</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)</span>
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="o">-</span><span class="n">ξp</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ϕ_bound</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ϕ</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'prior to jump'</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">ϕ_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"post jump, low damage"</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">ϕ_bound</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"post jump, certainty equivalent"</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">ϕ_list</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-."</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"post jump, high damage"</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">ϕ_list</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">numy_bar</span><span class="p">:],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">":"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=-</span><span class="mi">11</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"dashed"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+    <span class="c1"># ax3.xlim(0,4)</span>
+    <span class="c1"># ax3.ylim(-0.02, 0.05)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'$\phi$'</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'y'</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="c1"># ax3.set_title(r'$\xi_a = 1,000, \quad  \xi_w =1/400, \quad \xi_p = 1/400 \times 5 $')</span>
+    <span class="c1"># plt.savefig("phi_x1.pdf", facecolor="w", edgecolor='w', bbox_inches="tight")</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># simulate</span>
+<span class="k">def</span> <span class="nf">simulate_logkapital</span><span class="p">(</span><span class="n">invkap</span><span class="p">,</span> <span class="n">αₖ</span><span class="p">,</span>  <span class="n">σₖ</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="o">/</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">Kt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">invkap</span>
+     <span class="c1"># log capital</span>
+    <span class="n">Kt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">k0</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">k0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">periods</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">k</span> <span class="o">+=</span>   <span class="p">(</span><span class="n">αₖ</span> <span class="o">+</span> <span class="n">i</span> <span class="o">-</span> <span class="n">κ</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">σₖ</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
+        <span class="n">Kt</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+    <span class="k">return</span> <span class="n">Kt</span>
+<span class="k">def</span> <span class="nf">simulate_scc</span><span class="p">(</span><span class="n">invkap</span><span class="p">,</span> <span class="n">αₖ</span><span class="p">,</span>  <span class="n">σₖ</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">MEt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">Kt</span> <span class="o">=</span> <span class="n">simulate_logkapital</span><span class="p">(</span><span class="n">invkap</span><span class="p">,</span> <span class="n">αₖ</span><span class="p">,</span> <span class="n">σₖ</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span>  <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="n">MCt</span> <span class="o">=</span> <span class="n">δ</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">η</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="n">α</span> <span class="o">-</span> <span class="n">invkap</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Kt</span><span class="p">))</span>
+    <span class="n">SCCt</span> <span class="o">=</span> <span class="n">MEt</span><span class="o">/</span><span class="n">MCt</span><span class="o">*</span><span class="mi">1000</span>
+    <span class="k">return</span> <span class="n">SCCt</span><span class="p">,</span> <span class="n">MCt</span>
+</pre></div>
+</div>
+
+
+<h1 id="scc-uncertainty-decomposition-pre-jump">SCC uncertainty decomposition: pre jump<a class="headerlink" href="#scc-uncertainty-decomposition-pre-jump" title="Permalink to this headline">¶</a></h1>
+<p>First order condition for <span class="math notranslate nohighlight">\(\tilde e\)</span></p>
+<div class="math notranslate nohighlight">
+\[\left( \frac{d^2\phi(y)}{dy^2} + \frac{(\eta-1)}{\delta}\cdot\gamma_2  \right)|\sigma_y|^2\tilde e + \sum_j \pi^c_j \left[\frac{d\phi(y)}{dy} + \frac{(\eta - 1)}{\delta}(\gamma_1 + \gamma_2 y)\right]\theta_j  + \frac{\eta}{\tilde e} = 0 \tag{$\ast$}\]</div>
+<p>Call solution <span class="math notranslate nohighlight">\(\tilde e^*\)</span>. Now solve:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 =  &amp; - \delta \color{red}{\phi(y)}+ \eta \log\tilde e^* + \frac{1}{2} \color{red}{ \frac{d^2 \phi}{dy^2}}\cdot(\tilde e^*)^2 |\sigma_y|^2 + \frac{1}{2}\frac{(\eta -1)}{\delta}\gamma_2(\tilde e^*)^2 |\sigma_y|^2\\
+&amp; + \left[\color{red}{\frac{d\phi}{dy}}  + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)\right] \tilde e^* \sum_i \pi_i^c \theta_i
+\end{aligned}\end{split}\]</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve for decompose</span>
+<span class="k">def</span> <span class="nf">decompose_test</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span>  <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5_000</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    compute jump model with ambiguity over climate models</span>
+<span class="sd">    """</span>
+    <span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span> <span class="o">=</span> <span class="n">args</span>
+    <span class="n">πᶜ</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s1">'πc'</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span>
+    <span class="c1"># solve for HJB with jump function</span>
+    <span class="n">y_grid_cap</span> <span class="o">=</span> <span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dΛ</span> <span class="o">=</span> <span class="n">γ1</span> <span class="o">+</span> <span class="n">γ2</span><span class="o">*</span><span class="n">y_grid_cap</span>
+    <span class="n">ddΛ</span> <span class="o">=</span> <span class="n">γ2</span>
+    <span class="n">πᶜo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="p">)))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span>
+    <span class="n">θ</span> <span class="o">=</span> <span class="n">θ_list</span><span class="nd">@πᶜ</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">θ</span><span class="o">*</span><span class="n">ems_star</span> <span class="o">+</span> <span class="n">σy</span><span class="o">*</span><span class="n">h</span><span class="o">*</span><span class="n">ems_star</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">δ</span><span class="o">*</span><span class="n">η</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ems_star</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">*</span><span class="p">(</span><span class="n">θ</span> <span class="o">+</span> <span class="n">σy</span><span class="o">*</span><span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">ddΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>\
+    <span class="o">+</span> <span class="n">ξw</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">h</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ξa</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">πᶜ</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">πᶜ</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">πᶜo</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">ξp</span><span class="o">*</span><span class="n">ϕ_list</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="o">-</span><span class="n">ξp</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ϕ_bound</span><span class="p">)</span>
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">ϕ_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">#     ϕ = ϕ_bound</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">lhs_error</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">lhs_error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">episode</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">ϕ_old</span> <span class="o">=</span> <span class="n">ϕ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dϕdy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"up"</span><span class="p">)</span>
+        <span class="n">dϕdyy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"up"</span><span class="p">)</span>
+        <span class="c1"># solver</span>
+        <span class="n">ϕ_new</span> <span class="o">=</span> <span class="n">solve_ode</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">y_grid_cap</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">ϕ_bound</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">]))</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">ϕ_new</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">dϕdy</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">dϕdyy</span> <span class="o">+</span> <span class="n">D</span>
+        <span class="n">rhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhs</span><span class="p">))</span>
+        <span class="n">lhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">ϕ_new</span> <span class="o">-</span> <span class="n">ϕ_old</span><span class="p">)</span><span class="o">/</span><span class="n">ϵ</span><span class="p">))</span>
+        <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_new</span>
+        <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"episode: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ode error: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ft error: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">rhs_error</span><span class="p">,</span> <span class="n">lhs_error</span><span class="p">))</span>
+
+<span class="c1">#     dϕdy = derivative_1d(ϕ, 1, dy, "up")</span>
+<span class="c1">#     dϕdyy = derivative_1d(ϕ, 2, dy, "up")</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">dϕdy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dΛ</span>
+<span class="c1">#     error = np.max(abs(A*ϕ + B*dϕdy + C*dϕdyy + D))</span>
+
+    <span class="n">ME</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">dϕdy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dΛ</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">θ</span> <span class="o">+</span> <span class="n">σy</span><span class="o">*</span><span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">dϕdyy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">ddΛ</span><span class="p">)</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span><span class="c1"># solve for decompose</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">ME</span><span class="o">/</span><span class="p">(</span><span class="n">δ</span><span class="o">*</span><span class="n">η</span><span class="o">/</span><span class="n">ems_star</span><span class="p">)</span>
+
+<span class="c1">#     print("PDE error: %s" % (error))</span>
+    <span class="k">return</span> <span class="n">ME</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">,</span> <span class="n">ξa</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">πᶜ</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">πᶜ</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">πᶜo</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_baseline</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    compute jump model with ambiguity over climate models</span>
+<span class="sd">    """</span>
+    <span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span> <span class="o">=</span> <span class="n">args</span>
+<span class="c1">#     ems_star = solu['ems']</span>
+    <span class="c1"># solve for HJB with jump function</span>
+    <span class="n">y_grid_cap</span> <span class="o">=</span> <span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dΛ</span> <span class="o">=</span> <span class="n">γ1</span> <span class="o">+</span> <span class="n">γ2</span><span class="o">*</span><span class="n">y_grid_cap</span>
+    <span class="n">ddΛ</span> <span class="o">=</span> <span class="n">γ2</span>
+    <span class="n">πᶜo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="p">)))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span>
+    <span class="n">θ</span> <span class="o">=</span> <span class="n">θ_list</span><span class="nd">@πᶜo</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">θ</span><span class="o">*</span><span class="n">ems_star</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">η</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ems_star</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">*</span><span class="n">θ</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">ddΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">ϕ_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_bound</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">lhs_error</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">lhs_error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">episode</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">ϕ_old</span> <span class="o">=</span> <span class="n">ϕ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dϕdy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"up"</span><span class="p">)</span>
+        <span class="n">dϕdyy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"up"</span><span class="p">)</span>
+        <span class="c1"># solver</span>
+        <span class="n">ϕ_new</span> <span class="o">=</span> <span class="n">solve_ode</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">y_grid_cap</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">ϕ_bound</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">]))</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">ϕ_new</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">dϕdy</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">dϕdyy</span> <span class="o">+</span> <span class="n">D</span>
+        <span class="n">rhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhs</span><span class="p">))</span>
+        <span class="n">lhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">ϕ_new</span> <span class="o">-</span> <span class="n">ϕ_old</span><span class="p">)</span><span class="o">/</span><span class="n">ϵ</span><span class="p">))</span>
+        <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_new</span>
+        <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"episode: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ode error: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ft error: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">rhs_error</span><span class="p">,</span> <span class="n">lhs_error</span><span class="p">))</span>
+
+<span class="c1">#     dϕdy = derivative_1d(ϕ, 1, dy, "center")</span>
+<span class="c1">#     dϕdyy = derivative_1d(ϕ, 2, dy, "center")</span>
+
+    <span class="n">ME</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">dϕdy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span><span class="p">)</span><span class="o">*</span><span class="n">θ</span> <span class="o">-</span> <span class="p">(</span><span class="n">dϕdyy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">ddΛ</span><span class="p">)</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">ME</span><span class="o">/</span><span class="p">(</span><span class="n">η</span><span class="o">/</span><span class="n">ems_star</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ME</span><span class="p">,</span> <span class="n">ratio</span>
+</pre></div>
+</div>
+
+
+<h1 id="id1">SCC uncertainty decomposition: pre jump<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+
+<h2 id="with-minimization-over-climate-models">With minimization over climate models<a class="headerlink" href="#with-minimization-over-climate-models" title="Permalink to this headline">¶</a></h2>
+<p>Call solution <span class="math notranslate nohighlight">\(\tilde e^*\)</span>. Now solve:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \min_h &amp; - \delta \color{red}{\phi(y)}+ \frac{\xi_w}{2}h'h \\
+&amp; + \eta \log\tilde e^* + \frac{1}{2} \color{red}{ \frac{d^2 \phi}{dy^2}}\cdot(\tilde e^*)^2 |\sigma_y|^2 + \frac{1}{2}\frac{(\eta -1)}{\delta}\gamma_2(\tilde e^*)^2 |\sigma_y|^2\\
+&amp; + \left[\color{red}{\frac{d\phi}{dy}}  + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)\right] \tilde e^* (\sum_i \pi_i^c \theta_i + \sigma_y h)
+\end{aligned}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[h^* = - \frac{\frac{d\phi(y)}{dy} + \frac{(\eta - 1 )}{\delta}(\gamma_1 + \gamma_2 y)}{\xi_w}\tilde e^* \sigma_y\]</div>
+<p>Plug back in</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    0 =  &amp; - \delta \color{red}{\phi(y)} - \frac{1}{2\xi_w} \left( \color{red}{\frac{d\phi(y)}{dy} } + \frac{(\eta -1)}{\delta} (\gamma_1 + \gamma_2 y) \right)^2 (\tilde e^*)^2 |\sigma_y|^2\\
+&amp; + \eta \log\tilde e^* + \frac{1}{2} \color{red}{ \frac{d^2 \phi}{dy^2}}\cdot(\tilde e^*)^2 |\sigma_y|^2 + \frac{1}{2}\frac{(\eta -1)}{\delta}\gamma_2(\tilde e^*)^2 |\sigma_y|^2\\
+&amp; + \left[\color{red}{\frac{d\phi}{dy}}  + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)\right] \tilde e^* \sum_i \pi_i^c \theta_i
+\end{aligned}\end{split}\]</div>
+<p>First order condition for <span class="math notranslate nohighlight">\(\tilde e\)</span></p>
+<div class="math notranslate nohighlight">
+\[\left(  - \frac{1}{\xi_w} \left( \color{red}{\frac{d\phi(y)}{dy} } + \frac{(\eta -1)}{\delta} (\gamma_1 + \gamma_2 y) \right)^2  + \frac{d^2\phi(y)}{dy^2} + \frac{(\eta-1)}{\delta}\cdot\gamma_2  \right)|\sigma_y|^2 \tilde e + \sum_j \pi^c_j \left[\frac{d\phi(y)}{dy} + \frac{(\eta - 1)}{\delta}(\gamma_1 + \gamma_2 y)\right]\theta_j  + \frac{\eta}{\tilde e} = 0 \tag{$\ast$}\]</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve for decompose</span>
+<span class="k">def</span> <span class="nf">minimize_h</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span>  <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    compute jump model with ambiguity over climate models</span>
+<span class="sd">    """</span>
+    <span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span> <span class="o">=</span> <span class="n">args</span>
+<span class="c1">#     ems_star = solu['ems']</span>
+    <span class="c1"># solve for HJB with jump function</span>
+    <span class="n">y_grid_cap</span> <span class="o">=</span> <span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dΛ</span> <span class="o">=</span> <span class="n">γ1</span> <span class="o">+</span> <span class="n">γ2</span><span class="o">*</span><span class="n">y_grid_cap</span>
+    <span class="n">ddΛ</span> <span class="o">=</span> <span class="n">γ2</span>
+    <span class="n">πᶜo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="p">)))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span>
+    <span class="n">θ</span> <span class="o">=</span> <span class="n">θ_list</span><span class="nd">@πᶜo</span>
+
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">ϕ_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_bound</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">lhs_error</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">lhs_error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">episode</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">ϕ_old</span> <span class="o">=</span> <span class="n">ϕ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dϕdy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">)</span>
+        <span class="n">dϕdyy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">)</span>
+        <span class="c1"># solver</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">dϕdy</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">θ</span><span class="o">*</span><span class="n">ems_star</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">η</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ems_star</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">*</span><span class="n">θ</span> \
+        <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">ddΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span>\
+        <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ξw</span><span class="p">)</span><span class="o">*</span><span class="n">temp</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">ϕ_new</span> <span class="o">=</span> <span class="n">solve_ode</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">y_grid_cap</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">ϕ_bound</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">]))</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">ϕ_new</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">dϕdy</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">dϕdyy</span> <span class="o">+</span> <span class="n">D</span>
+        <span class="n">rhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhs</span><span class="p">))</span>
+        <span class="n">lhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">ϕ_new</span> <span class="o">-</span> <span class="n">ϕ_old</span><span class="p">)</span><span class="o">/</span><span class="n">ϵ</span><span class="p">))</span>
+        <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_new</span>
+        <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"episode: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ode error: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ft error: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">rhs_error</span><span class="p">,</span> <span class="n">lhs_error</span><span class="p">))</span>
+
+<span class="c1">#     dϕdy = derivative_1d(ϕ, 1, dy, "center")</span>
+<span class="c1">#     dϕdyy = derivative_1d(ϕ, 2, dy, "center")</span>
+<span class="c1">#     temp = dϕdy + (η-1)*dΛ</span>
+
+    <span class="n">ME</span> <span class="o">=</span> <span class="o">-</span><span class="n">temp</span><span class="o">*</span><span class="n">θ</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="n">ξw</span><span class="o">*</span><span class="n">temp</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dϕdyy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">ddΛ</span><span class="p">)</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">ME</span><span class="o">/</span><span class="p">(</span><span class="n">η</span><span class="o">/</span><span class="n">ems_star</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ME</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">ϕ</span>
+</pre></div>
+</div>
+
+
+<h2 id="minimize-over-pi-c">Minimize over <span class="math notranslate nohighlight">\(\pi^c\)</span><a class="headerlink" href="#minimize-over-pi-c" title="Permalink to this headline">¶</a></h2>
+<p>Call solution <span class="math notranslate nohighlight">\(\tilde e^*\)</span>. Now solve:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \min_{\hat \pi^c_i} &amp; - \delta \color{red}{\phi(y)} + \eta \log\tilde e^* \\
+&amp;  + \frac{1}{2} \color{red}{ \frac{d^2 \phi}{dy^2}}\cdot(\tilde e^*)^2 |\sigma_y|^2 + \frac{1}{2}\frac{(\eta -1)}{\delta}\gamma_2(\tilde e^*)^2 |\sigma_y|^2\\
+&amp; + \left[\color{red}{\frac{d\phi}{dy}}  + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)\right] \tilde e^* \sum_i \hat \pi_i^c \theta_i \\
+&amp; + \xi_a \sum_{i=1}^n \hat \pi^c_i (\log \hat \pi^c_i - \log \pi^c_i)
+\end{aligned}\end{split}\]</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve for decompose</span>
+<span class="k">def</span> <span class="nf">minimize_π</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span>  <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">with_damage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    compute jump model with ambiguity over climate models</span>
+<span class="sd">    """</span>
+    <span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span> <span class="o">=</span> <span class="n">args</span>
+<span class="c1">#     ems_star = solu['ems']</span>
+    <span class="c1"># solve for HJB with jump function</span>
+    <span class="n">y_grid_cap</span> <span class="o">=</span> <span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dΛ</span> <span class="o">=</span> <span class="n">γ1</span> <span class="o">+</span> <span class="n">γ2</span><span class="o">*</span><span class="n">y_grid_cap</span>
+    <span class="n">ddΛ</span> <span class="o">=</span> <span class="n">γ2</span>
+    <span class="n">πᶜo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="p">)))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">with_damage</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">ϕ_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">with_damage</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">ξp</span><span class="o">*</span><span class="n">ϕ_list</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="o">-</span><span class="n">ξp</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ϕ_bound</span><span class="p">)</span>
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_bound</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">lhs_error</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">lhs_error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">episode</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">ϕ_old</span> <span class="o">=</span> <span class="n">ϕ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dϕdy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span><span class="s2">"up"</span><span class="p">)</span>
+        <span class="n">dϕdyy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"up"</span><span class="p">)</span>
+        <span class="c1"># solver</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">dϕdy</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span>
+        <span class="c1"># minimize over π</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="n">ξa</span><span class="o">*</span><span class="n">temp</span><span class="o">*</span><span class="n">ems_star</span><span class="o">*</span><span class="n">θ</span> <span class="k">for</span> <span class="n">θ</span> <span class="ow">in</span> <span class="n">θ_list</span><span class="p">])</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">πᶜ</span> <span class="o">=</span> <span class="n">πᶜo</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+        <span class="n">πᶜ</span><span class="p">[</span><span class="n">πᶜ</span> <span class="o">&lt;=</span> <span class="mf">1e-15</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-15</span>
+        <span class="n">πᶜ</span> <span class="o">=</span> <span class="n">πᶜ</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">πᶜ</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="p">(</span><span class="n">θ_list</span><span class="nd">@πᶜ</span><span class="p">)</span><span class="o">*</span><span class="n">ems_star</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">η</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ems_star</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">θ_list</span><span class="nd">@πᶜ</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span><span class="o">*</span><span class="n">ems_star</span> \
+        <span class="o">+</span> <span class="n">ξa</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">πᶜ</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">πᶜ</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">πᶜo</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>\
+        <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">ddΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">ϕ_new</span> <span class="o">=</span> <span class="n">solve_ode</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">y_grid_cap</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">ϕ_bound</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">]))</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">ϕ_new</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">dϕdy</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">dϕdyy</span> <span class="o">+</span> <span class="n">D</span>
+        <span class="n">rhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhs</span><span class="p">))</span>
+        <span class="n">lhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">ϕ_new</span> <span class="o">-</span> <span class="n">ϕ_old</span><span class="p">)</span><span class="o">/</span><span class="n">ϵ</span><span class="p">))</span>
+        <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_new</span>
+        <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"episode: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ode error: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ft error: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">rhs_error</span><span class="p">,</span> <span class="n">lhs_error</span><span class="p">))</span>
+
+<span class="c1">#     dϕdy = derivative_1d(ϕ, 1, dy, "center")</span>
+<span class="c1">#     dϕdyy = derivative_1d(ϕ, 2, dy, "center")</span>
+    <span class="n">ME</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">dϕdy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">θ_list</span><span class="nd">@πᶜ</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">dϕdyy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">ddΛ</span><span class="p">)</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">ME</span><span class="o">/</span><span class="p">(</span><span class="n">η</span><span class="o">/</span><span class="n">ems_star</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ME</span><span class="p">,</span> <span class="n">ratio</span>
+</pre></div>
+</div>
+
+
+
+<h1 id="minimize-over-g-i">Minimize over <span class="math notranslate nohighlight">\(g_i\)</span><a class="headerlink" href="#minimize-over-g-i" title="Permalink to this headline">¶</a></h1>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \min_h &amp; - \delta \color{red}{\phi(y)} + \eta \log\tilde e^* \\
+&amp;  + \frac{1}{2} \color{red}{ \frac{d^2 \phi}{dy^2}}\cdot(\tilde e^*)^2 |\sigma_y|^2 + \frac{1}{2}\frac{(\eta -1)}{\delta}\gamma_2(\tilde e^*)^2 |\sigma_y|^2\\
+&amp; + \left[\color{red}{\frac{d\phi}{dy}}  + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y)\right] \tilde e^* \sum_i \pi_i^c \theta_i
+\end{aligned}\end{split}\]</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve for decompose</span>
+<span class="k">def</span> <span class="nf">minimize_g</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    compute jump model with ambiguity over climate models</span>
+<span class="sd">    """</span>
+    <span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span> <span class="o">=</span> <span class="n">args</span>
+<span class="c1">#     ems_star = solu['ems']</span>
+    <span class="c1"># solve for HJB with jump function</span>
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">ξp</span><span class="o">*</span><span class="n">ϕ_list</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)</span>
+    <span class="n">ϕ_bound</span> <span class="o">=</span> <span class="o">-</span><span class="n">ξp</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ϕ_bound</span><span class="p">)</span>
+    <span class="n">y_grid_cap</span> <span class="o">=</span> <span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_grid_cap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dΛ</span> <span class="o">=</span> <span class="n">γ1</span> <span class="o">+</span> <span class="n">γ2</span><span class="o">*</span><span class="n">y_grid_cap</span>
+    <span class="n">ddΛ</span> <span class="o">=</span> <span class="n">γ2</span>
+    <span class="n">πᶜo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="p">)))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span>
+    <span class="n">θ</span> <span class="o">=</span> <span class="n">θ_list</span><span class="nd">@πᶜo</span>
+
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">ϕ_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">dmg_weight</span><span class="p">)[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">lhs_error</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">lhs_error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">episode</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">ϕ_old</span> <span class="o">=</span> <span class="n">ϕ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dϕdy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">)</span>
+        <span class="n">dϕdyy</span> <span class="o">=</span> <span class="n">derivative_1d</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">)</span>
+        <span class="c1"># solver</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">dϕdy</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y_grid_cap</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">θ</span><span class="o">*</span><span class="n">ems_star</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">η</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ems_star</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">dΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">*</span><span class="n">θ</span> \
+        <span class="o">+</span> <span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">ddΛ</span><span class="o">*</span><span class="n">ems_star</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">ϕ_new</span> <span class="o">=</span> <span class="n">solve_ode</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">y_grid_cap</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">ϕ_bound</span><span class="p">[</span><span class="n">numy_bar</span><span class="p">]))</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="o">-</span><span class="n">δ</span><span class="o">*</span><span class="n">ϕ_new</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">dϕdy</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">dϕdyy</span> <span class="o">+</span> <span class="n">D</span>
+        <span class="n">rhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhs</span><span class="p">))</span>
+        <span class="n">lhs_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">ϕ_new</span> <span class="o">-</span> <span class="n">ϕ_old</span><span class="p">)</span><span class="o">/</span><span class="n">ϵ</span><span class="p">))</span>
+        <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_new</span>
+        <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"episode: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ode error: </span><span class="si">{}</span><span class="s2">,</span><span class="se">\t</span><span class="s2"> ft error: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">rhs_error</span><span class="p">,</span> <span class="n">lhs_error</span><span class="p">))</span>
+
+<span class="c1">#     dϕdy = derivative_1d(ϕ, 1, dy, "up")</span>
+<span class="c1">#     dϕdyy = derivative_1d(ϕ, 2, dy, "up")</span>
+<span class="c1">#     temp = dϕdy + (η-1)*dΛ</span>
+    <span class="n">ME</span> <span class="o">=</span> <span class="o">-</span><span class="n">temp</span><span class="o">*</span><span class="n">θ</span> <span class="o">-</span> <span class="p">(</span> <span class="n">dϕdyy</span><span class="o">+</span><span class="p">(</span><span class="n">η</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">δ</span><span class="o">*</span><span class="n">ddΛ</span><span class="p">)</span><span class="o">*</span><span class="n">σy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">ems_star</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">ME</span><span class="o">/</span><span class="p">(</span><span class="n">η</span><span class="o">/</span><span class="n">ems_star</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ME</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">ϕ</span>
+</pre></div>
+</div>
+
+
+<h1 id="computation">Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ξa</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10_000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">20</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">ems_star</span> <span class="o">=</span> <span class="n">solu</span><span class="p">[</span><span class="s2">"ems"</span><span class="p">]</span>
+<span class="n">ME_total</span> <span class="o">=</span> <span class="n">η</span><span class="o">/</span><span class="n">solu</span><span class="p">[</span><span class="s1">'ems'</span><span class="p">]</span>
+<span class="n">yt</span><span class="p">,</span> <span class="n">et</span><span class="p">,</span> <span class="n">πᵈt</span><span class="p">,</span> <span class="n">πᶜt</span><span class="p">,</span> <span class="n">ιt</span><span class="p">,</span> <span class="n">ht</span><span class="p">,</span> <span class="n">MEt</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME_total</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">args_plot</span> <span class="o">=</span> <span class="p">(</span><span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">)</span>
+<span class="n">plot_solu</span><span class="p">(</span><span class="n">ht</span><span class="p">,</span> <span class="n">πᵈt</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">args_plot</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">episode</span><span class="p">:</span> <span class="mi">1790</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">5.868157153882114e-05</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.029266134774616e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0002620329319091355</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">5.358039483760457e-06</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">699</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.001121881325521404</span><span class="p">,</span>        <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.933812883389237e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">159</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0007931061203366209</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.201261403328886e-08</span>
+</pre></div>
+</div>
+<img alt="_images/output_19_1.png" src="_images/output_19_1.png"/>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one type partition</span>
+<span class="c1"># baseline</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">ME_base</span><span class="p">,</span> <span class="n">ratio_base</span> <span class="o">=</span> <span class="n">solve_baseline</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_base</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME_base</span><span class="p">,</span>  <span class="n">θ_list</span><span class="p">,</span>
+                                           <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># carbon</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10_000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θcarb_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">ME_carb</span><span class="p">,</span> <span class="n">ratiocarb</span> <span class="o">=</span> <span class="n">minimize_π</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_carb</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME_carb</span><span class="p">,</span>  <span class="n">θcarb_list</span><span class="p">,</span>
+                                           <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># temperature</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10_000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θtemp_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">ME_temp</span><span class="p">,</span> <span class="n">ratiotemp</span> <span class="o">=</span> <span class="n">minimize_π</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_temp</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME_temp</span><span class="p">,</span>  <span class="n">θtemp_list</span><span class="p">,</span>
+                                           <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># damage</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">20</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">ME_dmg</span><span class="p">,</span> <span class="n">ratiodmg</span><span class="p">,</span> <span class="n">ϕ</span> <span class="o">=</span> <span class="n">minimize_g</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_dmg</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME_dmg</span><span class="p">,</span>  <span class="n">θ_list</span><span class="p">,</span>
+                                          <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">episode</span><span class="p">:</span> <span class="mi">1439</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.52054873097946e-05</span><span class="p">,</span>        <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.731790306943822e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00028510678855917654</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">5.6422580421378044e-05</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">698</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0010822946724872726</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.888824781256744e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0005631647276283999</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">3.461121357517527e-06</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00036692092704457627</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.492238645629868e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">6.166470706174543e-05</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">7.140694791463176e-06</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00025966349405014133</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">6.31548840636098e-05</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0010781081819864202</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">4.559463895059679e-05</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">129</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0005614624486287856</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.503780162845032e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">155</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0003887059663242008</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.649518295518078e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">1380</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">6.594517191975402e-05</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.964620728553086e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">641</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00023774586875191517</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.88351676056709e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">699</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0010863731011784483</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.885002238974039e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">129</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0005606578147541799</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.531620603908664e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">156</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00042125209438661354</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.844877002507246e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">1439</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.52054873097946e-05</span><span class="p">,</span>        <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.731790306943822e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00028510678855917654</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">5.6422580421378044e-05</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">698</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0010822946724872726</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.888824781256744e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0007878946203311657</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">1.4170090323339934e-06</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0007420792576578426</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.83689559157593e-07</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot</span>
+<span class="c1"># a function of y</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ME_total</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"total"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:red"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ME_dmg</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"damage"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"darkorange"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ME_temp</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"temperature"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"darkgreen"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ME_carb</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"carbon"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"navy"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># a function of t</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">dt</span> <span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span>
+<span class="n">years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"total"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:red"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt_dmg</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"damage"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt_temp</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"temperature"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt_carb</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"carbon"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">41.630663899501535</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/output_21_1.png" src="_images/output_21_1.png"/>
+<img alt="_images/output_21_2.png" src="_images/output_21_2.png"/>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># two type partition</span>
+<span class="c1"># baseline</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">ME_base</span><span class="p">,</span> <span class="n">ratio_base</span> <span class="o">=</span> <span class="n">solve_baseline</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_base</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME_base</span><span class="p">,</span>  <span class="n">θ_list</span><span class="p">,</span>
+                                           <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># carbon and damage</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10_000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">20</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θcarb_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">MEcarbdmg</span><span class="p">,</span> <span class="n">ratiocarbdmg</span> <span class="o">=</span> <span class="n">minimize_π</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_carbdmg</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">MEcarbdmg</span><span class="p">,</span>  <span class="n">θcarb_list</span><span class="p">,</span>
+                                              <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># temperature and damage</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10_000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">20</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θtemp_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">MEtempdmg</span><span class="p">,</span> <span class="n">ratiotempdmg</span> <span class="o">=</span> <span class="n">minimize_π</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_tempdmg</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">MEtempdmg</span><span class="p">,</span>  <span class="n">θtemp_list</span><span class="p">,</span>
+                                              <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># temperature and carbon</span>
+<span class="n">ξa</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10_000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξw</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ξp</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">dmg_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">δ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ_list</span><span class="p">,</span> <span class="n">γ1</span><span class="p">,</span> <span class="n">γ2</span><span class="p">,</span> <span class="n">γ3_list</span><span class="p">,</span> <span class="n">ȳ</span><span class="p">,</span> <span class="n">dmg_weight</span><span class="p">,</span> <span class="n">ς</span><span class="p">,</span> <span class="n">ξp</span><span class="p">,</span> <span class="n">ξa</span><span class="p">,</span> <span class="n">ξw</span><span class="p">,</span> <span class="n">σy</span><span class="p">)</span>
+<span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span> <span class="o">=</span> <span class="n">approach_one_100</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ϵ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span>
+<span class="n">ME_π</span><span class="p">,</span> <span class="n">ratio_π</span> <span class="o">=</span> <span class="n">minimize_π</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">numy_bar</span><span class="p">,</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ϕ_list</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">MEt_π</span> <span class="o">=</span> <span class="n">simulate_jump</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ems_star</span><span class="p">,</span> <span class="n">solu</span><span class="p">,</span> <span class="n">ME_π</span><span class="p">,</span>  <span class="n">θ_list</span><span class="p">,</span>
+                                        <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">6.877723904283317e-05</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.325197360965376e-07</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00022037774056452714</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">1.6559773548197043e-05</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">357</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0010956423575631362</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.557275432696798e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0005687712802558004</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">1.4780572820338733e-05</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00036684781123897184</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.458870892624759e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">6.89209376945471e-05</span><span class="p">,</span>        <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">1.1592588500253243e-06</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">323</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0002159195043805323</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.758622870892353e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">353</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.001102555313320392</span><span class="p">,</span>        <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.769825393135534e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0007966789372689034</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">1.0163900354687172e-06</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">184</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0007649929386310261</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.715167204049635e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">1380</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">6.594517191975402e-05</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.964620728553086e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">641</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00023774586875191517</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.88351676056709e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">699</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0010863731011784483</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.885002238974039e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0007866885627567446</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.719733462532076e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">147</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0007752590695015368</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">8.842503707029437e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">1790</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">5.868157153882114e-05</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.029266134774616e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>       <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0002620329319091355</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">5.358039483760457e-06</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">699</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.001121881325521404</span><span class="p">,</span>        <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.933812883389237e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">129</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.0005636755161776003</span><span class="p">,</span>       <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">7.222103048931672e-08</span>
+<span class="n">episode</span><span class="p">:</span> <span class="mi">152</span><span class="p">,</span>        <span class="n">ode</span> <span class="n">error</span><span class="p">:</span> <span class="mf">0.00044496600327102037</span><span class="p">,</span>      <span class="n">ft</span> <span class="n">error</span><span class="p">:</span> <span class="mf">9.702258330079871e-08</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot</span>
+<span class="c1"># a function of y</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ME_total</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"total"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEtempdmg</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"temperature and damage"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEcarbdmg</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"carbon and damage"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[:</span><span class="n">numy_bar</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ME_π</span><span class="o">/</span><span class="n">ME_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"temperature and carbon"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># a function of t</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">dt</span> <span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span>
+<span class="n">years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"total"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt_tempdmg</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"temperature and damage"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt_carbdmg</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"carbon and damage"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">MEt_π</span><span class="o">/</span><span class="n">MEt_base</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"temperature and carbon"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">41.19331200925057</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/output_23_1.png" src="_images/output_23_1.png"/>
+<img alt="_images/output_23_2.png" src="_images/output_23_2.png"/>
+
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="DamageFunction.html" title="Damage function"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> Previous </span> Damage function </span>
+              </div>
+            </a>
+          
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2021, surich.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
