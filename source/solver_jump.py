@@ -319,7 +319,7 @@ def solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
     h =  - temp*ems*σy/ξw
     ι, πᵈ = get_ι(πᵈo, g_list)
     penalty = ξp*get_intensity(y_grid_cap, ς)*(πᵈo@(1 - g_list))
-    solution = dict(ϕ=ϕ, ems=ems, πc=πᶜ, ι=ι, πd=πᵈ, h=h)
+    solution = dict(ϕ=ϕ, ems=ems, πc=πᶜ, ι=ι, πd=πᵈ, h=h, bound=bound)
     return solution
 
 
@@ -340,6 +340,24 @@ def approach_one_100(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, 
         return solution, ϕ_list, π_list
     else:
         return solution, ϕ_list
+
+
+# solve for approach one
+def value_for_match(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=10_000):
+    δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ς, ξp, ξa, ξw, σy = args
+    ϕ_list = list()
+    π_list = list()
+    for γ3 in γ3_list:
+        args_post = (δ, η, θ_list, σy, γ1, γ2, γ3, ȳ, ξa, ξw)
+        ϕ, _, π , _ = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
+        ϕ_list.append(ϕ)
+        π_list.append(π)
+    ϕ_list = np.array(ϕ_list)
+    π_list = np.array(π_list)
+    if report_π == True:
+        return ϕ_list, π_list
+    else:
+        return ϕ_list
 
 
 def generate_weight(params, ems, dϕdy, y_grid, args_weight=()):
