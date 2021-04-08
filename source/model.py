@@ -1,6 +1,7 @@
 import numpy as np
 from utilities import compute_derivatives
 from solver import false_transient_one_iteration_python, solve_lienar_ode_python
+from multiprocessing import Pool
 
 
 def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
@@ -76,6 +77,12 @@ def ode_y(y_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
            'c_entropy': c_entropy,
            'h': h}
     return res
+
+
+def ode_y_parallel(args_list):
+    with Pool() as p:
+        res_list = p.starmap(ode_y, args_list)
+    return res_list
 
 
 def ode_z(z_grid, model_paras=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_all=True):
