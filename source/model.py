@@ -347,7 +347,7 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
     """
     Solve the PDE with a given e_tile. If h is not given, minimize over h; if πc is not given,
     minimize over πc; if bc is not given, use certainty equivalent as bc.
-    
+
     """
     if e_tilde is None:
         print("e_tilde is needed.")
@@ -417,7 +417,7 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
     ME = - (dvdy + (η - 1.) / δ * d_Λ) * (np.sum(πc * θ, axis=0) + σ_y * h)\
          - (dvddy + (η - 1.) / δ * dd_Λ) * σ_y**2 * e_tilde
 
-    print("Converged. Total iteration: %s;\t LHS Error: %s;\t RHS Error %s" % (count, lhs_error, rhs_error))     
+    print("Converged. Total iteration: %s;\t LHS Error: %s;\t RHS Error %s" % (count, lhs_error, rhs_error))
 
     res = {'v': v,
            'dvdy': dvdy,

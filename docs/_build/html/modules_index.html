@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>The modules include: &#8212; UncertaintySpillover  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/material.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="8 Uncertainty Decomposition" href="sec8/sec8_UncertaintyDecomposition.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=blue-grey data-md-color-accent=blue>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#modules_index" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="UncertaintySpillover  documentation"
+           class="md-header-nav__button md-logo">
+          
+            &nbsp;
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">UncertaintySpillover</span>
+          <span class="md-header-nav__topic"> The modules include: </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty Spillover
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">UncertaintySpillover  documentation</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="UncertaintySpillover documentation" class="md-nav__button md-logo">
+      
+        <img src="_static/" alt=" logo" width="48" height="48">
+      
+    </a>
+    <a href="index.html"
+       title="UncertaintySpillover documentation">UncertaintySpillover</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty Spillover
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec5/sec5_UncertaintyAversion.html" class="md-nav__link">5 Uncertainty aversion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec6/sec6_DecisionProblem.html" class="md-nav__link">6 A climate component of a planner’s decision problem</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec7/sec7_Sensitivity.html" class="md-nav__link">7 Sensitivity</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec8/sec8_UncertaintyDecomposition.html" class="md-nav__link">8 Uncertainty Decomposition</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> The modules include: </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">The modules include:</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/modules_index.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#module-source.model" class="md-nav__link"># 1 Model.py</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#module-source.simulation" class="md-nav__link"># 2 simulation.py</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#module-source.solver" class="md-nav__link"># 3 solver.py</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/modules_index.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  
+<span id="the-modules-include"></span><h1 id="modules-index--page-root">The modules include:<a class="headerlink" href="#modules-index--page-root" title="Permalink to this headline">¶</a></h1>
+
+
+<span id="model-py"></span><h1 id="module-source.model"># 1 Model.py<a class="headerlink" href="#module-source.model" title="Permalink to this headline">¶</a></h1>
+<p>Functions that solve the HJBs in the draft paper.</p>
+<dl class="py function">
+<dt id="source.model.solve_hjb_y">
+<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">solve_hjb_y</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the HJB that is only related to y.
+y is the accumulative change of temperature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – An evenly spaced grid of y.</p></li>
+<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, ξ_w, ξ_a : floats
+θ, πc_o : (M,) ndarrays</p></li>
+<li><p><strong>v0</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Initial guess of the value function</p></li>
+<li><p><strong>ϵ</strong> (<em>float</em>) – Step size of the false transient method.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance level of the hjb solver.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – Maximum iterations of the false transient method.</p></li>
+<li><p><strong>print_iteration</strong> (<em>bool</em>) – Print the information of each iteration if True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>res</strong> –</p>
+<dl class="simple">
+<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function</p>
+</dd>
+<dt>dvdy<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
+</dd>
+<dt>dvddy<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
+</dd>
+<dt>e_tilde<span class="classifier">(N,) ndarray</span></dt><dd><p><span class="math notranslate nohighlight">\(\tilde{e}\)</span> on the grid of y.</p>
+</dd>
+<dt>πc<span class="classifier">(M, N) ndarray</span></dt><dd><p>Distorted probabilities of θ.</p>
+</dd>
+<dt>h<span class="classifier">(N,) ndarray</span></dt><dd><p>Implied drift distortion.</p>
+</dd>
+<dt>y<span class="classifier">(N,) ndarray</span></dt><dd><p>Grid of y.</p>
+</dd>
+<dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict of ndarrays</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="source.model.solve_hjb_y_jump">
+<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">solve_hjb_y_jump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_y_jump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the HJB with y prior to jump. We impose certainty equivalent as a boundary condition
+to the equation instead of adding the jump intensity term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – An evenly spaced grid of y.</p></li>
+<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, ξ_w, ξ_p, ξ_a : floats
+θ, πc_o : (M,) ndarrays
+ϕ_i, πd_o : (K,) ndarrays</p></li>
+<li><p><strong>v0</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Initial guess of the value function</p></li>
+<li><p><strong>ϵ</strong> (<em>float</em>) – Step size of the false transient method.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance level of the hjb solver.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – Maximum iterations of the false transient method.</p></li>
+<li><p><strong>print_iteration</strong> (<em>bool</em>) – Print the information of each iteration if True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>res</strong> –</p>
+<dl class="simple">
+<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function</p>
+</dd>
+<dt>dvdy<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
+</dd>
+<dt>dvddy<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
+</dd>
+<dt>e_tilde<span class="classifier">(N,) ndarray</span></dt><dd><p><span class="math notranslate nohighlight">\(\tilde{e}\)</span> on the grid of y.</p>
+</dd>
+<dt>h<span class="classifier">(N,) ndarray</span></dt><dd><p>Implied drift distortion.</p>
+</dd>
+<dt>πc<span class="classifier">(M, N) ndarray</span></dt><dd><p>Distorted probabilities of θ.</p>
+</dd>
+<dt>g<span class="classifier">(K, N) ndarray</span></dt><dd><p>Change in damage probability and intensity.</p>
+</dd>
+<dt>πd<span class="classifier">(K, N) ndarray</span></dt><dd><p>Distorted probabilities of damage functions.</p>
+</dd>
+<dt>bc<span class="classifier">float</span></dt><dd><p>The boundary condition that we impose on the HJB.</p>
+</dd>
+<dt>y<span class="classifier">(N,) ndarray</span></dt><dd><p>Grid of y.</p>
+</dd>
+<dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict of ndarrays</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="source.model.solve_hjb_z">
+<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">solve_hjb_z</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the HJB that is only related to z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – An evenly spaced grid of z.</p></li>
+<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – η, δ, ρ, μ_2, σ_2, ξ_1m : floats</p></li>
+<li><p><strong>v0</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Initial guess of the value function</p></li>
+<li><p><strong>ϵ</strong> (<em>float</em>) – Step size of the false transient method.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance level of the hjb solver.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – Maximum iterations of the false transient method.</p></li>
+<li><p><strong>print_iteration</strong> (<em>bool</em>) – Print the information of each iteration if True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>res</strong> –</p>
+<dl class="simple">
+<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function</p>
+</dd>
+<dt>dvdz<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
+</dd>
+<dt>dvddz<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
+</dd>
+<dt>h<span class="classifier">(N,) ndarray</span></dt><dd><p>Implied drift distortion.</p>
+</dd>
+<dt>z<span class="classifier">(N,) ndarray</span></dt><dd><p>Grid of z.</p>
+</dd>
+<dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict of ndarrays</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="source.model.uncertainty_decomposition">
+<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">uncertainty_decomposition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_tilde</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">πc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.uncertainty_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the PDE with a given e_tile. If h is not given, minimize over h; if πc is not given,
+minimize over πc; if bc is not given, use certainty equivalent as bc.</p>
+</dd></dl>
+
+
+<span id="simulation-py"></span><h1 id="module-source.simulation"># 2 simulation.py<a class="headerlink" href="#module-source.simulation" title="Permalink to this headline">¶</a></h1>
+<p>module for simulation</p>
+<dl class="py function">
+<dt id="source.simulation.simulate_jump">
+<code class="sig-prename descclassname"><span class="pre">source.simulation.</span></code><code class="sig-name descname"><span class="pre">simulate_jump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_res</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ME</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_jump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulate temperature anomaly, emission, distorted probabilities of climate models,
+distorted probabilities of damage functions, and drift distortion.
+When ME is asigned value, it will also simulate paths for marginal value of emission</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_res</strong> (<em>a dictionary</em>) – <p>A dictionary storing solution with misspecified jump process.
+v : (N,) ndarray</p>
+<blockquote>
+<div><p>Value function</p>
+</div></blockquote>
+<dl class="simple">
+<dt>dvdy<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
+</dd>
+<dt>dvddy<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
+</dd>
+<dt>e_tilde<span class="classifier">(N,) ndarray</span></dt><dd><p>:math:`     ilde{e}` on the grid of y.</p>
+</dd>
+<dt>h<span class="classifier">(N,) ndarray</span></dt><dd><p>Implied drift distortion.</p>
+</dd>
+<dt>πc<span class="classifier">(M, N) ndarray</span></dt><dd><p>Distorted probabilities of θ.</p>
+</dd>
+<dt>g<span class="classifier">(K, N) ndarray</span></dt><dd><p>Change in damage probability and intensity.</p>
+</dd>
+<dt>πd<span class="classifier">(K, N) ndarray</span></dt><dd><p>Distorted probabilities of damage functions.</p>
+</dd>
+<dt>bc<span class="classifier">float</span></dt><dd><p>The boundary condition that we impose on the HJB.</p>
+</dd>
+<dt>y<span class="classifier">(N,) ndarray</span></dt><dd><p>Grid of y.</p>
+</dd>
+<dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>θ_list</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – A list of matthew coefficients. Unit: celsius/gigaton of carbon.</p></li>
+<li><p><strong>ME</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Marginal value of emission as a function of y.</p></li>
+<li><p><strong>y_start</strong> (<em>float</em><em> (</em><em>Default: 1</em><em>)</em>) – Initial value of y.</p></li>
+<li><p><strong>T</strong> (<em>int</em><em> (</em><em>Default: 100</em><em>)</em>) – Time span of simulation.</p></li>
+<li><p><strong>dt</strong> (<em>float</em><em> (</em><em>Default: 1</em><em>)</em>) – Time interval of simulation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>simulation_res</strong> –</p>
+<dl class="simple">
+<dt>yt: (T,) ndarray</dt><dd><p>Temperature trajectories.</p>
+</dd>
+<dt>et: (T,) ndarray</dt><dd><p>Emission trajectories.</p>
+</dd>
+<dt>πct: (T, L) ndarray</dt><dd><p>Trajectories for distorted probabilities of climate models.</p>
+</dd>
+<dt>πdt: (T, M) ndarray</dt><dd><p>Trajectories for distorted probabilities of damage functions.</p>
+</dd>
+<dt>ht: (T,) ndarray</dt><dd><p>Trajectories for drift distortion.</p>
+</dd>
+<dt>if ME is not None, the dictionary will also include</dt><dd><dl class="simple">
+<dt>me_t: (T,) ndarray</dt><dd><p>Trajectories for marginal value of emission.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>a dictionary of ndarrays</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="source.simulation.simulate_me">
+<code class="sig-prename descclassname"><span class="pre">source.simulation.</span></code><code class="sig-name descname"><span class="pre">simulate_me</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.00186</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>simulate log(ME_new/ME_baseline)*1000.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_grid</strong> – </p></li>
+<li><p><strong>e_grid</strong> – </p></li>
+<li><p><strong>ratio_grid</strong> – </p></li>
+<li><p><strong>θ</strong> – </p></li>
+<li><p><strong>y_start</strong> – </p></li>
+<li><p><strong>T</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>Et</em></p></li>
+<li><p><em>yt</em></p></li>
+<li><p><em>ratio_t</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+
+<span id="solver-py"></span><h1 id="module-source.solver"># 3 solver.py<a class="headerlink" href="#module-source.solver" title="Permalink to this headline">¶</a></h1>
+<p>Functions to numerically solve a nonlinear ODE via false transient scheme.</p>
+<dl class="py function">
+<dt id="source.solver.compute_coefficient">
+<code class="sig-prename descclassname"><span class="pre">source.solver.</span></code><code class="sig-name descname"><span class="pre">compute_coefficient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LHS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.compute_coefficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the coefficient of the equation at v(i).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>LHS</strong> (<em>(</em><em>I</em><em>, </em><em>I</em><em>) </em><em>ndarray</em>) – LHS matrix of the linear system.</p></li>
+<li><p><strong>A</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarrays</em>) – </p></li>
+<li><p><strong>B</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarrays</em>) – </p></li>
+<li><p><strong>C</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarrays</em>) – </p></li>
+<li><p><strong>i</strong> (<em>int</em>) – </p></li>
+<li><p><strong>dx</strong> (<em>float</em>) – </p></li>
+<li><p><strong>ϵ</strong> (<em>float</em>) – False transient step size.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>LHS</strong> – Updated LHS matrix of the linear system.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(I, I) ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="source.solver.false_transient">
+<code class="sig-prename descclassname"><span class="pre">source.solver.</span></code><code class="sig-name descname"><span class="pre">false_transient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impose_bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.false_transient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement false transient scheme.</p>
+</dd></dl>
+<dl class="py function">
+<dt id="source.solver.linearize">
+<code class="sig-prename descclassname"><span class="pre">source.solver.</span></code><code class="sig-name descname"><span class="pre">linearize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impose_bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.linearize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct coefficient matrix of the linear system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarrays</em>) – </p></li>
+<li><p><strong>B</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarrays</em>) – </p></li>
+<li><p><strong>C</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarrays</em>) – </p></li>
+<li><p><strong>D</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarrays</em>) – </p></li>
+<li><p><strong>v0</strong> (<em>(</em><em>I</em><em>,</em><em>) </em><em>ndarray</em>) – Value function from last iteration.</p></li>
+<li><p><strong>ϵ</strong> (<em>False transient step size</em>) – </p></li>
+<li><p><strong>dx</strong> (<em>float</em>) – </p></li>
+<li><p><strong>bc</strong> (<em>tuple of ndarrays</em>) – Impose v=bc[k] at boundaries.
+Order: lower boundary of x, upper boundary of x,</p></li>
+<li><p><strong>impose_bc</strong> (<em>tuple of bools</em>) – Order: lower boundary of x, upper boundary of x,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>LHS</strong> (<em>(I, I) ndarray</em>) – LHS of the linear system.</p></li>
+<li><p><strong>RHS</strong> (<em>(I,) ndarray</em>) – RHS of the linear system.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="sec8/sec8_UncertaintyDecomposition.html" title="8 Uncertainty Decomposition"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> Previous </span> 8 Uncertainty Decomposition </span>
+              </div>
+            </a>
+          
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2021, SuriChen.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
