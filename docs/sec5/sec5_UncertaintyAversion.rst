@@ -1,6 +1,8 @@
 5 Uncertainty aversion
 ======================
 
+This notebook corresponds to the section 5 of the paper.
+
 .. code:: ipython3
 
     # packages
@@ -12,31 +14,8 @@
     mpl.rcParams['axes.spines.top'] = False
     mpl.rcParams['legend.frameon'] = False
 
-1. Current model
-----------------
-
-1.1 Stochastic inputs
-~~~~~~~~~~~~~~~~~~~~~
-
-Our economy includes exogenous forcing processes that evolves as:
-
-.. math::
-
-
-   dZ_t = \mu_z(Z_t) dt + \sigma_z(Z_t) dW_t
-
-where :math:`\{ W_t : t \ge 0\}` a multivariate Brownian motion.
-
-| We allow for robustness by allowing changes in probabilities that
-  imply drift distortions :math:`H_t dt` in the Brownian increment
-  :math:`dW_t`.
-| As the solutions to the stochastic differential equations are
-  functions of the underlying Brownian motions, the probability measure
-  changes for the Brownian motions change the probabilities implied by
-  the solutions to the stochastic differential equations.
-
-1.2 Technology
-~~~~~~~~~~~~~~
+5.1 Technology
+--------------
 
 Consider an economy with an :math:`AK` technology for which output is
 proportional to capital. Output can be allocated between investment and
@@ -94,11 +73,25 @@ Thus damages induce a deterioration of the capital stock.
 
     ## Add capital simulation here
 
-1.3 Damage dynamics
-~~~~~~~~~~~~~~~~~~~
+5.2 Stochastic climate pulses
+-----------------------------
 
-1.3.1 Stochastic climate pulses
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Our economy includes exogenous forcing processes that evolves as:
+
+.. math::
+
+
+   dZ_t = \mu_z(Z_t) dt + \sigma_z(Z_t) dW_t
+
+where :math:`\{ W_t : t \ge 0\}` a multivariate Brownian motion.
+
+| We allow for robustness by allowing changes in probabilities that
+  imply drift distortions :math:`H_t dt` in the Brownian increment
+  :math:`dW_t`.
+| As the solutions to the stochastic differential equations are
+  functions of the underlying Brownian motions, the probability measure
+  changes for the Brownian motions change the probabilities implied by
+  the solutions to the stochastic differential equations.
 
 Consider an emissions “pulse” of the form
 
@@ -176,8 +169,8 @@ interest.
 .. image:: output_5_0.png
 
 
-1.4 Economic damages
-~~~~~~~~~~~~~~~~~~~~
+5.3 Economic damages
+--------------------
 
 The local evolution of damages is given by
 
@@ -241,8 +234,8 @@ the jump. When the process jumps to state :math:`j`, the parameter
 .. image:: output_7_0.png
 
 
-2. Uncertainty aversion
------------------------
+5.4 Uncertainty aversion
+------------------------
 
 The model so far is one of risk as captured by the stochastic
 specification of shocks. The presence of shocks opens the door to a
@@ -259,8 +252,8 @@ locates the potential misspecification that is most consequential to a
 decision maker. Our aim is to provide a more complete uncertainty
 quantification within the setting of the decision problem.
 
-2.1 Misspecified Brownian motion
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5.4.1 Misspecified Brownian motion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 | The potential misspecification of a Brownian motion has a particularly
   simple form. It is known from the famed Girsanov Theorem that a change
@@ -313,8 +306,8 @@ value function, and hence its partial derivative, also depends on
 :math:`\xi`. The partial derivative of the value function is included to
 locate distortions that matter to the decision maker.
 
-2.2 Misspecified jump process
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5.4.2 Misspecified jump process
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are two ways that a jump process could be misspecified. The jump
 intensity governing locally the jump probability could be wrong or the
@@ -381,8 +374,8 @@ implying a minimized objective:
 
    \xi_p {\mathcal I} \sum_{j=1}^m \pi_j^p \left( 1 - \exp \left[\frac 1 {\xi_p} \left( \phi - \phi_j \right) \right]\right) = - \left(\xi_p {\mathcal I}\right) \frac {\sum_{j=1}^m \pi_j^p \exp \left(- \frac 1 {\xi_p} \phi_j\right) - \exp \left(- \frac 1 {\xi_p} \phi \right)}{\exp \left(- \frac 1 {\xi_p} \phi \right)}
 
-2.3 Local ambiguity aversion
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5.4.3 Local ambiguity aversion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To assess the consequences of the heterogeneous responses from
 alternative climate models, we use what are called smooth ambiguity
@@ -449,107 +442,7 @@ distortions with the implied distortion to the evolution :math:`dX_t`
   change uncertainty will impact the value function contributions given
   by the :math:`\phi_j`\ ’s and by :math:`\phi`.
 
-3. A climate component of the planner’s HJB
--------------------------------------------
+**Continue to the next section**
 
-As we show in the appendix, the planners HJB equation conveniently
-separates into three different components. We focus here on the
-component that includes the choice emissions, :math:`\mathcal{E}_t`. Let
-$ :raw-latex:`\mathcal{\widetilde E}`\_t = :raw-latex:`\iota`\_y
-:raw-latex:`\cdot `Z_t :raw-latex:`\mathcal{E}`\_t$, which we will use
-as a transformed control variable. In the absence of any specification
-uncertainty, the HJB equation of interest for :math:`y < {\bar y}` prior
-to Poisson jump is:
-
-:raw-latex:`\begin{align} \label{HJB_no}
-0 = \max_{\tilde e} 
-& - \delta \phi(y)    +  \eta \log \tilde e   \cr 
-& + \frac {d \phi(y)}{d y}  \sum_{i=1}^n \pi^a_i  \theta_i {\tilde e} + {\frac 1 2} \frac {d^2 \phi(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
-&+ \frac{(\eta - 1)}{\delta} \left[  \left( \gamma_1 + \gamma_2 y \right)  \sum_{i=1}^n \pi^a_i \theta_i {\tilde e} + {\frac 1 2} \gamma_2 |\varsigma|^2 \tilde e^2 \right]\cr
-& + {\mathcal I}(y)  \sum_{m=1}^M \pi_m^p \left( \phi_m - \phi \right) 
-\end{align}`
-
-for a value function given by
-:math:`\phi(y) + \frac{(\eta - 1)}{\delta} n`. This is an equation in
-the value function :math:`\phi` but the depends on the continuation
-value functions :math:`\phi_m` pertinent after the tail of damage
-function is realized. These value functions solve equations:
-
-:raw-latex:`\begin{align*}
-0 = \max_{\tilde e} 
-& - \delta \phi_j(y)    +  \eta \log \tilde e    \cr 
-& + \frac {d \phi_j(y)}{d y}  \sum_{i=1}^n \pi^a_i  \theta_i {\tilde e} + {\frac 1 2} \frac {d^2 \phi_j(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
-&+ \frac{(\eta - 1)}{\delta} \left(  \left[ \gamma_1 + \gamma_2 y + \gamma_3^j (y - {\bar y})  \right]   \sum_{i=1}^n \pi^a_i \theta_i {\tilde e}
-+ {\frac 1 2}(\gamma_2 + \gamma_3)   |\varsigma|^2 \tilde e^2  \right)
-\end{align*}` for :math:`j=1,2,...,m`. The solutions for these :math:`m`
-HJB equations are inputs in the first HJB equation. Given the localized
-nature of the jump intensity, we expect
-
-.. math::
-
-
-   \phi\left( {\bar y} \right) \approx \sum_{m=1}^M \pi_m^p \phi_m\left( {\bar y} \right).
-
-We now show the terms added in our sensitivity analysis:
-
--  Brownian misspecification: include $$
-
--  :raw-latex:`\frac {\xi_b}` 2
-   :raw-latex:`\left`:raw-latex:`\vert`:raw-latex:`\left[ \frac {d \phi(y)}{d y} + \frac{(\eta - 1)}{\delta}   \left( \gamma_1 + \gamma_2 y\right)  \right] `:raw-latex:`\right`:raw-latex:`\vert`^2
-   \|:raw-latex:`\varsigma`\|^2 :raw-latex:`\tilde `e^2 . $$
-
--  Climate model ambiguity: replace
-
-.. math::
-
-
-    \sum_{i=1}^n \pi_i^a  \theta_i \left[ \frac {d \phi(y)}{d y} + \frac{(\eta - 1)}{\delta}  \left( \gamma_1 + \gamma_2 y \right)\right] {\tilde e}
-
-with ambiguity adjusted certainty equivalent:
-
-.. math::
-
-
-   - \xi_a \log \sum_{i=1}^n\pi_i^a \exp\left( - \frac 1 {\xi_a} \theta_i \left[\frac {d \phi(y)}{d y}  + \frac{(\eta -1)}{\delta} \left( \gamma_1 + \gamma_2 y \right) \right] {\tilde e}\right)
-
--  Jump misspecification: replace ${:raw-latex:`\mathcal `I}(y)
-   :raw-latex:`\sum`\_{m=1}^M :raw-latex:`\pi`\_m^p
-   :raw-latex:`\left[ \phi_m(y) - \phi(y)  \right] `$ with:
-
-.. math::
-
-
-   - \left(\xi_p {\mathcal I}\right) \frac {\sum_{m=1}^M \pi_m^p \exp \left(- \frac 1 {\xi_p} \phi_m\right) - \exp \left(- \frac 1 {\xi_p} \phi \right)}{\exp \left(- \frac 1 {\xi_p} \phi \right)}
-
-| and make corresponding adjustments to the Brownian and climate model
-  uncertainty contributions.
-| When this jump risk adjustment is made, we expect:
-
-.. math::
-
-
-   \phi(\overline y) \approx - \xi_p \log \sum_{m=1}^M \pi_m^p \exp \left[- \frac 1 {\xi_p} \phi_m({\overline y}) \right]
-
-where the right side is the certainty equivalent for an ambiguity
-adjusted post jump continuation value. For our computations, we impose
-this as a boundary value.
-
-In what follows we will impose these terms separately and with with the
-first and third or second and third. The first and second give
-unstructured and structured ways to impose drift distortions. While
-their comparison is interesting, we see little rationale to impose both
-of them simultaneously.
-
-3.1 Computational details
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Write down the false transient method here.
-
-.. code:: ipython3
-
-    ### Solve the HJB without jump and with jump
-    ### Try different ξ values
-
-Continue to the next section
-
-Section 6:  :doc:`A climate component of a planner’s decision problem <../sec6/sec6_DecisionProblem>`
+Section 6: `A climate component of a planner’s decision
+problem <sec6_DecisionProblem.ipynb>`__

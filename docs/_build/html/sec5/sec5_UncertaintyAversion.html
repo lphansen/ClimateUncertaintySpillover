@@ -59,7 +59,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="6 A climate component of a planner’s decision problem" href="../sec6/sec6_DecisionProblem.html" />
-    <link rel="prev" title="Welcome to the documentation for Climate Change Uncertainty Spillover in the Macroeconomy!" href="../index.html" />
+    <link rel="prev" title="4 Illustrative Economy" href="../sec4/sec4_IllustrativeEcon.html" />
   
    
 
@@ -191,6 +191,13 @@
     <li class="md-nav__item">
     
     
+      <a href="../sec4/sec4_IllustrativeEcon.html" class="md-nav__link">4 Illustrative Economy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     <label class="md-nav__link md-nav__link--active" for="__toc"> 5 Uncertainty aversion </label>
     
@@ -208,33 +215,19 @@
     <li class="md-nav__item">
     
     
-      <a href="#current-model" class="md-nav__link">1. Current model</a>
+      <a href="#technology" class="md-nav__link">5.1 Technology</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#stochastic-climate-pulses" class="md-nav__link">5.2 Stochastic climate pulses</a>
       <ul class="md-nav__list"> 
     <li class="md-nav__item">
     
     
-      <a href="#stochastic-inputs" class="md-nav__link">1.1 Stochastic inputs</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#technology" class="md-nav__link">1.2 Technology</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#damage-dynamics" class="md-nav__link">1.3 Damage dynamics</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#economic-damages" class="md-nav__link">1.4 Economic damages</a>
+      <a href="#remark" class="md-nav__link">1.3.2 Remark</a>
       
     
     </li></ul>
@@ -243,43 +236,15 @@
     <li class="md-nav__item">
     
     
-      <a href="#id11" class="md-nav__link">2. Uncertainty aversion</a>
-      <ul class="md-nav__list"> 
-    <li class="md-nav__item">
-    
-    
-      <a href="#misspecified-brownian-motion" class="md-nav__link">2.1 Misspecified Brownian motion</a>
+      <a href="#economic-damages" class="md-nav__link">5.3 Economic damages</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="#misspecified-jump-process" class="md-nav__link">2.2 Misspecified jump process</a>
+      <a href="#id11" class="md-nav__link">5.4 Uncertainty aversion</a>
       
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#local-ambiguity-aversion" class="md-nav__link">2.3 Local ambiguity aversion</a>
-      
-    
-    </li></ul>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#a-climate-component-of-the-planners-hjb" class="md-nav__link">3. A climate component of the planner’s HJB</a>
-      <ul class="md-nav__list"> 
-    <li class="md-nav__item">
-    
-    
-      <a href="#computational-details" class="md-nav__link">3.1 Computational details</a>
-      
-    
-    </li></ul>
     
     </li></ul>
     
@@ -302,6 +267,13 @@
     
     
       <a href="../sec8/sec8_UncertaintyDecomposition.html" class="md-nav__link">8 Uncertainty Decomposition</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../sec10/sec10_Conclusion.html" class="md-nav__link">10 Conclusion</a>
       
     
     </li>
@@ -383,6 +355,7 @@
             
   
 <h1 id="sec5-sec5-uncertaintyaversion--page-root">5 Uncertainty aversion<a class="headerlink" href="#sec5-sec5-uncertaintyaversion--page-root" title="Permalink to this headline">¶</a></h1>
+<p>This notebook corresponds to the section 5 of the paper.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># packages</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -394,25 +367,7 @@
 </pre></div>
 </div>
 
-<h2 id="current-model">1. Current model<a class="headerlink" href="#current-model" title="Permalink to this headline">¶</a></h2>
-
-<h3 id="stochastic-inputs">1.1 Stochastic inputs<a class="headerlink" href="#stochastic-inputs" title="Permalink to this headline">¶</a></h3>
-<p>Our economy includes exogenous forcing processes that evolves as:</p>
-<div class="math notranslate nohighlight">
-\[dZ_t = \mu_z(Z_t) dt + \sigma_z(Z_t) dW_t\]</div>
-<p>where <span class="math notranslate nohighlight">\(\{ W_t : t \ge 0\}\)</span> a multivariate Brownian motion.</p>
-<div class="line-block">
-<div class="line">We allow for robustness by allowing changes in probabilities that
-imply drift distortions <span class="math notranslate nohighlight">\(H_t dt\)</span> in the Brownian increment
-<span class="math notranslate nohighlight">\(dW_t\)</span>.</div>
-<div class="line">As the solutions to the stochastic differential equations are
-functions of the underlying Brownian motions, the probability measure
-changes for the Brownian motions change the probabilities implied by
-the solutions to the stochastic differential equations.</div>
-</div>
-
-
-<h3 id="technology">1.2 Technology<a class="headerlink" href="#technology" title="Permalink to this headline">¶</a></h3>
+<h2 id="technology">5.1 Technology<a class="headerlink" href="#technology" title="Permalink to this headline">¶</a></h2>
 <p>Consider an economy with an <span class="math notranslate nohighlight">\(AK\)</span> technology for which output is
 proportional to capital. Output can be allocated between investment and
 consumption. Suppose that there are adjustment costs to capital that are
@@ -449,9 +404,20 @@ capital is <span class="math notranslate nohighlight">\({\widetilde K}_t = {\fra
 </div>
 
 
-<h3 id="damage-dynamics">1.3 Damage dynamics<a class="headerlink" href="#damage-dynamics" title="Permalink to this headline">¶</a></h3>
-
-<h4 id="stochastic-climate-pulses">1.3.1 Stochastic climate pulses<a class="headerlink" href="#stochastic-climate-pulses" title="Permalink to this headline">¶</a></h4>
+<h2 id="stochastic-climate-pulses">5.2 Stochastic climate pulses<a class="headerlink" href="#stochastic-climate-pulses" title="Permalink to this headline">¶</a></h2>
+<p>Our economy includes exogenous forcing processes that evolves as:</p>
+<div class="math notranslate nohighlight">
+\[dZ_t = \mu_z(Z_t) dt + \sigma_z(Z_t) dW_t\]</div>
+<p>where <span class="math notranslate nohighlight">\(\{ W_t : t \ge 0\}\)</span> a multivariate Brownian motion.</p>
+<div class="line-block">
+<div class="line">We allow for robustness by allowing changes in probabilities that
+imply drift distortions <span class="math notranslate nohighlight">\(H_t dt\)</span> in the Brownian increment
+<span class="math notranslate nohighlight">\(dW_t\)</span>.</div>
+<div class="line">As the solutions to the stochastic differential equations are
+functions of the underlying Brownian motions, the probability measure
+changes for the Brownian motions change the probabilities implied by
+the solutions to the stochastic differential equations.</div>
+</div>
 <p>Consider an emissions “pulse” of the form</p>
 <div class="math notranslate nohighlight">
 \[\left(\iota_y \cdot Z_t \right) \mathcal{E}_t  \left( \theta dt + \varsigma \cdot dW_t\right)\]</div>
@@ -469,7 +435,7 @@ making the consequence of the pulse permanent:</p>
 \end{align*}`</span></a></p>
 <p>We will eventually introduce uncertainty about <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 
-<h5 id="remark">1.3.2 Remark<a class="headerlink" href="#remark" title="Permalink to this headline">¶</a></h5>
+<h3 id="remark">1.3.2 Remark<a class="headerlink" href="#remark" title="Permalink to this headline">¶</a></h3>
 <p>For a more general starting point, let <span class="math notranslate nohighlight">\(Y_t\)</span> be a vector used to
 represent temperature dynamics where the temperature impact on damages
 is the first component of <span class="math notranslate nohighlight">\(Y_t\)</span>. This state vector evolves
@@ -503,8 +469,7 @@ interest.</p>
 
 
 
-
-<h3 id="economic-damages">1.4 Economic damages<a class="headerlink" href="#economic-damages" title="Permalink to this headline">¶</a></h3>
+<h2 id="economic-damages">5.3 Economic damages<a class="headerlink" href="#economic-damages" title="Permalink to this headline">¶</a></h2>
 <p>The local evolution of damages is given by</p>
 <div class="math notranslate nohighlight">
 \[d \log N_t = \mu_n(Y_t, Z_t,F_t) dt + \sigma_n(Y_t, Z_t, F_t) \cdot dW_t\]</div>
@@ -552,8 +517,7 @@ the jump. When the process jumps to state <span class="math notranslate nohighli
 <img alt="../_images/output_7_0.png" src="../_images/output_7_0.png"/>
 
 
-
-<h2 id="id11">2. Uncertainty aversion<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<h2 id="id11">5.4 Uncertainty aversion<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <p>The model so far is one of risk as captured by the stochastic
 specification of shocks. The presence of shocks opens the door to a
 comprehensive assessment of uncertainty conceived more broadly.
@@ -568,8 +532,6 @@ sensitivity analysis to a one or two dimensional parameterization that
 locates the potential misspecification that is most consequential to a
 decision maker. Our aim is to provide a more complete uncertainty
 quantification within the setting of the decision problem.</p>
-
-<h3 id="misspecified-brownian-motion">2.1 Misspecified Brownian motion<a class="headerlink" href="#misspecified-brownian-motion" title="Permalink to this headline">¶</a></h3>
 <div class="line-block">
 <div class="line">The potential misspecification of a Brownian motion has a particularly
 simple form. It is known from the famed Girsanov Theorem that a change
@@ -609,9 +571,6 @@ the direct impact is evident from the division by <span class="math notranslate 
 value function, and hence its partial derivative, also depends on
 <span class="math notranslate nohighlight">\(\xi\)</span>. The partial derivative of the value function is included to
 locate distortions that matter to the decision maker.</p>
-
-
-<h3 id="misspecified-jump-process">2.2 Misspecified jump process<a class="headerlink" href="#misspecified-jump-process" title="Permalink to this headline">¶</a></h3>
 <p>There are two ways that a jump process could be misspecified. The jump
 intensity governing locally the jump probability could be wrong or the
 probability distribution across the alternative states, in this case
@@ -644,9 +603,6 @@ exceeds its gradient <span class="math notranslate nohighlight">\(g - 1\)</span>
 <p>implying a minimized objective:</p>
 <div class="math notranslate nohighlight">
 \[\xi_p {\mathcal I} \sum_{j=1}^m \pi_j^p \left( 1 - \exp \left[\frac 1 {\xi_p} \left( \phi - \phi_j \right) \right]\right) = - \left(\xi_p {\mathcal I}\right) \frac {\sum_{j=1}^m \pi_j^p \exp \left(- \frac 1 {\xi_p} \phi_j\right) - \exp \left(- \frac 1 {\xi_p} \phi \right)}{\exp \left(- \frac 1 {\xi_p} \phi \right)}\]</div>
-
-
-<h3 id="local-ambiguity-aversion">2.3 Local ambiguity aversion<a class="headerlink" href="#local-ambiguity-aversion" title="Permalink to this headline">¶</a></h3>
 <p>To assess the consequences of the heterogeneous responses from
 alternative climate models, we use what are called smooth ambiguity
 preferences. In deploying such preferences, we use a robust prior
@@ -693,86 +649,9 @@ uncertainty. In fact, these interactions will be present as climate
 change uncertainty will impact the value function contributions given
 by the <span class="math notranslate nohighlight">\(\phi_j\)</span>’s and by <span class="math notranslate nohighlight">\(\phi\)</span>.</div>
 </div>
-
-
-
-<h2 id="a-climate-component-of-the-planners-hjb">3. A climate component of the planner’s HJB<a class="headerlink" href="#a-climate-component-of-the-planners-hjb" title="Permalink to this headline">¶</a></h2>
-<p>As we show in the appendix, the planners HJB equation conveniently
-separates into three different components. We focus here on the
-component that includes the choice emissions, <span class="math notranslate nohighlight">\(\mathcal{E}_t\)</span>. Let
-$ <a href="#id16"><span class="problematic" id="id17">:raw-latex:`\mathcal{\widetilde E}`</span></a>_t = <a href="#id18"><span class="problematic" id="id19">:raw-latex:`\iota`</span></a>_y
-<a href="#id20"><span class="problematic" id="id21">:raw-latex:`\cdot `Z_t :raw-latex:`</span></a>mathcal{E}`_t$, which we will use
-as a transformed control variable. In the absence of any specification
-uncertainty, the HJB equation of interest for <span class="math notranslate nohighlight">\(y &lt; {\bar y}\)</span> prior
-to Poisson jump is:</p>
-<p><a href="#id22"><span class="problematic" id="id23">:raw-latex:`\begin{align} \label{HJB_no}
-0 = \max_{\tilde e}
-&amp; - \delta \phi(y)    +  \eta \log \tilde e   \cr
-&amp; + \frac {d \phi(y)}{d y}  \sum_{i=1}^n \pi^a_i  \theta_i {\tilde e} + {\frac 1 2} \frac {d^2 \phi(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
-&amp;+ \frac{(\eta - 1)}{\delta} \left[  \left( \gamma_1 + \gamma_2 y \right)  \sum_{i=1}^n \pi^a_i \theta_i {\tilde e} + {\frac 1 2} \gamma_2 |\varsigma|^2 \tilde e^2 \right]\cr
-&amp; + {\mathcal I}(y)  \sum_{m=1}^M \pi_m^p \left( \phi_m - \phi \right)
-\end{align}`</span></a></p>
-<p>for a value function given by
-<span class="math notranslate nohighlight">\(\phi(y) + \frac{(\eta - 1)}{\delta} n\)</span>. This is an equation in
-the value function <span class="math notranslate nohighlight">\(\phi\)</span> but the depends on the continuation
-value functions <span class="math notranslate nohighlight">\(\phi_m\)</span> pertinent after the tail of damage
-function is realized. These value functions solve equations:</p>
-<p><a href="#id24"><span class="problematic" id="id25">:raw-latex:`\begin{align*}
-0 = \max_{\tilde e}
-&amp; - \delta \phi_j(y)    +  \eta \log \tilde e    \cr
-&amp; + \frac {d \phi_j(y)}{d y}  \sum_{i=1}^n \pi^a_i  \theta_i {\tilde e} + {\frac 1 2} \frac {d^2 \phi_j(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
-&amp;+ \frac{(\eta - 1)}{\delta} \left(  \left[ \gamma_1 + \gamma_2 y + \gamma_3^j (y - {\bar y})  \right]   \sum_{i=1}^n \pi^a_i \theta_i {\tilde e}
-+ {\frac 1 2}(\gamma_2 + \gamma_3)   |\varsigma|^2 \tilde e^2  \right)
-\end{align*}`</span></a> for <span class="math notranslate nohighlight">\(j=1,2,...,m\)</span>. The solutions for these <span class="math notranslate nohighlight">\(m\)</span>
-HJB equations are inputs in the first HJB equation. Given the localized
-nature of the jump intensity, we expect</p>
-<div class="math notranslate nohighlight">
-\[\phi\left( {\bar y} \right) \approx \sum_{m=1}^M \pi_m^p \phi_m\left( {\bar y} \right).\]</div>
-<p>We now show the terms added in our sensitivity analysis:</p>
-<ul class="simple">
-<li><p>Brownian misspecification: include $$</p></li>
-<li><p><a href="#id26"><span class="problematic" id="id27">:raw-latex:`\frac {\xi_b}`</span></a> 2
-<a href="#id28"><span class="problematic" id="id29">:raw-latex:`\left`</span></a><a href="#id30"><span class="problematic" id="id31">:raw-latex:`\vert`</span></a><a href="#id32"><span class="problematic" id="id33">:raw-latex:`\left[ \frac {d \phi(y)}{d y} + \frac{(\eta - 1)}{\delta}   \left( \gamma_1 + \gamma_2 y\right)  \right] `:raw-latex:`</span></a>right`:raw-latex:<cite>vert`^2
-|:raw-latex:</cite>varsigma`|^2 :raw-latex:<a href="#id34"><span class="problematic" id="id35">`</span></a>tilde <a href="#id36"><span class="problematic" id="id37">`</span></a>e^2 . $$</p></li>
-<li><p>Climate model ambiguity: replace</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[\sum_{i=1}^n \pi_i^a  \theta_i \left[ \frac {d \phi(y)}{d y} + \frac{(\eta - 1)}{\delta}  \left( \gamma_1 + \gamma_2 y \right)\right] {\tilde e}\]</div>
-<p>with ambiguity adjusted certainty equivalent:</p>
-<div class="math notranslate nohighlight">
-\[- \xi_a \log \sum_{i=1}^n\pi_i^a \exp\left( - \frac 1 {\xi_a} \theta_i \left[\frac {d \phi(y)}{d y}  + \frac{(\eta -1)}{\delta} \left( \gamma_1 + \gamma_2 y \right) \right] {\tilde e}\right)\]</div>
-<ul class="simple">
-<li><p>Jump misspecification: replace ${<a href="#id38"><span class="problematic" id="id39">:raw-latex:`\mathcal `I}(y)
-:raw-latex:`</span></a>sum`_{m=1}^M <a href="#id40"><span class="problematic" id="id41">:raw-latex:`\pi`</span></a>_m^p
-:raw-latex:<a href="#id42"><span class="problematic" id="id43">`</span></a>left[ phi_m(y) - phi(y)  right] <a href="#id44"><span class="problematic" id="id45">`</span></a>$ with:</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[- \left(\xi_p {\mathcal I}\right) \frac {\sum_{m=1}^M \pi_m^p \exp \left(- \frac 1 {\xi_p} \phi_m\right) - \exp \left(- \frac 1 {\xi_p} \phi \right)}{\exp \left(- \frac 1 {\xi_p} \phi \right)}\]</div>
-<div class="line-block">
-<div class="line">and make corresponding adjustments to the Brownian and climate model
-uncertainty contributions.</div>
-<div class="line">When this jump risk adjustment is made, we expect:</div>
-</div>
-<div class="math notranslate nohighlight">
-\[\phi(\overline y) \approx - \xi_p \log \sum_{m=1}^M \pi_m^p \exp \left[- \frac 1 {\xi_p} \phi_m({\overline y}) \right]\]</div>
-<p>where the right side is the certainty equivalent for an ambiguity
-adjusted post jump continuation value. For our computations, we impose
-this as a boundary value.</p>
-<p>In what follows we will impose these terms separately and with with the
-first and third or second and third. The first and second give
-unstructured and structured ways to impose drift distortions. While
-their comparison is interesting, we see little rationale to impose both
-of them simultaneously.</p>
-
-<h3 id="computational-details">3.1 Computational details<a class="headerlink" href="#computational-details" title="Permalink to this headline">¶</a></h3>
-<p>Write down the false transient method here.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Solve the HJB without jump and with jump</span>
-<span class="c1">### Try different ξ values</span>
-</pre></div>
-</div>
-<p>Continue to the next section</p>
-<p>Section 6:  <a class="reference internal" href="../sec6/sec6_DecisionProblem.html"><span class="doc">A climate component of a planner’s decision problem</span></a></p>
-
+<p><strong>Continue to the next section</strong></p>
+<p>Section 6: <a class="reference external" href="sec6_DecisionProblem.ipynb">A climate component of a planner’s decision
+problem</a></p>
 
 
 
@@ -786,7 +665,7 @@ of them simultaneously.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
           
-            <a href="../index.html" title="Welcome to the documentation for Climate Change Uncertainty Spillover in the Macroeconomy!"
+            <a href="../sec4/sec4_IllustrativeEcon.html" title="4 Illustrative Economy"
                class="md-flex md-footer-nav__link md-footer-nav__link--prev"
                rel="prev">
               <div class="md-flex__cell md-flex__cell--shrink">
@@ -795,7 +674,7 @@ of them simultaneously.</p>
               <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
                 <span class="md-flex__ellipsis">
                   <span
-                      class="md-footer-nav__direction"> Previous </span> Welcome to the documentation for <em>Climate Change Uncertainty Spillover in the Macroeconomy</em>! </span>
+                      class="md-footer-nav__direction"> Previous </span> 4 Illustrative Economy </span>
               </div>
             </a>
           

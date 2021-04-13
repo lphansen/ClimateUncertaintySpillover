@@ -520,87 +520,68 @@ When ME is asigned value, it will also simulate paths for marginal value of emis
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model_res</strong> (<em>a dictionary</em>) – <p>A dictionary storing solution with misspecified jump process.
-v : (N,) ndarray</p>
-<blockquote>
-<div><p>Value function</p>
-</div></blockquote>
-<dl class="simple">
-<dt>dvdy<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
-</dd>
-<dt>dvddy<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
-</dd>
-<dt>e_tilde<span class="classifier">(N,) ndarray</span></dt><dd><p>:math:`     ilde{e}` on the grid of y.</p>
-</dd>
-<dt>h<span class="classifier">(N,) ndarray</span></dt><dd><p>Implied drift distortion.</p>
-</dd>
-<dt>πc<span class="classifier">(M, N) ndarray</span></dt><dd><p>Distorted probabilities of θ.</p>
-</dd>
-<dt>g<span class="classifier">(K, N) ndarray</span></dt><dd><p>Change in damage probability and intensity.</p>
-</dd>
-<dt>πd<span class="classifier">(K, N) ndarray</span></dt><dd><p>Distorted probabilities of damage functions.</p>
-</dd>
-<dt>bc<span class="classifier">float</span></dt><dd><p>The boundary condition that we impose on the HJB.</p>
-</dd>
-<dt>y<span class="classifier">(N,) ndarray</span></dt><dd><p>Grid of y.</p>
-</dd>
-<dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>θ_list</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – A list of matthew coefficients. Unit: celsius/gigaton of carbon.</p></li>
+<li><p><strong>model_res</strong> (<em>dict:</em>) – A dictionary storing solution with misspecified jump process. See <a class="reference internal" href="#source.model.solve_hjb_y_jump" title="source.model.solve_hjb_y_jump"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve_hjb_y_jump()</span></code></a>
+for detail.</p></li>
+<li><p><strong>θ_list</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray:</em>) – A list of matthew coefficients. Unit: celsius/gigaton of carbon.</p></li>
 <li><p><strong>ME</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Marginal value of emission as a function of y.</p></li>
-<li><p><strong>y_start</strong> (<em>float</em><em> (</em><em>Default: 1</em><em>)</em>) – Initial value of y.</p></li>
-<li><p><strong>T</strong> (<em>int</em><em> (</em><em>Default: 100</em><em>)</em>) – Time span of simulation.</p></li>
-<li><p><strong>dt</strong> (<em>float</em><em> (</em><em>Default: 1</em><em>)</em>) – Time interval of simulation.</p></li>
+<li><p><strong>y_start</strong> (<em>float</em><em>, </em><em>default=1</em>) – Initial value of y.</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>default=100</em>) – Time span of simulation.</p></li>
+<li><p><strong>dt</strong> (<em>float</em><em>, </em><em>default=1</em>) – Time interval of simulation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><strong>simulation_res</strong> –</p>
 <dl class="simple">
-<dt>yt: (T,) ndarray</dt><dd><p>Temperature trajectories.</p>
+<dt>dict: {</dt><dd><dl class="simple">
+<dt>yt<span class="classifier">(T,) ndarray</span></dt><dd><p>Temperature anomaly trajectories.</p>
 </dd>
-<dt>et: (T,) ndarray</dt><dd><p>Emission trajectories.</p>
+<dt>et<span class="classifier">(T,) ndarray</span></dt><dd><p>Emission trajectories.</p>
 </dd>
-<dt>πct: (T, L) ndarray</dt><dd><p>Trajectories for distorted probabilities of climate models.</p>
+<dt>πct<span class="classifier">(T, L) ndarray</span></dt><dd><p>Trajectories for distorted probabilities of climate models.</p>
 </dd>
-<dt>πdt: (T, M) ndarray</dt><dd><p>Trajectories for distorted probabilities of damage functions.</p>
+<dt>πdt<span class="classifier">(T, M) ndarray</span></dt><dd><p>Trajectories for distorted probabilities of damage functions.</p>
 </dd>
-<dt>ht: (T,) ndarray</dt><dd><p>Trajectories for drift distortion.</p>
+<dt>ht<span class="classifier">(T,) ndarray</span></dt><dd><p>Trajectories for drift distortion.</p>
 </dd>
 <dt>if ME is not None, the dictionary will also include</dt><dd><dl class="simple">
-<dt>me_t: (T,) ndarray</dt><dd><p>Trajectories for marginal value of emission.</p>
+<dt>me_t<span class="classifier">(T,) ndarray</span></dt><dd><p>Trajectories for marginal value of emission.</p>
 </dd>
 </dl>
 </dd>
 </dl>
+</dd>
+</dl>
+<p>}</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>a dictionary of ndarrays</p>
+<dd class="field-odd"><p>dict of ndarrays</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt id="source.simulation.simulate_me">
-<code class="sig-prename descclassname"><span class="pre">source.simulation.</span></code><code class="sig-name descname"><span class="pre">simulate_me</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.00186</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_me" title="Permalink to this definition">¶</a></dt>
-<dd><p>simulate log(ME_new/ME_baseline)*1000.</p>
+<code class="sig-prename descclassname"><span class="pre">source.simulation.</span></code><code class="sig-name descname"><span class="pre">simulate_me</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.00186</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>simulate trajectories of uncertainty decomposition</p>
+<div class="math notranslate nohighlight">
+\[\log(\frac{ME_{new}}{ME_{baseline}})\times 1000.\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y_grid</strong> – </p></li>
-<li><p><strong>e_grid</strong> – </p></li>
-<li><p><strong>ratio_grid</strong> – </p></li>
-<li><p><strong>θ</strong> – </p></li>
-<li><p><strong>y_start</strong> – </p></li>
-<li><p><strong>T</strong> – </p></li>
+<li><p><strong>y_grid</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – Grid of y.</p></li>
+<li><p><strong>e_grid</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – Corresponding <span class="math notranslate nohighlight">\(\tilde{e}\)</span> on the grid of y.</p></li>
+<li><p><strong>ratio_grid</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray:</em>) – Corresponding <span class="math notranslate nohighlight">\(\log(\frac{ME_{new}}{ME_{baseline}})\times 1000\)</span> on the grid of y.</p></li>
+<li><p><strong>θ</strong> (<em>float</em><em>, </em><em>default=1.86/1000</em>) – Coefficient used for simulation.</p></li>
+<li><p><strong>y_start</strong> (<em>float</em>) – Initial value of y.</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>default=100</em>) – Time span of simulation.</p></li>
+<li><p><strong>dt</strong> (<em>float</em><em>, </em><em>default=1</em>) – Time interval of simulation. Default=1 indicates yearly simulation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><em>Et</em></p></li>
-<li><p><em>yt</em></p></li>
-<li><p><em>ratio_t</em></p></li>
+<li><p><strong>Et</strong> (<em>(T, ) ndarray</em>) – Emission trajectory.</p></li>
+<li><p><strong>yt</strong> (<em>(T, ) ndarray</em>) – Temperature anomaly trajectories.</p></li>
+<li><p><strong>ratio_t</strong> (<em>(T, ) ndarray</em>) – Uncertainty decomposition ratio trajectories.</p></li>
 </ul>
 </p>
 </dd>
