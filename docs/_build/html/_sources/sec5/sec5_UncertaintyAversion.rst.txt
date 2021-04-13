@@ -552,5 +552,4 @@ Write down the false transient method here.
 
 Continue to the next section
 
-Section 6: `A climate component of a planner’s decision
-problem <sec6_DecisionProblem.ipynb>`__
+Section 6:  :doc:`A climate component of a planner’s decision problem <../sec6/sec6_DecisionProblem>`

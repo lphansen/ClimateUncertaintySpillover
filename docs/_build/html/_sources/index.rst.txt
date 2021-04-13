@@ -15,6 +15,7 @@ The latest version of the paper can be found through this link: (link needed)
    sec6/sec6_DecisionProblem
    sec7/sec7_Sensitivity
    sec8/sec8_UncertaintyDecomposition
+   app/appendices
 
    Modules <modules_index.rst> 
 

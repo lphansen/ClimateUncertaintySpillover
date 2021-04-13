@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="../_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="../_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="../_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="../_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="../_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>A. Complete model &#8212; UncertaintySpillover  documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modules:" href="../modules_index.html" />
+    <link rel="prev" title="8 Uncertainty Decomposition" href="../sec8/sec8_UncertaintyDecomposition.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=blue-grey data-md-color-accent=blue>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#app/appendices" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="UncertaintySpillover  documentation"
+           class="md-header-nav__button md-logo">
+          
+            &nbsp;
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">UncertaintySpillover</span>
+          <span class="md-header-nav__topic"> A. Complete model </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty Spillover
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="../_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = "../"versions.json"",
+        target_loc = "../../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+          <li class="md-tabs__item"><a href="../index.html" class="md-tabs__link">UncertaintySpillover  documentation</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="UncertaintySpillover documentation" class="md-nav__button md-logo">
+      
+        <img src="../_static/" alt=" logo" width="48" height="48">
+      
+    </a>
+    <a href="../index.html"
+       title="UncertaintySpillover documentation">UncertaintySpillover</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty Spillover
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../sec5/sec5_UncertaintyAversion.html" class="md-nav__link">5 Uncertainty aversion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../sec6/sec6_DecisionProblem.html" class="md-nav__link">6 A climate component of a planner’s decision problem</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../sec7/sec7_Sensitivity.html" class="md-nav__link">7 Sensitivity</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../sec8/sec8_UncertaintyDecomposition.html" class="md-nav__link">8 Uncertainty Decomposition</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> A. Complete model </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">A. Complete model</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="../_sources/app/appendices.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      <ul class="md-nav__list"> 
+    <li class="md-nav__item">
+    
+    
+      <a href="#a-1-description" class="md-nav__link">A.1 Description</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#a-2-consumption-capital-dynamics" class="md-nav__link">A.2 Consumption-capital dynamics</a>
+      
+    
+    </li></ul>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#b-computation-methods" class="md-nav__link">B. Computation methods</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../modules_index.html" class="md-nav__link">Modules:</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../modules_index.html#module-source.model" class="md-nav__link">1 Model.py</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../modules_index.html#module-source.simulation" class="md-nav__link">2 simulation.py</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../modules_index.html#module-source.solver" class="md-nav__link">3 solver.py</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../modules_index.html#module-source.utilities" class="md-nav__link">4 utilities.py</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="../_sources/app/appendices.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  
+<h1 id="app-appendices--page-root">A. Complete model<a class="headerlink" href="#app-appendices--page-root" title="Permalink to this headline">¶</a></h1>
+
+<h2 id="a-1-description">A.1 Description<a class="headerlink" href="#a-1-description" title="Permalink to this headline">¶</a></h2>
+<p>Suppose the value function is <span class="math notranslate nohighlight">\(V\)</span>. State variable:
+<span class="math notranslate nohighlight">\(x = (\log k, z, y, n)\)</span> (realization of
+<span class="math notranslate nohighlight">\(\log K, \log N, Y, Z\)</span>), control variable : <span class="math notranslate nohighlight">\((\tilde e, i)\)</span>.
+Suppose the value function is separable as follows:</p>
+<div class="math notranslate nohighlight">
+\[V(\log k, n, y, z) = v_k \log k + \zeta(z) + \phi(y) + v_n n\]</div>
+<p>Consider the model without jump misspecification with damage function</p>
+<div class="math notranslate nohighlight">
+\[\Lambda (y)  = \gamma_1 y + \frac{\gamma_2}{2}y^2 + \frac{\gamma_3}{2} (y - \bar y)^2 \mathbb{I}\{y &gt; \bar y\}\]</div>
+<p>For models with jump misspecification, the modification can be make to
+<span class="math notranslate nohighlight">\((y,n)\)</span> without affecting <span class="math notranslate nohighlight">\((\log k, z)\)</span>, as the HJB is
+separable. The complete HJB is as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+ 0 = \max_{\tilde e, i }\min_{\omega_\ell:\sum_{\ell=1}^L \omega_\ell = 1} \min_{h}\quad &amp; - \delta V + (1 - \eta) [\log(\alpha - i) + \log k - n] + \eta \log \tilde e \\
+ &amp; + v_k \cdot \left[\mu_k(z) + i  - \frac{\kappa}{2} i^2  - \frac{|\sigma_k(z)|^2}{2} + \sigma_k(z)' h \right] \\
+ &amp; + \frac{\partial \zeta }{\partial z}(z)\cdot \left[\mu_z(z) + \sigma_z(z)'h \right] + \frac{1}{2} trace\left[\sigma_z(z)' \frac{\partial^2 \zeta(z)}{\partial z\partial z'} \sigma_z(z)'\right] \\
+ &amp; + \frac{d \phi(y)}{dy} \sum_{\ell=1}^L \omega_\ell\cdot \tilde e\cdot\theta_\ell + \frac12 \frac{d^2 \phi(y)}{dy^2} (\tilde e)^2 |\varsigma|^2\\
+ &amp; + v_n \left[(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\}) (\sum_{\ell=1}^L \omega_\ell \theta_\ell \tilde e  + \tilde e \varsigma' h )+ \frac12 \left(\gamma_2 + \gamma_3 \mathbb{I}\{y &gt; \bar y\} \right)\cdot |\varsigma|^2 (\tilde e)^2 \right]  \\
+ &amp; + \frac{\xi_b}{2} h'h + \xi_a \sum_{\ell=1}^L \omega_\ell \left( \log \omega_\ell - \log \pi^a_\ell \right)
+\end{aligned}\end{split}\]</div>
+
+
+<h2 id="a-2-consumption-capital-dynamics">A.2 Consumption-capital dynamics<a class="headerlink" href="#a-2-consumption-capital-dynamics" title="Permalink to this headline">¶</a></h2>
+<p>The undamaged version of consumption capital model has a straightforward
+solution. The HJB equation for this component is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+ 0 = \max_{ i } \min_{h}\quad &amp; - \delta \left[ v_k \log k + \zeta(z)\right] + (1 - \eta) [\log(\alpha - i) + \log k - n] +  \frac{\xi_b}{2} h'h \\
+ &amp; + v_k \cdot \left[\mu_k(z) + i  - \frac{\kappa}{2} i^2  - \frac{|\sigma_k(z)|^2}{2} + \sigma_k(z)' h \right] \\
+ &amp; + \frac{\partial \zeta }{\partial z}(z)\cdot \left[\mu_z(z) + \sigma_z(z)'h \right] + \frac{1}{2} trace\left[\sigma_z(z)' \frac{\partial^2 \zeta(z)}{\partial z\partial z'} \sigma_z(z)'\right] \\
+\end{aligned}\end{split}\]</div>
+<p>Coefficients of <span class="math notranslate nohighlight">\(\log k\)</span> satisfy that</p>
+<div class="math notranslate nohighlight">
+\[-\delta v_k + (1 - \eta) = 0 \quad \Longrightarrow \quad v_k = \frac{1 - \eta}{\delta}\]</div>
+<p>The first order condition for the investment-capital ratio is</p>
+<div class="math notranslate nohighlight">
+\[- (1 - \eta) \frac{1}{\alpha - i} + v_k (1 - \kappa i) = 0\quad \Longrightarrow \quad - \frac{1}{\alpha -i} + \frac{1 - \kappa i}{\delta} = 0\]</div>
+<p>The first order condition for <span class="math notranslate nohighlight">\(h\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\xi_b h + \sigma_k v_k + \sigma_z \frac{\partial \zeta}{\partial z} = 0\]</div>
+<p>and is therefore:</p>
+<div class="math notranslate nohighlight">
+\[h = - \frac{1}{\xi_b} \left[ \sigma_k v_k + \sigma_k \frac{\partial \zeta}{\partial z}\right]\]</div>
+
+
+
+<h1 id="b-computation-methods">B. Computation methods<a class="headerlink" href="#b-computation-methods" title="Permalink to this headline">¶</a></h1>
+<p>The HJB for <span class="math notranslate nohighlight">\((y, n)\)</span> component does not has a straightforward
+solution. We use <strong>false transient method</strong> to solve the ODEs concerning
+<span class="math notranslate nohighlight">\((y,n)\)</span> in this paper.</p>
+<p>Take a general HJB that takes into consideration smooth ambiguity and
+brownian misspecification. Here we leave out the subscription <span class="math notranslate nohighlight">\(m\)</span>
+in <span class="math notranslate nohighlight">\(\phi(y)\)</span> as well as the upscription in <span class="math notranslate nohighlight">\(\gamma_3\)</span>.</p>
+<p>Recall that one HJB of interest for a damage specification
+<span class="math notranslate nohighlight">\(\gamma_3\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \max_{\tilde e} \min_{\omega^a_\ell : \sum_{\ell=1}^L \omega^a_\ell = 1}  &amp;- \delta \phi(y) +  \eta \log\tilde e \\
+&amp; + \frac{1}{2} \left(\frac{d^2 \phi}{dy^2} + \frac{ (\eta - 1)}{\delta} \left(\gamma_2 + \gamma_3\mathbb{I}\{y&gt;\bar y\} \right) \right)(\tilde e)^2 |\varsigma|^2  \\
+&amp; - \frac{1}{2\xi_b} \left[ \frac{d\phi}{dy}    + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\})\right]^2 \cdot |\varsigma|^2 (\tilde e)^2 \\
+\\
+&amp; + \sum_{\ell=1}^{L} \omega_\ell^a \left(\frac{d\phi}{dy}+ \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} ) \right)\theta_\ell \tilde e   \\
+\\
+&amp; + \xi_a \sum_i \omega^a_\ell(\log \omega^a_\ell - \log \pi^a_\ell)
+\end{aligned}\end{split}\]</div>
+<p>The problem satisfies condition to switch max and min problem. In the
+code, we first compute the optimal <span class="math notranslate nohighlight">\(\tilde e\)</span> and then the
+optimizing <span class="math notranslate nohighlight">\(\omega_\ell\)</span>, so we follow this order here.</p>
+<p>The settup includes a tolerance level, <span class="math notranslate nohighlight">\(tolerance\)</span>, that defines
+<em>convergence</em> and a constant step size, <span class="math notranslate nohighlight">\(\epsilon\)</span>, for updating
+the value function.</p>
+<p>We start with an initial guess of value function <span class="math notranslate nohighlight">\(\phi_0(y)\)</span> and
+initial values of <span class="math notranslate nohighlight">\(\{ \omega_\ell\}_{\ell=1}^L\)</span>, and update the
+value function according to the following way: 1. For a given
+<span class="math notranslate nohighlight">\(\color{blue}{\phi_i(y)}\)</span>, compute the optimizing <span class="math notranslate nohighlight">\(\tilde e\)</span>
+according to its first order condition:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = &amp;\frac{\eta}{\color{blue}{\tilde e}} + \sum_{\ell=1}^{L} \omega_\ell^a \left(\color{blue}{\frac{d\phi_i}{dy}}+ \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} ) \right)\theta_\ell  \\
+ &amp; +  \left(\color{blue}{\frac{d^2 \phi_i}{dy^2}} + \frac{ (\eta - 1)}{\delta} \left(\gamma_2 + \gamma_3 \mathbb{I}\{y&gt;\bar y\} \right)  - \frac{1}{\xi_b} \left[ \color{blue}{\frac{d\phi_i}{dy}} + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\})\right]^2 \right)|\varsigma|^2 \color{blue}{\tilde e}
+\end{aligned}\end{split}\]</div>
+<ol class="arabic simple" start="2">
+<li><p>After compute the optimizing <span class="math notranslate nohighlight">\(\tilde e\)</span> from above, we compute
+the optimizing <span class="math notranslate nohighlight">\(\omega_\ell\)</span> according to its first order
+condition:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\color{blue}{\omega_\ell} = \frac{\pi_\ell^a \exp\left( -\frac{1}{\xi_a}\left[ \color{blue}{\frac{d\phi_i}{dy}} + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} )\right] \color{blue}{\tilde e} \cdot \theta_\ell \right)}{\sum_{\ell=1}^L \pi_\ell^a \exp\left( -\frac{1}{\xi_a}\left[ \color{blue}{\frac{d\phi_i}{dy}}+ \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} )\right]\color{blue}{\tilde e} \cdot \theta_\ell \right)}, \quad \ell = 1,2,\dots,L\]</div>
+<ol class="arabic" start="3">
+<li><p>Plug the above computed <span class="math notranslate nohighlight">\(\tilde e\)</span> and
+<span class="math notranslate nohighlight">\(\{\omega_\ell\}_{\ell=1}^L\)</span> back into the above HJB. Update
+<span class="math notranslate nohighlight">\(\phi_i(y)\)</span> to <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> by solving the following
+ODE:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\frac{\color{red}{\phi_{i+1}(y)} - \color{blue}{\phi_i(y)}}{\epsilon} =   &amp;- \delta \color{red}{\phi_{i+1}(y)} +  \eta \log\color{blue}{\tilde e} \\
+&amp; + \frac{1}{2} \left(\color{red}{\frac{d^2 \phi_{i+1}}{dy^2}} + \frac{ (\eta - 1)}{\delta} \left(\gamma_2 + \gamma_3\mathbb{I}\{y&gt;\bar y\} \right) \right)(\color{blue}{\tilde e})^2 |\varsigma|^2  \\
+&amp; - \frac{1}{2\xi_b} \left[ \color{red}{\frac{d\phi_{i+1}}{dy}}    + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\})\right]^2 \cdot |\varsigma|^2 (\color{blue}{\tilde e})^2 \\
+\\
+&amp; + \sum_{\ell=1}^{L} \color{blue}{\omega_\ell^a} \left(\color{red}{\frac{d\phi_{i+1}}{dy}} + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} ) \right)\theta_\ell \color{blue}{\tilde e}   \\
+\\
+&amp; + \xi_a \sum_i \color{blue}{\omega^a_\ell}(\log\color{blue}{\omega^a_\ell} - \log \pi^a_\ell)
+\end{aligned}\end{split}\]</div>
+<p>The method we use to solve the ODE is <strong>conjugate-gradient method</strong>.
+Blued <span class="math notranslate nohighlight">\(\tilde e\)</span> and <span class="math notranslate nohighlight">\(\omega_\ell\)</span> indicate they are
+computed using <span class="math notranslate nohighlight">\(\phi_i(y)\)</span>.</p>
+</li>
+<li><p>Check whether the convergence condition is satisfied. We call
+left-hand side formula <em>left-hand side error</em>. Set a tolerance level,
+<span class="math notranslate nohighlight">\(tolerance\)</span>. We say that the algorithm converges, if:</p>
+<div class="math notranslate nohighlight">
+\[\frac{|\color{red}{\phi_{i+1}(y)} - \color{blue}{\phi_i(y)}| }{\epsilon} &lt; tolerance\]</div>
+<p>and we get the solution <span class="math notranslate nohighlight">\(\phi(y) = \phi_{i+1}(y)\)</span>. Otherwise,
+continue with step 1.-3. after assigning <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> to
+<span class="math notranslate nohighlight">\(\phi_i(y)\)</span>.</p>
+</li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># core loop in functions in `source/` can be described as follows</span>
+<span class="n">An</span> <span class="n">initial</span> <span class="n">guess</span><span class="p">:</span> <span class="n">ϕ</span>
+<span class="n">Intial</span> <span class="n">values</span> <span class="n">of</span> <span class="n">distorted</span> <span class="n">probabibity</span> <span class="n">of</span> <span class="n">ω_ℓ</span><span class="p">:</span> <span class="n">πc_o</span>
+<span class="n">constant</span> <span class="n">step</span> <span class="n">size</span><span class="p">:</span> <span class="n">ϵ</span>
+<span class="n">tolerance</span> <span class="n">level</span><span class="p">:</span> <span class="n">tol</span>
+<span class="n">left</span> <span class="n">hand</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># random value larger than tol</span>
+<span class="n">report</span> <span class="n">numbers</span> <span class="n">of</span> <span class="n">iteration</span><span class="p">:</span> <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">left</span> <span class="n">hand</span> <span class="n">side</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+    <span class="n">compute</span>  <span class="n">dϕdy</span> <span class="c1"># first crder derivative</span>
+    <span class="n">compute</span> <span class="n">dϕdyy</span> <span class="c1"># second order derivative</span>
+    <span class="n">compute</span> <span class="n">e_tilde</span>
+    <span class="n">compute</span> <span class="n">optimizing</span> <span class="n">ω_ℓ</span><span class="p">:</span> <span class="n">πc</span>
+    <span class="n">solve</span> <span class="n">the</span> <span class="n">ODE</span> <span class="n">by</span> <span class="n">conjugate</span> <span class="n">gradient</span> <span class="n">to</span> <span class="n">get</span> <span class="n">ϕ_new</span>
+    <span class="n">update</span> <span class="n">left</span> <span class="n">hand</span> <span class="n">error</span>
+    <span class="n">compute</span> <span class="n">right</span> <span class="n">hand</span> <span class="n">error</span>
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_new</span>
+    <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="../sec8/sec8_UncertaintyDecomposition.html" title="8 Uncertainty Decomposition"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> Previous </span> 8 Uncertainty Decomposition </span>
+              </div>
+            </a>
+          
+          
+            <a href="../modules_index.html" title="Modules:"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> Next </span> Modules: </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2021, SuriChen.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

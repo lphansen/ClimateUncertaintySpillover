@@ -46,7 +46,7 @@
   
   
   
-    <title>The modules include: &#8212; UncertaintySpillover  documentation</title>
+    <title>Modules: &#8212; UncertaintySpillover  documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/material.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -58,7 +58,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="8 Uncertainty Decomposition" href="sec8/sec8_UncertaintyDecomposition.html" />
+    <link rel="prev" title="A. Complete model" href="app/appendices.html" />
   
    
 
@@ -95,7 +95,7 @@
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           <span class="md-header-nav__topic">UncertaintySpillover</span>
-          <span class="md-header-nav__topic"> The modules include: </span>
+          <span class="md-header-nav__topic"> Modules: </span>
         </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
@@ -218,10 +218,24 @@
     <li class="md-nav__item">
     
     
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    <label class="md-nav__link md-nav__link--active" for="__toc"> The modules include: </label>
+      <a href="app/appendices.html" class="md-nav__link">A. Complete model</a>
+      
     
-      <a href="#" class="md-nav__link md-nav__link--active">The modules include:</a>
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="app/appendices.html#b-computation-methods" class="md-nav__link">B. Computation methods</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Modules: </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Modules:</a>
       
         
 <nav class="md-nav md-nav--secondary">
@@ -237,21 +251,28 @@
     <li class="md-nav__item">
     
     
-      <a href="#module-source.model" class="md-nav__link"># 1 Model.py</a>
+      <a href="#module-source.model" class="md-nav__link">1 Model.py</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="#module-source.simulation" class="md-nav__link"># 2 simulation.py</a>
+      <a href="#module-source.simulation" class="md-nav__link">2 simulation.py</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="#module-source.solver" class="md-nav__link"># 3 solver.py</a>
+      <a href="#module-source.solver" class="md-nav__link">3 solver.py</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#module-source.utilities" class="md-nav__link">4 utilities.py</a>
       
     
     </li>
@@ -283,10 +304,11 @@
           <article class="md-content__inner md-typeset" role="main">
             
   
-<span id="the-modules-include"></span><h1 id="modules-index--page-root">The modules include:<a class="headerlink" href="#modules-index--page-root" title="Permalink to this headline">¶</a></h1>
+<h1 id="modules-index--page-root">Modules:<a class="headerlink" href="#modules-index--page-root" title="Permalink to this headline">¶</a></h1>
+<p>The module <code class="docutils literal notranslate"><span class="pre">source</span></code> includes functions used for solving ODEs and simulating trajectories of the project.</p>
+<span class="target" id="module-source"></span>
 
-
-<span id="model-py"></span><h1 id="module-source.model"># 1 Model.py<a class="headerlink" href="#module-source.model" title="Permalink to this headline">¶</a></h1>
+<span id="model-py"></span><h1 id="module-source.model">1 Model.py<a class="headerlink" href="#module-source.model" title="Permalink to this headline">¶</a></h1>
 <p>Functions that solve the HJBs in the draft paper.</p>
 <dl class="py function">
 <dt id="source.model.solve_hjb_y">
@@ -297,9 +319,10 @@ y is the accumulative change of temperature.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – An evenly spaced grid of y.</p></li>
-<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, ξ_w, ξ_a : floats
-θ, πc_o : (M,) ndarrays</p></li>
-<li><p><strong>v0</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Initial guess of the value function</p></li>
+<li><p><strong>model_args</strong> (<em>tuple of model inputs:</em>) – <p>The first 9 elements are floats for <span class="math notranslate nohighlight">\(η, δ, σ_y, \bar{y}, γ_1, γ_2, γ_3, ξ_w, ξ_a\)</span>.</p>
+<p>The last two are (L,) ndarrays for <span class="math notranslate nohighlight">\(\{θ_\ell\}_{\ell=1}^L, \{\pi^a_\ell\}_{\ell=1}^L\)</span>.</p>
+</p></li>
+<li><p><strong>v0</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em><em>, </em><em>default=None</em>) – Initial guess of the value function</p></li>
 <li><p><strong>ϵ</strong> (<em>float</em>) – Step size of the false transient method.</p></li>
 <li><p><strong>tol</strong> (<em>float</em>) – Tolerance level of the hjb solver.</p></li>
 <li><p><strong>max_iter</strong> (<em>int</em>) – Maximum iterations of the false transient method.</p></li>
@@ -309,23 +332,27 @@ y is the accumulative change of temperature.</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><strong>res</strong> –</p>
 <dl class="simple">
-<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function</p>
+<dt><code class="docutils literal notranslate"><span class="pre">dict</span></code>: {</dt><dd><dl class="simple">
+<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function, <span class="math notranslate nohighlight">\(\phi(y)\)</span>.</p>
 </dd>
-<dt>dvdy<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
+<dt>dvdy<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function, <span class="math notranslate nohighlight">\(\frac{d\phi(y)}{dy}\)</span>.</p>
 </dd>
-<dt>dvddy<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
+<dt>dvddy<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function, <span class="math notranslate nohighlight">\(\frac{d^2\phi(y)}{dy^2}\)</span>.</p>
 </dd>
 <dt>e_tilde<span class="classifier">(N,) ndarray</span></dt><dd><p><span class="math notranslate nohighlight">\(\tilde{e}\)</span> on the grid of y.</p>
 </dd>
-<dt>πc<span class="classifier">(M, N) ndarray</span></dt><dd><p>Distorted probabilities of θ.</p>
+<dt>πc<span class="classifier">(M, N) ndarray</span></dt><dd><p>Distorted probabilities of <span class="math notranslate nohighlight">\(\{θ_\ell\}_{\ell=1}^L\)</span>.</p>
 </dd>
 <dt>h<span class="classifier">(N,) ndarray</span></dt><dd><p>Implied drift distortion.</p>
 </dd>
 <dt>y<span class="classifier">(N,) ndarray</span></dt><dd><p>Grid of y.</p>
 </dd>
-<dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
+<dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters, see model_args above in <cite>Parameters</cite>.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<p>}</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -342,9 +369,10 @@ to the equation instead of adding the jump intensity term.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – An evenly spaced grid of y.</p></li>
-<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, ξ_w, ξ_p, ξ_a : floats
-θ, πc_o : (M,) ndarrays
-ϕ_i, πd_o : (K,) ndarrays</p></li>
+<li><p><strong>model_args</strong> (<em>tuple of model inputs:</em>) – <p>The ten float elements are for <span class="math notranslate nohighlight">\(η, δ, σ_y, \bar{y}, γ_1, γ_2, γ_3, ξ_w, ξ_p, ξ_a\)</span>;</p>
+<p>Two <cite>(L,) ndarrays</cite> are for <span class="math notranslate nohighlight">\(\{θ_\ell\}_{\ell=1}^L\)</span>, <span class="math notranslate nohighlight">\(\{\pi^a_\ell\}_{\ell=1}^L\)</span>;</p>
+<p>Two <cite>(M,N) ndarrays</cite> are  for <span class="math notranslate nohighlight">\(\{\phi_m(y)\}_{m=1}^M\)</span>, <span class="math notranslate nohighlight">\(\{\pi_p^m\}_{m=1}^M\)</span>.</p>
+</p></li>
 <li><p><strong>v0</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Initial guess of the value function</p></li>
 <li><p><strong>ϵ</strong> (<em>float</em>) – Step size of the false transient method.</p></li>
 <li><p><strong>tol</strong> (<em>float</em>) – Tolerance level of the hjb solver.</p></li>
@@ -355,11 +383,12 @@ to the equation instead of adding the jump intensity term.</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><strong>res</strong> –</p>
 <dl class="simple">
-<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function</p>
+<dt>dict: {</dt><dd><dl class="simple">
+<dt>v: (N,) ndarray</dt><dd><p>Value function <span class="math notranslate nohighlight">\(\phi(y)\)</span></p>
 </dd>
-<dt>dvdy<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
+<dt>dvdy: (N,) ndarray</dt><dd><p>First order derivative of the value function, <span class="math notranslate nohighlight">\(\frac{d\phi(y)}{dy}\)</span></p>
 </dd>
-<dt>dvddy<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
+<dt>dvddy: (N,) ndarray</dt><dd><p>Second order derivative of the value function.</p>
 </dd>
 <dt>e_tilde<span class="classifier">(N,) ndarray</span></dt><dd><p><span class="math notranslate nohighlight">\(\tilde{e}\)</span> on the grid of y.</p>
 </dd>
@@ -378,6 +407,9 @@ to the equation instead of adding the jump intensity term.</p>
 <dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<p>}</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -393,7 +425,7 @@ to the equation instead of adding the jump intensity term.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>z</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – An evenly spaced grid of z.</p></li>
-<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – η, δ, ρ, μ_2, σ_2, ξ_1m : floats</p></li>
+<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – Elements are floats for <span class="math notranslate nohighlight">\(η, δ, ρ, μ_2, σ_2, ξ_{1m}\)</span> in the HJB.</p></li>
 <li><p><strong>v0</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>ndarray</em>) – Initial guess of the value function</p></li>
 <li><p><strong>ϵ</strong> (<em>float</em>) – Step size of the false transient method.</p></li>
 <li><p><strong>tol</strong> (<em>float</em>) – Tolerance level of the hjb solver.</p></li>
@@ -404,11 +436,12 @@ to the equation instead of adding the jump intensity term.</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><strong>res</strong> –</p>
 <dl class="simple">
-<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function</p>
+<dt><code class="docutils literal notranslate"><span class="pre">dict</span></code>: {</dt><dd><dl class="simple">
+<dt>v<span class="classifier">(N,) ndarray</span></dt><dd><p>Value function, <span class="math notranslate nohighlight">\(\zeta(z)\)</span>.</p>
 </dd>
-<dt>dvdz<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function.</p>
+<dt>dvdz<span class="classifier">(N,) ndarray</span></dt><dd><p>First order derivative of the value function, <span class="math notranslate nohighlight">\(\frac{\partial\zeta(z)}{\partial z}\)</span>.</p>
 </dd>
-<dt>dvddz<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function.</p>
+<dt>dvddz<span class="classifier">(N,) ndarray</span></dt><dd><p>Second order derivative of the value function, <span class="math notranslate nohighlight">\(\frac{\partial^2\zeta(z)}{\partial z\partial z'}\)</span>.</p>
 </dd>
 <dt>h<span class="classifier">(N,) ndarray</span></dt><dd><p>Implied drift distortion.</p>
 </dd>
@@ -417,6 +450,9 @@ to the equation instead of adding the jump intensity term.</p>
 <dt>model_args<span class="classifier">tuple</span></dt><dd><p>Model parameters.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<p>}</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -427,12 +463,53 @@ to the equation instead of adding the jump intensity term.</p>
 <dl class="py function">
 <dt id="source.model.uncertainty_decomposition">
 <code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">uncertainty_decomposition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_tilde</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">πc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.uncertainty_decomposition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solve the PDE with a given e_tile. If h is not given, minimize over h; if πc is not given,
-minimize over πc; if bc is not given, use certainty equivalent as bc.</p>
+<dd><p>Solve the PDE with a given <span class="math notranslate nohighlight">\(\tilde{e}\)</span>. If h is not given, minimize over h; if πc is not given,
+minimize over πc; if <code class="docutils literal notranslate"><span class="pre">bc</span></code> is not given, use certainty equivalent as <code class="docutils literal notranslate"><span class="pre">bc</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>array</em>) – Grid of y, <span class="math notranslate nohighlight">\(y \in [0, \bar{y}]\)</span>.</p></li>
+<li><p><strong>model_args</strong> (<em>tuple of model inputs</em>) – same as <code class="docutils literal notranslate"><span class="pre">model_args</span></code> in  <a class="reference internal" href="#source.model.solve_hjb_y_jump" title="source.model.solve_hjb_y_jump"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve_hjb_y_jump()</span></code></a>.</p></li>
+<li><p><strong>e_tilde</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>array</em><em>, </em><em>default=None</em>) – <span class="math notranslate nohighlight">\(\tilde{e}\)</span> solution from the HJB with full uncertainty configuration.</p></li>
+<li><p><strong>h</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>array</em><em>, </em><em>default=None:</em>) – Drift distortion. To consider baseline brownian misspecification, assign <cite>np.zeros_like(y)</cite>.</p></li>
+<li><p><strong>πc</strong> (<em>(</em><em>L</em><em>, </em><em>N</em><em>) </em><em>array</em><em>, </em><em>default=None:</em>) – Distorted probabilities of <span class="math notranslate nohighlight">\(\{\omega_\ell\}_{\ell=1}^L\)</span>. To consider baseline smooth ambiguity,
+assign equal weight to coefficients for evey point of y.</p></li>
+<li><p><strong>bc</strong> (<em>tuple</em><em>, </em><em>default=None</em>) – Boundary condition.</p></li>
+<li><p><strong>v0</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>array</em><em>, </em><em>default=None</em>) – Initial guess.</p></li>
+<li><p><strong>ϵ</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Step size.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>default=1e-8</em>) – Tolerance level.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>default=10</em><em>,</em><em>000</em>) – Maximum iterations of false transient method.</p></li>
+<li><p><strong>print_iteration</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Print the information of each iteration if <cite>True</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>res</strong> –</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">dict</span></code>: {</dt><dd><dl class="simple">
+<dt>v<span class="classifier">(N, ) ndarrays</span></dt><dd><p>Solution of value function for uncertainty decomposition.</p>
+</dd>
+<dt>dvdy<span class="classifier">(N, ) ndarrays</span></dt><dd><p>First order derivatives</p>
+</dd>
+<dt>dvddy<span class="classifier">(N, ) ndarrays</span></dt><dd><p>Second order derivatives</p>
+</dd>
+<dt>y<span class="classifier">(N, ) ndarray</span></dt><dd><p>Grid of y</p>
+</dd>
+<dt>ME<span class="classifier">(N, ) ndarray</span></dt><dd><p>Marginal value of emission.Computed according to () in</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict of ndarrays</p>
+</dd>
+</dl>
 </dd></dl>
 
 
-<span id="simulation-py"></span><h1 id="module-source.simulation"># 2 simulation.py<a class="headerlink" href="#module-source.simulation" title="Permalink to this headline">¶</a></h1>
+<span id="simulation-py"></span><h1 id="module-source.simulation">2 simulation.py<a class="headerlink" href="#module-source.simulation" title="Permalink to this headline">¶</a></h1>
 <p>module for simulation</p>
 <dl class="py function">
 <dt id="source.simulation.simulate_jump">
@@ -531,7 +608,7 @@ v : (N,) ndarray</p>
 </dd></dl>
 
 
-<span id="solver-py"></span><h1 id="module-source.solver"># 3 solver.py<a class="headerlink" href="#module-source.solver" title="Permalink to this headline">¶</a></h1>
+<span id="solver-py"></span><h1 id="module-source.solver">3 solver.py<a class="headerlink" href="#module-source.solver" title="Permalink to this headline">¶</a></h1>
 <p>Functions to numerically solve a nonlinear ODE via false transient scheme.</p>
 <dl class="py function">
 <dt id="source.solver.compute_coefficient">
@@ -592,6 +669,10 @@ Order: lower boundary of x, upper boundary of x,</p></li>
 </dd></dl>
 
 
+<span id="utilities-py"></span><h1 id="module-source.utilities">4 utilities.py<a class="headerlink" href="#module-source.utilities" title="Permalink to this headline">¶</a></h1>
+<p>Functions that facilitate computation.</p>
+
+
 
           </article>
         </div>
@@ -602,7 +683,7 @@ Order: lower boundary of x, upper boundary of x,</p></li>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
           
-            <a href="sec8/sec8_UncertaintyDecomposition.html" title="8 Uncertainty Decomposition"
+            <a href="app/appendices.html" title="A. Complete model"
                class="md-flex md-footer-nav__link md-footer-nav__link--prev"
                rel="prev">
               <div class="md-flex__cell md-flex__cell--shrink">
@@ -611,7 +692,7 @@ Order: lower boundary of x, upper boundary of x,</p></li>
               <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
                 <span class="md-flex__ellipsis">
                   <span
-                      class="md-footer-nav__direction"> Previous </span> 8 Uncertainty Decomposition </span>
+                      class="md-footer-nav__direction"> Previous </span> A. Complete model </span>
               </div>
             </a>
           

@@ -17,10 +17,11 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, pri
     ----------
     y : (N,) ndarray
         An evenly spaced grid of y.
-    model_args : tuple of model inputs
-        η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, ξ_w, ξ_a : floats
-        θ, πc_o : (M,) ndarrays
-    v0 : (N,) ndarray
+    model_args : tuple of model inputs::
+        The first 9 elements are floats for :math:`η, δ, σ_y, \bar{y}, γ_1, γ_2, γ_3, ξ_w, ξ_a`.
+        
+        The last two are (L,) ndarrays for :math:`\{θ_\ell\}_{\ell=1}^L, \{\pi^a_\ell\}_{\ell=1}^L`.
+    v0 : (N,) ndarray, default=None
         Initial guess of the value function
     ϵ : float
         Step size of the false transient method.
@@ -34,22 +35,24 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, pri
     Returns
     -------
     res : dict of ndarrays
-        v : (N,) ndarray
-            Value function
-        dvdy : (N,) ndarray
-            First order derivative of the value function.
-        dvddy : (N,) ndarray
-            Second order derivative of the value function.
-        e_tilde : (N,) ndarray
-            :math:`\tilde{e}` on the grid of y.
-        πc : (M, N) ndarray
-            Distorted probabilities of θ.
-        h : (N,) ndarray
-            Implied drift distortion.
-        y : (N,) ndarray
-            Grid of y.
-        model_args : tuple
-            Model parameters.
+        ``dict``: {
+            v : (N,) ndarray
+                Value function, :math:`\phi(y)`.
+            dvdy : (N,) ndarray
+                First order derivative of the value function, :math:`\frac{d\phi(y)}{dy}`.
+            dvddy : (N,) ndarray
+                Second order derivative of the value function, :math:`\frac{d^2\phi(y)}{dy^2}`.
+            e_tilde : (N,) ndarray
+                :math:`\tilde{e}` on the grid of y.
+            πc : (M, N) ndarray
+                Distorted probabilities of :math:`\{θ_\ell\}_{\ell=1}^L`.
+            h : (N,) ndarray
+                Implied drift distortion.
+            y : (N,) ndarray
+                Grid of y.
+            model_args : tuple
+                Model parameters, see model_args above in `Parameters`.
+        }
     """
     η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, θ, πc_o, ξ_w, ξ_a = model_args
     dy = y[1] - y[0]
@@ -131,8 +134,8 @@ def solve_hjb_z(z, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
     ----------
     z : (N,) ndarray
         An evenly spaced grid of z.
-    model_args : tuple of model inputs
-        η, δ, ρ, μ_2, σ_2, ξ_1m : floats
+    model_args : tuple of model inputs ::
+        Elements are floats for :math:`η, δ, ρ, μ_2, σ_2, ξ_{1m}` in the HJB.
     v0 : (N,) ndarray
         Initial guess of the value function
     ϵ : float
@@ -147,18 +150,20 @@ def solve_hjb_z(z, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
     Returns
     -------
     res : dict of ndarrays
-        v : (N,) ndarray
-            Value function
-        dvdz : (N,) ndarray
-            First order derivative of the value function.
-        dvddz : (N,) ndarray
-            Second order derivative of the value function.
-        h : (N,) ndarray
-            Implied drift distortion.
-        z : (N,) ndarray
-            Grid of z.
-        model_args : tuple
-            Model parameters.
+        ``dict``: {
+            v : (N,) ndarray
+                Value function, :math:`\zeta(z)`.
+            dvdz : (N,) ndarray
+                First order derivative of the value function, :math:`\\frac{\partial\zeta(z)}{\partial z}`.
+            dvddz : (N,) ndarray
+                Second order derivative of the value function, :math:`\\frac{\partial^2\zeta(z)}{\partial z\partial z'}`.
+            h : (N,) ndarray
+                Implied drift distortion.
+            z : (N,) ndarray
+                Grid of z.
+            model_args : tuple
+                Model parameters.
+        }
     """
 
     η, δ, ρ, μ_2, σ_2, ξ_w = model_args
@@ -216,10 +221,12 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
     ----------
     y : (N,) ndarray
         An evenly spaced grid of y.
-    model_args : tuple of model inputs
-        η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, ξ_w, ξ_p, ξ_a : floats
-        θ, πc_o : (M,) ndarrays
-        ϕ_i, πd_o : (K,) ndarrays
+    model_args : tuple of model inputs::
+        The ten float elements are for :math:`η, δ, σ_y, \bar{y}, γ_1, γ_2, γ_3, ξ_w, ξ_p, ξ_a`;
+        
+        Two `(L,) ndarrays` are for :math:`\{θ_\ell\}_{\ell=1}^L`, :math:`\{\pi^a_\ell\}_{\ell=1}^L`;
+        
+        Two `(M,N) ndarrays` are  for :math:`\{\phi_m(y)\}_{m=1}^M`, :math:`\{\pi_p^m\}_{m=1}^M`. 
     v0 : (N,) ndarray
         Initial guess of the value function
     ϵ : float
@@ -233,29 +240,32 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
 
     Returns
     -------
-    res : dict of ndarrays
-        v : (N,) ndarray
-            Value function
-        dvdy : (N,) ndarray
-            First order derivative of the value function.
-        dvddy : (N,) ndarray
-            Second order derivative of the value function.
-        e_tilde : (N,) ndarray
-            :math:`\tilde{e}` on the grid of y.
-        h : (N,) ndarray
-            Implied drift distortion.
-        πc : (M, N) ndarray
-            Distorted probabilities of θ.
-        g : (K, N) ndarray
-            Change in damage probability and intensity.
-        πd : (K, N) ndarray
-            Distorted probabilities of damage functions.
-        bc : float
-            The boundary condition that we impose on the HJB.
-        y : (N,) ndarray
-            Grid of y.
-        model_args : tuple
-            Model parameters.
+    res : dict of ndarrays ::
+
+        dict: {
+            v: (N,) ndarray
+                Value function :math:`\phi(y)`
+            dvdy: (N,) ndarray
+                First order derivative of the value function, :math:`\frac{d\phi(y)}{dy}`
+            dvddy: (N,) ndarray
+                Second order derivative of the value function.
+            e_tilde : (N,) ndarray
+                :math:`\tilde{e}` on the grid of y.
+            h : (N,) ndarray
+                Implied drift distortion.
+            πc : (M, N) ndarray
+                Distorted probabilities of θ.
+            g : (K, N) ndarray
+                Change in damage probability and intensity.
+            πd : (K, N) ndarray
+                Distorted probabilities of damage functions.
+            bc : float
+                The boundary condition that we impose on the HJB.
+            y : (N,) ndarray
+                Grid of y.
+            model_args : tuple
+                Model parameters.
+        }
     """
 
     η, δ, σ_y, y_bar, γ_1, γ_2, γ_2p, θ, πc_o, ϕ_i, πd_o, ξ_w, ξ_p, ξ_a = model_args
@@ -345,9 +355,50 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
 def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, bc=None,
                               v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, print_iteration=True):
     """
-    Solve the PDE with a given e_tile. If h is not given, minimize over h; if πc is not given,
-    minimize over πc; if bc is not given, use certainty equivalent as bc.
-
+    Solve the PDE with a given :math:`\\tilde{e}`. If h is not given, minimize over h; if πc is not given,
+    minimize over πc; if ``bc`` is not given, use certainty equivalent as ``bc``.
+    
+    Parameters
+    ----------
+    y : (N, ) array
+        Grid of y, :math:`y \\in [0, \\bar{y}]`.
+    model_args: tuple of model inputs
+        same as ``model_args`` in  :func:`~source.model.solve_hjb_y_jump`.    
+    e_tilde : (N, ) array, default=None
+        :math:`\\tilde{e}` solution from the HJB with full uncertainty configuration.
+    h : (N, ) array, default=None::
+        Drift distortion. To consider baseline brownian misspecification, assign `np.zeros_like(y)`.
+    πc : (L, N) array, default=None::
+        Distorted probabilities of :math:`\{\omega_\ell\}_{\ell=1}^L`. To consider baseline smooth ambiguity, 
+        assign equal weight to coefficients for evey point of y.
+    bc : tuple, default=None
+        Boundary condition.
+    v0 : (N, ) array, default=None
+        Initial guess.
+    ϵ : float, default=0.5
+        Step size.
+    tol : float, default=1e-8
+        Tolerance level.
+    max_iter : int, default=10,000
+        Maximum iterations of false transient method.
+    print_iteration : bool, default=True
+        Print the information of each iteration if `True`.
+        
+    Returns
+    -------
+    res : dict of ndarrays
+        ``dict``: {
+            v : (N, ) ndarrays
+                Solution of value function for uncertainty decomposition.
+            dvdy : (N, ) ndarrays
+                First order derivatives
+            dvddy : (N, ) ndarrays
+                Second order derivatives
+            y : (N, ) ndarray
+                Grid of y
+            ME : (N, ) ndarray
+                Marginal value of emission.Computed according to () in
+        }
     """
     if e_tilde is None:
         print("e_tilde is needed.")
@@ -425,5 +476,3 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
            'y': y,
            'ME': ME}
     return res
-
-
