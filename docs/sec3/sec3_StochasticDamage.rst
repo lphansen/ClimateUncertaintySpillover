@@ -36,8 +36,8 @@ To capture damage function uncertainty, we posit a jump process with
 :math:`m` absorbing states. Each state corresponds to a value of
 :math:`\gamma_3` starting at threshold :math:`{\overline y}`. We denote
 the possible values as :math:`\gamma_3^m` for :math:`m=1,2,..., M.` We
-focus on cases where the jump occurs when $ Y < {:raw-latex:`\tilde `y}
-:raw-latex:`\le {\overline y}`$. At the time of the jump, the right tail
+focus on cases where the jump occurs when :math:`Y < {\tilde y}
+\le {\overline y}`. At the time of the jump, the right tail
 of the damage function is revealed via :math:`\gamma_3` whereas prior to
 the jump this parameter is unknown where each value :math:`\gamma_3^m`
 has prior probability :math:`\pi_m^p.` We localize the jump around the

@@ -65,7 +65,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=blue>
+        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -216,6 +216,13 @@
     <li class="md-nav__item">
     
     
+      <a href="../sec1/sec1_Introduction.html" class="md-nav__link">1 Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
       <a href="../sec2/sec2_UncertainClimateDynamics.html" class="md-nav__link">2 Uncertain climate dynamics</a>
       
     
@@ -248,17 +255,11 @@
   <ul class="md-nav__list" data-md-scrollfix="">
         <li class="md-nav__item"><a href="#sec5-sec5-uncertaintyaversion--page-root" class="md-nav__link">5 Uncertainty aversion</a><nav class="md-nav">
               <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#technology" class="md-nav__link">5.1 Technology</a>
+        <li class="md-nav__item"><a href="#misspecified-brownian-motion" class="md-nav__link">5.1 Misspecified Brownian motion</a>
         </li>
-        <li class="md-nav__item"><a href="#stochastic-climate-pulses" class="md-nav__link">5.2 Stochastic climate pulses</a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#remark" class="md-nav__link">1.3.2 Remark</a>
-        </li></ul>
-            </nav>
+        <li class="md-nav__item"><a href="#misspecified-jump-process" class="md-nav__link">5.2 Misspecified jump process</a>
         </li>
-        <li class="md-nav__item"><a href="#economic-damages" class="md-nav__link">5.3 Economic damages</a>
-        </li>
-        <li class="md-nav__item"><a href="#id11" class="md-nav__link">5.4 Uncertainty aversion</a>
+        <li class="md-nav__item"><a href="#local-ambiguity-aversion" class="md-nav__link">5.3 Local ambiguity aversion</a>
         </li></ul>
             </nav>
         </li>
@@ -268,35 +269,21 @@
     <li class="md-nav__item">
     
     
-      <a href="#technology" class="md-nav__link">5.1 Technology</a>
+      <a href="#misspecified-brownian-motion" class="md-nav__link">5.1 Misspecified Brownian motion</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="#stochastic-climate-pulses" class="md-nav__link">5.2 Stochastic climate pulses</a>
-      <ul class="md-nav__list"> 
-    <li class="md-nav__item">
-    
-    
-      <a href="#remark" class="md-nav__link">1.3.2 Remark</a>
-      
-    
-    </li></ul>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#economic-damages" class="md-nav__link">5.3 Economic damages</a>
+      <a href="#misspecified-jump-process" class="md-nav__link">5.2 Misspecified jump process</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="#id11" class="md-nav__link">5.4 Uncertainty aversion</a>
+      <a href="#local-ambiguity-aversion" class="md-nav__link">5.3 Local ambiguity aversion</a>
       
     
     </li></ul>
@@ -402,17 +389,11 @@
   <ul class="md-nav__list" data-md-scrollfix="">
         <li class="md-nav__item"><a href="#sec5-sec5-uncertaintyaversion--page-root" class="md-nav__link">5 Uncertainty aversion</a><nav class="md-nav">
               <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#technology" class="md-nav__link">5.1 Technology</a>
+        <li class="md-nav__item"><a href="#misspecified-brownian-motion" class="md-nav__link">5.1 Misspecified Brownian motion</a>
         </li>
-        <li class="md-nav__item"><a href="#stochastic-climate-pulses" class="md-nav__link">5.2 Stochastic climate pulses</a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#remark" class="md-nav__link">1.3.2 Remark</a>
-        </li></ul>
-            </nav>
+        <li class="md-nav__item"><a href="#misspecified-jump-process" class="md-nav__link">5.2 Misspecified jump process</a>
         </li>
-        <li class="md-nav__item"><a href="#economic-damages" class="md-nav__link">5.3 Economic damages</a>
-        </li>
-        <li class="md-nav__item"><a href="#id11" class="md-nav__link">5.4 Uncertainty aversion</a>
+        <li class="md-nav__item"><a href="#local-ambiguity-aversion" class="md-nav__link">5.3 Local ambiguity aversion</a>
         </li></ul>
             </nav>
         </li>
@@ -428,168 +409,7 @@
   
 <h1 id="sec5-sec5-uncertaintyaversion--page-root">5 Uncertainty aversion<a class="headerlink" href="#sec5-sec5-uncertaintyaversion--page-root" title="Permalink to this headline">¶</a></h1>
 <p>This notebook corresponds to the section 5 of the paper.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># packages</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'axes.spines.right'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'axes.spines.top'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'legend.frameon'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-</pre></div>
-</div>
-
-<h2 id="technology">5.1 Technology<a class="headerlink" href="#technology" title="Permalink to this headline">¶</a></h2>
-<p>Consider an economy with an <span class="math notranslate nohighlight">\(AK\)</span> technology for which output is
-proportional to capital. Output can be allocated between investment and
-consumption. Suppose that there are adjustment costs to capital that are
-represented as the product of capital times a quadratic function of the
-investment-capital ratio. A robust planner chooses consumption-capital
-and investment-capital ratios.</p>
-<p>Given the constraint on output imposed by the <span class="math notranslate nohighlight">\(AK\)</span> technology, it
-suffices to let the planner choose the investment-capital ratio.</p>
-<p>Formally, capital evolves as</p>
-<div class="math notranslate nohighlight">
-\[d K_t =  K_t   \left[ \mu_k (Z_t) \cdot dt + \left({\frac {I_t}{K_t}} \right)dt - {\frac { \kappa} 2} \left( {\frac {I_t} {K_t}} \right)^2 dt
-+ \sigma_k(Z_t) \cdot dW_t^1 \right]\]</div>
-<p>where <span class="math notranslate nohighlight">\(K_t\)</span> is the capital stock and <span class="math notranslate nohighlight">\(I_t\)</span> is investment.</p>
-<p>The capital evolution expressed in logarithms is</p>
-<div class="math notranslate nohighlight">
-\[d\log K_t =  \left[ \mu_k (Z_t^k)    + \left({\frac {I_t}{K_t}} \right)  -
-{\frac { \kappa} 2} \left( {\frac {I_t} {K_t}} \right)^2 \right] dt -  {\frac  {\vert \sigma_k(Z_t^1) \vert^2}  2}dt+ \sigma_k(Z_t^1) \cdot dW_t^1 ,\]</div>
-<p>where <span class="math notranslate nohighlight">\(K_t\)</span> is the capital stock. Consumption and investment are
-constrained to be:</p>
-<div class="math notranslate nohighlight">
-\[C_t + I_t = \alpha K_t\]</div>
-<p>where <span class="math notranslate nohighlight">\(C_t\)</span> is consumption.</p>
-<p>We suppose that temperature shifts proportionately consumption and
-capital by a multiplicative factor <span class="math notranslate nohighlight">\(N_t\)</span> that captures damages to
-the productive capacity induced by climate change. For instance the
-damage adjusted consumption is
-<span class="math notranslate nohighlight">\({\widetilde C}_t = {\frac {C_t}{N_t}}\)</span> and the damage adjusted
-capital is <span class="math notranslate nohighlight">\({\widetilde K}_t = {\frac {{K}_t }{N_t}}\)</span>. Notice that</p>
-<div class="math notranslate nohighlight">
-\[d \log {\widetilde K}_t = d \log K_t - d \log N_t\]</div>
-<p>Thus damages induce a deterioration of the capital stock.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Add capital simulation here</span>
-</pre></div>
-</div>
-
-
-<h2 id="stochastic-climate-pulses">5.2 Stochastic climate pulses<a class="headerlink" href="#stochastic-climate-pulses" title="Permalink to this headline">¶</a></h2>
-<p>Our economy includes exogenous forcing processes that evolves as:</p>
-<div class="math notranslate nohighlight">
-\[dZ_t = \mu_z(Z_t) dt + \sigma_z(Z_t) dW_t\]</div>
-<p>where <span class="math notranslate nohighlight">\(\{ W_t : t \ge 0\}\)</span> a multivariate Brownian motion.</p>
-<div class="line-block">
-<div class="line">We allow for robustness by allowing changes in probabilities that
-imply drift distortions <span class="math notranslate nohighlight">\(H_t dt\)</span> in the Brownian increment
-<span class="math notranslate nohighlight">\(dW_t\)</span>.</div>
-<div class="line">As the solutions to the stochastic differential equations are
-functions of the underlying Brownian motions, the probability measure
-changes for the Brownian motions change the probabilities implied by
-the solutions to the stochastic differential equations.</div>
-</div>
-<p>Consider an emissions “pulse” of the form</p>
-<div class="math notranslate nohighlight">
-\[\left(\iota_y \cdot Z_t \right) \mathcal{E}_t  \left( \theta dt + \varsigma \cdot dW_t\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(F_t\)</span> is fossil fuel emissions and
-<span class="math notranslate nohighlight">\(\iota_y \cdot Z = \{ \iota_y \cdot Z_t : t\ge 0\}\)</span> is a positive
-process with mean one. We will use a Feller square root process in our
-analysis. For simplicity we impose the “Matthews approximation” by
-making the consequence of the pulse permanent:</p>
-<div class="math notranslate nohighlight">
-\[dY_t = \mu_y(Z_t, F_t) dt + \sigma_y(Z_t, F_t)  \cdot dW_t\]</div>
-<p>where</p>
-<p><a href="#id1"><span class="problematic" id="id2">:raw-latex:`\begin{align*}
-\mu_y(z, e) &amp; =  e \left(\iota_y \cdot Z_t \right)   \theta   \cr
-\sigma_y(z,e) &amp; =  e \left(\iota_y \cdot Z_t \right) \varsigma'
-\end{align*}`</span></a></p>
-<p>We will eventually introduce uncertainty about <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-
-<h3 id="remark">1.3.2 Remark<a class="headerlink" href="#remark" title="Permalink to this headline">¶</a></h3>
-<p>For a more general starting point, let <span class="math notranslate nohighlight">\(Y_t\)</span> be a vector used to
-represent temperature dynamics where the temperature impact on damages
-is the first component of <span class="math notranslate nohighlight">\(Y_t\)</span>. This state vector evolves
-according to:</p>
-<div class="math notranslate nohighlight">
-\[dY_t = \Lambda Y_t dt +    \left(\iota_y \cdot Z_t \right) \mathcal{E}_t \left(\Theta dt + \Sigma dW_t \right)\]</div>
-<div class="line-block">
-<div class="line">where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a square matrix and <span class="math notranslate nohighlight">\(\Theta\)</span> is a
-column vector.</div>
-<div class="line">Given an initial condition <span class="math notranslate nohighlight">\(Y_0\)</span>, the solution for <span class="math notranslate nohighlight">\(Y_t\)</span>
-satisfies:</div>
-</div>
-<div class="math notranslate nohighlight">
-\[Y_t = \exp \left( t \Lambda \right) Y_0 + \int_0^t  \exp\left[ (t-u) \Lambda \right] \left(\iota_y \cdot Z_t \right) \mathcal{E}_t \left(\Theta dt + \Sigma dW_t \right)\]</div>
-<p>Thus under this specification, the expected future response of <span class="math notranslate nohighlight">\(Y\)</span>
-to a pulse at date zero is:</p>
-<div class="math notranslate nohighlight">
-\[\lambda_u = \exp \left( u \Lambda \right) \Theta.\]</div>
-<p>It is the first component of <span class="math notranslate nohighlight">\(\lambda_u\)</span> that is of particular
-interest.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># climate sensitivity histogram</span>
-<span class="n">θ_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'data/model144.csv'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">θ_list</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"salmon"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Climate sensitivity"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Density"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<img alt="../_images/output_5_0.png" src="../_images/output_5_0.png"/>
-
-
-
-<h2 id="economic-damages">5.3 Economic damages<a class="headerlink" href="#economic-damages" title="Permalink to this headline">¶</a></h2>
-<p>The local evolution of damages is given by</p>
-<div class="math notranslate nohighlight">
-\[d \log N_t = \mu_n(Y_t, Z_t,F_t) dt + \sigma_n(Y_t, Z_t, F_t) \cdot dW_t\]</div>
-<p>where <a href="#id3"><span class="problematic" id="id4">:raw-latex:`\begin{equation*}
-\mu_n(y, z,f)   =   \left\{ \begin{matrix} \left(\gamma_1 + \gamma_2 y\right)  \mu_y(z,f)  + {\frac 1 2} \gamma_2 |\sigma_y(z, f)|^2+ \iota_n \cdot \mu_z(z) &amp;  y &lt; {\overline y} \cr
-\left[\gamma_1 + \gamma_2 y + \gamma_3(y  - {\overline y} ) \right] \mu_y(z, f)   + {\frac 1 2} (\gamma_2 + \gamma_3) |\sigma_y(z, f)|^2  + \iota_n \cdot \mu_z(z)  &amp; y &gt; {\overline y} \end{matrix} \right.
-\end{equation*}`</span></a></p>
-<p>and</p>
-<p><a href="#id5"><span class="problematic" id="id6">:raw-latex:`\begin{equation*}
-\sigma_n(y,z,f)  = \left\{ \begin{matrix} \left(\gamma_1 + \gamma_2 y\right)  \sigma_y(z,f)  + (\iota_n)' \sigma_z(z) &amp;  y &lt; {\overline y} \cr
-\left[\gamma_1 + \gamma_2 y + \gamma_3(y  - {\overline y} ) \right] \sigma_y(z,f)    + (\iota_n)' \sigma_z(z)  &amp; y &gt; {\overline y} \end{matrix} \right.
-\end{equation*}`</span></a></p>
-<p>To capture damage function uncertainty, we posit a jump process with
-<span class="math notranslate nohighlight">\(m\)</span> absorbing states. Each state corresponds to a value of
-<span class="math notranslate nohighlight">\(\gamma_3\)</span> starting at the jump point. We impose a jump intensity
-function that is, by design, localized at $ y =
-{:raw-latex:<a href="#id7"><span class="problematic" id="id8">`</span></a>overline <a href="#id9"><span class="problematic" id="id10">`</span></a>y}$:</p>
-<div class="math notranslate nohighlight">
-\[{\mathcal I} (y) = \left\{ \begin{matrix} \left(\frac 1  {\sqrt{2}\rho} \right) \exp\left[ - \frac {\left(y - \overline y \right)^2 } {2 \rho^2  } \right] &amp; y &lt; {\overline y} \cr \left(\frac 1 {\sqrt{2}\rho} \right) &amp; y \ge  {\bar y} \end{matrix}  \right.\]</div>
-<p>which becomes concentrated in the neighborhood of <span class="math notranslate nohighlight">\({\bar y}\)</span> for
-<span class="math notranslate nohighlight">\(\rho\)</span> small. This intensity is recognizable as the scaled version
-of half normal density. A large intensity informs us that a jump is
-likely. We let <span class="math notranslate nohighlight">\({ \pi}_j^p\)</span> be the probabilities conditioned on
-the jump. When the process jumps to state <span class="math notranslate nohighlight">\(j\)</span>, the parameter
-<span class="math notranslate nohighlight">\(\gamma_3^j\)</span> is revealed and the continuation value function is
-<span class="math notranslate nohighlight">\(\phi_j\)</span>.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add damage function plots here (three damages)</span>
-<span class="n">γ1</span> <span class="o">=</span> <span class="mf">1.7675</span><span class="o">/</span><span class="mi">10000</span>
-<span class="n">γ2</span> <span class="o">=</span> <span class="o">.</span><span class="mi">0022</span><span class="o">*</span><span class="mi">2</span>
-<span class="n">γ3_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">0197</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">3853</span><span class="o">*</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">ȳ</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">γ3</span><span class="p">,</span>  <span class="n">name</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">γ3_list</span><span class="p">,</span> <span class="p">[</span><span class="s2">"low"</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">,</span> <span class="s2">"extreme"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"red"</span><span class="p">,</span> <span class="s2">"darkblue"</span><span class="p">,</span> <span class="s2">"darkgreen"</span><span class="p">]):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="n">γ1</span><span class="o">*</span><span class="n">y</span> <span class="o">-</span> <span class="n">γ2</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">γ3</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">ȳ</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">y</span><span class="o">&gt;</span><span class="n">ȳ</span><span class="p">)),</span>
-             <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="o">+</span><span class="s2">" damage"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.75</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Temperature Increment over Pre-Industrial Levels (ᵒC)"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Proportional Reduction in Economic Welfare"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<img alt="../_images/output_7_0.png" src="../_images/output_7_0.png"/>
-
-
-<h2 id="id11">5.4 Uncertainty aversion<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<p>Here, we mainly discuss the <strong>components of uncertainty</strong>.</p>
 <p>The model so far is one of risk as captured by the stochastic
 specification of shocks. The presence of shocks opens the door to a
 comprehensive assessment of uncertainty conceived more broadly.
@@ -604,6 +424,8 @@ sensitivity analysis to a one or two dimensional parameterization that
 locates the potential misspecification that is most consequential to a
 decision maker. Our aim is to provide a more complete uncertainty
 quantification within the setting of the decision problem.</p>
+
+<h2 id="misspecified-brownian-motion">5.1 Misspecified Brownian motion<a class="headerlink" href="#misspecified-brownian-motion" title="Permalink to this headline">¶</a></h2>
 <div class="line-block">
 <div class="line">The potential misspecification of a Brownian motion has a particularly
 simple form. It is known from the famed Girsanov Theorem that a change
@@ -625,12 +447,14 @@ evolution.</div>
 </div>
 <p>As part of recursive robustness adjustment, we solve</p>
 <div class="math notranslate nohighlight">
-\[\min_h \left(\frac {\partial \phi}{\partial x}\right)\cdot \left(\sigma_x h \right) + {\frac {\xi_b} 2} |h|^2.\]</div>
+\[\min_h \left(\frac {\partial \phi}{\partial x}\right)\cdot \left(\sigma_x h \right) + {\frac {\xi_b} 2} \mid h\mid^2.\]</div>
 <p>where <span class="math notranslate nohighlight">\(\xi_b\)</span> is penalty parameter capturing aversion to potential
-misspecification. The solution to this minimization problem is:
-<a href="#id12"><span class="problematic" id="id13">:raw-latex:`\begin{equation} \label{worst_robust}
+misspecification. The solution to this minimization problem is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation} \label{worst_robust}
 h^* = - \frac 1 {\xi_b} {\sigma_x}' \left(\frac {\partial \phi}{\partial x}\right)
-\end{equation}`</span></a> with minimized objective:</p>
+\end{equation}\]</div>
+<p>with minimized objective:</p>
 <div class="math notranslate nohighlight">
 \[- \frac {1}  {2 \xi_b} \left( \frac {\partial \phi}{\partial x}\right)' \sigma_x {\sigma_x}' \left(\frac {\partial \phi}{\partial x}\right)\]</div>
 <p>The change in the local evolution for <span class="math notranslate nohighlight">\(dX_t\)</span> is</p>
@@ -638,17 +462,19 @@ h^* = - \frac 1 {\xi_b} {\sigma_x}' \left(\frac {\partial \phi}{\partial x}\righ
 \[-  \frac 1 {\xi_b} \sigma_x {\sigma_x}' \left(\frac {\partial \phi}{\partial x}\right)\]</div>
 <p>We explore aversion to the misspecification of Brownian risk by
 including this term in the HJB equation. Large values of
-$:raw-latex:<cite>xi</cite>_w $ make this contribution less consequential. While
+<span class="math notranslate nohighlight">\(\xi_w\)</span> make this contribution less consequential. While
 the direct impact is evident from the division by <span class="math notranslate nohighlight">\(\xi_w\)</span>, the
 value function, and hence its partial derivative, also depends on
 <span class="math notranslate nohighlight">\(\xi\)</span>. The partial derivative of the value function is included to
 locate distortions that matter to the decision maker.</p>
+
+
+<h2 id="misspecified-jump-process">5.2 Misspecified jump process<a class="headerlink" href="#misspecified-jump-process" title="Permalink to this headline">¶</a></h2>
 <p>There are two ways that a jump process could be misspecified. The jump
 intensity governing locally the jump probability could be wrong or the
 probability distribution across the alternative states, in this case
 damage function specifications, could be mistaken. We capture both forms
-of misspecification by introducing positive random variables $G_t^j
-<a href="#id14"><span class="problematic" id="id15">:raw-latex:`\ge 0`</span></a> $ for each alternative damage model <span class="math notranslate nohighlight">\(j\)</span> with
+of misspecification by introducing positive random variables <span class="math notranslate nohighlight">\(G_t^j \ge 0\)</span> for each alternative damage model <span class="math notranslate nohighlight">\(j\)</span> with
 local evolution:</p>
 <div class="math notranslate nohighlight">
 \[{\mathcal I}(Y_t)\sum_{j=1}^m G_t^j {\pi}_j^p \left[ \phi_j  - \phi \right]\]</div>
@@ -675,6 +501,9 @@ exceeds its gradient <span class="math notranslate nohighlight">\(g - 1\)</span>
 <p>implying a minimized objective:</p>
 <div class="math notranslate nohighlight">
 \[\xi_p {\mathcal I} \sum_{j=1}^m \pi_j^p \left( 1 - \exp \left[\frac 1 {\xi_p} \left( \phi - \phi_j \right) \right]\right) = - \left(\xi_p {\mathcal I}\right) \frac {\sum_{j=1}^m \pi_j^p \exp \left(- \frac 1 {\xi_p} \phi_j\right) - \exp \left(- \frac 1 {\xi_p} \phi \right)}{\exp \left(- \frac 1 {\xi_p} \phi \right)}\]</div>
+
+
+<h2 id="local-ambiguity-aversion">5.3 Local ambiguity aversion<a class="headerlink" href="#local-ambiguity-aversion" title="Permalink to this headline">¶</a></h2>
 <p>To assess the consequences of the heterogeneous responses from
 alternative climate models, we use what are called smooth ambiguity
 preferences. In deploying such preferences, we use a robust prior
@@ -721,9 +550,6 @@ uncertainty. In fact, these interactions will be present as climate
 change uncertainty will impact the value function contributions given
 by the <span class="math notranslate nohighlight">\(\phi_j\)</span>’s and by <span class="math notranslate nohighlight">\(\phi\)</span>.</div>
 </div>
-<p><strong>Continue to the next section</strong></p>
-<p>Section 6: <a class="reference external" href="sec6_DecisionProblem.ipynb">A climate component of a planner’s decision
-problem</a></p>
 
 
 

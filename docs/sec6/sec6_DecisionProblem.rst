@@ -3,9 +3,6 @@
 
 This notebook corresponds to section 6 in the paper.
 
-To check the previous section:
-
-`Section 5: Uncertainty aversion <sec5_UncertaintyAversion.ipynb>`__
 
 As we show in the `appendix A <appendices.ipynb>`__, the planners HJB
 equation conveniently separates into three different components. We

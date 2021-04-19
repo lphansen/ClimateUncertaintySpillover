@@ -65,7 +65,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=blue>
+        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -211,6 +211,13 @@
     <li class="md-nav__item">
     
       <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../sec1/sec1_Introduction.html" class="md-nav__link">1 Introduction</a>
+      
     
     </li>
     <li class="md-nav__item">
@@ -500,9 +507,13 @@ ODE:</p>
 \\
 &amp; + \xi_a \sum_i \color{blue}{\omega^a_\ell}(\log\color{blue}{\omega^a_\ell} - \log \pi^a_\ell)
 \end{aligned}\end{split}\]</div>
-<p>The method we use to solve the ODE is <strong>conjugate-gradient method</strong>.
-Blued <span class="math notranslate nohighlight">\(\tilde e\)</span> and <span class="math notranslate nohighlight">\(\omega_\ell\)</span> indicate they are
-computed using <span class="math notranslate nohighlight">\(\phi_i(y)\)</span>.</p>
+<p>Blued <span class="math notranslate nohighlight">\(\color{blue}{\tilde e}\)</span> and
+<span class="math notranslate nohighlight">\(\color{blue}{\omega_\ell}\)</span> indicate they are computed using
+<span class="math notranslate nohighlight">\(\color{blue}{\phi_i(y)}\)</span>.</p>
+<p>The method we use to solve the ODE is <strong>biconjugate-gradient
+method</strong>. Use <code class="docutils literal notranslate"><span class="pre">?scipy.sparse.linalg.bicg</span></code> for document. See also
+wiki page for <a class="reference external" href="https://en.wikipedia.org/wiki/Biconjugate_gradient_method">biconjugate gradient
+method</a>.</p>
 </li>
 <li><p>Check whether the convergence condition is satisfied. We call
 left-hand side formula <em>left-hand side error</em>. Set a tolerance level,
@@ -510,8 +521,8 @@ left-hand side formula <em>left-hand side error</em>. Set a tolerance level,
 <div class="math notranslate nohighlight">
 \[\frac{|\color{red}{\phi_{i+1}(y)} - \color{blue}{\phi_i(y)}| }{\epsilon} &lt; tolerance\]</div>
 <p>and we get the solution <span class="math notranslate nohighlight">\(\phi(y) = \phi_{i+1}(y)\)</span>. Otherwise,
-continue with step 1.-3. after assigning <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> to
-<span class="math notranslate nohighlight">\(\phi_i(y)\)</span>.</p>
+assign <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> to <span class="math notranslate nohighlight">\(\phi_i(y)\)</span>, and repeat step
+1-4.</p>
 </li>
 </ol>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># core loop in functions in `source/` can be described as follows</span>

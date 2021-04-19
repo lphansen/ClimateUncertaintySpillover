@@ -59,7 +59,7 @@ html_theme_options = {
     'navigation_with_keys': True,
     'nav_title': 'UncertaintySpillover',
     #'color_primary': 'blue',
-    #'color_accent': 'light-blue',
+    'color_accent': 'light-blue',
     'repo_url': 'https://github.com/lphansen/WrestlingClimate',
     'repo_name': 'Uncertainty Spillover',
     'repo_type': 'github',
@@ -74,6 +74,7 @@ html_sidebars = {
         'globaltoc.html',
         'localtoc.html',
         'searchbox.html',
+        'logo-text.html',
     ]
 }
 # Add any paths that contain custom static files (such as style sheets) here,

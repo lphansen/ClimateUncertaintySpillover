@@ -157,9 +157,14 @@ according to its first order condition:
        \end{aligned}
        
 
-   The method we use to solve the ODE is **conjugate-gradient method**.
-   Blued :math:`\tilde e` and :math:`\omega_\ell` indicate they are
-   computed using :math:`\phi_i(y)`.
+   Blued :math:`\color{blue}{\tilde e}` and
+   :math:`\color{blue}{\omega_\ell}` indicate they are computed using
+   :math:`\color{blue}{\phi_i(y)}`.
+
+   The method we use to solve the ODE is **biconjugate-gradient
+   method**. Use ``?scipy.sparse.linalg.bicg`` for document. See also
+   wiki page for `biconjugate gradient
+   method <https://en.wikipedia.org/wiki/Biconjugate_gradient_method>`__.
 
 4. Check whether the convergence condition is satisfied. We call
    left-hand side formula *left-hand side error*. Set a tolerance level,
@@ -172,8 +177,8 @@ according to its first order condition:
        
 
    and we get the solution :math:`\phi(y) = \phi_{i+1}(y)`. Otherwise,
-   continue with step 1.-3. after assigning :math:`\phi_{i+1}(y)` to
-   :math:`\phi_i(y)`.
+   assign :math:`\phi_{i+1}(y)` to :math:`\phi_i(y)`, and repeat step
+   1-4.
 
 .. code:: ipython3
 

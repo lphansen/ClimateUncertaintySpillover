@@ -59,13 +59,13 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3 A stochastic model of damages" href="../sec3/sec3_StochasticDamage.html" />
-    <link rel="prev" title="Welcome to the documentation for Climate Change Uncertainty Spillover in the Macroeconomy!" href="../index.html" />
+    <link rel="prev" title="1 Introduction" href="../sec1/sec1_Introduction.html" />
   
    
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=blue>
+        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -211,6 +211,13 @@
     <li class="md-nav__item">
     
       <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../sec1/sec1_Introduction.html" class="md-nav__link">1 Introduction</a>
+      
     
     </li>
     <li class="md-nav__item">
@@ -413,8 +420,8 @@ discount rate <span class="math notranslate nohighlight">\(\delta=0.01\)</span>.
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="figure align-default" id="id16">
-<span id="histogram"></span><img alt="../_images/output_1_0.png" src="../_images/output_1_0.png"/>
+<div class="figure align-center" id="id16">
+<span id="histogram"></span><img alt="../_images/output_1_01.png" src="../_images/output_1_01.png"/>
 <p class="caption"><span class="caption-text">Exponential average of 144 response functions.</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </div>
 
@@ -483,8 +490,8 @@ for <span class="math notranslate nohighlight">\(Y_t\)</span> satisfies:</p>
 response dynamics. This generalization allows for multiple
 exponentials to approximate the pulse responses. Our introduction of
 a multiple exponential approximation adapts for example,
-<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{Joosetal:2013}`</span></a> and
-<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{Pierrehumbert:2014}`</span></a>.:raw-latex:<cite>footnote{See equation (5) of cite{Joosetal:2013} and  equations (1)-(3) of cite{Pierrehumbert:2014}.   citeauthor{Pierrehumbert:2014} puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric $CO_2$ at date $t$ to atmospheric $CO_2$ at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.}</cite></p>
+<span id="id1">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36">8</a>]</span> and
+<span id="id2">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span>. <a class="footnote-reference brackets" href="#fn1" id="id3">1</a></p>
 <p>As an example, we capture the initial rise in the emission responses
 by the following two-dimensional specification</p>
 <div class="math notranslate nohighlight">
@@ -500,25 +507,28 @@ limiting response <span class="math notranslate nohighlight">\(\theta {\mathcal 
 is intended as a simple representation of the dynamics where the
 second state variable can be thought of as an exponentially weighted
 average of current and past
-emissions. <a class="footnote-reference brackets" href="#fn1" id="id5">1</a></p>
+emissions. <a class="footnote-reference brackets" href="#fn2" id="id4">2</a></p>
 <p><strong>Remark 2</strong></p>
-<p>The approximation in <a href="#id6"><span class="problematic" id="id7">:raw-latex:`\cite{Geoffroy:2013}`</span></a> includes the
+<p>The approximation in <span id="id5">Geoffroy <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id37">10</a>]</span> includes the
 logarithm of carbon in the atmosphere as argued for by
-<a href="#id8"><span class="problematic" id="id9">:raw-latex:`\cite{Arrhenius:1896}`</span></a> which is not directly reflected in
+<span id="id6">Arrhenius [<a class="reference internal" href="../bib_file.html#id26">11</a>]</span> which is not directly reflected in
 the linear approximation to the temperature dynamics that we use. The
-pulse experiments from <a href="#id10"><span class="problematic" id="id11">:raw-latex:`\cite{Joosetal:2013}`</span></a> show a more
+pulse experiments from <span id="id7">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36">8</a>]</span> show a more
 than proportional change in atmospheric carbon when the pulse size is
 changed. It turns out that this is enough to approximately offset the
-logarithmic <a href="#id12"><span class="problematic" id="id13">:raw-latex:`\citeauthor{Arrhenius:1896}`</span></a> adjustment so
+logarithmic <span id="id8"><a class="reference internal" href="../bib_file.html#id26">Arrhenius</a></span> adjustment so
 that the long-term temperature response remains approximately
 proportional for small pulse sizes. See also
-<a href="#id14"><span class="problematic" id="id15">:raw-latex:`\cite{Pierrehumbert:2014}`</span></a> who discusses the approximate
+<span id="id9">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span> who discusses the approximate
 offsetting impacts of nonlinearity in temperature and climate
 dynamics.</p>
 </div></blockquote>
 <dl class="footnote brackets">
-<dt class="label" id="fn1"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
-<dd><p>In independent work, cite{DietzVenmans:2019} and cite{BarnettBrockHansen:2020} have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   citeauthor{BarnettBrockHansen:2020} instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.</p>
+<dt class="label" id="fn1"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
+<dd><p>See equation (5) of  <span id="id10">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36">8</a>]</span> and  equations (1)-(3) of  <span id="id11">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span>.   <span id="id12"><a class="reference internal" href="../bib_file.html#id71">Pierrehumbert</a></span> puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at date <span class="math notranslate nohighlight">\(t\)</span> to atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.</p>
+</dd>
+<dt class="label" id="fn2"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
+<dd><p>In independent work, <span id="id13">Dietz and Venmans [<a class="reference internal" href="../bib_file.html#id14">12</a>]</span> and  <span id="id14">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66">5</a>]</span> have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   <span id="id15"><a class="reference internal" href="../bib_file.html#id66">Barnett <em>et al.</em></a></span> instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.</p>
 </dd>
 </dl>
 
@@ -534,7 +544,7 @@ dynamics.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
           
-            <a href="../index.html" title="Welcome to the documentation for Climate Change Uncertainty Spillover in the Macroeconomy!"
+            <a href="../sec1/sec1_Introduction.html" title="1 Introduction"
                class="md-flex md-footer-nav__link md-footer-nav__link--prev"
                rel="prev">
               <div class="md-flex__cell md-flex__cell--shrink">
@@ -543,7 +553,7 @@ dynamics.</p>
               <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
                 <span class="md-flex__ellipsis">
                   <span
-                      class="md-footer-nav__direction"> Previous </span> Welcome to the documentation for <em>Climate Change Uncertainty Spillover in the Macroeconomy</em>! </span>
+                      class="md-footer-nav__direction"> Previous </span> 1 Introduction </span>
               </div>
             </a>
           

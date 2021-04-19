@@ -32,8 +32,9 @@ The histogram of those coefficients are represented below:
 .. _histogram:
 
 .. figure:: output_1_0.png
+   :align: center
 
-    Exponential average of 144 response functions.
+   Exponential average of 144 response functions.
 
 2.2 Stochastic climate pulses
 -----------------------------
@@ -133,8 +134,8 @@ about :math:`\theta`.
    response dynamics. This generalization allows for multiple
    exponentials to approximate the pulse responses. Our introduction of
    a multiple exponential approximation adapts for example,
-   :raw-latex:`\cite{Joosetal:2013}` and
-   :raw-latex:`\cite{Pierrehumbert:2014}`.:raw-latex:`\footnote{See equation (5) of \cite{Joosetal:2013} and  equations (1)-(3) of \cite{Pierrehumbert:2014}.   \citeauthor{Pierrehumbert:2014} puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric $CO_2$ at date $t$ to atmospheric $CO_2$ at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.}`
+   :cite:t:`Joosetal:2013` and
+   :cite:t:`Pierrehumbert:2014`. [#fn1]_ 
 
    As an example, we capture the initial rise in the emission responses
    by the following two-dimensional specification
@@ -159,24 +160,26 @@ about :math:`\theta`.
    is intended as a simple representation of the dynamics where the
    second state variable can be thought of as an exponentially weighted
    average of current and past
-   emissions. [#fn1]_
+   emissions. [#fn2]_
 
 
    **Remark 2**
 
-   The approximation in :raw-latex:`\cite{Geoffroy:2013}` includes the
+   The approximation in :cite:t:`Geoffroy:2013` includes the
    logarithm of carbon in the atmosphere as argued for by
-   :raw-latex:`\cite{Arrhenius:1896}` which is not directly reflected in
+   :cite:t:`Arrhenius:1896` which is not directly reflected in
    the linear approximation to the temperature dynamics that we use. The
-   pulse experiments from :raw-latex:`\cite{Joosetal:2013}` show a more
+   pulse experiments from :cite:t:`Joosetal:2013` show a more
    than proportional change in atmospheric carbon when the pulse size is
    changed. It turns out that this is enough to approximately offset the
-   logarithmic :raw-latex:`\citeauthor{Arrhenius:1896}` adjustment so
+   logarithmic :cite:author:`Arrhenius:1896` adjustment so
    that the long-term temperature response remains approximately
    proportional for small pulse sizes. See also
-   :raw-latex:`\cite{Pierrehumbert:2014}` who discusses the approximate
+   :cite:t:`Pierrehumbert:2014` who discusses the approximate
    offsetting impacts of nonlinearity in temperature and climate
    dynamics.
    
+.. [#fn1] See equation (5) of  :cite:t:`Joosetal:2013` and  equations (1)-(3) of  :cite:t:`Pierrehumbert:2014`.   :cite:author:`Pierrehumbert:2014` puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric :math:`CO_2` at date :math:`t` to atmospheric :math:`CO_2` at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.
 
-.. [#fn1] In independent work, \cite{DietzVenmans:2019} and \cite{BarnettBrockHansen:2020} have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   \citeauthor{BarnettBrockHansen:2020} instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.
+
+.. [#fn2] In independent work, :cite:t:`DietzVenmans:2019` and  :cite:t:`BarnettBrockHansen:2020` have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   :cite:author:`BarnettBrockHansen:2020` instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.

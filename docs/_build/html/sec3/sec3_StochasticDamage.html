@@ -65,7 +65,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=blue>
+        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -216,6 +216,13 @@
     <li class="md-nav__item">
     
     
+      <a href="../sec1/sec1_Introduction.html" class="md-nav__link">1 Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
       <a href="../sec2/sec2_UncertainClimateDynamics.html" class="md-nav__link">2 Uncertain climate dynamics</a>
       
     
@@ -359,7 +366,7 @@
   
 <h1 id="sec3-sec3-stochasticdamage--page-root">3 A stochastic model of damages<a class="headerlink" href="#sec3-sec3-stochasticdamage--page-root" title="Permalink to this headline">¶</a></h1>
 <p>Our construction of potential damage functions is similar to
-<span id="id1">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66">1</a>]</span> with specifications
+<span id="id1">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66">5</a>]</span> with specifications
 motivated in part by prior contributions. We posit a damage process,
 <span class="math notranslate nohighlight">\(N_t\)</span>, to capture negative externalities on society imposed by
 carbon emissions. The reciprocal of damages, <span class="math notranslate nohighlight">\({\frac{1}{N_t}}\)</span>,
@@ -383,8 +390,8 @@ centigrade.</p>
 <span class="math notranslate nohighlight">\(m\)</span> absorbing states. Each state corresponds to a value of
 <span class="math notranslate nohighlight">\(\gamma_3\)</span> starting at threshold <span class="math notranslate nohighlight">\({\overline y}\)</span>. We denote
 the possible values as <span class="math notranslate nohighlight">\(\gamma_3^m\)</span> for <span class="math notranslate nohighlight">\(m=1,2,..., M.\)</span> We
-focus on cases where the jump occurs when $ Y &lt; {<a href="#id2"><span class="problematic" id="id3">:raw-latex:`\tilde `y}
-:raw-latex:`</span></a>le {overline y}`$. At the time of the jump, the right tail
+focus on cases where the jump occurs when <span class="math notranslate nohighlight">\(Y &lt; {\tilde y}
+\le {\overline y}\)</span>. At the time of the jump, the right tail
 of the damage function is revealed via <span class="math notranslate nohighlight">\(\gamma_3\)</span> whereas prior to
 the jump this parameter is unknown where each value <span class="math notranslate nohighlight">\(\gamma_3^m\)</span>
 has prior probability <span class="math notranslate nohighlight">\(\pi_m^p.\)</span> We localize the jump around the
@@ -444,12 +451,12 @@ the steepness of the damage until after the jump takes place.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/output_1_01.png" src="../_images/output_1_01.png"/>
+<img alt="../_images/output_1_0.png" src="../_images/output_1_0.png"/>
 <p>We impose a jump intensity function that is, by design, localized at <span class="math notranslate nohighlight">\(y = {\overline y}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[{\mathcal I} (y) = \left\{ \begin{matrix} \left(\frac 1  {\sqrt{2}\rho} \right) \exp\left[ - \frac {\left(y - \overline y \right)^2 } {2 \rho^2  } \right] &amp; y &lt; {\overline y} \cr \left(\frac 1 {\sqrt{2}\rho} \right) &amp; y \ge  {\bar y} \end{matrix}  \right.\]</div>
 <p>which becomes concentrated in the neighborhood of <span class="math notranslate nohighlight">\({\bar y}\)</span> for
-<span class="math notranslate nohighlight">\(\rho\)</span> small. <a class="footnote-reference brackets" href="#fn1" id="id4">1</a></p>
+<span class="math notranslate nohighlight">\(\rho\)</span> small. <a class="footnote-reference brackets" href="#fn1" id="id2">1</a></p>
 <p>A large intensity informs us that a jump is likely. We let
 <span class="math notranslate nohighlight">\({\pi}_m^p\)</span> be the probabilities conditioned on the jump. When the
 process jumps to state <span class="math notranslate nohighlight">\(m\)</span>, the parameter <span class="math notranslate nohighlight">\(\gamma_3^m\)</span> is
@@ -470,7 +477,7 @@ function at <span class="math notranslate nohighlight">\({\overline y}\)</span>.
 </div>
 <img alt="../_images/output_3_0.png" src="../_images/output_3_0.png"/>
 <dl class="footnote brackets">
-<dt class="label" id="fn1"><span class="brackets"><a class="fn-backref" href="#id4">1</a></span></dt>
+<dt class="label" id="fn1"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
 <dd><p>This intensity is recognizable as the scaled version of  half normal density with mean <span class="math notranslate nohighlight">\({\overline y}\)</span> and standard deviation <span class="math notranslate nohighlight">\(\rho\)</span>.</p>
 </dd>
 </dl>

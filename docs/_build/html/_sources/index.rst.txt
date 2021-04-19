@@ -14,6 +14,7 @@ For related research, also checkout: `Pricing Uncertainty Induced by Climate Cha
    :hidden:
    :caption: Contents:
 
+   sec1/sec1_Introduction
    sec2/sec2_UncertainClimateDynamics
    sec3/sec3_StochasticDamage
    sec4/sec4_IllustrativeEcon
