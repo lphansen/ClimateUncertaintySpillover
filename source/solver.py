@@ -2,9 +2,9 @@
 """
 Functions to numerically solve a nonlinear ODE via false transient scheme.
 
-See Also
---------
-For more details on false transient, refer to :doc:`../docs/app/appendices.rst` (TODO:fix to ref).
+.. seealso::
+   For more details on false transient:
+   refer to :doc:`~app.appendices` (TODO:fix to ref).
 
 
 The ODE we solve is as follows:
