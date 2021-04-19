@@ -2,6 +2,41 @@
 """
 Functions to numerically solve a nonlinear ODE via false transient scheme.
 
+See Also
+--------
+For more details on false transient, refer to :doc:`../docs/app/appendices.rst` (TODO:fix to ref).
+
+
+The ODE we solve is as follows:
+
+The state space descretize into :math:`y_1, y_2, \\dots, y_N` with equal interval :math:`\\Delta y`.
+For each :math:`y_n \\in \{y_1, y_2, \\dots, y_N\}` in the grid with , the value function satifies 
+(we use upwinding first order derivative for concern of, 
+and at :math:`y_1` we use forward derivative instead):
+
+.. math::
+   :label: ODE
+   
+   \\begin{align}
+   \\frac{\\phi_{i+1}(y_n) - \\phi_{i}(y)}{\\epsilon} =& \\quad A_n \\phi_{i+1}(y) \\cr
+   & + B_{n} \\frac{\\phi_{i+1}(y_n) - \\phi_{i+1}(y_{n-1})}{\Delta y}  \\cr
+   & + C_n \\frac{\\phi_{i+1}(y_{n+1}) - 2 \\phi_{i+1}(y_{n}) + \\phi_{i+1}(y_{n-1})}{\Delta y^2} \\cr
+   & + D_n
+   \\end{align}
+   
+   
+
+where :math:`A_n`, :math:`B_n`, :math:`C_n` and :math:`D_n` are coefficients.
+The exact values are given by the HJB to be solved.
+Therefore, we construct the following linear system:
+
+.. math::
+   :label: FT
+   
+   LHS \\cdot \\phi_{i+1}(Y) = - D - \\frac{1}{\\epsilon} \\phi_{i}(Y)
+   
+where :math:`LHS` is a :math:`N\\times N` matrix of coefficients, :math:`Y = (y_1, y_2, \\dots, y_N)'`, 
+and :math:`D = (D_1, D_2, \\dots, D_n)'`. 
 """
 import numpy as np
 from scipy.sparse import csc_matrix
@@ -11,16 +46,24 @@ from numba import njit
 
 @njit
 def compute_coefficient(LHS, A, B, C, i, dx, ϵ):
-    """
-    Compute the coefficient of the equation at v(i).
+    r"""
+    Compute the coefficient of the equation at :math:`y_i`.
+    Values are computed according to :math:numref:`ODE`.
 
     Parameters
     ----------
     LHS : (I, I) ndarray
         LHS matrix of the linear system.
-    A, B, C : (I,) ndarrays
+    A : (I,) ndarrays
+        Coefficient arrays for value function :math:`\phi(y_i)`.
+    B : (I,) ndarrays
+        Coefficient arrays for first order derivative.
+    C : (I,) ndarrays
+        Coefficient arrays for second order derivative.
     i : int
+        Index for the grid point.
     dx : float
+        Grid step, :math:`\Delta y`.
     ϵ : float
         False transient step size.
 
@@ -50,20 +93,25 @@ def compute_coefficient(LHS, A, B, C, i, dx, ϵ):
 
 @njit
 def linearize(A, B, C, D, v0, ϵ, dx, bc, impose_bc):
-    """
+    r"""
     Construct coefficient matrix of the linear system.
-    
+     
     Parameters
     ----------
     A, B, C, D : (I,) ndarrays
+        see :func:`~source.solver.compute_coefficient` for further detail.
     v0 : (I,) ndarray
-        Value function from last iteration.
-    ϵ : False transient step size
-    dx : float  
-    bc : tuple of ndarrays
-        Impose v=bc[k] at boundaries.
+        Value function from last iteration, :math:`\phi_i(y)`.
+    ϵ : float
+        False transient step size.
+    dx : float
+        Grid step size.
+    bc : tuple of ndarrays::
+        Impose `v=bc[k]` at boundaries.
+        
         Order: lower boundary of x, upper boundary of x,
     impose_bc : tuple of bools
+    
         Order: lower boundary of x, upper boundary of x,
 
     Returns
@@ -90,9 +138,32 @@ def linearize(A, B, C, D, v0, ϵ, dx, bc, impose_bc):
 
 
 def false_transient(A, B, C, D, v0, ϵ, dx, bc, impose_bc):
-    """
-    Implement false transient scheme.
+    r"""
+    Implement false transient scheme of one iteration,
+    and update from :math:`\phi_i(y)` to :math:`\phi_{i+1}(y)`
+    according to :math:numref:`FT`.
     
+    See appendix B(TODO: cross-ref link) for further detail.
+    
+    Parameters
+    ----------
+    A, B, C, D: 
+        Same as those in :func:`~source.solver.compute_coefficient`
+    v0 : (I, ) ndarrays
+        Value function from last iteration, :math:`\phi_i(y)`
+    ϵ : float
+        Step size of false transient
+    dx : float
+        Step size of Grid
+    bc : 
+        See :func:`~source.solver.linearize`.
+    impose_bc:
+        See :func:`~source.solver.linearize`.
+        
+    Returns
+    -------
+    v :  (I, ) ndarrays
+        Updated value function, :math:`\phi_{i+1}(y)` according to :math:numref:`FT`.
     """
     LHS, RHS = linearize(A, B, C, D, v0, ϵ, dx, bc, impose_bc)
     v, exit_code = bicg(csc_matrix(LHS), RHS)

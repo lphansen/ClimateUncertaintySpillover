@@ -7,15 +7,15 @@ from scipy import interpolate
 # function claim
 def simulate_jump(model_res, θ_list, ME=None,  y_start=1,  T=100, dt=1):
     """
-    Simulate temperature anomaly, emission, distorted probabilities of climate models, 
+    Simulate temperature anomaly, emission, distorted probabilities of climate models,
     distorted probabilities of damage functions, and drift distortion.
     When ME is asigned value, it will also simulate paths for marginal value of emission
-    
+
     Parameters
     ----------
-    model_res : dict::
-        A dictionary storing solution with misspecified jump process. See :func:`~source.model.solve_hjb_y_jump` 
-        for detail.
+    model_res : dict
+        A dictionary storing solution with misspecified jump process. 
+        See :func:`~source.model.solve_hjb_y_jump` for detail.
     θ_list : (N,) ndarray::
         A list of matthew coefficients. Unit: celsius/gigaton of carbon.
     ME : (N,) ndarray
@@ -26,7 +26,7 @@ def simulate_jump(model_res, θ_list, ME=None,  y_start=1,  T=100, dt=1):
         Time span of simulation.
     dt : float, default=1
         Time interval of simulation.
-        
+
     Returns
     -------
     simulation_res: dict of ndarrays
@@ -92,11 +92,11 @@ def simulate_jump(model_res, θ_list, ME=None,  y_start=1,  T=100, dt=1):
 def simulate_me(y_grid, e_grid, ratio_grid, θ=1.86/1000., y_start=1, T=100, dt=1):
     """
     simulate trajectories of uncertainty decomposition
-    
+
     .. math::
 
         \\log(\\frac{ME_{new}}{ME_{baseline}})\\times 1000.
-    
+
     Parameters
     ----------
     y_grid : (N, ) ndarray
@@ -113,7 +113,7 @@ def simulate_me(y_grid, e_grid, ratio_grid, θ=1.86/1000., y_start=1, T=100, dt=
         Time span of simulation.
     dt : float, default=1
         Time interval of simulation. Default=1 indicates yearly simulation.
-    
+
     Returns
     -------
     Et : (T, ) ndarray

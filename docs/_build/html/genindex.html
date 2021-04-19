@@ -82,7 +82,7 @@
         <a href="index.html" title="UncertaintySpillover  documentation"
            class="md-header-nav__button md-logo">
           
-            &nbsp;
+            <i class="md-icon">&#xe55d</i>
           
         </a>
       </div>
@@ -98,6 +98,31 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
         
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="GET" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder="Search"
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
       
         <div class="md-flex__cell md-flex__cell--shrink">
@@ -154,7 +179,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href="index.html" title="UncertaintySpillover documentation" class="md-nav__button md-logo">
       
-        <img src="_static/" alt=" logo" width="48" height="48">
+        <i class="md-icon">&#xe55d</i>
       
     </a>
     <a href="index.html"
@@ -264,28 +289,35 @@
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.model" class="md-nav__link">1 Model.py</a>
+      <a href="modules_index.html#module-source.model" class="md-nav__link">1 model</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.simulation" class="md-nav__link">2 simulation.py</a>
+      <a href="modules_index.html#module-source.simulation" class="md-nav__link">2 simulation</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.solver" class="md-nav__link">3 solver.py</a>
+      <a href="modules_index.html#module-source.solver" class="md-nav__link">3 solver</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.utilities" class="md-nav__link">4 utilities.py</a>
+      <a href="modules_index.html#module-source.utilities" class="md-nav__link">4 utilities</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="bib_file.html" class="md-nav__link">References</a>
       
     
     </li>
@@ -302,10 +334,6 @@
                 
 <nav class="md-nav md-nav--secondary">
   <ul class="md-nav__list" data-md-scrollfix="">
-    
-
-<li id="searchbox" class="md-nav__item"></li>
-
   </ul>
 </nav>
               </div>
@@ -333,12 +361,20 @@
       <li><a href="modules_index.html#source.solver.compute_coefficient">compute_coefficient() (in module source.solver)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules_index.html#source.utilities.compute_derivatives">compute_derivatives() (in module source.utilities)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules_index.html#source.solver.false_transient">false_transient() (in module source.solver)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules_index.html#source.utilities.find_nearest_value">find_nearest_value() (in module source.utilities)</a>
 </li>
   </ul></td>
 </tr></table>

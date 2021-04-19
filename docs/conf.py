@@ -66,12 +66,14 @@ html_theme_options = {
     'globaltoc_depth': 3,
     'globaltoc_collapse': True,
     'master_doc': True,
+    'logo_icon': '&#xe55d',
 }
-html_show_sourcelink = True
+html_show_sourcelink = False
 html_sidebars = {
     '**': [
         'globaltoc.html',
-        # #'localtoc.html',
+        'localtoc.html',
+        'searchbox.html',
     ]
 }
 # Add any paths that contain custom static files (such as style sheets) here,

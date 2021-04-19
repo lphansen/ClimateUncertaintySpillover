@@ -86,7 +86,7 @@
         <a href="../index.html" title="UncertaintySpillover  documentation"
            class="md-header-nav__button md-logo">
           
-            &nbsp;
+            <i class="md-icon">&#xe55d</i>
           
         </a>
       </div>
@@ -102,6 +102,31 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
         
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="../search.html" method="GET" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder="Search"
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
       
         <div class="md-flex__cell md-flex__cell--shrink">
@@ -158,7 +183,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href="../index.html" title="UncertaintySpillover documentation" class="md-nav__button md-logo">
       
-        <img src="../_static/" alt=" logo" width="48" height="48">
+        <i class="md-icon">&#xe55d</i>
       
     </a>
     <a href="../index.html"
@@ -206,9 +231,6 @@
         
 <nav class="md-nav md-nav--secondary">
   <ul class="md-nav__list" data-md-scrollfix="">
-    
-<li class="md-nav__item"><a class="md-nav__extra_link" href="../_sources/sec3/sec3_StochasticDamage.rst.txt">Show Source</a> </li>
-
   </ul>
 </nav>
       
@@ -280,28 +302,35 @@
     <li class="md-nav__item">
     
     
-      <a href="../modules_index.html#module-source.model" class="md-nav__link">1 Model.py</a>
+      <a href="../modules_index.html#module-source.model" class="md-nav__link">1 model</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="../modules_index.html#module-source.simulation" class="md-nav__link">2 simulation.py</a>
+      <a href="../modules_index.html#module-source.simulation" class="md-nav__link">2 simulation</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="../modules_index.html#module-source.solver" class="md-nav__link">3 solver.py</a>
+      <a href="../modules_index.html#module-source.solver" class="md-nav__link">3 solver</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="../modules_index.html#module-source.utilities" class="md-nav__link">4 utilities.py</a>
+      <a href="../modules_index.html#module-source.utilities" class="md-nav__link">4 utilities</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../bib_file.html" class="md-nav__link">References</a>
       
     
     </li>
@@ -318,11 +347,6 @@
                 
 <nav class="md-nav md-nav--secondary">
   <ul class="md-nav__list" data-md-scrollfix="">
-    
-<li class="md-nav__item"><a class="md-nav__extra_link" href="../_sources/sec3/sec3_StochasticDamage.rst.txt">Show Source</a> </li>
-
-<li id="searchbox" class="md-nav__item"></li>
-
   </ul>
 </nav>
               </div>
@@ -335,7 +359,7 @@
   
 <h1 id="sec3-sec3-stochasticdamage--page-root">3 A stochastic model of damages<a class="headerlink" href="#sec3-sec3-stochasticdamage--page-root" title="Permalink to this headline">¶</a></h1>
 <p>Our construction of potential damage functions is similar to
-<span id="id1">Barnett <em>et al.</em> [<a class="reference internal" href="../index.html#id66">1</a>]</span> with specifications
+<span id="id1">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66">1</a>]</span> with specifications
 motivated in part by prior contributions. We posit a damage process,
 <span class="math notranslate nohighlight">\(N_t\)</span>, to capture negative externalities on society imposed by
 carbon emissions. The reciprocal of damages, <span class="math notranslate nohighlight">\({\frac{1}{N_t}}\)</span>,

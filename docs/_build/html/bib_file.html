@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>References &#8212; UncertaintySpillover  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/material.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Modules:" href="modules_index.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=blue-grey data-md-color-accent=blue>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#bib_file" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="UncertaintySpillover  documentation"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe55d</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">UncertaintySpillover</span>
+          <span class="md-header-nav__topic"> References </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="GET" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder="Search"
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty Spillover
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">UncertaintySpillover  documentation</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="UncertaintySpillover documentation" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe55d</i>
+      
+    </a>
+    <a href="index.html"
+       title="UncertaintySpillover documentation">UncertaintySpillover</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/lphansen/WrestlingClimate" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Uncertainty Spillover
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec2/sec2_UncertainClimateDynamics.html" class="md-nav__link">2 Uncertain climate dynamics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec3/sec3_StochasticDamage.html" class="md-nav__link">3 A stochastic model of damages</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec4/sec4_IllustrativeEcon.html" class="md-nav__link">4 Illustrative Economy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec5/sec5_UncertaintyAversion.html" class="md-nav__link">5 Uncertainty aversion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec6/sec6_DecisionProblem.html" class="md-nav__link">6 A climate component of a planner’s decision problem</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec7/sec7_Sensitivity.html" class="md-nav__link">7 Sensitivity</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec8/sec8_UncertaintyDecomposition.html" class="md-nav__link">8 Uncertainty Decomposition</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sec10/sec10_Conclusion.html" class="md-nav__link">10 Conclusion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="app/appendices.html" class="md-nav__link">A. Complete model</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="app/appendices.html#b-computation-methods" class="md-nav__link">B. Computation methods</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="modules_index.html" class="md-nav__link">Modules:</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="modules_index.html#module-source.model" class="md-nav__link">1 model</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="modules_index.html#module-source.simulation" class="md-nav__link">2 simulation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="modules_index.html#module-source.solver" class="md-nav__link">3 solver</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="modules_index.html#module-source.utilities" class="md-nav__link">4 utilities</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> References </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">References</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+  </ul>
+</nav>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+  <ul class="md-nav__list" data-md-scrollfix="">
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  
+<h1 id="bib-file--page-root">References<a class="headerlink" href="#bib-file--page-root" title="Permalink to this headline">¶</a></h1>
+<p id="id1"><dl class="citation">
+<dt class="label" id="id66"><span class="brackets">1</span></dt>
+<dd><p>Michael Barnett, William A. Brock, and Lars Peter Hansen. Pricing Uncertainty Induced by Climate Change. <em>Review of Financial Studies</em>, 33(3):1024–1066, 2020. <a class="reference external" href="https://doi.org/10.2139/ssrn.3440301">doi:10.2139/ssrn.3440301</a>.</p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p>Charles Fant, Brent Boehlert, Kenneth Strzepek, Peter Larsen, Alisa White, Sahil Gulati, Yue Li, and Jeremy Martinich. Climate Change impacts and Costs to U.S. Electricity Transmission and Distribution Infrastructure. <em>Energy</em>, 2020. <a class="reference external" href="https://doi.org/10.1016/j.energy.2020.116899">doi:10.1016/j.energy.2020.116899</a>.</p>
+</dd>
+<dt class="label" id="id3"><span class="brackets">3</span></dt>
+<dd><p>Gerhard Kling, Ulrich Volz, Victor Murinde, and Sibel Ayas. The Impact of Climate Vulnerability on Firms' Cost of Capital and Access to Finance. <em>World Development</em>, 2021. <a class="reference external" href="https://doi.org/10.1016/j.worlddev.2020.105131">doi:10.1016/j.worlddev.2020.105131</a>.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets">4</span></dt>
+<dd><p>Yongyang Cai, Kenneth L Judd, Timothy M Lenton, Thomas S Lontzek, and Daiju Narita. Environmental Tipping Points Significantly Affect the Cost-Benefit Assessment of Climate Policies. <em>Proceedings of the National Academy of Sciences</em>, 112(15):4606–4611, 2015. URL: <a class="reference external" href="https://www.pnas.org/content/112/15/4606">https://www.pnas.org/content/112/15/4606</a>, <a class="reference external" href="https://doi.org/10.1073/pnas.1503890112">doi:10.1073/pnas.1503890112</a>.</p>
+</dd>
+<dt class="label" id="id5"><span class="brackets">5</span></dt>
+<dd><p>Timothy M Lenton, Hermann Held, Elmar Kriegler, Jim W Hall, Wolfgang Lucht, Stefan Rahmstorf, and Hans Joachim Schellnhuber. Tipping Elements in the Earth's Climate System. <em>Proceedings of the National Academy of Sciences</em>, 105(6):1786–1793, 2008. <a class="reference external" href="https://doi.org/10.1073/pnas.0705414105">doi:10.1073/pnas.0705414105</a>.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets">6</span></dt>
+<dd><p>Daron Acemoglu, Ufuk Akcigit, Douglas Hanley, and William Kerr. Transition to clean technology. <em>Journal of Political Economy</em>, 124(1):52–104, 2016.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets">7</span></dt>
+<dd><p>Janice C Eberly and Neng Wang. Reallocating and Pricing Illiquid Capital: Two Productive Trees. Technical Report, SSRN Electronic Journal, 2012.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets">8</span></dt>
+<dd><p>Christophe McGlade and Paul Ekins. The geographical distribution of fossil fuels unused when limiting global warming to 2 c. <em>Nature</em>, 517(7533):187–190, 2015.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets">9</span></dt>
+<dd><p>John Hassler, Per Krusell, and Conny Olovsson. The Consequences of Uncertainty: Climate Sensitivity and Economic Sensitivity to the Climate. <em>Annual Review of Economics</em>, 10:189–205, 2018. <a class="reference external" href="https://doi.org/10.1146/annurev-economics-080217-053229">doi:10.1146/annurev-economics-080217-053229</a>.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets">10</span></dt>
+<dd><p>H Chernoff. A Measure of the Asymptotic Efficiency for Tests of a Hypothesis Based on the Sum of Observations. <em>Annals of Mathematical Statistics</em>, 23:493–507, 1952.</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets">11</span></dt>
+<dd><p>Lars Peter Hansen and Thomas J. Sargent. Macroeconomic Uncertainty Prices when Beliefs are Tenuous. <em>Journal of Econometrics</em>, 2020. URL: <a class="reference external" href="http://larspeterhansen.org/wp-content/uploads/2016/12/HStenuouslatest-004.pdf">http://larspeterhansen.org/wp-content/uploads/2016/12/HStenuouslatest-004.pdf</a>.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets">12</span></dt>
+<dd><p>Lars Peter Hansen, John C. Heaton, and Nan Li. Consumption Strikes Back? Measuring Long‐Run Risk. <em>Journal of Political Economy</em>, 116(2):260–302, 2008. URL: <a class="reference external" href="http://www.journals.uchicago.edu/doi/10.1086/588200">http://www.journals.uchicago.edu/doi/10.1086/588200</a>, <a class="reference external" href="https://doi.org/10.1086/588200">doi:10.1086/588200</a>.</p>
+</dd>
+<dt class="label" id="id13"><span class="brackets">13</span></dt>
+<dd><p>Ravi Bansal and Amir Yaron. Risks for the Long Run: A Potential Resolution of Asset Pricing Puzzles. <em>Journal of Finance</em>, 59(4):1481–1509, 2004.</p>
+</dd>
+<dt class="label" id="id14"><span class="brackets">14</span></dt>
+<dd><p>Simon Dietz and Frank Venmans. Cumulative carbon emissions and economic policy: In search of general principles. <em>Journal of Environmental Economics and Management</em>, 96:108–129, 2019. <a class="reference external" href="https://doi.org/10.1016/j.jeem.2019.04.003">doi:10.1016/j.jeem.2019.04.003</a>.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets">15</span></dt>
+<dd><p>Janice Eberly and Neng Wang. Reallocating and pricing illiquid capital. In <em>American Economic Review, Papers and Proceedings Forthcoming</em>. 2009.</p>
+</dd>
+<dt class="label" id="id16"><span class="brackets">16</span></dt>
+<dd><p>Larry G. Epstein and Stanley E. Zin. Substitution, Risk Aversion and the Temporal Behavior of Consumption and Asset Returns: A Theoretical Framework. <em>Econometrica</em>, 57(4):937–969, 1989.</p>
+</dd>
+<dt class="label" id="id17"><span class="brackets">17</span></dt>
+<dd><p>David M. Kreps and Evan L. Porteus. Temporal Resolution of Uncertainty and Dynamic Choice. <em>Econometrica</em>, 46(1):185–200, 1978.</p>
+</dd>
+<dt class="label" id="id18"><span class="brackets">18</span></dt>
+<dd><p>Irving J. Good. Rational Decisions. <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, 1952. URL: <a class="reference external" href="http://www.jstor.org/stable/2984087">http://www.jstor.org/stable/2984087</a>.</p>
+</dd>
+<dt class="label" id="id19"><span class="brackets">19</span></dt>
+<dd><p>Fabio Maccheroni, Massimo Marinacci, and Aldo Rustichini. Dynamic Variational Preferences. <em>Journal of Economic Theory</em>, 128(1):4–44, 2006. <a class="reference external" href="https://doi.org/10.1016/j.jet.2005.12.011">doi:10.1016/j.jet.2005.12.011</a>.</p>
+</dd>
+<dt class="label" id="id20"><span class="brackets">20</span></dt>
+<dd><p>Lars Peter Hansen and Thomas J. Sargent. Robust Control and Model Uncertainty. <em>The American Economic Review</em>, 91(2):60–66, may 2001.</p>
+</dd>
+<dt class="label" id="id21"><span class="brackets">21</span></dt>
+<dd><p>Matthew R. James. Asymptotic Analysis of Nonlinear Stochastic Risk-Sensitive Control and Differential Games. <em>Mathematics of Control, Signals and Systems</em>, 5(4):401–417, 1992.</p>
+</dd>
+<dt class="label" id="id22"><span class="brackets">22</span></dt>
+<dd><p>Simone Cerreia-Vioglio, Lars Peter Hansen, Fabio Maccheroni, and Massimo Marinacci. Making Decisions under Model Misspecification. 2021.</p>
+</dd>
+<dt class="label" id="id23"><span class="brackets">23</span></dt>
+<dd><p>Lars Peter Hansen and Thomas J. Sargent. Structured Ambiguity and Model Misspecification. <em>Journal of Economic Theory</em>, published:105165, dec 2020. <a class="reference external" href="https://doi.org/10.1016/j.jet.2020.105165">doi:10.1016/j.jet.2020.105165</a>.</p>
+</dd>
+<dt class="label" id="id24"><span class="brackets">24</span></dt>
+<dd><p>Evan W Anderson, Lars Peter Hansen, and Thomas J Sargent. A quartet of semigroups for model specification, robustness, prices of risk, and model detection. <em>Journal of the European Economic Association</em>, 1(1):68–123, 2003.</p>
+</dd>
+<dt class="label" id="id25"><span class="brackets">25</span></dt>
+<dd><p>Tim Palmer and Bjorn Stevens. The scientific challenge of understanding and estimating climate change. <em>Proceedings of the National Academy of Sciences</em>, 116(49):24390–24395, 2019.</p>
+</dd>
+<dt class="label" id="id26"><span class="brackets">26</span></dt>
+<dd><p>Svante Arrhenius. On the influence of Carbonic Acid in the Air upon Temperatue of the Ground. <em>Philosophical Magazine and Journal of Science Series 5</em>, 41:237–276, 1896.</p>
+</dd>
+<dt class="label" id="id27"><span class="brackets">27</span></dt>
+<dd><p>Katharine L. Ricke and Ken Caldeira. Maximum Warming Occurs about One Decade After a Carbon Dioxide Emission. <em>Environmental Research Letters</em>, 9(12):1–8, 2014. <a class="reference external" href="https://doi.org/10.1088/1748-9326/9/12/124002">doi:10.1088/1748-9326/9/12/124002</a>.</p>
+</dd>
+<dt class="label" id="id28"><span class="brackets">28</span></dt>
+<dd><p>Roman Olson, Ryan Sriver, Marlos Goes, Nathan M. Urban, H. Damon Matthews, Murali Haran, and Klaus Keller. A Climate Sensitivity Estimate using Bayesian Fusion of Instrumental Observations and an Earth System Model. <em>Journal of Geophysical Research Atmospheres</em>, 117(D04103):1–11, 2012. <a class="reference external" href="https://doi.org/10.1029/2011JD016620">doi:10.1029/2011JD016620</a>.</p>
+</dd>
+<dt class="label" id="id29"><span class="brackets">29</span></dt>
+<dd><p>Gerard H. Roe and Marcia B. Baker. Why is Climate Sensitivity so Unpredictable? <em>Science</em>, 318:629–632, 2007. <a class="reference external" href="https://doi.org/10.1126/science.1144735">doi:10.1126/science.1144735</a>.</p>
+</dd>
+<dt class="label" id="id30"><span class="brackets">30</span></dt>
+<dd><p>John Geweke and Gianni Amisano. Optimal prediction pools. <em>Journal of Econometrics</em>, 164(1):130–141, 2011. URL: <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0304407611000455">http://www.sciencedirect.com/science/article/pii/S0304407611000455</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.jeconom.2011.02.017">doi:https://doi.org/10.1016/j.jeconom.2011.02.017</a>.</p>
+</dd>
+<dt class="label" id="id31"><span class="brackets">31</span></dt>
+<dd><p>Lars Peter Hansen and Thomas J. Sargent. Recursive Robust Estimation and Control without Commitment. <em>Journal of Economic Theory</em>, 136(1):1–27, 2007. <a class="reference external" href="https://doi.org/10.1016/j.jet.2006.06.010">doi:10.1016/j.jet.2006.06.010</a>.</p>
+</dd>
+<dt class="label" id="id32"><span class="brackets">32</span></dt>
+<dd><p>P Klibanoff, M Marinacci, and S Mukerji. Recursive \Smooth\ \Ambiguity\ \Preferences\. <em>Journal of Economic Theory</em>, 144:930–976, 2009.</p>
+</dd>
+<dt class="label" id="id33"><span class="brackets">33</span></dt>
+<dd><p><strong>missing journal in Dietz:2020</strong></p>
+</dd>
+<dt class="label" id="id34"><span class="brackets">34</span></dt>
+<dd><p>Ashwin K Seshadri. Fast–slow climate dynamics and peak global warming. <em>Climate Dynamics</em>, 48(7-8):2235–2253, 2017.</p>
+</dd>
+<dt class="label" id="id35"><span class="brackets">35</span></dt>
+<dd><p>Lars Peter Hansen and Jianjun Miao. Aversion to Ambiguity and Model Misspecification in Dynamic Stochastic Environments. <em>Proceedings of the National Academy of Sciences</em>, 115(37):9163–9168, 2018. URL: <a class="reference external" href="http://www.pnas.org/lookup/doi/10.1073/pnas.1811243115">http://www.pnas.org/lookup/doi/10.1073/pnas.1811243115</a>, <a class="reference external" href="https://doi.org/10.1073/pnas.1811243115">doi:10.1073/pnas.1811243115</a>.</p>
+</dd>
+<dt class="label" id="id36"><span class="brackets">36</span></dt>
+<dd><p>F. Joos, R. Roth, J. S. Fuglestvedt, G. P. Peters, I. G. Enting, W. Von Bloh, V. Brovkin, E. J. Burke, M. Eby, N. R. Edwards, T. Friedrich, T. L. Frölicher, P. R. Halloran, P. B. Holden, C. Jones, T. Kleinen, F. T. Mackenzie, K. Matsumoto, M. Meinshausen, G. K. Plattner, A. Reisinger, J. Segschneider, G. Shaffer, M. Steinacher, K. Strassmann, K. Tanaka, A. Timmermann, and A. J. Weaver. Carbon Dioxide and Climate Impulse Response Functions for the Computation of Greenhouse Gas Metrics: A Multi-Model Analysis. <em>Atmospheric Chemistry and Physics</em>, 13(5):2793–2825, 2013. <a class="reference external" href="https://doi.org/10.5194/acp-13-2793-2013">doi:10.5194/acp-13-2793-2013</a>.</p>
+</dd>
+<dt class="label" id="id37"><span class="brackets">37</span></dt>
+<dd><p>O Geoffroy, D Saint-Martin, D J L Olivié, A Voldoire, G Bellon, and S Tytéca. Transient Climate Response in a Two-Layer Energy-Balance Model. Part \I\: Analytical Solution and Parameter Calibration Using CMIP5 AOGCM Experiments. <em>Journal of Climate</em>, 26(6):1841–1857, 2013.</p>
+</dd>
+<dt class="label" id="id38"><span class="brackets">38</span></dt>
+<dd><p>M. Eby, K. Zickfeld, A. Montenegro, D. Archer, K. J. Meissner, and A. J. Weaver. Lifetime of anthropogenic climate change: Millennial time scales of potential CO2 and surface temperature perturbations. <em>Journal of Climate</em>, 22(10):2501–2511, 2009. <a class="reference external" href="https://doi.org/10.1175/2008JCLI2554.1">doi:10.1175/2008JCLI2554.1</a>.</p>
+</dd>
+<dt class="label" id="id39"><span class="brackets">39</span></dt>
+<dd><p>M J Glotter, R T Pierrehumbert, J W Elliott, N J Matteson, and E J Moyer. A Simple Carbon Cycle Representation for Economic and Policy Analyses. <em>Climatic Change</em>, 126(3-4):319–335, 2014.</p>
+</dd>
+<dt class="label" id="id40"><span class="brackets">40</span></dt>
+<dd><p>Timothy M. Lenton and Christopher Huntingford. Global terrestrial carbon storage and uncertainties in its temperature sensitivity examined with a simple model. <em>Global Change Biology</em>, 9(10):1333–1352, 2003. <a class="reference external" href="https://doi.org/10.1046/j.1365-2486.2003.00674.x">doi:10.1046/j.1365-2486.2003.00674.x</a>.</p>
+</dd>
+<dt class="label" id="id41"><span class="brackets">41</span></dt>
+<dd><p>J. Rombouts and M. Ghil. Oscillations in a simple climate-vegetation model. <em>Nonlinear Processes in Geophysics</em>, 22:275–288, 2015. <a class="reference external" href="https://doi.org/10.5194/npg-22-275-2015">doi:10.5194/npg-22-275-2015</a>.</p>
+</dd>
+<dt class="label" id="id42"><span class="brackets">42</span></dt>
+<dd><p>Pierre Friedlingstein, Matthew W. Jones, Michael O'Sullivan, Robbie M. Andrew, Judith Hauck, Glen P. Peters, Wouter Peters, Julia Pongratz, Stephen Sitch, Corinne Le Quéré, Orothee C.E. DBakker, Josep G. Canadell1, Philippe Ciais1, Robert B. Jackson, Peter Anthoni1, Leticia Barbero, Ana Bastos, Vladislav Bastrikov, Meike Becker, Laurent Bopp, Erik Buitenhuis, Naveen Chandra, Frédéric Chevallier, Louise P. Chini, Kim I. Currie, Richard A. Feely, Marion Gehlen, Dennis Gilfillan, Thanos Gkritzalis, Daniel S. Goll, Nicolas Gruber, Sören Gutekunst, Ian Harris, Vanessa Haverd, Richard A. Houghton, George Hurtt, Tatiana Ilyina, Atul K. Jain, Emilie Joetzjer, Jed O. Kaplan, Etsushi Kato, Kees Klein Goldewijk, Jan Ivar Korsbakken, Peter Landschützer, Siv K. Lauvset, Nathalie Lefèvre, Andrew Lenton, Sebastian Lienert, Danica Lombardozzi, Gregg Marland, Patrick C. McGuire, Joe R. Melton, Nicolas Metzl, David R. Munro, Julia E.M.S. Nabel, Shin Ichiro Nakaoka, Craig Neill, Abdirahman M. Omar, Tsuneo Ono, Anna Peregon, Denis Pierrot, Benjamin Poulter, Gregor Rehder, Laure Resplandy, Eddy Robertson, Christian Rödenbeck, Roland Séférian, Jörg Schwinger, Naomi Smith, Pieter P. Tans, Hanqin Tian, Bronte Tilbrook, Francesco N. Tubiello, Guido R. Van Der Werf, Andrew J. Wiltshire, and Sönke Zaehle. Global carbon budget 2019. <em>Earth System Science Data</em>, 11:1783–1838, 2019. <a class="reference external" href="https://doi.org/10.5194/essd-11-1783-2019">doi:10.5194/essd-11-1783-2019</a>.</p>
+</dd>
+<dt class="label" id="id43"><span class="brackets">43</span></dt>
+<dd><p>Kirsten Zickfeld, Michael Eby, Andrew J. Weaver, Kaitlin Alexander, Elisabeth Crespin, Neil R. Edwards, Alexey V. Eliseev, Georg Feulner, Thierry Fichefet, Chris E. Forest, Pierre Friedlingstein, Hugues Goosse, Philip B. Holden, Fortunat Joos, Michio Kawamiya, David Kicklighter, Hendrik Kienert, Katsumi Matsumoto, Igor I. Mokhov, Erwan Monier, Steffen M. Olsen, Jens O.P. Pedersen, Mahe Perrette, Gwenaëlle Philippon-Berthier, Andy Ridgwell, Adam Schlosser, Thomas Schneider Von Deimling, Gary Shaffer, Andrei Sokolov, Renato Spahni, Marco Steinacher, Kaoru Tachiiri, Kathy S. Tokos, Masakazu Yoshimori, Ning Zeng, and Fang Zhao. Long-Term Climate Change Commitment and Reversibility: An EMIC Intercomparison. <em>Journal of Climate</em>, 26(16):5782–5809, 2013. <a class="reference external" href="https://doi.org/10.1175/JCLI-D-12-00584.1">doi:10.1175/JCLI-D-12-00584.1</a>.</p>
+</dd>
+<dt class="label" id="id44"><span class="brackets">44</span></dt>
+<dd><p>Felix Pretis. Econometric Modelling of Climate Systems: The Equivalence of Energy Balance Models and Cointegrated Vector Autoregressions. <em>Journal of Econometrics</em>, 214:256–273, 2020. <a class="reference external" href="https://doi.org/10.1016/j.jeconom.2019.05.013">doi:10.1016/j.jeconom.2019.05.013</a>.</p>
+</dd>
+<dt class="label" id="id45"><span class="brackets">45</span></dt>
+<dd><p>Philip Goodwin, Richard G. Williams, Vassil M. Roussenov, and Anna Katavouta. Climate Sensitivity From Both Physical and Carbon Cycle Feedbacks. <em>Geophysical Research Letters</em>, 46(13):7554–7564, 2019. <a class="reference external" href="https://doi.org/10.1029/2019GL082887">doi:10.1029/2019GL082887</a>.</p>
+</dd>
+<dt class="label" id="id46"><span class="brackets">46</span></dt>
+<dd><p>Pierre Friedlingstein. Carbon cycle feedbacks and future climate change. <em>Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences</em>, 2015. <a class="reference external" href="https://doi.org/10.1098/rsta.2014.0421">doi:10.1098/rsta.2014.0421</a>.</p>
+</dd>
+<dt class="label" id="id47"><span class="brackets">47</span></dt>
+<dd><p>Michael Ghil and Valerio Lucarini. The Physics of Climate Variability and Climate Change. <em>Reviews of Modern Physics</em>, 2020. <a class="reference external" href="https://arxiv.org/abs/1910.00583">arXiv:1910.00583</a>.</p>
+</dd>
+<dt class="label" id="id48"><span class="brackets">48</span></dt>
+<dd><p>Mikhail Golosov, John Hassler, Per Krusell, and Aleh Tsyvinski. Optimal Taxes on Fossil Fuel in General Equilibrium. <em>Econometrica</em>, 82(1):41–88, 2014. URL: <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.3982/ECTA10217">https://onlinelibrary.wiley.com/doi/abs/10.3982/ECTA10217</a>, <a class="reference external" href="https://doi.org/10.3982/ECTA10217">doi:10.3982/ECTA10217</a>.</p>
+</dd>
+<dt class="label" id="id49"><span class="brackets">49</span></dt>
+<dd><p>Yongyang Cai, Kenneth L. Judd, and Thomas S. Lontzek. The Social Cost of Carbon with Climate Risk. Technical Report, Hoover Institution, Stanford, CA, 2017.</p>
+</dd>
+<dt class="label" id="id50"><span class="brackets">50</span></dt>
+<dd><p>M. Ghil, M. R. Allen, M. D. Dettinger, K. Ide, D. Kondrashov, M. E. Mann, A. W. Robertson, A. Saunders, Y. Tian, F. Varadi, and P. Yiou. Advanced spectral methods for climatic time series. <em>Reviews of Geophysics</em>, 40(1):3–41, 2002. <a class="reference external" href="https://doi.org/10.1029/2000RG000092">doi:10.1029/2000RG000092</a>.</p>
+</dd>
+<dt class="label" id="id51"><span class="brackets">51</span></dt>
+<dd><p>William Nordhaus. Projections and uncertainties about climate change in an era of minimal climate policies. <em>American Economic Journal: Economic Policy</em>, 10(3):333–360, 2018. <a class="reference external" href="https://doi.org/10.1257/pol.20170046">doi:10.1257/pol.20170046</a>.</p>
+</dd>
+<dt class="label" id="id52"><span class="brackets">52</span></dt>
+<dd><p>Gideon Bornstein, Per Krusell, and Sergio Rebelo. Lags, Costs, and Shocks: An Equilibrium Model of the Oil Industry. NBER Working Paper 23423, National Bureau of Economic Research, Inc, may 2017. URL: <a class="reference external" href="https://ideas.repec.org/p/nbr/nberwo/23423.html">https://ideas.repec.org/p/nbr/nberwo/23423.html</a>.</p>
+</dd>
+<dt class="label" id="id53"><span class="brackets">53</span></dt>
+<dd><p>Harold Hotelling. The Economics of Exhaustible Resources. <em>Journal of Political Economy</em>, 39(2):137–175, 1931. <a class="reference external" href="https://arxiv.org/abs/1702.00813">arXiv:1702.00813</a>, <a class="reference external" href="https://doi.org/10.1007/BF02464433">doi:10.1007/BF02464433</a>.</p>
+</dd>
+<dt class="label" id="id54"><span class="brackets">54</span></dt>
+<dd><p>Jaime Casassus, Pierre Collin-Dufresne, and Bryan R. Routledge. Equilibrium Commodity Prices With Irreversible Investment and Non-Linear Technologies. <em>Journal of Banking and Finance</em>, 95:128–147, 2018. <a class="reference external" href="https://doi.org/10.1016/j.jbankfin.2018.04.001">doi:10.1016/j.jbankfin.2018.04.001</a>.</p>
+</dd>
+<dt class="label" id="id55"><span class="brackets">55</span></dt>
+<dd><p>Andrew H. MacDougall, Neil C. Swart, and Reto Knutti. The Uncertainty in the Transient Climate Response to Cumulative CO$_2$ Emissions Arising from the Uncertainty in Physical Climate Parameters. <em>Journal of Climate</em>, 30(2):813–827, 2017. URL: <a class="reference external" href="http://dx.doi.org/10.1175/JCLI-D-16-0205.1">http://dx.doi.org/10.1175/JCLI-D-16-0205.1</a>, <a class="reference external" href="https://doi.org/10.1175/JCLI-D-16-0205.1">doi:10.1175/JCLI-D-16-0205.1</a>.</p>
+</dd>
+<dt class="label" id="id56"><span class="brackets">56</span></dt>
+<dd><p>Myles R. Allen, David J. Frame, Chris Huntingford, Chris D. Jones, Jason A. Lowe, Malte Meinshausen, and Nicolai Meinshausen. Warming Caused by Cumulative Carbon Emissions Towards the Trillionth Tonne. <em>Nature</em>, 458:1163–1166, 2009. <a class="reference external" href="https://doi.org/10.1038/nature08019">doi:10.1038/nature08019</a>.</p>
+</dd>
+<dt class="label" id="id57"><span class="brackets">57</span></dt>
+<dd><p>M. Granger Morgan, Parth Vaishnav, Hadi Dowlatabadi, and Ines L. Azevedo. Rethinking the Social Cost of Carbon Dioxide. <em>Issues in Science and Technology</em>, 2017.</p>
+</dd>
+<dt class="label" id="id58"><span class="brackets">58</span></dt>
+<dd><p>Robert S Pindyck. Climate Change Policy: What Do the Models Tell Us? <em>Journal of Economic Literature</em>, 51(3):860–872, sep 2013.</p>
+</dd>
+<dt class="label" id="id59"><span class="brackets">59</span></dt>
+<dd><p>H Damon Matthews, Nathan P Gillett, Peter A Stott, and Kirsten Zickfeld. The proportionality of global warming to cumulative carbon emissions. <em>Nature</em>, 459(7248):829–832, 2009. <a class="reference external" href="https://doi.org/10.1038/nature08047">doi:10.1038/nature08047</a>.</p>
+</dd>
+<dt class="label" id="id60"><span class="brackets">60</span></dt>
+<dd><p>Jaroslav Borovička, Lars Peter Hansen, and Jose A. Scheinkman. Shock Elasticities and Impulse Responses. <em>Mathematics and Financial Economics</em>, 2014. <a class="reference external" href="https://doi.org/10.1007/s11579-014-0122-4">doi:10.1007/s11579-014-0122-4</a>.</p>
+</dd>
+<dt class="label" id="id61"><span class="brackets">61</span></dt>
+<dd><p>Gerald R. North, Robert F. Cahalan, and James A. Coakley. Energy balance climate models. <em>Reviews of Geophysics and Space Physics</em>, 19(1):91–121, 1981. <a class="reference external" href="https://doi.org/10.1029/RG019i001p00091">doi:10.1029/RG019i001p00091</a>.</p>
+</dd>
+<dt class="label" id="id62"><span class="brackets">62</span></dt>
+<dd><p>Alex Hall. The Role of Surface Albedo Feedback in Climate. <em>Journal of Climate</em>, 17(7):1550–1568, 2004. <a class="reference external" href="https://doi.org/10.1175/1520-0442(2004)017&lt;1550:TROSAF&gt;2.0.CO;2">doi:10.1175/1520-0442(2004)017&lt;1550:TROSAF&gt;2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="id63"><span class="brackets">63</span></dt>
+<dd><p>Gerald R. North. Theory of Energy-Balance Climate Models. <em>Journal of the Atmospheric Sciences</em>, 32(11):2033–2043, 1975. <a class="reference external" href="https://doi.org/10.1175/1520-0469(1975)032&lt;2033:TOEBCM&gt;2.0.CO;2">doi:10.1175/1520-0469(1975)032&lt;2033:TOEBCM&gt;2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="id64"><span class="brackets">64</span></dt>
+<dd><p>Gerald R. North. Analytical Solution to a Simple Climate Model with Diffusive Heat Transport. <em>Journal of the Atmospheric Sciences</em>, 32(7):1301–1307, 1975. <a class="reference external" href="https://doi.org/10.1175/1520-0469(1975)032&lt;1301:ASTASC&gt;2.0.CO;2">doi:10.1175/1520-0469(1975)032&lt;1301:ASTASC&gt;2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="id65"><span class="brackets">65</span></dt>
+<dd><p>Michael Ghil. Climate Stability for a Sellers-type Model. <em>Journal of the Atmospheric Sciences</em>, 33(1):3–20, 1976. <a class="reference external" href="https://doi.org/10.1175/1520-0469(1976)033&lt;0003:CSFAST&gt;2.0.CO;2">doi:10.1175/1520-0469(1976)033&lt;0003:CSFAST&gt;2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="id67"><span class="brackets">66</span></dt>
+<dd><p>Gernot Wagner and Martin Weitzman. <em>Climate Shock</em>. Princeton University Press, 2015. URL: <a class="reference external" href="http://gwagner.com/books/climate-shock">http://gwagner.com/books/climate-shock</a>.</p>
+</dd>
+<dt class="label" id="id68"><span class="brackets">67</span></dt>
+<dd><p>Martin L. Weitzman. GHG Targets as Insurance Against Catastrophic Climate Damages. <em>Journal of Public Economic Theory</em>, 14(2):221–244, 2012. <a class="reference external" href="https://doi.org/10.1111/j.1467-9779.2011.01539.x">doi:10.1111/j.1467-9779.2011.01539.x</a>.</p>
+</dd>
+<dt class="label" id="id69"><span class="brackets">68</span></dt>
+<dd><p>William Nordhaus. Climate clubs: Overcoming free-riding in international climate policy. <em>American Economic Review</em>, 105(4):1339–1370, 2015. <a class="reference external" href="https://doi.org/10.1257/aer.15000001">doi:10.1257/aer.15000001</a>.</p>
+</dd>
+<dt class="label" id="id70"><span class="brackets">69</span></dt>
+<dd><p><strong>missing note in BrockHansen:2017</strong></p>
+</dd>
+<dt class="label" id="id71"><span class="brackets">70</span></dt>
+<dd><p>Ramond T. Pierrehumbert. Short-Lived Climate Pollution. <em>Annual Review of Earth and Planetary Science</em>, 42:341–379, 2014.</p>
+</dd>
+<dt class="label" id="id72"><span class="brackets">71</span></dt>
+<dd><p>Stefano Castruccio, David J McInerney, Michael L Stein, Feifei Liu Crouch, Robert L Jacob, and Elisabeth J Moyer. Statistical Emulation of Climate Model Projections Based on Precomputed GCM Runs. <em>Journal of Climate</em>, 27(5):1829–1844, 2014.</p>
+</dd>
+<dt class="label" id="id73"><span class="brackets">72</span></dt>
+<dd><p>I. Zaliapin and M. Ghil. Reply to Roe and Baker's comment on "another look at climate sensitivity" by Zaliapin and Ghil (2010). <em>Nonlinear Processes in Geophysics</em>, 18:129–131, 2011. <a class="reference external" href="https://doi.org/10.5194/npg-18-129-2011">doi:10.5194/npg-18-129-2011</a>.</p>
+</dd>
+<dt class="label" id="id74"><span class="brackets">73</span></dt>
+<dd><p>I. Zaliapin and M. Ghil. Another look at climate sensitivity. <em>Nonlinear Processes in Geophysics</em>, 17(2):113–122, 2010. <a class="reference external" href="https://arxiv.org/abs/1003.0253">arXiv:1003.0253</a>, <a class="reference external" href="https://doi.org/10.5194/npg-17-113-2010">doi:10.5194/npg-17-113-2010</a>.</p>
+</dd>
+<dt class="label" id="id75"><span class="brackets">74</span></dt>
+<dd><p>I. M. Held and M. J. Suarez. Simple albedo feedback models of the ice caps. <em>Tellus</em>, 26:613–629, 1974.</p>
+</dd>
+<dt class="label" id="id76"><span class="brackets">75</span></dt>
+<dd><p>J. G. Charney, A. Arakawa, D. J. Baker, B. Bolin, R. E. Dickinson, R. M. Goody, C. E. Leith, H. M. Stommel, and C. I. Wunsch. <em>Carbon Dioxide and Climate: A Scientific Assessment</em>. National Academy of Sciences, Washington, DC, 1979.</p>
+</dd>
+<dt class="label" id="id77"><span class="brackets">76</span></dt>
+<dd><p>J. Doyne Farmer, Cameron Hepburn, Penny Mealy, and Alexander Teytelboym. A third wave in the economics of climate change. <em>Environmental and Resource Economics</em>, 62(2):329–357, 2015.</p>
+</dd>
+<dt class="label" id="id78"><span class="brackets">77</span></dt>
+<dd><p>Michael Ghil. A century of nonlinearity in the geosciences. <em>Earth and Space Science</em>, 6:1007–1042, 2019. <a class="reference external" href="https://doi.org/10.1029/2019EA000599">doi:10.1029/2019EA000599</a>.</p>
+</dd>
+<dt class="label" id="id79"><span class="brackets">78</span></dt>
+<dd><p>Paul M. Romer. Increasing returns and long-run growth. <em>Journal of political economy</em>, 94(5):1002–1037, 1986.</p>
+</dd>
+<dt class="label" id="id80"><span class="brackets">79</span></dt>
+<dd><p>Ellen R. McGrattan. A defense of AK growth models. <em>Federal Reserve Bank of Minneapolis Quarterly Review</em>, 22(4):13–27, 1998.</p>
+</dd>
+<dt class="label" id="id81"><span class="brackets">80</span></dt>
+<dd><p>M. I. Budyko. The effect of solar radiation variations on the climate of the Earth. <em>Tellus</em>, 21:611–619, 1969.</p>
+</dd>
+<dt class="label" id="id82"><span class="brackets">81</span></dt>
+<dd><p>Michael Ghil and Stephen Childress. <em>Topics in Geophysical Fluid Dynamics: Atmospheric Dynamics, Dynamo Theory, and Climate Dynamics</em>. Springer Science+Business Media, Berlin/Heidelberg, 1987. Reissued in pdf, 2012.</p>
+</dd>
+</dl>
+</p>
+
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="modules_index.html" title="Modules:"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> Previous </span> Modules: </span>
+              </div>
+            </a>
+          
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2021, SuriChen.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

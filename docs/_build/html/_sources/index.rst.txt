@@ -8,9 +8,10 @@ Welcome to the documentation for *Climate Change Uncertainty Spillover in the Ma
 This documentation represents the computations in *Climate Change Uncertainty Spillover in the Macroeconomy* by Mike Barnett, William Brock and Lars Peter Hansen.
 The latest version of the paper can be found through this link: (link needed)
 
-For related research, also checkout: (link to rfs repo).
+For related research, also checkout: `Pricing Uncertainty Induced by Climate Change <https://github.com/lphansen/Climate>`_.
 
 .. toctree::
+   :hidden:
    :caption: Contents:
 
    sec2/sec2_UncertainClimateDynamics
@@ -24,12 +25,8 @@ For related research, also checkout: (link to rfs repo).
    app/appendices
 
    Modules <modules_index.rst> 
+   References <bib_file.rst>
 
-References
-==========
-.. bibliography::
-   :all:
-   :style: unsrt
 
 Indices and tables
 ==================

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
+   sodipodi:docname="drawing.svg">
+  <defs
+     id="defs2">
+    <rect
+       x="36.526694"
+       y="139.54906"
+       width="20.406968"
+       height="30.825015"
+       id="rect42" />
+    <rect
+       x="102.62318"
+       y="141.37395"
+       width="3.231671"
+       height="10.800224"
+       id="rect36" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#211616"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.17647059"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="193.4238"
+     inkscape:cy="525.65481"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1367"
+     inkscape:window-x="0"
+     inkscape:window-y="41"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:none;fill-rule:evenodd;stroke-width:0.264583"
+       id="path10"
+       cx="82.399368"
+       cy="150.39995"
+       rx="39.745358"
+       ry="40.419044" />
+    <ellipse
+       style="fill:#38ca4c;fill-opacity:0.3402397;stroke-width:0.155294"
+       id="path24"
+       cx="95.076294"
+       cy="148.46236"
+       rx="24.377235"
+       ry="23.532452" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:46.1964px;line-height:1.65;font-family:Aldrich;-inkscape-font-specification:'Aldrich, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.240606"
+       x="69.823158"
+       y="179.66438"
+       id="text32"
+       transform="scale(1.122722,0.89069245)"><tspan
+         sodipodi:role="line"
+         id="tspan30"
+         x="69.823158"
+         y="179.66438"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:46.1964px;font-family:Aldrich;-inkscape-font-specification:'Aldrich, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:0.240606">c</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text34"
+       style="fill:black;fill-opacity:1;line-height:1.25;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:10.58333333px;white-space:pre;shape-inside:url(#rect36);" />
+    <text
+       xml:space="preserve"
+       id="text40"
+       style="fill:black;fill-opacity:1;line-height:1.25;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:10.58333333px;white-space:pre;shape-inside:url(#rect42);" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.0274px;line-height:1.25;font-family:'FuraCode Nerd Font';-inkscape-font-specification:'FuraCode Nerd Font, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.675687"
+       x="56.467541"
+       y="175.98889"
+       id="text48"
+       transform="scale(1.1192039,0.89349225)"><tspan
+         sodipodi:role="line"
+         id="tspan46"
+         x="56.467541"
+         y="175.98889"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.0274px;font-family:'FuraCode Nerd Font';-inkscape-font-specification:'FuraCode Nerd Font, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:0.675687">S</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.538px;line-height:1.25;font-family:'FuraCode Nerd Font';-inkscape-font-specification:'FuraCode Nerd Font, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.688457"
+       x="93.9431"
+       y="178.05836"
+       id="text52"
+       transform="scale(1.128319,0.88627419)"><tspan
+         sodipodi:role="line"
+         id="tspan50"
+         x="93.9431"
+         y="178.05836"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.538px;font-family:'FuraCode Nerd Font';-inkscape-font-specification:'FuraCode Nerd Font, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:0.688457">C</tspan></text>
+    <ellipse
+       style="fill:none;stroke-width:0.264583"
+       id="path78"
+       cx="52.230923"
+       cy="112.97109"
+       rx="9.9472828"
+       ry="8.4207602" />
+    <path
+       style="opacity:1;fill:none;stroke:#ffffff;stroke-width:1.23585;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.882282"
+       id="path903"
+       sodipodi:type="arc"
+       sodipodi:cx="95.098595"
+       sodipodi:cy="148.08751"
+       sodipodi:rx="33.359428"
+       sodipodi:ry="32.337944"
+       sodipodi:start="0"
+       sodipodi:end="6.2741068"
+       sodipodi:open="true"
+       sodipodi:arc-type="arc"
+       d="M 128.45802,148.08751 A 33.359428,32.337944 0 0 1 95.174308,180.42537 33.359428,32.337944 0 0 1 61.73951,148.2343 33.359428,32.337944 0 0 1 94.871456,115.75031 33.359428,32.337944 0 0 1 128.45665,147.79393"
+       transform="matrix(0.99998629,0.00523607,0,1,0,0)" />
+    <ellipse
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.955245;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.882282"
+       id="path907"
+       cx="94.745041"
+       cy="148.31056"
+       rx="44.258102"
+       ry="44.32814" />
+    <ellipse
+       style="fill:#7ac8db;stroke-width:0.265;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="ellipse72"
+       cx="94.66761"
+       cy="182.28043"
+       rx="2.6943424"
+       ry="2.6096787" />
+    <ellipse
+       style="fill:#7bc8db;stroke-width:0.264583;fill-opacity:1"
+       id="ellipse70"
+       cx="94.992264"
+       cy="113.00845"
+       rx="2.6943424"
+       ry="2.6096787" />
+    <ellipse
+       style="fill:#7bc9db;fill-opacity:1;stroke-width:0.264583"
+       id="ellipse76"
+       cx="62.572784"
+       cy="116.72987"
+       rx="2.6943424"
+       ry="2.6096787" />
+    <ellipse
+       style="fill:#7bc9db;fill-opacity:1;stroke-width:0.264583"
+       id="ellipse934"
+       cx="125.47932"
+       cy="115.11927"
+       rx="2.6943424"
+       ry="2.6096787" />
+    <ellipse
+       style="fill:#7bc9db;fill-opacity:1;stroke-width:0.264583"
+       id="ellipse936"
+       cx="125.79173"
+       cy="179.52066"
+       rx="2.6943424"
+       ry="2.6096787" />
+    <ellipse
+       style="fill:#7bc9db;fill-opacity:1;stroke-width:0.264583"
+       id="ellipse938"
+       cx="62.773148"
+       cy="180.02715"
+       rx="2.6943424"
+       ry="2.6096787" />
+  </g>
+</svg>
