@@ -505,78 +505,7 @@ reflected in subfigure (b).
 .. code:: ipython3
 
     # Initialize figure
-    fig = make_subplots(
-        rows=1, cols=2, 
-        specs=[[{"type": "scatter"}, {"type": "scatter"}]],
-        subplot_titles = ['(a)', '(b)']
-    )
-    
-    years=np.arange(0,100)
-    # partition specification
-    par_one_type = [['total', 'red'], ['damage', 'darkorange'], ['temp', 'darkgreen'], ['carb', 'navy']]
-    par_two_type = [['total', 'red'], ['temp_damage', 'darkorange'], 
-                    ['carb_damage', 'darkgreen'], ['temp_carb', 'navy']]
-    ξ_p_list = [5,0.3]
-    # Add Traces
-    for ξ_p in ξ_p_list:
-        simulated_ratio = simulation_res[ξ_p]
-        for par, color in par_one_type: 
-            fig.add_trace(
-                go.Scatter(x=years,
-                           y=simulated_ratio[par],
-                           name=par,
-                           visible=False,
-                           line=dict(color=color, width=3)), 
-                row=1, col=1
-            )
-        for par, color in par_two_type:
-            fig.add_trace(
-                go.Scatter(x=years,
-                           y=simulated_ratio[par],
-                           name=par,
-                           visible=False,
-                           line=dict(color=color, width=3)), 
-                row=1, col=2
-            )
-    num_line = int(len(fig.data)/len(ξ_p_list))
-    for i in range(num_line):
-        fig.data[i].visible = True
-        
-    buttons = list()
-    for i in range(len(ξ_p_list)):
-        button = dict(
-            method='update',
-            args=[{'visible': [False]*len(fig.data)}],
-            label='ξ_a = 0.01 and ξ_p = {}'.format(ξ_p_list[i])
-        )
-        for j in range(num_line):
-            button['args'][0]['visible'][i*num_line+j] = True
-        buttons.append(button)
-    
-    fig.update_layout(
-        plot_bgcolor='#ececec',
-        title=dict(
-            text='Uncertainty decomposition',
-            x=0.1
-        ),
-        updatemenus=[
-            dict(
-                type="buttons",
-                direction="right",
-                y=1.2,
-                x=0.8,
-                active=0,
-                buttons=buttons,
-                bgcolor='#e7e3da',
-            )
-        ])
-    
-    fig.update_xaxes(range=[0, 100], title='Years')
-    fig.update_yaxes(rangemode='tozero', title='log difference (scaled by 100)', row=1, col=1)
-    
-    fig.show()
-
-
+    # code omitted here.
 
 .. raw:: html
 
