@@ -200,103 +200,7 @@ sets of parameters
 .. code:: ipython3
 
     # distorted probabilities
-    fig = go.Figure()
-    for ξ_b_i, ξ_p_i in params_list:
-        πd = solution[(ξ_b_i, ξ_p_i)]['model_res']['πd']
-        for πd_i, name, color in zip(πd,['low', 'high', 'extreme'], ['darkgreen', 'darkorange', 'red']):
-            fig.add_trace(go.Scatter(x=y_grid_short, y=πd_i, 
-                                     visible=False,
-                                     line=dict(color=color, width=2.5),
-                                     name=name+" damage"
-                                    )) 
-    
-    
-    num_lines = len(πd)
-    for i in range(num_lines):
-        fig.data[1*num_lines + i].visible = True
-    
-    # steps = []
-    # for i in range(len(params_list)):
-    #     # Hide all traces
-    #     label = r"ξb = {:.2f}, ξp = {:.2f}".format(params_list[i][0],params_list[i][1])
-    #     step = dict(
-    #         method ='update',  
-    #         args = [{'visible': [False] * len(fig.data)},
-    #                {"title": "${}\\\ ξ_b = {:.2f},\quad ξ_p = {:.2f}$".format(
-    #                    "Distorted\ probability", 
-    #                    params_list[i][0],
-    #                    params_list[i][1]
-    #                )}],
-    #         label=label
-    #     )
-    #     # Enable the two traces we want to see
-    #     for j in range(num_lines):
-    #         step['args'][0]["visible"][num_lines*i+j] = True
-    #     # Add step to step list
-    #     steps.append(step)
-    
-    # sliders = [dict(
-    #     active = 1,
-    #     steps = steps,
-    #     pad={"t": 80, "l":50, "r":50},
-    # )]
-    
-    buttons = list()
-    for i in range(len(params_list)):
-        button = dict(
-            method='update',
-            args=[{'visible': [False]*len(fig.data)}],
-            label='ξb = {}, ξp = {}'.format(params_list[i][0], params_list[i][1])
-        )
-            # Enable the two traces we want to see
-        for j in range(num_lines):
-            button['args'][0]["visible"][num_lines*i+j] = True
-        # Add step to step list
-        buttons.append(button)
-    #     button['args'][0]['visible'][0] = True
-    #     button['args'][0]['visible'][i] = True
-    #     buttons.append(button)
-        
-    fig.update_layout(
-        legend=dict(
-            x=0.05,y=0.95, 
-            bgcolor='rgba(255,0,0,0)',
-            font=dict(size=16)
-        ),
-        plot_bgcolor='#ececec',
-        title=dict(
-            x=0.1
-        ),
-    #     barmode='overlay',
-        updatemenus=[
-            dict(
-                type="buttons",
-    #             direction="right",
-                y=1,
-                x=1.4,
-                active=1,
-                buttons=buttons,
-                bgcolor='#ececec',
-            )
-        ]
-    )
-    
-    fig.update_layout(
-        legend=dict(traceorder="reversed"),
-        font=dict(size=16),
-    #     sliders = sliders,
-        template="none",
-    )
-    fig.update_xaxes(
-        range=[0,2],
-        title_text="Temperature anomaly"
-    )
-    fig.update_yaxes(
-        range=[0,1],
-        title_text="Distorted probability"
-    )
-    fig.show()
-
+    # code omitted here.
 
 
 .. raw:: html
@@ -342,89 +246,7 @@ parameter configuration is as the following:
 .. code:: ipython3
 
     # drift distortion
-    fig = go.Figure()
-    for ξ_b_i, ξ_p_i in params_list:
-        ht = solution[(ξ_b_i, ξ_p_i)]['simulation_res']['ht']
-        fig.add_trace(go.Scatter(x=np.arange(0,100), y=ht, 
-                                 visible=False,
-                                 line=dict(width=2.5),
-                                 name=r'$\xi_b = {:.2f}, \xi_p = {:.2f}$'.format(ξ_b_i, ξ_p_i)
-                                )) 
-    
-    
-    
-    fig.data[-1].visible = True
-    # steps = []
-    # for i in range(len(params_list)):
-    #     label = r'ξ_b = {:.2f}, ξ_p = {:.2f}'.format(params_list[i][0],params_list[i][1])
-    #     step = dict(
-    #         method ='update',  
-    #         args = [{'visible': [False] * len(fig.data)},
-    #                {"title": r'$Distorted\ probability\\ \xi_b = {:.2f},\quad \xi_p = {:.2f}$'.format( 
-    #                    params_list[i][0],
-    #                    params_list[i][1]
-    #                )}],
-    #         label=label
-    #     )
-    #     step['args'][0]["visible"][i] = True
-    #     steps.append(step)
-    
-    # sliders = [dict(
-    #     active = len(params_list)-1,
-    #     steps = steps,
-    #     pad={"t": 80, 'l':50, 'r':50},
-    # )]
-    
-    
-    buttons = list()
-    for i in range(len(params_list)):
-        button = dict(
-            method='update',
-            args=[{'visible': [False]*len(fig.data)}],
-            label='ξb = {}, ξp = {}'.format(params_list[i][0], params_list[i][1])
-        )
-    #     button['args'][0]['visible'][0] = True
-        button['args'][0]['visible'][i] = True
-        buttons.append(button)
-        
-    fig.update_layout(
-        legend=dict(
-            x=0.85,y=0.9, 
-            bgcolor='rgba(255,0,0,0)',
-            font=dict(size=16)
-        ),
-        plot_bgcolor='#ececec',
-        title=dict(
-            x=0.1
-        ),
-    #     barmode='overlay',
-        updatemenus=[
-            dict(
-                type="buttons",
-    #             direction="right",
-                y=1,
-                x=1.3,
-                active=len(params_list)-1,
-                buttons=buttons,
-                bgcolor='#e7e3da',
-            )
-        ]
-    )
-    
-    # fig.update_layout(
-    #     font=dict(size=16),
-    # #     sliders = sliders,
-    #     template="none",
-    # )
-    fig.update_xaxes(
-        range=[0,100],
-        title_text="Years"
-    )
-    fig.update_yaxes(
-        range=[0,0.2],
-        title_text="Drift distortion"
-    )
-
+    # code omiited here.
 
 
 .. raw:: html
@@ -459,32 +281,7 @@ parameter configuration is as the following:
 .. code:: ipython3
 
     # emission trajectories
-    fig = go.Figure()
-    colors=["red", "darkgreen", "darkorange", "navy"]
-    for i in range(len(params_list)):
-        ξ_b_i, ξ_p_i = params_list[i]
-        et = solution[(ξ_b_i, ξ_p_i)]['simulation_res']['et']
-        name = r"$\xi_b = {:.2f},\ \xi_p = {:.2f}$".format(ξ_b_i, ξ_p_i)
-        if ξ_b_i == 100_000 and ξ_p_i == 100_000:
-            name = "baseline"
-        fig.add_trace(go.Scatter(x=np.arange(0,100), y=et, line=dict(color=colors[i],width=3), name=name)) 
-    
-    fig.update_layout(
-        title="Emission trajectories",
-        plot_bgcolor='#ececec',
-        legend=dict(x=0.01, y=0.01, font=dict(size=14), bgcolor='rgba(0,0,0,0)'),
-        font=dict(size=16),
-        template="none",
-    )
-    fig.update_xaxes(
-        range=[0,88],
-        title_text="Years"
-    )
-    fig.update_yaxes(
-        range=[0,10],
-        title_text="Emissions"
-    )
-
+    # code omitted here.
 
 
 .. raw:: html
@@ -531,88 +328,20 @@ Compute as follows:
 
 Values of the paramters are as follows:
 
-================================ ==========
-Parameters                       values
-================================ ==========
-:math:`\eta`                     0.032
-:math:`\gamma_1`                 0.00017675
-:math:`\gamma_2`                 0.0044
-Initial consumption, :math:`C_0` 17.39
-================================ ==========
+======================================== ==========
+Parameters                                values
+======================================== ==========
+:math:`\eta`                               0.032
+:math:`\gamma_1`                           0.00017675
+:math:`\gamma_2`                           0.0044
+Initial consumption, :math:`C_0`           17.39
+Initial temperature anomaly, :math:`Y_0`   1
+======================================== ==========
 
 .. code:: ipython3
 
     # log SSC trajectories
-    fig = go.Figure()
-    C0 = 17.39
-    for i, [ξ_b_i, ξ_p_i] in enumerate(params_list):
-        et = solution[(ξ_b_i, ξ_p_i)]['simulation_res']['et']
-        yt = solution[(ξ_b_i, ξ_p_i)]['simulation_res']['yt']
-        logSCCt = np.log(1000) + np.log(C0) - (γ_1*yt[et>0] + γ_2/2*yt[et>0]**2) - np.log(et[et>0]) + np.log(η) - np.log(1-η)
-        name = r"$\xi_b = {:.2f},\ \xi_p = {:.2f}$".format(ξ_b_i, ξ_p_i)
-        if ξ_b_i == 100_000 and ξ_p_i == 100_000:
-            name = "baseline"
-        fig.add_trace(go.Scatter(x=np.arange(0,100), y=logSCCt, line=dict(color=colors[i],width=3), name=name)) 
-    
-    buttons = list()
-    for i in range(len(selected_years)):
-        button = dict(
-            method='update',
-            args=[{'visible': [False]*len(fig.data)}],
-            label='year {}'.format(selected_years[i])
-        )
-        button['args'][0]['visible'][0] = True
-        button['args'][0]['visible'][i+1] = True
-        buttons.append(button)
-        
-    fig.update_layout(
-        legend=dict(
-            x=0.85,y=0.9, 
-            bgcolor='rgba(255,0,0,0)',
-            font=dict(size=16)
-        ),
-        plot_bgcolor='#ececec',
-        title=dict(
-            text='Uncertainty decomposition in',
-            x=0.1
-        ),
-        barmode='overlay',
-        updatemenus=[
-            dict(
-                type="buttons",
-                direction="right",
-                y=1.21,
-                x=0.6,
-                active=0,
-                buttons=buttons,
-                bgcolor='#e7e3da',
-            )
-        ]
-    )
-    fig.update_layout(
-        title=r'Social cost of carbon expressed in logarithms',
-        legend=dict(
-            x=0.01, y=1, 
-            font=dict(size=14, ), 
-            itemsizing='constant',
-            traceorder='reversed', 
-            bgcolor='rgba(0,0,0,0)',
-        ),
-        font=dict(size=16),
-        plot_bgcolor='#ececec',
-    )
-    fig.update_xaxes(
-        range=[0,88],
-        showline=True,
-        linecolor='black',
-        title_text="Years"
-    )
-    fig.update_yaxes(
-        showline=True,
-        linecolor='black',
-        title_text=r'$\log SCC_t$'
-    )
-
+    # code omitted here.
 
 
 .. raw:: html
@@ -692,106 +421,7 @@ setting.
 .. code:: ipython3
 
     # worst case probability
-    fig = go.Figure()
-    xbins = dict(start=0.9, end=3.0, size=0.15)
-    fig.add_trace(go.Histogram(
-        x=θ_list*1000,
-        histnorm='probability density',
-        name='baseline',
-        xbins=xbins,
-        visible=True,
-        marker = dict(color = "salmon", line = dict(color="darkgray", width = 1)),
-        opacity=0.7
-    ))
-    
-    selected_years = [10, 50, 90]
-    for year in selected_years:
-        fig.add_trace(go.Histogram(
-            x=θ_list*1000,
-            y=simulation_res["πct"][year]*np.exp(-year*δ),
-            histnorm='probability density',
-            histfunc='sum',
-            xbins=xbins,
-            marker = dict(color = "#1978d6", line = dict(color="gray", width = 1)),
-            opacity=0.5,
-            name="year {:d}".format(year),
-            visible=False
-        ))
-    
-    fig.data[-1].visible = True
-    
-    steps = []
-    for i in range(len(selected_years)):
-        label = r'year = {:d}'.format(selected_years[i])
-        step = dict(
-            method ='update',  
-            args = [{'visible': [False] * len(fig.data)},
-                   {"title": "title"}],
-            label=label
-        )
-        step['args'][0]["visible"][0] = True
-        step['args'][0]["visible"][i+1] = True
-        # Add step to step list
-        steps.append(step)
-    
-    sliders = [dict(
-        active = len(fig.data)-3,
-        steps = steps,
-        pad={"t": 80, 'l':50, 'r':50},
-    )]
-    
-    
-    
-    buttons = list()
-    for i in range(len(selected_years)):
-        button = dict(
-            method='update',
-            args=[{'visible': [False]*len(fig.data)}],
-            label='year {}'.format(selected_years[i])
-        )
-        button['args'][0]['visible'][0] = True
-        button['args'][0]['visible'][i+1] = True
-        buttons.append(button)
-        
-    fig.update_layout(
-        legend=dict(
-            x=0.85,y=0.9, 
-            bgcolor='rgba(255,0,0,0)',
-            font=dict(size=16)
-        ),
-        plot_bgcolor='#ececec',
-        title=dict(
-            text='Uncertainty decomposition in',
-            x=0.1
-        ),
-        barmode='overlay',
-        updatemenus=[
-            dict(
-                type="buttons",
-                direction="right",
-                y=1.21,
-                x=0.6,
-                active=len(selected_years)-1,
-                buttons=buttons,
-                bgcolor='#e7e3da',
-            )
-        ]
-    )
-    
-    
-    fig.update_xaxes(
-        range=[0.8,3],
-        showline=True,
-        linecolor='black',
-        title_text='Climate sensitivity',
-    )
-    fig.update_yaxes(
-        range=[0,1.4],
-        title_text="Density",
-        showline=True,
-        linecolor='black',
-    )
-
+    # code omitted here.
 
 
 .. raw:: html
