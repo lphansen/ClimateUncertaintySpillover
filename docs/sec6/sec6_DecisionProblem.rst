@@ -385,4 +385,4 @@ the following HJB for :math:`\phi(y)` on :math:`y \in [0, \bar y]`:
     
                             })                };                });            </script>        </div>
 
-
+Notebook version: `sec6_DecisionProblem.ipynb`__

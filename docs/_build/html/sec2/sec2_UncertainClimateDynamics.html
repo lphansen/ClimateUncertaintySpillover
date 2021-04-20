@@ -414,16 +414,14 @@ discount rate <span class="math notranslate nohighlight">\(\delta=0.01\)</span>.
 <span class="c1"># climate sensitivity histogram</span>
 <span class="n">θ_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'data/model144.csv'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">θ_list</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"salmon"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">θ_list</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">0.15</span><span class="p">),</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:red"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Climate sensitivity"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Density"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="figure align-center" id="id16">
-<span id="histogram"></span><img alt="../_images/output_1_01.png" src="../_images/output_1_01.png"/>
-<p class="caption"><span class="caption-text">Exponential average of 144 response functions.</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
-</div>
+<img alt="../_images/output_1_0.png" class="align-center" src="../_images/output_1_0.png"/>
 
 
 <h2 id="stochastic-climate-pulses">2.2 Stochastic climate pulses<a class="headerlink" href="#stochastic-climate-pulses" title="Permalink to this headline">¶</a></h2>
@@ -467,7 +465,7 @@ the consequence of the pulse permanent:</p>
 stochastic processes and lower case letters to denote possible
 realizations. Armed with this “Matthews’ approximation”, we collapse the
 climate change uncertainty into the cross-model empirical distribution
-reported in the above <a class="reference internal" href="#histogram"><span class="std std-ref">histogram</span></a>. We will eventually introduce uncertainty
+reported in the figure above. We will eventually introduce uncertainty
 about <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <blockquote>
 <div><p><strong>Remark 1</strong></p>
@@ -508,7 +506,9 @@ is intended as a simple representation of the dynamics where the
 second state variable can be thought of as an exponentially weighted
 average of current and past
 emissions. <a class="footnote-reference brackets" href="#fn2" id="id4">2</a></p>
-<p><strong>Remark 2</strong></p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Remark 2</strong></p>
 <p>The approximation in <span id="id5">Geoffroy <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id37">10</a>]</span> includes the
 logarithm of carbon in the atmosphere as argued for by
 <span id="id6">Arrhenius [<a class="reference internal" href="../bib_file.html#id26">11</a>]</span> which is not directly reflected in
@@ -523,12 +523,14 @@ proportional for small pulse sizes. See also
 offsetting impacts of nonlinearity in temperature and climate
 dynamics.</p>
 </div></blockquote>
+<p>Next section:</p>
+<p><a class="reference external" href="sec3_StochasticDamage.ipynb">Section 3: Stochastic damage</a></p>
 <dl class="footnote brackets">
 <dt class="label" id="fn1"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
-<dd><p>See equation (5) of  <span id="id10">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36">8</a>]</span> and  equations (1)-(3) of  <span id="id11">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span>.   <span id="id12"><a class="reference internal" href="../bib_file.html#id71">Pierrehumbert</a></span> puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at date <span class="math notranslate nohighlight">\(t\)</span> to atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.</p>
+<dd><p><cite>See equation (5) of :cite:t:`Joosetal:2013</cite> and  equations (1)-(3) of <span id="id10">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span>.   <span id="id11">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span> puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at date <span class="math notranslate nohighlight">\(t\)</span> to atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.`</p>
 </dd>
 <dt class="label" id="fn2"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
-<dd><p>In independent work, <span id="id13">Dietz and Venmans [<a class="reference internal" href="../bib_file.html#id14">12</a>]</span> and  <span id="id14">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66">5</a>]</span> have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   <span id="id15"><a class="reference internal" href="../bib_file.html#id66">Barnett <em>et al.</em></a></span> instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.</p>
+<dd><p><cite>In independent work, :cite:t:`DietzVenmans:2019</cite> and <span id="id12">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66">5</a>]</span> have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   <span id="id13"><a class="reference internal" href="../bib_file.html#id66">Barnett <em>et al.</em></a></span> instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.`</p>
 </dd>
 </dl>
 

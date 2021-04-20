@@ -23,18 +23,17 @@ The histogram of those coefficients are represented below:
     # climate sensitivity histogram
     θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0]/1000. 
     plt.figure(figsize=(6,5), dpi=100)
-    plt.hist(θ_list*1000, bins=13, density=True, color="salmon", ec="gray")
+    plt.hist(θ_list*1000, bins=np.arange(0.9,3,0.15), density=True, color="tab:red", ec="gray", alpha=0.6)
+    plt.ylim(0,1.5)
     plt.xlabel("Climate sensitivity")
     plt.ylabel("Density")
     plt.show()
 
 
-.. _histogram:
 
-.. figure:: output_1_0.png
+.. image:: output_1_0.png
    :align: center
 
-   Exponential average of 144 response functions.
 
 2.2 Stochastic climate pulses
 -----------------------------
@@ -98,7 +97,7 @@ Throughout, we will use uppercase letters to denote random vector or
 stochastic processes and lower case letters to denote possible
 realizations. Armed with this “Matthews’ approximation”, we collapse the
 climate change uncertainty into the cross-model empirical distribution
-reported in the above :ref:`histogram <histogram>`. We will eventually introduce uncertainty
+reported in the figure above. We will eventually introduce uncertainty
 about :math:`\theta`.
 
    **Remark 1**
@@ -135,7 +134,7 @@ about :math:`\theta`.
    exponentials to approximate the pulse responses. Our introduction of
    a multiple exponential approximation adapts for example,
    :cite:t:`Joosetal:2013` and
-   :cite:t:`Pierrehumbert:2014`. [#fn1]_ 
+   :cite:t:`Pierrehumbert:2014`. [#fn1]_
 
    As an example, we capture the initial rise in the emission responses
    by the following two-dimensional specification
@@ -162,6 +161,7 @@ about :math:`\theta`.
    average of current and past
    emissions. [#fn2]_
 
+..
 
    **Remark 2**
 
@@ -178,8 +178,11 @@ about :math:`\theta`.
    :cite:t:`Pierrehumbert:2014` who discusses the approximate
    offsetting impacts of nonlinearity in temperature and climate
    dynamics.
-   
-.. [#fn1] See equation (5) of  :cite:t:`Joosetal:2013` and  equations (1)-(3) of  :cite:t:`Pierrehumbert:2014`.   :cite:author:`Pierrehumbert:2014` puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric :math:`CO_2` at date :math:`t` to atmospheric :math:`CO_2` at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.
 
+Next section:
 
-.. [#fn2] In independent work, :cite:t:`DietzVenmans:2019` and  :cite:t:`BarnettBrockHansen:2020` have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   :cite:author:`BarnettBrockHansen:2020` instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.
+`Section 3: Stochastic damage <sec3_StochasticDamage.ipynb>`__
+
+.. [#fn1] `See equation (5) of :cite:t:`Joosetal:2013` and  equations (1)-(3) of :cite:t:`Pierrehumbert:2014`.   :cite:t:`Pierrehumbert:2014` puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric :math:`CO_2` at date :math:`t` to atmospheric :math:`CO_2`` at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.`
+
+.. [#fn2] `In independent work, :cite:t:`DietzVenmans:2019` and :cite:t:`BarnettBrockHansen:2020` have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   :cite:author:`BarnettBrockHansen:2020` instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.`

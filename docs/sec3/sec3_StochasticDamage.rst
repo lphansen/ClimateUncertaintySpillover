@@ -87,6 +87,7 @@ Parameter          Value
 
 
 .. image:: output_1_0.png
+   :align: center
 
 
 We impose a jump intensity function that is, by design, localized at :math:`y = {\overline y}`:
@@ -123,5 +124,6 @@ The follow figure is an intensity function with :math:`\rho=0.01`.
 
 
 .. image:: output_3_0.png
+   :align: center
 
 .. [#fn1] This intensity is recognizable as the scaled version of  half normal density with mean :math:`{\overline y}` and standard deviation :math:`\rho`.
