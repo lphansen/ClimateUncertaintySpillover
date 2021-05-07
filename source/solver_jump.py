@@ -248,7 +248,8 @@ def solve_smooth_100(y_grid, args, max_iter, tol, ϵ,):
         episode += 1
     print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
     h = - temp*ems*σy/ξw
-    return ϕ, ems, π, h
+    solution = dict(ϕ=ϕ, ems=ems, πc=π)
+    return solution
 
 
 def solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
@@ -328,11 +329,13 @@ def approach_one_100(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, 
     δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ς, ξp, ξa, ξw, σy = args
     ϕ_list = list()
     π_list = list()
+    ems_list = list()
     for γ3 in γ3_list:
         args_post = (δ, η, θ_list, σy, γ1, γ2, γ3, ȳ, ξa, ξw)
-        ϕ, _, π , _ = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
+        ϕ, ems, π , _ = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
         ϕ_list.append(ϕ)
         π_list.append(π)
+        ems_list.append(ems)
     ϕ_list = np.array(ϕ_list)
     π_list = np.array(π_list)
     solution = solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter)
@@ -343,21 +346,24 @@ def approach_one_100(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, 
 
 
 # solve for approach one
-def value_for_match(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=10_000):
+def value_for_match(y_grid, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=5_000):
     δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ς, ξp, ξa, ξw, σy = args
     ϕ_list = list()
     π_list = list()
+    ems_list = list()
     for γ3 in γ3_list:
         args_post = (δ, η, θ_list, σy, γ1, γ2, γ3, ȳ, ξa, ξw)
-        ϕ, _, π , _ = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
+        ϕ, ems, π , _ = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
         ϕ_list.append(ϕ)
         π_list.append(π)
+        ems_list.append(ems)
     ϕ_list = np.array(ϕ_list)
     π_list = np.array(π_list)
+    ems_list = np.array(ems_list)
     if report_π == True:
         return ϕ_list, π_list
     else:
-        return ϕ_list
+        return ϕ_list, ems_list
 
 
 def generate_weight(params, ems, dϕdy, y_grid, args_weight=()):
