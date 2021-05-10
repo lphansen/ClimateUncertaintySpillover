@@ -345,7 +345,6 @@ def approach_one_100(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, 
         return solution, ϕ_list
 
 
-<<<<<<< HEAD
 # solve for approach one
 def value_for_match(y_grid, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=5_000):
     δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ς, ξp, ξa, ξw, σy = args
@@ -367,7 +366,6 @@ def value_for_match(y_grid, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=5_
         return ϕ_list, ems_list
 
 
-||||||| 8cce943 (add for interval jump)
 # solve for approach one
 def value_for_match(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=10_000):
     δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ς, ξp, ξa, ξw, σy = args
@@ -386,8 +384,6 @@ def value_for_match(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, m
         return ϕ_list
 
 
-=======
->>>>>>> parent of 8cce943 (add for interval jump)
 def generate_weight(params, ems, dϕdy, y_grid, args_weight=()):
     δ, η, γ1, γ2, ȳ, σy, ξa = args_weight
     num, _ = params.shape
