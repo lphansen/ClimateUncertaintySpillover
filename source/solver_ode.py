@@ -9,7 +9,7 @@ from scipy.sparse.linalg import bicg
 
 
 @njit
-def derivative_1d(data, order, h_data, side="up"):
+def derivative_1d(data, order, h_data, bound, use_bound=False, side="up"):
     num, = data.shape
     ddata = np.zeros_like(data)
     if order == 1:
@@ -17,7 +17,11 @@ def derivative_1d(data, order, h_data, side="up"):
             if i == 0:
                 ddata[i] = (data[i+1]-data[i])/h_data
             elif i == num-1:
-                ddata[i] = (data[i]-data[i-1])/h_data
+#                 
+                if use_bound:
+                    ddata[i] = bound[0]
+                else:
+                    ddata[i] = (data[i] -data[i-1])/h_data
             else: 
                 if side == "up":
                     ddata[i] = (data[i]-data[i-1])/h_data
@@ -32,7 +36,11 @@ def derivative_1d(data, order, h_data, side="up"):
             if i == 0:
                 ddata[i] = (data[i+2]-2*data[i+1] + data[i])/(h_data**2)
             elif i == num -1:
-                ddata[i] = (data[i]-2*data[i-1] + data[i-2])/(h_data**2)
+                if use_bound:
+                    ddata[i] = bound[1]
+                else:
+                    ddata[i] = (data[i] -2*data[i-1] + data[i-2])/(h_data**2)
+                
             else:
                 ddata[i] = (data[i+1]- 2*data[i] + data[i-1])/(h_data**2)
     
@@ -64,6 +72,44 @@ def get_coeff(A, Bx, Cxx, D, x_grid, ϕ_prev, ϵ, boundspec):
             LHS[i,i] += Bx[i]*((-1/dx)*(Bx[i]>0) + (1/dx)*(Bx[i]<0)) - 2*Cxx[i]/(dx**2)
             LHS[i,i-1] += Bx[i]*(-1/dx)*(Bx[i]<0) + Cxx[i]/(dx**2)
     return LHS, RHS
+
+
+@njit
+def get_coeff_neumann(A, Bx, Cxx, D, x_grid, ϕ_prev, ϵ, boundspec):
+    dx = x_grid[1] - x_grid[0]
+    numx = len(x_grid)
+    LHS = np.zeros((numx, numx))
+    RHS = -1/ϵ*ϕ_prev - D
+    for i in range(numx):
+        LHS[i,i] += - 1/ϵ + A[i]
+        if i == 0:
+            LHS[i,i] += - 1/dx*Bx[i] + Cxx[i]/(dx**2)
+            LHS[i,i+1] += 1/dx*Bx[i] - 2*Cxx[i]/(dx**2)
+            LHS[i,i+2] += Cxx[i]/(dx**2)
+        elif i == numx-1:
+            if boundspec[0] == True:
+#                 LHS[i,i] += Bx[i]*((-1/dx)*(Bx[i]>0) + (1/dx)*(Bx[i]<0)) - 2*Cxx[i]/(dx**2)
+#                 LHS[i-1, i] += Bx[i]*(-1/dx)*(Bx[i]<0) + Cxx[i]/(dx**2)
+#                 RHS[i] += -Bx[i]*(1./dx)*(Bx[i]>0)*boundspec[1] - Cxx[i]/(dx**2)*boundspec[1]
+                LHS[i,i] = 1/dx
+                LHS[i-1,i] =  -1/dx
+                RHS[i] =  boundspec[2][0]
+            else:
+                LHS[i,i] += 1/dx*Bx[i] + Cxx[i]/(dx**2)
+                LHS[i,i-1] += -1/dx*Bx[i] - 2*Cxx[i]/(dx**2)
+                LHS[i,i-2] += Cxx[i]/(dx**2)
+        else:
+            LHS[i,i+1] += Bx[i]*(1./dx)*(Bx[i]>0) + Cxx[i]/(dx**2)
+            LHS[i,i] += Bx[i]*((-1/dx)*(Bx[i]>0) + (1/dx)*(Bx[i]<0)) - 2*Cxx[i]/(dx**2)
+            LHS[i,i-1] += Bx[i]*(-1/dx)*(Bx[i]<0) + Cxx[i]/(dx**2)
+    return LHS, RHS
+
+
+def solve_ode_neumann( A, By, Cyy, D, y_grid, ϕ_prev, ϵ, boundspec):
+    LHS, RHS = get_coeff_neumann( A, By, Cyy, D, y_grid, ϕ_prev, ϵ, boundspec)
+    phi_grid, exit_code = bicg(csc_matrix(LHS), RHS)
+#     phi_grid = np.linalg.solve(LHS, RHS)
+    return phi_grid
 
 
 @njit
