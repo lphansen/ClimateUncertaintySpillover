@@ -9,7 +9,7 @@ from scipy.sparse.linalg import bicg
 
 
 @njit
-def derivative_1d(data, order, h_data, bound, use_bound=False, side="up"):
+def derivative_1d(data, order, h_data,  side="up"):
     num, = data.shape
     ddata = np.zeros_like(data)
     if order == 1:
@@ -18,10 +18,8 @@ def derivative_1d(data, order, h_data, bound, use_bound=False, side="up"):
                 ddata[i] = (data[i+1]-data[i])/h_data
             elif i == num-1:
 #                 
-                if use_bound:
-                    ddata[i] = bound[0]
-                else:
-                    ddata[i] = (data[i] -data[i-1])/h_data
+                
+                ddata[i] = (data[i] -data[i-1])/h_data
             else: 
                 if side == "up":
                     ddata[i] = (data[i]-data[i-1])/h_data
@@ -36,10 +34,8 @@ def derivative_1d(data, order, h_data, bound, use_bound=False, side="up"):
             if i == 0:
                 ddata[i] = (data[i+2]-2*data[i+1] + data[i])/(h_data**2)
             elif i == num -1:
-                if use_bound:
-                    ddata[i] = bound[1]
-                else:
-                    ddata[i] = (data[i] -2*data[i-1] + data[i-2])/(h_data**2)
+                
+                ddata[i] = (data[i] -2*data[i-1] + data[i-2])/(h_data**2)
                 
             else:
                 ddata[i] = (data[i+1]- 2*data[i] + data[i-1])/(h_data**2)
