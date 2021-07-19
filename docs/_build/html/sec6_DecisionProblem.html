@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -47,15 +48,15 @@
   
   
     <title>6 A climate component of a planner’s decision problem &#8212; UncertaintySpillover  documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
   
@@ -63,7 +64,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
+        data-md-color-primary=cyan data-md-color-accent=light-blue>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -298,28 +299,28 @@
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.model" class="md-nav__link">1 model</a>
+      <a href="modules_index.html#model" class="md-nav__link">1 model</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.simulation" class="md-nav__link">2 simulation</a>
+      <a href="modules_index.html#simulation" class="md-nav__link">2 simulation</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.solver" class="md-nav__link">3 solver</a>
+      <a href="modules_index.html#solver" class="md-nav__link">3 solver</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="modules_index.html#module-source.utilities" class="md-nav__link">4 utilities</a>
+      <a href="modules_index.html#utilities" class="md-nav__link">4 utilities</a>
       
     
     </li>
@@ -615,7 +616,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-
+<section id="6-A-climate-component-of-a-planner’s-decision-problem">
 <h1 id="sec6-decisionproblem--page-root">6 A climate component of a planner’s decision problem<a class="headerlink" href="#sec6-decisionproblem--page-root" title="Permalink to this headline">¶</a></h1>
 <p>This notebook corresponds to section 6 in the paper.</p>
 <p>To check the previous section:</p>
@@ -766,7 +767,7 @@ var n,i=t("./lib/build-log"),a=t("./lib/epsilon"),o=t("./lib/intersecter"),s=t("
         }
         </script></div>
 </div>
-
+<section id="6.1-Parameters">
 <h2 id="6.1-Parameters">6.1 Parameters<a class="headerlink" href="#6.1-Parameters" title="Permalink to this headline">¶</a></h2>
 <p>We use the following values for the parameters listed below throughout:</p>
 <table>
@@ -809,13 +810,13 @@ var n,i=t("./lib/build-log"),a=t("./lib/epsilon"),o=t("./lib/intersecter"),s=t("
 </tr>
 </tbody>
 </table>
-
-
+</section>
+<section id="6.2-Computation">
 <h2 id="6.2-Computation">6.2 Computation<a class="headerlink" href="#6.2-Computation" title="Permalink to this headline">¶</a></h2>
 <p>Choose a set of uncertainty parameters <span class="math notranslate nohighlight">\((\xi_b, \xi_p, \xi_a)\)</span> and proceed with the following two step computation. We explore 144 climate models and 3 damage functions, <em>i.e.</em> <span class="math notranslate nohighlight">\(L=144\)</span> and <span class="math notranslate nohighlight">\(M=3\)</span>.</p>
 <p>For analysis of jump misspecification and ambiguity aversion, we set uncertainty parameter for brownian misspecification <span class="math notranslate nohighlight">\(\xi_b\)</span> to <span class="math notranslate nohighlight">\(\infty\)</span>, and explore the roles of <span class="math notranslate nohighlight">\(\xi_a\)</span> and <span class="math notranslate nohighlight">\(\xi_p\)</span>.</p>
 <p>Here we set baseline parameters to be <span class="math notranslate nohighlight">\((\xi_a, \xi_p) = (0.01,5)\)</span>, which is the values in the paper. Then, we explore different values of <span class="math notranslate nohighlight">\(\xi_p\)</span>. Specifically, the set of <span class="math notranslate nohighlight">\(\xi_p\)</span>’s in the following example is <span class="math notranslate nohighlight">\((10, 5, 2.5, 0.5, 0.25)\)</span>. Feel free to perform your own experiments.</p>
-
+<section id="6.2.1-Step-I:">
 <h3 id="6.2.1-Step-I:">6.2.1 Step I:<a class="headerlink" href="#6.2.1-Step-I:" title="Permalink to this headline">¶</a></h3>
 <p>With baseline probabilities of climate models <span class="math notranslate nohighlight">\(\pi_\ell^a=1/144\)</span> for <span class="math notranslate nohighlight">\(\ell=1,2,\dots,L\)</span>, solve the following HJB for <span class="math notranslate nohighlight">\(\gamma_3^m \in \{\gamma_3^1, \gamma_3^2, \gamma_3^3\}\)</span> on <span class="math notranslate nohighlight">\(y \in [0,4]\)</span> to get the corresponding <span class="math notranslate nohighlight">\(\phi_m(y)\)</span> with <span class="math notranslate nohighlight">\(m = 1,2,3\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -828,8 +829,8 @@ var n,i=t("./lib/build-log"),a=t("./lib/epsilon"),o=t("./lib/intersecter"),s=t("
 \\
 &amp; + \xi_a \sum_i \omega^a_\ell(\log \omega^a_\ell - \log \pi^a_\ell)
 \end{aligned}\end{split}\]</div>
-
-
+</section>
+<section id="6.2.2-Step-II:">
 <h3 id="6.2.2-Step-II:">6.2.2 Step II:<a class="headerlink" href="#6.2.2-Step-II:" title="Permalink to this headline">¶</a></h3>
 <p>Assume the baseline probabilities for damage functions are <span class="math notranslate nohighlight">\((\pi_1^d, \pi_2^d, \pi_3^d)=(\cfrac13, \cfrac13, \cfrac13)\)</span>.</p>
 <p>Given the above <span class="math notranslate nohighlight">\(\phi_1\)</span>, <span class="math notranslate nohighlight">\(\phi_2\)</span> and <span class="math notranslate nohighlight">\(\phi_3\)</span>, solve the following HJB for <span class="math notranslate nohighlight">\(\phi(y)\)</span> on <span class="math notranslate nohighlight">\(y \in [0, \bar y]\)</span>:</p>
@@ -857,8 +858,8 @@ var n,i=t("./lib/build-log"),a=t("./lib/epsilon"),o=t("./lib/intersecter"),s=t("
 <span class="n">ξ_p</span> <span class="o">=</span> <span class="mi">5</span>
 
 <span class="c1"># Preference</span>
-<span class="n">η</span> <span class="o">=</span> <span class="o">.</span><span class="mi">032</span>
-<span class="n">δ</span> <span class="o">=</span> <span class="o">.</span><span class="mi">01</span>
+<span class="n">η</span> <span class="o">=</span> <span class="mf">.032</span>
+<span class="n">δ</span> <span class="o">=</span> <span class="mf">.01</span>
 
 <span class="c1"># Climate sensitivity</span>
 <span class="n">θ_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'data/model144.csv'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.</span>
@@ -868,11 +869,11 @@ var n,i=t("./lib/build-log"),a=t("./lib/epsilon"),o=t("./lib/intersecter"),s=t("
 <span class="n">σ_y</span> <span class="o">=</span> <span class="mf">1.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">θ_list</span><span class="p">)</span>
 <span class="n">y_bar</span> <span class="o">=</span> <span class="mf">2.</span>
 <span class="n">γ_1</span> <span class="o">=</span> <span class="mf">1.7675</span><span class="o">/</span><span class="mi">10000</span>
-<span class="n">γ_2</span> <span class="o">=</span> <span class="o">.</span><span class="mi">0022</span><span class="o">*</span><span class="mi">2</span>
-<span class="n">γ_2p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">0197</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">3853</span><span class="o">*</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">γ_2</span> <span class="o">=</span> <span class="mf">.0022</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">γ_2p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.0197</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mf">.3853</span><span class="o">*</span><span class="mi">2</span><span class="p">])</span>
 <span class="n">πd_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
 
-<span class="n">y_step</span> <span class="o">=</span> <span class="o">.</span><span class="mi">02</span>
+<span class="n">y_step</span> <span class="o">=</span> <span class="mf">.02</span>
 <span class="n">y_grid_long</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="n">y_step</span><span class="p">)</span>
 <span class="n">y_grid_short</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">y_bar</span><span class="o">+</span><span class="n">y_step</span><span class="p">,</span> <span class="n">y_step</span><span class="p">)</span>
 <span class="n">n_bar</span> <span class="o">=</span> <span class="n">find_nearest_value</span><span class="p">(</span><span class="n">y_grid_long</span><span class="p">,</span> <span class="n">y_bar</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
@@ -1032,9 +1033,9 @@ if (outputEl) {{
 </div>
 <p>Continue the next section, checkout:</p>
 <p>Section 7:<a class="reference external" href="sec7_Sensitivity.ipynb">Sensitivity</a></p>
-
-
-
+</section>
+</section>
+</section>
 
 
           </article>
@@ -1059,7 +1060,7 @@ if (outputEl) {{
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

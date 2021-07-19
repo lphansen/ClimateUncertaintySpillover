@@ -59,8 +59,8 @@ html_theme = 'sphinx_material'
 html_theme_options = {
     'navigation_with_keys': True,
     'nav_title': 'UncertaintySpillover',
-    #'color_primary': 'blue',
-    'color_accent': 'light-blue',
+    'color_primary': 'blue-grey',
+    'color_accent': 'indigo',
     'repo_url': 'https://github.com/lphansen/WrestlingClimate',
     'repo_name': 'Uncertainty Spillover',
     'repo_type': 'github',

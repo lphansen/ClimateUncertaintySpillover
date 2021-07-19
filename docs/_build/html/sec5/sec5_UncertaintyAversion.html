@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -47,15 +48,15 @@
   
   
     <title>5 Uncertainty aversion &#8212; UncertaintySpillover  documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="6 A climate component of a planner’s decision problem" href="../sec6/sec6_DecisionProblem.html" />
@@ -65,7 +66,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
+        data-md-color-primary=blue-grey data-md-color-accent=indigo>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -406,7 +407,7 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="uncertainty-aversion">
 <h1 id="sec5-sec5-uncertaintyaversion--page-root">5 Uncertainty aversion<a class="headerlink" href="#sec5-sec5-uncertaintyaversion--page-root" title="Permalink to this headline">¶</a></h1>
 <p>This notebook corresponds to the section 5 of the paper.</p>
 <p>Here, we mainly discuss the <strong>components of uncertainty</strong>.</p>
@@ -424,7 +425,7 @@ sensitivity analysis to a one or two dimensional parameterization that
 locates the potential misspecification that is most consequential to a
 decision maker. Our aim is to provide a more complete uncertainty
 quantification within the setting of the decision problem.</p>
-
+<section id="misspecified-brownian-motion">
 <h2 id="misspecified-brownian-motion">5.1 Misspecified Brownian motion<a class="headerlink" href="#misspecified-brownian-motion" title="Permalink to this headline">¶</a></h2>
 <div class="line-block">
 <div class="line">The potential misspecification of a Brownian motion has a particularly
@@ -467,8 +468,8 @@ the direct impact is evident from the division by <span class="math notranslate 
 value function, and hence its partial derivative, also depends on
 <span class="math notranslate nohighlight">\(\xi\)</span>. The partial derivative of the value function is included to
 locate distortions that matter to the decision maker.</p>
-
-
+</section>
+<section id="misspecified-jump-process">
 <h2 id="misspecified-jump-process">5.2 Misspecified jump process<a class="headerlink" href="#misspecified-jump-process" title="Permalink to this headline">¶</a></h2>
 <p>There are two ways that a jump process could be misspecified. The jump
 intensity governing locally the jump probability could be wrong or the
@@ -501,8 +502,8 @@ exceeds its gradient <span class="math notranslate nohighlight">\(g - 1\)</span>
 <p>implying a minimized objective:</p>
 <div class="math notranslate nohighlight">
 \[\xi_p {\mathcal I} \sum_{j=1}^m \pi_j^p \left( 1 - \exp \left[\frac 1 {\xi_p} \left( \phi - \phi_j \right) \right]\right) = - \left(\xi_p {\mathcal I}\right) \frac {\sum_{j=1}^m \pi_j^p \exp \left(- \frac 1 {\xi_p} \phi_j\right) - \exp \left(- \frac 1 {\xi_p} \phi \right)}{\exp \left(- \frac 1 {\xi_p} \phi \right)}\]</div>
-
-
+</section>
+<section id="local-ambiguity-aversion">
 <h2 id="local-ambiguity-aversion">5.3 Local ambiguity aversion<a class="headerlink" href="#local-ambiguity-aversion" title="Permalink to this headline">¶</a></h2>
 <p>To assess the consequences of the heterogeneous responses from
 alternative climate models, we use what are called smooth ambiguity
@@ -550,8 +551,8 @@ uncertainty. In fact, these interactions will be present as climate
 change uncertainty will impact the value function contributions given
 by the <span class="math notranslate nohighlight">\(\phi_j\)</span>’s and by <span class="math notranslate nohighlight">\(\phi\)</span>.</div>
 </div>
-
-
+</section>
+</section>
 
 
           </article>
@@ -600,7 +601,7 @@ by the <span class="math notranslate nohighlight">\(\phi_j\)</span>’s and by <
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

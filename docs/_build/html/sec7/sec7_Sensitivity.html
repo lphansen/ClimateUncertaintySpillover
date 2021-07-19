@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -47,15 +48,15 @@
   
   
     <title>7 Sensitivity &#8212; UncertaintySpillover  documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="8 Uncertainty Decomposition" href="../sec8/sec8_UncertaintyDecomposition.html" />
@@ -65,7 +66,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
+        data-md-color-primary=blue-grey data-md-color-accent=indigo>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -395,7 +396,7 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="sensitivity">
 <h1 id="sec7-sec7-sensitivity--page-root">7 Sensitivity<a class="headerlink" href="#sec7-sec7-sensitivity--page-root" title="Permalink to this headline">¶</a></h1>
 <p>This notebook presents computations in section 7 of the paper.</p>
 <p>To check the previous section:</p>
@@ -409,7 +410,7 @@ decomposition</a></p>
 misspecification. Therefore, in the following analysis and computations,
 uncertainty parameter for ambiguity aversion, <span class="math notranslate nohighlight">\(\xi_a\)</span> is set to
 <span class="math notranslate nohighlight">\(\infty\)</span>.</p>
-
+<section id="robust-perspective">
 <h2 id="robust-perspective">7.1 Robust perspective<a class="headerlink" href="#robust-perspective" title="Permalink to this headline">¶</a></h2>
 <p>Continue with the baseline probabilities of damage functions
 <span class="math notranslate nohighlight">\((\cfrac13, \cfrac13, \cfrac13)\)</span>.</p>
@@ -725,8 +726,8 @@ if (outputEl) {{
     x.observe(outputEl, {childList: true});
 }}
 
-                        })                };                });            </script> </div>
-
+                        })                };                });            </script> </div></section>
+<section id="structured-climate-uncertainty">
 <h2 id="structured-climate-uncertainty">7.2 Structured climate uncertainty<a class="headerlink" href="#structured-climate-uncertainty" title="Permalink to this headline">¶</a></h2>
 <p>We go back to the <span class="math notranslate nohighlight">\((\xi_a, \xi_b, \xi_p) = (0.01, \infty, 5)\)</span>
 setting.</p>
@@ -796,8 +797,8 @@ if (outputEl) {{
                         })                };                });            </script> </div><p>Continue to the next section:</p>
 <p><a class="reference external" href="sec8_UncertaintyDecomposition.ipynb">Section 8: Uncertainty
 decomposition</a></p>
-
-
+</section>
+</section>
 
 
           </article>
@@ -846,7 +847,7 @@ decomposition</a></p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

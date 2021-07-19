@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -47,15 +48,15 @@
   
   
     <title>Modules: &#8212; UncertaintySpillover  documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="References" href="bib_file.html" />
@@ -65,7 +66,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
+        data-md-color-primary=blue-grey data-md-color-accent=indigo>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -385,16 +386,16 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="modules">
 <h1 id="modules-index--page-root">Modules:<a class="headerlink" href="#modules-index--page-root" title="Permalink to this headline">¶</a></h1>
 <p>The module <code class="docutils literal notranslate"><span class="pre">source</span></code> includes functions used for solving ODEs and simulating trajectories of the project.</p>
-<span class="target" id="module-source"></span>
-
+<span class="target" id="module-source"></span></section>
+<section id="module-source.model">
 <span id="model"></span><h1 id="module-source.model">1 model<a class="headerlink" href="#module-source.model" title="Permalink to this headline">¶</a></h1>
 <p>Functions that solve the HJBs in the draft paper.</p>
 <dl class="py function">
-<dt id="source.model.solve_hjb_y">
-<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">solve_hjb_y</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_y" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.model.solve_hjb_y">
+<span class="sig-prename descclassname"><span class="pre">source.model.</span></span><span class="sig-name descname"><span class="pre">solve_hjb_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_y" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the HJB that is only related to y.
 y is the accumulative change of temperature.</p>
 <dl class="field-list simple">
@@ -443,8 +444,8 @@ y is the accumulative change of temperature.</p>
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="source.model.solve_hjb_y_jump">
-<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">solve_hjb_y_jump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_y_jump" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.model.solve_hjb_y_jump">
+<span class="sig-prename descclassname"><span class="pre">source.model.</span></span><span class="sig-name descname"><span class="pre">solve_hjb_y_jump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_y_jump" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the HJB with y prior to jump. We impose certainty equivalent as a boundary condition
 to the equation instead of adding the jump intensity term.</p>
 <dl class="field-list simple">
@@ -500,8 +501,8 @@ to the equation instead of adding the jump intensity term.</p>
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="source.model.solve_hjb_z">
-<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">solve_hjb_z</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_z" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.model.solve_hjb_z">
+<span class="sig-prename descclassname"><span class="pre">source.model.</span></span><span class="sig-name descname"><span class="pre">solve_hjb_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.solve_hjb_z" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the HJB that is only related to z.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -543,8 +544,8 @@ to the equation instead of adding the jump intensity term.</p>
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="source.model.uncertainty_decomposition">
-<code class="sig-prename descclassname"><span class="pre">source.model.</span></code><code class="sig-name descname"><span class="pre">uncertainty_decomposition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_tilde</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">πc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.uncertainty_decomposition" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.model.uncertainty_decomposition">
+<span class="sig-prename descclassname"><span class="pre">source.model.</span></span><span class="sig-name descname"><span class="pre">uncertainty_decomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_tilde</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">πc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.uncertainty_decomposition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the PDE with a given <span class="math notranslate nohighlight">\(\tilde{e}\)</span>. If h is not given, minimize over h; if πc is not given,
 minimize over πc; if <code class="docutils literal notranslate"><span class="pre">bc</span></code> is not given, use certainty equivalent as <code class="docutils literal notranslate"><span class="pre">bc</span></code>.</p>
 <dl class="field-list simple">
@@ -589,13 +590,13 @@ assign equal weight to coefficients for evey point of y.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
-
+</section>
+<section id="module-source.simulation">
 <span id="simulation"></span><h1 id="module-source.simulation">2 simulation<a class="headerlink" href="#module-source.simulation" title="Permalink to this headline">¶</a></h1>
 <p>module for simulation</p>
 <dl class="py function">
-<dt id="source.simulation.simulate_jump">
-<code class="sig-prename descclassname"><span class="pre">source.simulation.</span></code><code class="sig-name descname"><span class="pre">simulate_jump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_res</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ME</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_jump" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.simulation.simulate_jump">
+<span class="sig-prename descclassname"><span class="pre">source.simulation.</span></span><span class="sig-name descname"><span class="pre">simulate_jump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_res</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ME</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_jump" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simulate temperature anomaly, emission, distorted probabilities of climate models,
 distorted probabilities of damage functions, and drift distortion.
 When ME is asigned value, it will also simulate paths for marginal value of emission</p>
@@ -642,8 +643,8 @@ See <a class="reference internal" href="#source.model.solve_hjb_y_jump" title="s
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="source.simulation.simulate_me">
-<code class="sig-prename descclassname"><span class="pre">source.simulation.</span></code><code class="sig-name descname"><span class="pre">simulate_me</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.00186</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_me" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.simulation.simulate_me">
+<span class="sig-prename descclassname"><span class="pre">source.simulation.</span></span><span class="sig-name descname"><span class="pre">simulate_me</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">θ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.00186</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.simulation.simulate_me" title="Permalink to this definition">¶</a></dt>
 <dd><p>simulate trajectories of uncertainty decomposition</p>
 <div class="math notranslate nohighlight">
 \[\log(\frac{ME_{new}}{ME_{baseline}})\times 1000.\]</div>
@@ -669,8 +670,8 @@ See <a class="reference internal" href="#source.model.solve_hjb_y_jump" title="s
 </dd>
 </dl>
 </dd></dl>
-
-
+</section>
+<section id="module-source.solver">
 <span id="solver"></span><h1 id="module-source.solver">3 solver<a class="headerlink" href="#module-source.solver" title="Permalink to this headline">¶</a></h1>
 <p>Functions to numerically solve a nonlinear ODE via false transient scheme.</p>
 <div class="admonition seealso">
@@ -698,8 +699,8 @@ Therefore, we construct the following linear system:</p>
 <p>where <span class="math notranslate nohighlight">\(LHS\)</span> is a <span class="math notranslate nohighlight">\(N\times N\)</span> matrix of coefficients, <span class="math notranslate nohighlight">\(Y = (y_1, y_2, \dots, y_N)'\)</span>,
 and <span class="math notranslate nohighlight">\(D = (D_1, D_2, \dots, D_n)'\)</span>.</p>
 <dl class="py function">
-<dt id="source.solver.compute_coefficient">
-<code class="sig-prename descclassname"><span class="pre">source.solver.</span></code><code class="sig-name descname"><span class="pre">compute_coefficient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LHS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.compute_coefficient" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.solver.compute_coefficient">
+<span class="sig-prename descclassname"><span class="pre">source.solver.</span></span><span class="sig-name descname"><span class="pre">compute_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LHS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.compute_coefficient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the coefficient of the equation at <span class="math notranslate nohighlight">\(y_i\)</span>.
 Values are computed according to <a class="reference internal" href="#equation-ode">(1)</a>.</p>
 <dl class="field-list simple">
@@ -723,8 +724,8 @@ Values are computed according to <a class="reference internal" href="#equation-o
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="source.solver.false_transient">
-<code class="sig-prename descclassname"><span class="pre">source.solver.</span></code><code class="sig-name descname"><span class="pre">false_transient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impose_bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.false_transient" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.solver.false_transient">
+<span class="sig-prename descclassname"><span class="pre">source.solver.</span></span><span class="sig-name descname"><span class="pre">false_transient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impose_bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.false_transient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implement false transient scheme of one iteration,
 and update from <span class="math notranslate nohighlight">\(\phi_i(y)\)</span> to <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span>
 according to <a class="reference internal" href="#equation-ft">(2)</a>.</p>
@@ -752,8 +753,8 @@ according to <a class="reference internal" href="#equation-ft">(2)</a>.</p>
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="source.solver.linearize">
-<code class="sig-prename descclassname"><span class="pre">source.solver.</span></code><code class="sig-name descname"><span class="pre">linearize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impose_bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.linearize" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.solver.linearize">
+<span class="sig-prename descclassname"><span class="pre">source.solver.</span></span><span class="sig-name descname"><span class="pre">linearize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ε</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impose_bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.solver.linearize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct coefficient matrix of the linear system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -780,13 +781,13 @@ according to <a class="reference internal" href="#equation-ft">(2)</a>.</p>
 </dd>
 </dl>
 </dd></dl>
-
-
+</section>
+<section id="module-source.utilities">
 <span id="utilities"></span><h1 id="module-source.utilities">4 utilities<a class="headerlink" href="#module-source.utilities" title="Permalink to this headline">¶</a></h1>
 <p>Functions that facilitate computation.</p>
 <dl class="py function">
-<dt id="source.utilities.compute_derivatives">
-<code class="sig-prename descclassname"><span class="pre">source.utilities.</span></code><code class="sig-name descname"><span class="pre">compute_derivatives</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utilities.compute_derivatives" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.utilities.compute_derivatives">
+<span class="sig-prename descclassname"><span class="pre">source.utilities.</span></span><span class="sig-name descname"><span class="pre">compute_derivatives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utilities.compute_derivatives" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the derivatives of a function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -813,11 +814,11 @@ Specifically,</p>
 \frac{d f(x_i)}{dx} \approx &amp; \frac{f(x_i) - f(x_{i-1})}{\Delta x}, i = 1,2,\dots,N\end{split}\]</div>
 </dd></dl>
 <dl class="py function">
-<dt id="source.utilities.find_nearest_value">
-<code class="sig-prename descclassname"><span class="pre">source.utilities.</span></code><code class="sig-name descname"><span class="pre">find_nearest_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utilities.find_nearest_value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="source.utilities.find_nearest_value">
+<span class="sig-prename descclassname"><span class="pre">source.utilities.</span></span><span class="sig-name descname"><span class="pre">find_nearest_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utilities.find_nearest_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the index of the element in <code class="docutils literal notranslate"><span class="pre">array</span></code> that is closest to <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
 </dd></dl>
-
+</section>
 
 
           </article>
@@ -866,7 +867,7 @@ Specifically,</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

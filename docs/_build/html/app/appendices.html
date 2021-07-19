@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -47,15 +48,15 @@
   
   
     <title>A. Complete model &#8212; UncertaintySpillover  documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Modules:" href="../modules_index.html" />
@@ -65,7 +66,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
+        data-md-color-primary=blue-grey data-md-color-accent=indigo>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -399,9 +400,9 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="a-complete-model">
 <h1 id="app-appendices--page-root">A. Complete model<a class="headerlink" href="#app-appendices--page-root" title="Permalink to this headline">¶</a></h1>
-
+<section id="a-1-description">
 <h2 id="a-1-description">A.1 Description<a class="headerlink" href="#a-1-description" title="Permalink to this headline">¶</a></h2>
 <p>Suppose the value function is <span class="math notranslate nohighlight">\(V\)</span>. State variable:
 <span class="math notranslate nohighlight">\(x = (\log k, z, y, n)\)</span> (realization of
@@ -424,8 +425,8 @@ separable. The complete HJB is as follows:</p>
  &amp; + v_n \left[(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\}) (\sum_{\ell=1}^L \omega_\ell \theta_\ell \tilde e  + \tilde e \varsigma' h )+ \frac12 \left(\gamma_2 + \gamma_3 \mathbb{I}\{y &gt; \bar y\} \right)\cdot |\varsigma|^2 (\tilde e)^2 \right]  \\
  &amp; + \frac{\xi_b}{2} h'h + \xi_a \sum_{\ell=1}^L \omega_\ell \left( \log \omega_\ell - \log \pi^a_\ell \right)
 \end{aligned}\end{split}\]</div>
-
-
+</section>
+<section id="a-2-consumption-capital-dynamics">
 <h2 id="a-2-consumption-capital-dynamics">A.2 Consumption-capital dynamics<a class="headerlink" href="#a-2-consumption-capital-dynamics" title="Permalink to this headline">¶</a></h2>
 <p>The undamaged version of consumption capital model has a straightforward
 solution. The HJB equation for this component is:</p>
@@ -447,9 +448,9 @@ solution. The HJB equation for this component is:</p>
 <p>and is therefore:</p>
 <div class="math notranslate nohighlight">
 \[h = - \frac{1}{\xi_b} \left[ \sigma_k v_k + \sigma_k \frac{\partial \zeta}{\partial z}\right]\]</div>
-
-
-
+</section>
+</section>
+<section id="b-computation-methods">
 <h1 id="b-computation-methods">B. Computation methods<a class="headerlink" href="#b-computation-methods" title="Permalink to this headline">¶</a></h1>
 <p>The HJB for <span class="math notranslate nohighlight">\((y, n)\)</span> component does not has a straightforward
 solution. We use <strong>false transient method</strong> to solve the ODEs concerning
@@ -544,7 +545,7 @@ assign <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> to <s
     <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
 </pre></div>
 </div>
-
+</section>
 
 
           </article>
@@ -593,7 +594,7 @@ assign <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> to <s
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

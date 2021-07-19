@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -47,15 +48,15 @@
   
   
     <title>2 Uncertain climate dynamics &#8212; UncertaintySpillover  documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3 A stochastic model of damages" href="../sec3/sec3_StochasticDamage.html" />
@@ -65,7 +66,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
+        data-md-color-primary=blue-grey data-md-color-accent=indigo>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -395,9 +396,9 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="uncertain-climate-dynamics">
 <h1 id="sec2-sec2-uncertainclimatedynamics--page-root">2 Uncertain climate dynamics<a class="headerlink" href="#sec2-sec2-uncertainclimatedynamics--page-root" title="Permalink to this headline">¶</a></h1>
-
+<section id="simple-approximation-to-climate-dynamics">
 <h2 id="simple-approximation-to-climate-dynamics">2.1 Simple approximation to climate dynamics<a class="headerlink" href="#simple-approximation-to-climate-dynamics" title="Permalink to this headline">¶</a></h2>
 <p>We use exponentially weighted average of each of response functions as
 coefficients <span class="math notranslate nohighlight">\(\{\theta_\ell\}_{\ell=1}^L\)</span> in our computations. The
@@ -422,8 +423,8 @@ discount rate <span class="math notranslate nohighlight">\(\delta=0.01\)</span>.
 </pre></div>
 </div>
 <img alt="../_images/output_1_0.png" class="align-center" src="../_images/output_1_0.png"/>
-
-
+</section>
+<section id="stochastic-climate-pulses">
 <h2 id="stochastic-climate-pulses">2.2 Stochastic climate pulses<a class="headerlink" href="#stochastic-climate-pulses" title="Permalink to this headline">¶</a></h2>
 <p>To explore uncertainty, we introduce explicit stochasticity as a
 precursor to the study of uncertainty. We capture this randomness in
@@ -488,8 +489,8 @@ for <span class="math notranslate nohighlight">\(Y_t\)</span> satisfies:</p>
 response dynamics. This generalization allows for multiple
 exponentials to approximate the pulse responses. Our introduction of
 a multiple exponential approximation adapts for example,
-<span id="id1">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36">8</a>]</span> and
-<span id="id2">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span>. <a class="footnote-reference brackets" href="#fn1" id="id3">1</a></p>
+<span id="id1">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36" title="F. Joos, R. Roth, J. S. Fuglestvedt, G. P. Peters, I. G. Enting, W. Von Bloh, V. Brovkin, E. J. Burke, M. Eby, N. R. Edwards, T. Friedrich, T. L. Frölicher, P. R. Halloran, P. B. Holden, C. Jones, T. Kleinen, F. T. Mackenzie, K. Matsumoto, M. Meinshausen, G. K. Plattner, A. Reisinger, J. Segschneider, G. Shaffer, M. Steinacher, K. Strassmann, K. Tanaka, A. Timmermann, and A. J. Weaver. Carbon Dioxide and Climate Impulse Response Functions for the Computation of Greenhouse Gas Metrics: A Multi-Model Analysis. Atmospheric Chemistry and Physics, 13(5):2793–2825, 2013. doi:10.5194/acp-13-2793-2013.">8</a>]</span> and
+<span id="id2">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71" title="Ramond T. Pierrehumbert. Short-Lived Climate Pollution. Annual Review of Earth and Planetary Science, 42:341–379, 2014.">9</a>]</span>. <a class="footnote-reference brackets" href="#fn1" id="id3">1</a></p>
 <p>As an example, we capture the initial rise in the emission responses
 by the following two-dimensional specification</p>
 <div class="math notranslate nohighlight">
@@ -509,17 +510,17 @@ emissions. <a class="footnote-reference brackets" href="#fn2" id="id4">2</a></p>
 </div></blockquote>
 <blockquote>
 <div><p><strong>Remark 2</strong></p>
-<p>The approximation in <span id="id5">Geoffroy <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id37">10</a>]</span> includes the
+<p>The approximation in <span id="id5">Geoffroy <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id37" title="O Geoffroy, D Saint-Martin, D J L Olivié, A Voldoire, G Bellon, and S Tytéca. Transient Climate Response in a Two-Layer Energy-Balance Model. Part \I\: Analytical Solution and Parameter Calibration Using CMIP5 AOGCM Experiments. Journal of Climate, 26(6):1841–1857, 2013.">10</a>]</span> includes the
 logarithm of carbon in the atmosphere as argued for by
-<span id="id6">Arrhenius [<a class="reference internal" href="../bib_file.html#id26">11</a>]</span> which is not directly reflected in
+<span id="id6">Arrhenius [<a class="reference internal" href="../bib_file.html#id26" title="Svante Arrhenius. On the influence of Carbonic Acid in the Air upon Temperatue of the Ground. Philosophical Magazine and Journal of Science Series 5, 41:237–276, 1896.">11</a>]</span> which is not directly reflected in
 the linear approximation to the temperature dynamics that we use. The
-pulse experiments from <span id="id7">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36">8</a>]</span> show a more
+pulse experiments from <span id="id7">Joos <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id36" title="F. Joos, R. Roth, J. S. Fuglestvedt, G. P. Peters, I. G. Enting, W. Von Bloh, V. Brovkin, E. J. Burke, M. Eby, N. R. Edwards, T. Friedrich, T. L. Frölicher, P. R. Halloran, P. B. Holden, C. Jones, T. Kleinen, F. T. Mackenzie, K. Matsumoto, M. Meinshausen, G. K. Plattner, A. Reisinger, J. Segschneider, G. Shaffer, M. Steinacher, K. Strassmann, K. Tanaka, A. Timmermann, and A. J. Weaver. Carbon Dioxide and Climate Impulse Response Functions for the Computation of Greenhouse Gas Metrics: A Multi-Model Analysis. Atmospheric Chemistry and Physics, 13(5):2793–2825, 2013. doi:10.5194/acp-13-2793-2013.">8</a>]</span> show a more
 than proportional change in atmospheric carbon when the pulse size is
 changed. It turns out that this is enough to approximately offset the
-logarithmic <span id="id8"><a class="reference internal" href="../bib_file.html#id26">Arrhenius</a></span> adjustment so
+logarithmic <span id="id8"><a class="reference internal" href="../bib_file.html#id26" title="Svante Arrhenius. On the influence of Carbonic Acid in the Air upon Temperatue of the Ground. Philosophical Magazine and Journal of Science Series 5, 41:237–276, 1896.">Arrhenius</a></span> adjustment so
 that the long-term temperature response remains approximately
 proportional for small pulse sizes. See also
-<span id="id9">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span> who discusses the approximate
+<span id="id9">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71" title="Ramond T. Pierrehumbert. Short-Lived Climate Pollution. Annual Review of Earth and Planetary Science, 42:341–379, 2014.">9</a>]</span> who discusses the approximate
 offsetting impacts of nonlinearity in temperature and climate
 dynamics.</p>
 </div></blockquote>
@@ -527,14 +528,14 @@ dynamics.</p>
 <p><a class="reference external" href="sec3_StochasticDamage.ipynb">Section 3: Stochastic damage</a></p>
 <dl class="footnote brackets">
 <dt class="label" id="fn1"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
-<dd><p><cite>See equation (5) of :cite:t:`Joosetal:2013</cite> and  equations (1)-(3) of <span id="id10">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span>.   <span id="id11">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71">9</a>]</span> puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at date <span class="math notranslate nohighlight">\(t\)</span> to atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.`</p>
+<dd><p><cite>See equation (5) of :cite:t:`Joosetal:2013</cite> and  equations (1)-(3) of <span id="id10">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71" title="Ramond T. Pierrehumbert. Short-Lived Climate Pollution. Annual Review of Earth and Planetary Science, 42:341–379, 2014.">9</a>]</span>.   <span id="id11">Pierrehumbert [<a class="reference internal" href="../bib_file.html#id71" title="Ramond T. Pierrehumbert. Short-Lived Climate Pollution. Annual Review of Earth and Planetary Science, 42:341–379, 2014.">9</a>]</span> puts the change in radiative forcing equal to a constant times the logarithm of the ratio of atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at date <span class="math notranslate nohighlight">\(t\)</span> to atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> at baseline date zero. His  Figures 1 and 2 illustrate how an approximation of the Earth System dynamics by three exponentials plus a constant tracks a radiative forcing induced by a pulse into the atmosphere at a baseline date from the atmosphere works quite well with half lives of approximately six, sixty five, and four hundred and fifty years.`</p>
 </dd>
 <dt class="label" id="fn2"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
-<dd><p><cite>In independent work, :cite:t:`DietzVenmans:2019</cite> and <span id="id12">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66">5</a>]</span> have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   <span id="id13"><a class="reference internal" href="../bib_file.html#id66">Barnett <em>et al.</em></a></span> instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.`</p>
+<dd><p><cite>In independent work, :cite:t:`DietzVenmans:2019</cite> and <span id="id12">Barnett <em>et al.</em> [<a class="reference internal" href="../bib_file.html#id66" title="Michael Barnett, William A. Brock, and Lars Peter Hansen. Pricing Uncertainty Induced by Climate Change. Review of Financial Studies, 33(3):1024–1066, 2020. doi:10.2139/ssrn.3440301.">5</a>]</span> have used such simplified approximations within an explicit economic optimization framework.  The former contribution includes the initial rapid upswing in the impulse response functions.  The latter contribution  abstracts from this.   <span id="id13"><a class="reference internal" href="../bib_file.html#id66" title="Michael Barnett, William A. Brock, and Lars Peter Hansen. Pricing Uncertainty Induced by Climate Change. Review of Financial Studies, 33(3):1024–1066, 2020. doi:10.2139/ssrn.3440301.">Barnett <em>et al.</em></a></span> instead explore ways to confront uncertainty, broadly-conceived, while using the Matthews approximation.`</p>
 </dd>
 </dl>
-
-
+</section>
+</section>
 
 
           </article>
@@ -583,7 +584,7 @@ dynamics.</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -47,15 +48,15 @@
   
   
     <title>6 A climate component of a planner’s decision problem &#8212; UncertaintySpillover  documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="7 Sensitivity" href="../sec7/sec7_Sensitivity.html" />
@@ -65,7 +66,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=blue-grey data-md-color-accent=light-blue>
+        data-md-color-primary=blue-grey data-md-color-accent=indigo>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -421,7 +422,7 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="a-climate-component-of-a-planners-decision-problem">
 <h1 id="sec6-sec6-decisionproblem--page-root">6 A climate component of a planner’s decision problem<a class="headerlink" href="#sec6-sec6-decisionproblem--page-root" title="Permalink to this headline">¶</a></h1>
 <p>This notebook corresponds to section 6 in the paper.</p>
 <p>As we show in the <a class="reference internal" href="../app/appendices.html"><span class="doc">appendix A</span></a>, the planners HJB
@@ -579,7 +580,7 @@ var n,i=t("./lib/build-log"),a=t("./lib/epsilon"),o=t("./lib/intersecter"),s=t("
             window._Plotly = Plotly;
         });
         }
-        </script>
+        </script><section id="parameters">
 <h2 id="parameters">6.1 Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
 <p>We use the following values for the parameters listed below throughout:</p>
 <table>
@@ -622,8 +623,8 @@ var n,i=t("./lib/build-log"),a=t("./lib/epsilon"),o=t("./lib/intersecter"),s=t("
 </tr>
 </tbody>
 </table>
-
-
+</section>
+<section id="computation">
 <h2 id="computation">6.2 Computation<a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
 <p>Choose a set of uncertainty parameters <span class="math notranslate nohighlight">\((\xi_b, \xi_p, \xi_a)\)</span> and
 proceed with the following two step computation. We explore 144 climate
@@ -637,7 +638,7 @@ which is the values in the paper. Then, we explore different values of
 <span class="math notranslate nohighlight">\(\xi_p\)</span>. Specifically, the set of <span class="math notranslate nohighlight">\(\xi_p\)</span>’s in the
 following example is <span class="math notranslate nohighlight">\((10, 5, 2.5, 0.5, 0.25)\)</span>. Feel free to
 perform your own experiments.</p>
-
+<section id="step-i">
 <h3 id="step-i">6.2.1 Step I:<a class="headerlink" href="#step-i" title="Permalink to this headline">¶</a></h3>
 <p>With baseline probabilities of climate models <span class="math notranslate nohighlight">\(\pi_\ell^a=1/144\)</span>
 for <span class="math notranslate nohighlight">\(\ell=1,2,\dots,L\)</span>, solve the following HJB for
@@ -654,8 +655,8 @@ for <span class="math notranslate nohighlight">\(\ell=1,2,\dots,L\)</span>, solv
 \\
 &amp; + \xi_a \sum_i \omega^a_\ell(\log \omega^a_\ell - \log \pi^a_\ell)
 \end{aligned}\end{split}\]</div>
-
-
+</section>
+<section id="step-ii">
 <h3 id="step-ii">6.2.2 Step II:<a class="headerlink" href="#step-ii" title="Permalink to this headline">¶</a></h3>
 <p>Assume the baseline probabilities for damage functions are
 <span class="math notranslate nohighlight">\((\pi_1^d, \pi_2^d, \pi_3^d)=(\cfrac13, \cfrac13, \cfrac13)\)</span>.</p>
@@ -770,9 +771,9 @@ if (outputEl) {{
 }}
 
                         })                };                });            </script> </div><p>Notebook version: <a href="#id1"><span class="problematic" id="id2">`sec6_DecisionProblem.ipynb`__</span></a></p>
-
-
-
+</section>
+</section>
+</section>
 
 
           </article>
@@ -821,7 +822,7 @@ if (outputEl) {{
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>
