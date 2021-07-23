@@ -88,4 +88,4 @@ bibtex_bibfiles = ['climate.bib']
 
 # nbsphinx
 nbsphinx_allow_errors = True
-nbsphinx_kernel_name = "python-upstream-dev"
+nbsphinx_kernel_name = "python"
