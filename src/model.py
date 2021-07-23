@@ -7,7 +7,6 @@ import numpy as np
 from .utilities import compute_derivatives, J
 from .solver import false_transient
 
-
 def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, print_iteration=True):
     r"""
     Solve the HJB that is only related to y.
@@ -38,6 +37,7 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, pri
         ``dict``: {
             v : (N,) ndarray
                 Value function, :math:`\phi(y)`.
+
             dvdy : (N,) ndarray
                 First order derivative of the value function, :math:`\frac{d\phi(y)}{dy}`.
             dvddy : (N,) ndarray
@@ -113,7 +113,7 @@ def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, pri
 
     h = - (dvdy + (η - 1) / δ * d_Λ) * e_tilde * σ_y / ξ_w
 
-    print("Converged. Total iteration: {:d};\t LHS Error: {:.10f};\t RHS Error: {:.10f} ".format(count, lhs_error, rhs_error))
+    # print("Converged. Total iteration: {:d};\t LHS Error: {:.10f};\t RHS Error: {:.10f} ".format(count, lhs_error, rhs_error))
 
     res = {'v': v,
            'dvdy': dvdy,
@@ -201,7 +201,7 @@ def solve_hjb_z(z, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000, pri
         if print_iteration:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
-    print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+    # print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
     res = {'v': v,
            'dvdz': dvdz,
@@ -484,3 +484,200 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
            'y': y,
            'ME': ME}
     return res
+
+def minimize_π(y_grid, numy_bar, ems_star,  ϕ_list, args, with_damage=False, ϵ=2, tol=1e-7, max_iter=3_000):
+    """
+    compute jump model with ambiguity over climate models
+    """
+    δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ξp, ξa, ξw, σy, y_lower = args
+#     ems_star = solu['ems']
+    # solve for HJB with jump function
+    y_grid_cap = y_grid[:numy_bar+1]
+    dy = y_grid_cap[1] - y_grid_cap[0]
+    dΛ = γ1 + γ2*y_grid_cap
+    ddΛ = γ2
+    r1 = 1.5
+    r2 = 2.5
+    intensity = r1*(np.exp(r2/2*(y_grid_cap- y_lower)**2)-1) *(y_grid_cap >= y_lower)
+    
+    loc_2 = np.abs(y_grid_cap - 2).argmin()
+    ϕ_ref = np.zeros((len(γ3_list), numy_bar + 1))
+    for i in range(len(γ3_list)):
+        ϕ_ref[i, :] = ϕ_list[i, loc_2]
+    
+    πᶜo = np.ones((len(θ_list), len(y_grid_cap)))/len(θ_list)
+    if with_damage == False:
+        ϕ_bound = np.average(ϕ_list, axis=0, weights=dmg_weight)[:numy_bar+1]
+    if with_damage == True:
+        ϕ_bound = np.average(np.exp(-1/ξp*ϕ_ref), axis=0, weights=dmg_weight)[:numy_bar+1]
+        ϕ_bound = -ξp*np.log(ϕ_bound)
+    ϕ = ϕ_bound
+    episode = 0
+    lhs_error = 1
+    while lhs_error > tol and episode < max_iter:
+        ϕ_old = ϕ.copy()
+        dϕdy = compute_derivatives(ϕ, 1, dy)
+        dϕdyy = compute_derivatives(ϕ, 2, dy)
+        # solver
+        temp = dϕdy + (η-1)/δ*dΛ
+        # minimize over π
+        weight = np.array([ - 1/ξa*temp*ems_star*θ for θ in θ_list])
+        weight = weight - np.max(weight, axis=0)
+        πᶜ = πᶜo*np.exp(weight)
+        πᶜ[πᶜ <= 1e-15] = 1e-15
+        πᶜ = πᶜ/np.sum(πᶜ, axis=0)
+        
+        g_list = np.exp(1 / ξp * (ϕ - ϕ_ref))
+        A = -δ*np.ones(y_grid_cap.shape) - intensity*(dmg_weight@g_list)
+        B = (θ_list@πᶜ)*ems_star
+        C = σy**2*ems_star**2/2
+        D = η*np.log(ems_star) + (θ_list@πᶜ)*(η-1)/δ*dΛ*ems_star \
+        + ξa*np.sum(πᶜ*(np.log(πᶜ) - np.log(πᶜo)), axis=0)\
+        + 1/2*(η-1)/δ*ddΛ*ems_star**2*σy**2\
+        + ξp * intensity * (dmg_weight@(1 - g_list + g_list * np.log(g_list)))\
+        + intensity*(dmg_weight@(g_list*ϕ_ref))
+        ϕ_new =  false_transient(A, B, C, D, ϕ, ϵ, dy, (0, ϕ_bound[numy_bar]), (False, True))
+        rhs = -δ*ϕ_new + B*dϕdy + C*dϕdyy + D
+        rhs_error = np.max(abs(rhs))
+        lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+        ϕ = ϕ_new
+        episode += 1
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
+
+#     dϕdy = derivative_1d(ϕ, 1, dy, "center")
+#     dϕdyy = derivative_1d(ϕ, 2, dy, "center")
+    ME = -(dϕdy+(η-1)/δ*dΛ)*(θ_list@πᶜ) - (dϕdyy+(η-1)/δ*ddΛ)*σy**2*ems_star
+    ratio = ME/(η/ems_star)
+    return ME, ratio
+
+
+# solve for decompose
+def minimize_g(y_grid, numy_bar, ems_star, ϕ_list, args, ϵ=3, tol=1e-6, max_iter=3_000):
+    """
+    compute jump model with ambiguity over climate models
+    """
+    δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ξp, ξa, ξw, σy, y_lower = args
+#     ems_star = solu['ems']
+    # solve for HJB with jump function
+    ϕ_bound = np.average(np.exp(-1/ξp*ϕ_list), axis=0, weights=dmg_weight)
+    ϕ_bound = -ξp*np.log(ϕ_bound)
+    y_grid_cap = y_grid[:numy_bar+1]
+    dy = y_grid_cap[1] - y_grid_cap[0]
+    dΛ = γ1 + γ2*y_grid_cap
+    ddΛ = γ2
+    πᶜo = np.ones((len(θ_list), len(y_grid_cap)))/len(θ_list)
+    θ = θ_list@πᶜo 
+    
+    r1 = 1.5
+    r2 = 2.5
+    intensity = r1*(np.exp(r2/2*(y_grid_cap- y_lower)**2)-1) *(y_grid_cap >= y_lower)
+    
+
+    loc_2 = np.abs(y_grid_cap - 2).argmin()
+    ϕ_ref = np.zeros((len(γ3_list), numy_bar + 1))
+    for i in range(len(γ3_list)):
+        ϕ_ref[i, :] = ϕ_list[i, loc_2]
+    
+    ϕ = np.average(ϕ_list, axis=0, weights=dmg_weight)[:numy_bar+1]
+    episode = 0
+    lhs_error = 1
+    while lhs_error > tol and episode < max_iter:
+        ϕ_old = ϕ.copy()
+        dϕdy = compute_derivatives(ϕ, 1, dy)
+        dϕdyy = compute_derivatives(ϕ, 2, dy)
+        # solver
+        temp = dϕdy + (η-1)/δ*dΛ
+        g_list = np.exp(1/ξp*(ϕ - ϕ_ref))
+        A = -δ*np.ones(y_grid_cap.shape) - intensity*(dmg_weight@g_list)
+        B = θ*ems_star
+        C = σy**2*ems_star**2/2
+        D = η*np.log(ems_star) + (η-1)/δ*dΛ*ems_star*θ \
+        + (η-1)/δ*ddΛ*ems_star**2*σy**2/2\
+        + ξp * intensity * (dmg_weight@(1 - g_list + g_list * np.log(g_list)))\
+        + intensity*(dmg_weight@(g_list*ϕ_ref))
+        ϕ_new =  false_transient(A, B, C, D, ϕ, ϵ, dy, (0, ϕ_bound[numy_bar]), (False, True))
+        rhs = -δ*ϕ_new + B*dϕdy + C*dϕdyy + D
+        rhs_error = np.max(abs(rhs))
+        lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+        ϕ = ϕ_new
+        episode += 1
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
+
+#     dϕdy = derivative_1d(ϕ, 1, dy, "up")
+#     dϕdyy = derivative_1d(ϕ, 2, dy, "up")
+#     temp = dϕdy + (η-1)*dΛ    
+    ME = -temp*θ - ( dϕdyy+(η-1)/δ*ddΛ)*σy**2*ems_star
+    ratio = ME/(η/ems_star)
+
+    return ME, ratio
+
+def solve_baseline(y_grid, num_stop, ems_star, ϕ_list, args, ϵ=2, tol=1e-8, max_iter=3_000):
+    """
+    compute jump model with ambiguity over climate models
+    """
+    δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ξp, ξa, ξw, σy, y_lower = args
+    r1=1.5
+    r2=2.5
+    y_grid_cap = y_grid[:num_stop+1]
+    intensity =  r1*(np.exp(r2/2*(y_grid_cap- y_lower)**2)-1) *(y_grid_cap >= y_lower)
+    
+    dΛ = γ1 + γ2*y_grid_cap
+    ddΛ = γ2
+
+    ϕ = np.average(ϕ_list, axis=0, weights=dmg_weight)[:num_stop+1]
+
+    loc_2 = np.abs(y_grid - 2).argmin()
+    ϕ_ref = np.zeros((len(γ3_list), num_stop + 1))
+    for i in range(len(γ3_list)):
+        ϕ_ref[i, :] = ϕ_list[i, loc_2]
+    
+    dy = y_grid_cap[1] - y_grid_cap[0]
+    episode = 0
+    lhs_error = 1
+    πᵈo = dmg_weight
+    πᶜo = np.ones((len(θ_list), len(y_grid_cap)))/len(θ_list)
+
+    ϕ_average = np.average( np.exp(-1/ξp*ϕ_list), weights=dmg_weight, axis=0)
+    ϕ_bound = -ξp*np.log(ϕ_average)
+
+    while lhs_error > tol and episode < max_iter:
+        ϕ_old = ϕ.copy()
+        dϕdy = compute_derivatives(ϕ, 1, dy)
+        dϕdyy = compute_derivatives(ϕ, 2, dy)
+        # update control
+        temp = dϕdy + (η-1)/δ*dΛ 
+        weight = np.array([ - 1/ξa*temp*ems_star*θ for θ in θ_list])
+        weight = weight - np.max(weight, axis=0)
+        πᶜ = πᶜo*np.exp(weight)
+        πᶜ[πᶜ <= 1e-15] = 1e-15
+        πᶜ = πᶜ/np.sum(πᶜ, axis=0)
+        # update control
+
+        g_list = np.ones(ϕ_ref.shape)
+        # coefficients
+        A = -δ*np.ones(y_grid_cap.shape)
+        By = (θ_list@πᶜ)*ems_star
+        Cyy = ems_star**2*σy**2/2
+        D = η*np.log(ems_star) + θ_list@πᶜ*(η-1)/δ*dΛ*ems_star\
+        + ξa*np.sum(πᶜ*(np.log(πᶜ) - np.log(πᶜo)), axis=0) \
+        + 1/2*(η-1)/δ*ddΛ*ems_star**2*σy**2\
+        + ξp * intensity * (dmg_weight@(1 - g_list + g_list * np.log(g_list)))\
+        + intensity*(dmg_weight@(g_list*(ϕ_ref - ϕ)))
+        # solver
+        ϕ_new =  false_transient(A, By, Cyy, D, ϕ, ϵ, dy, (0, ϕ_bound[loc_2]), (False, False))
+
+        rhs = -δ*ϕ_new + By*dϕdy + Cyy*dϕdyy + D
+        rhs_error = np.max(abs(rhs))
+        lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
+        ϕ = ϕ_new 
+        episode += 1
+        
+    
+    print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
+    dϕdy = compute_derivatives(ϕ, 1, dy)
+    dϕdyy = compute_derivatives(ϕ, 2, dy)
+    ent = ξa*np.sum(πᶜ*(np.log(πᶜ) - np.log(πᶜo)), axis=0)
+    ME = -(dϕdy+(η-1)/δ*dΛ)*(θ_list@πᶜ) - (dϕdyy+(η-1)/δ*ddΛ)*σy**2*ems_star
+    ratio = ME/(η/ems_star)
+
+    return ME, ratio

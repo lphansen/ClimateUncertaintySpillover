@@ -4,7 +4,7 @@ module for simulation
 """
 import numpy as np
 from scipy import interpolate
-from utilities import J
+from .utilities import J
 # function claim
 
 
@@ -231,12 +231,13 @@ class EvolutionState:
                               self.damage_jump_state,
                               self.damage_jump_loc,
                               self.variables,
-                              self.y_underline)
+                              self.y_underline,
+                              self.y_overline)
 
     def evolve(self, θ_mean, fun_args):
 
         e_fun_pre_damage, e_fun_post_damage = fun_args
-        e, y, temp_anol = self.variables
+        [e, y, temp_anol] = self.variables
 
         # Compute variables at t+1
         if self.damage_jump_state == 'pre':
@@ -247,11 +248,11 @@ class EvolutionState:
             raise ValueError(
                 'Invalid damage jump state. Should be one of [pre, post]')
 
-        e_new = e_fun(y)[0]
+        e_new = e_fun(y)
         y_new = y + e_new * θ_mean * self.dt
         temp_anol_new = temp_anol + e_new * θ_mean * self.dt
-        variables_new = (e_new, y_new, temp_anol_new)
-        res_template = EvolutionState(self.t+1,
+        variables_new = [e_new, y_new, temp_anol_new]
+        res_template = EvolutionState(self.t+ self.dt,
                                       self.prob,
                                       self.damage_jump_state,
                                       self.damage_jump_loc,
