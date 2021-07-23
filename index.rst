@@ -6,7 +6,7 @@
 Welcome to the documentation for *Climate Change Uncertainty Spillover in the Macroeconomy*!
 ============================================================================================
 This documentation represents the computations in *Climate Change Uncertainty Spillover in the Macroeconomy* by Mike Barnett, William Brock and Lars Peter Hansen.
-The latest version of the paper can be found through this link: (link needed)
+The latest version of the paper can be found through this `link <https://larspeterhansen.org/research/papers/>`_.
 
 For related research, also checkout: `Pricing Uncertainty Induced by Climate Change <https://github.com/lphansen/Climate>`_.
 
