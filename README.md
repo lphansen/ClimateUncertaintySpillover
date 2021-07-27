@@ -22,7 +22,9 @@ This project has been tested in an environment with
 > `Python == 3.8.7` and  `jupyter notebook == 5.7.10`
 
 ## <a name="acessing"></a>Acessing our project
+To access our notebook binder, click below:
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2?filepath=sec0_prep.ipynb)
 
 To store the notebook as well as codes in your local machine. You can do this by following steps below:
 

@@ -12,7 +12,7 @@ pio.templates.default = "none"
 
 θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0] / 1000.
 γ_3 = np.linspace(0, 1./3, 20)
-
+ξ_r_list = [100_000, 5., 1., 0.3]
 
 def plot2():
     fig = go.Figure()
@@ -196,35 +196,79 @@ def plot5(pre_jump_res):
         x=θ_list * 1000,
         histnorm='probability density',
         marker=dict(color="#d62728", line=dict(color='grey', width=1)),
-        showlegend=False,
+        showlegend=True,
         xbins=dict(size=0.15),
         name='baseline',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate="%{y:.2f}",
     )
-
-    trace_worstcase = go.Histogram(
-        histfunc="sum",
-        x=θ_list * 1000,
-        y=pre_jump_res[1]["simulation_res"]["πct"][- 1],
-        histnorm='probability density',
-        marker=dict(color="#1f77b4", line=dict(color='grey', width=1)),
-        showlegend=False,
-        xbins=dict(size=0.15),
-        name='1000 year',
-        legendgroup=1,
-        opacity=0.5,
-    )
-
     fig.add_trace(trace_base, 1, 1)
-    fig.add_trace(trace_worstcase, 1, 1)
+
+    for ξ_r in ξ_r_list:
+        name = 'distorted, \n ξᵣ = {:.1f}'.format(ξ_r)
+        if ξ_r == 100_000:
+            name = "baseline"
+        trace_worstcase = go.Histogram(
+            histfunc="sum",
+            x=θ_list * 1000,
+            y=pre_jump_res[ξ_r]["simulation_res"]["πct"][- 1],
+            histnorm='probability density',
+            marker=dict(color="#1f77b4", line=dict(color='grey', width=1)),
+            showlegend=False,
+            visible=False,
+            xbins=dict(size=0.15),
+            name=name,
+            legendgroup=1,
+            opacity=0.5,
+            hovertemplate="%{y:.2f}"
+        )
+        fig.add_trace(trace_worstcase, 1, 1)
+
+    fig.data[3]['visible']=True
+    fig.data[3]['showlegend']=True
+
+
+    buttons = []
+    for i in range(len(ξ_r_list)):
+        # Hide all traces
+        label = r'ξᵣ = {:.1f}'.format(ξ_r_list[i])
+        if i == 0:
+            label="baseline"
+        button = dict(method='update',
+                    args=[
+                        {
+                            'visible': [False] * (1 + len(ξ_r_list)),
+                            'showlegend': [False] * (1 + len(ξ_r_list)),
+                        },
+                    ],
+                    label=label)
+        # Enable the two traces we want to see
+        button['args'][0]["visible"][0] = True
+        button['args'][0]["visible"][i + 1] = True
+        button['args'][0]["showlegend"][0] = True
+        button['args'][0]["showlegend"][i + 1] = True
+        # Add step to step list
+        buttons.append(button)
 
     fig.update_layout(
-        width=600,              
+        updatemenus=[
+            dict(
+                type="buttons",
+                active=2,
+                x=1.25,
+                y=0.8,
+                buttons=buttons,
+                showactive=True
+            )
+        ])
+
+    fig.update_layout(
+        width=700,              
         height=500,
         plot_bgcolor='white',
         barmode="overlay",
-        title="Figure 5: Histograms of climate sensitivity parameters."
+        title="Figure 5: Histograms of climate sensitivity parameters.",
     )
 
     fig.update_yaxes(
@@ -253,7 +297,7 @@ def plot5(pre_jump_res):
 
 def plot6(pre_jump_res):
     fig = make_subplots(rows=1, cols=3)
-
+    hovertemplate = "%{y:.2f}"
     trace_base = go.Histogram(
         x=γ_3,
         histnorm='probability',
@@ -263,6 +307,7 @@ def plot6(pre_jump_res):
         name='baseline',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate=hovertemplate
     )
 
     trace_5 = go.Histogram(
@@ -276,6 +321,7 @@ def plot6(pre_jump_res):
         name='distorted',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate=hovertemplate
     )
 
     trace_1 = go.Histogram(
@@ -289,6 +335,8 @@ def plot6(pre_jump_res):
         name='distorted',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate=hovertemplate
+
     )
 
     trace_03 = go.Histogram(
@@ -302,6 +350,7 @@ def plot6(pre_jump_res):
         name='distorted',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate=hovertemplate    
     )
 
     for col in [1, 2, 3]:
@@ -337,60 +386,106 @@ def plot6(pre_jump_res):
 
 def plot7(pre_jump_res):
     fig = make_subplots(1, 2)
-
     dt = 1 / 4
-    yt = pre_jump_res[1]["simulation_res"]["yt"]
-    T_jump = (np.abs(yt - 1.5).argmin()) * dt
-    T_stop = (len(yt) - 1) * dt
+    ξ_r_list = [100_000, 5., 1., 0.3]
 
-    probt = np.insert(pre_jump_res[1]["simulation_res"]["probt"][:-1],
-                      0,
-                      0,
-                      axis=0)
-    Years = np.arange(0, T_stop + dt, dt)
-    prob_jump = 1 - np.exp(-np.cumsum(probt))
+    for ξ_r in ξ_r_list:
+        yt = pre_jump_res[ξ_r]["simulation_res"]["yt"]
+        T_jump = (np.abs(yt - 1.5).argmin()) * dt
+        T_stop = (len(yt) - 1) * dt
 
-    fig.add_trace(go.Scatter(x=Years,
-                             y=prob_jump,
-                             name="jump probability",
-                             showlegend=False),
-                  col=1,
-                  row=1)
-    fig.add_trace(go.Scatter(x=Years,
-                             y=yt,
-                             name="temperature anomaly",
-                             showlegend=False,
-                             line=dict(color="#1f77b4"),
-                            ),
-                  col=2,
-                  row=1)
-    fig.add_trace(go.Scatter(x=np.arange(0, T_jump + 1),
-                             y=1.5 * np.ones(int(T_jump) + 1),
-                             showlegend=False,
-                             line=dict(dash="dot", color="black")),
-                  col=2,
-                  row=1)
-    fig.add_trace(go.Scatter(x=T_jump * np.ones(149),
-                             y=np.arange(0, 1.5, 0.01),
-                             showlegend=False,
-                             line=dict(dash="dot", color="black")),
-                  col=2,
-                  row=1)
+        probt = np.insert(pre_jump_res[ξ_r]["simulation_res"]["probt"][:-1],
+                          0,
+                          0,
+                          axis=0)
+        Years = np.arange(0, T_stop + dt, dt)
+        prob_jump = 1 - np.exp(-np.cumsum(probt))
 
-    fig.add_trace(go.Scatter(x=np.arange(0, T_stop + 1),
-                             y=2 * np.ones(int(T_stop) + 1),
-                             showlegend=False,
-                             line=dict(dash="dot", color="black")),
-                  col=2,
-                  row=1)
-    fig.add_trace(go.Scatter(x=T_stop * np.ones(199),
-                             y=np.arange(0, 2., 0.01),
-                             showlegend=False,
-                             line=dict(dash="dot", color="black")),
-                  col=2,
-                  row=1)
+        fig.add_trace(go.Scatter(x=Years,
+                                 y=prob_jump,
+                                 name="jump probability",
+                                 showlegend=False,
+                                 visible=False
+                                ),
+                      col=1,
+                      row=1)
+        fig.add_trace(go.Scatter(x=Years,
+                                 y=yt,
+                                 name="temperature anomaly",
+                                 showlegend=False,
+                                 visible=False,
+                                 line=dict(color="#1f77b4"),
+                                ),
+                      col=2,
+                      row=1)
+        fig.add_trace(go.Scatter(x=np.arange(0, T_jump + 1),
+                                 y=1.5 * np.ones(int(T_jump) + 1),
+                                 showlegend=False,
+                                 visible=False,
+                                 line=dict(dash="dot", color="black")),
+                      col=2,
+                      row=1)
+        fig.add_trace(go.Scatter(x=T_jump * np.ones(149),
+                                 y=np.arange(0, 1.5, 0.01),
+                                 showlegend=False,
+                                 visible=False,
+                                 line=dict(dash="dot", color="black")),
+                      col=2,
+                      row=1)
 
-    fig.update_xaxes(showgrid=True, showline=True, title="Years", range=[0, 105])
+        fig.add_trace(go.Scatter(x=np.arange(0, T_stop + 1),
+                                 y=2 * np.ones(int(T_stop) + 1),
+                                 showlegend=False,
+                                 visible=False,
+                                 line=dict(dash="dot", color="black")),
+                      col=2,
+                      row=1)
+        fig.add_trace(go.Scatter(x=T_stop * np.ones(199),
+                                 y=np.arange(0, 2., 0.01),
+                                 showlegend=False,
+                                 visible=False,
+                                 line=dict(dash="dot", color="black")),
+                      col=2,
+                      row=1)
+
+    for i in range(6):
+        fig.data[i + 6*2]["visible"] = True
+    buttons = []
+    for i in range(len(ξ_r_list)):
+        # Hide all traces
+        label = r'ξᵣ = {:.1f}'.format(ξ_r_list[i])
+        if i == 0:
+            label="baseline"
+        button = dict(method='update',
+                    args=[
+                        {
+                            'visible': [False] * (6* len(ξ_r_list)),
+                            'showlegend': [False] * (6* len(ξ_r_list)),
+                        },
+                    ],
+                    label=label)
+        # Enable the two traces we want to see
+        for j in range(6):
+            button['args'][0]["visible"][6*i + j] = True
+        # Add step to step list
+        buttons.append(button)
+
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="right",
+                active=2,
+                x=0.65,
+                y=1.2,
+                buttons=buttons,
+                pad={"r": 10, "t": 10, "b":10},
+                showactive=True
+            )
+        ])
+
+
+    fig.update_xaxes(showgrid=True, showline=True, title="Years", range=[0, 120])
     fig.update_yaxes(showgrid=True,
                      showline=True,
                      range=[0, 1.1],
@@ -410,6 +505,7 @@ def plot7(pre_jump_res):
         width=900,
         height=400,
         margin=dict(l=30, r=0))
+
     
     return fig
 
