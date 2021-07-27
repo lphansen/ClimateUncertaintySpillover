@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 import plotly.offline as pyo
 pyo.init_notebook_mode()
+import plotly.io as pio
+pio.templates.default = "none"
 
 θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0] / 1000.
 γ_3 = np.linspace(0, 1./3, 20)

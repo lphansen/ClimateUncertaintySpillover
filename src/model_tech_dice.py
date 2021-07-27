@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-from .utilities_2d import compute_derivatives
-from .solver_2d import false_transient_one_iteration_python, false_transient_one_iteration_cpp
+from utilities_2d import compute_derivatives
+from solver_2d import false_transient_one_iteration_cpp
 from numba import njit
 from multiprocessing import Pool
 
