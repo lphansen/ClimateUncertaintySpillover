@@ -23,11 +23,10 @@ see this as much more than putting standard errors on econometric
 estimates, and we turn to developments in dynamic decision theory as a
 guide to how we confront uncertainty in policy analysis.
 
-In climate economics, `Weitzman (2012) <#Weitzman:2012>`__,
-:cite:ts:``WagnerWeitzman:2015`` and others have emphasized uncertainty
-in the climate system’s dynamics and how this uncertainty could create
-fat-tailed distributions of potential damages. Relatedly,
-:raw-latex:`\cite{Pindyck:2013}` and
+In climate economics, :cite:t:`Weitzman:2012` , :cite:t:`WagnerWeitzman:2015` and
+others have emphasized uncertainty in the climate system’s dynamics and
+how this uncertainty could create fat-tailed distributions of potential
+damages. Relatedly, :raw-latex:`\cite{Pindyck:2013}` and
 :raw-latex:`\cite{MorganVaishnavDowlatabadiAzevedo:2017}` find existing
 integrated assessment models in climate economics to be of little value
 in the actual prudent policy. We are sympathetic to their skepticism,
@@ -43,16 +42,15 @@ explicit accounting for the limits to our understanding. Not only is
 there substantial uncertainty about the economic inputs, but also about
 the geoscientific inputs.
 
-Drawing on insights from decision theory and asset pricing,
-:raw-latex:`\citet{BarnettBrockHansen:2020}` proposed a framework for
-assessing uncertainty, broadly-conceived, to include ambiguity over
-alternative models and the potential form of the misspecification of
-each. In effect, they suggest methods for conducting structured
-uncertainty analyses. But their examples scratch the surface of the
-actual quantitative assessment of uncertainty pertinent to the problem
-of climate change. In this paper, we explore more systematically the
-consequences of uncertainty coming from both geo-scientific and economic
-inputs.
+Drawing on insights from decision theory and asset pricing, Barnett et
+al (2020) proposed a framework for assessing uncertainty,
+broadly-conceived, to include ambiguity over alternative models and the
+potential form of the misspecification of each. In effect, they suggest
+methods for conducting structured uncertainty analyses. But their
+examples scratch the surface of the actual quantitative assessment of
+uncertainty pertinent to the problem of climate change. In this paper,
+we explore more systematically the consequences of uncertainty coming
+from both geo-scientific and economic inputs.
 
 Decision theory provides tractable ways to explore a tradeoff between
 projecting the “best guess” consequences of alternative courses of
@@ -118,22 +116,22 @@ climate change uncertainty and exploring which components have the
 biggest impact on valuation. Rather than embrace a
 “one-model-fits-all-type-of-approaches” perspective, we give three
 computational examples designed to illustrate different points. The
-example presented in section :raw-latex:`\ref{sec: IllustrativeEconomy}`
-is by far the most ambitious and sets the stage for the other two. This
-first example explores what impact of future information about
-environmental and economic damages, triggered by temperature anomaly
-thresholds, should have on current policy. It adds a dynamic richness
-missing from other treatments of model uncertainty. The second example,
-presented in section :raw-latex:`\ref{sec:uncertain_decompose}`,
-implements a novel decomposition of uncertainty assessing the relative
-importance of uncertainties in carbon dynamics, temperature dynamics and
-damage function uncertainty. The approach that is described and
-implemented in section :raw-latex:`\ref{sec:uncertain_decompose}` is
-more generally applicable to other economic environments. Finally, the
-third example investigates the interacting implications of the
-uncertainties in the development of green technologies and in
-environmental damages for prudent policy. This example is developed in
-Section :raw-latex:`\ref{sec:abate}`.
+example presented in `section 4 <sec4_IllustrativeEconI.ipynb>`__ is by
+far the most ambitious and sets the stage for the other two. This first
+example explores what impact of future information about environmental
+and economic damages, triggered by temperature anomaly thresholds,
+should have on current policy. It adds a dynamic richness missing from
+other treatments of model uncertainty. The second example, presented in
+`section 5 <sec5_IllustrativeEconII.ipynb>`__, implements a novel
+decomposition of uncertainty assessing the relative importance of
+uncertainties in carbon dynamics, temperature dynamics and damage
+function uncertainty. The approach that is described and implemented in
+`section 5 <sec5_IllustrativeEconIII.ipynb>`__ is more generally
+applicable to other economic environments. Finally, the third example
+investigates the interacting implications of the uncertainties in the
+development of green technologies and in environmental damages for
+prudent policy. This example is developed in Section
+:raw-latex:`\ref{sec:abate}`.
 
 In the next section, we elaborate on some the prior contributions that
 motivate our analysis.

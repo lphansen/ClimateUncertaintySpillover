@@ -479,7 +479,8 @@ def plot7(pre_jump_res):
                 x=0.65,
                 y=1.2,
                 buttons=buttons,
-                pad={"r": 10, "t": 10, "b":10},
+                pad={"r": 10,
+ "t": 10, "b":10},
                 showactive=True
             )
         ])
@@ -511,12 +512,10 @@ def plot7(pre_jump_res):
 
 
 color = ["#d62728", "darkgreen", "darkorange", "navy"]
-def plot89(pre_jump_res, pre_jump175_res, y_grid_short, y_underline, y_underline_higher):
-    fig = make_subplots(2,1)
-    color = ["#d62728", "darkgreen", "darkorange", "navy"]
+def plot89(pre_jump_res, y_grid_short, y_underline):
+    fig = go.Figure()
     loc_11 = np.abs(y_grid_short - 1.1).argmin()
-    loc_15 = np.abs(y_grid_short - y_underline).argmin()
-    loc_175 = np.abs(y_grid_short - y_underline_higher).argmin()
+    loc_end = np.abs(y_grid_short - y_underline).argmin()
 
     for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
         if ξ_r_i == 100_000:
@@ -524,34 +523,21 @@ def plot89(pre_jump_res, pre_jump175_res, y_grid_short, y_underline, y_underline
         else:
             name = r"$\xi_r = {}$".format(ξ_r_i)
         fig.add_trace(
-            go.Scatter(x=y_grid_short[loc_11 :loc_15 + 1],
-                       y=pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_15 + 1],
+            go.Scatter(x=y_grid_short[loc_11 :loc_end + 1],
+                       y=pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_end + 1],
                        name=name,
                        line=dict(color=color[i]),
-                      legendgroup=name),
-            col=1, row=1
+                      legendgroup=name,
+                      hovertemplate="%{y:.2f}"
+                      ),
         )
 
 
-    for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
-        if ξ_r_i == 100_000:
-            name = "baseline"
-        else:
-            name = r"$\xi_r = {}$".format(ξ_r_i)
-        fig.add_trace(
-            go.Scatter(x=y_grid_short[loc_11 :loc_175 + 1],
-                       y=pre_jump175_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_175 + 1],
-                       name=name,
-                       line=dict(color=color[i]),
-                       showlegend=False,
-                      legendgroup=name),
-            col=1, row=2
-        )
 
-    fig.update_yaxes(range=[0, 7], showline=True)
-    fig.update_layout(width=800, height=1000, legend=dict(traceorder="reversed"))
+    fig.update_yaxes(range=[0, 7], showline=True, title="Emission")
+    fig.update_xaxes(showline=True, title="Temperature anomaly")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
-
 
 def plot1011(pre_jump_res, pre_jump175_res, y_grid_short, y_underline, y_underline_higher, args_scc):
     def logSCC(y_grid, e_tilde, args=()):
