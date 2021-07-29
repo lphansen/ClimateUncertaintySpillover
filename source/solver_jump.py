@@ -33,7 +33,7 @@ def get_ι(πᵈo, g_list):
     return ι, π_star
 
 # solve for approach two, step one, for individual ϕⱼ
-def solve_smooth_100(y_grid, args, max_iter, tol, ϵ,):
+def solve_smooth(y_grid, args, max_iter, tol, ϵ,):
     """
     solve for step one, ϕⱼ for individual damage function
     
@@ -98,7 +98,7 @@ def solve_smooth_100(y_grid, args, max_iter, tol, ϵ,):
     return solution
 
 
-def solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
+def solve_jump(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
     """
     compute jump model with ambiguity over climate models
     """
@@ -171,22 +171,21 @@ def solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter):
     return solution
 
 
-
 # solve for approach one
-def approach_one_100(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=10_000):
+def approach_one(y_grid, numy_bar, args, report_π=False, ϵ=0.3, tol=1e-8, max_iter=10_000):
     δ, η, θ_list, γ1, γ2, γ3_list, ȳ, dmg_weight, ς, ξp, ξa, ξw, σy = args
     ϕ_list = list()
     π_list = list()
     ems_list = list()
     for γ3 in γ3_list:
         args_post = ( δ, η, θ_list, σy, γ1, γ2, γ3, ȳ, ξa, ξw)
-        solution = solve_smooth_100(y_grid, args_post, max_iter, tol, ϵ)
+        solution = solve_smooth(y_grid, args_post, max_iter, tol, ϵ)
         ϕ_list.append(solution['φ'])
         π_list.append(solution["πc"])
         ems_list.append(solution['ems'])
     ϕ_list = np.array(ϕ_list)
     π_list = np.array(π_list)
-    solution = solve_jump_100(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter)
+    solution = solve_jump(y_grid, numy_bar, ϕ_list, args, ϵ, tol, max_iter)
     if report_π == True:
         return solution, ϕ_list, π_list
     else:
