@@ -129,15 +129,7 @@ for i, γ_3_i in enumerate(γ_3):
     else:
         v_guess = model_res['v']
     model_res = hjb_post_damage_pre_tech(k_grid, y_grid_long, model_args, v0=v_guess, ϵ=1., fraction=.05,
-                                         tol=1e-6, max_iter=2000
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-mpl.rcParams['axes.spines.right'] = False
-mpl.rcParams['axes.spines.top'] = False
-mpl.rcParams['legend.frameon'] = False
-mpl.rcParams['lines.linewidth'] = 2
-mpl.rcParams['figure.facecolor'] = 'w'
-mpl.rcParams['figure.edgecolor'] = 'w', print_iteration=False)
+                                         tol=1e-6, max_iter=2000, print_iteration=False)
     model_post_damage_pre_tech.append(model_res)
 
 
@@ -150,14 +142,6 @@ for model in model_post_damage_post_second_tech:
     temp = np.zeros((len(k_grid), len(y_grid_short)))
     for i in range(temp.shape[1]):
         temp[:, i] = model['v'][:, n_bar-1]
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-mpl.rcParams['axes.spines.right'] = False
-mpl.rcParams['axes.spines.top'] = False
-mpl.rcParams['legend.frameon'] = False
-mpl.rcParams['lines.linewidth'] = 2
-mpl.rcParams['figure.facecolor'] = 'w'
-mpl.rcParams['figure.edgecolor'] = 'w'
     v_i_short.append(temp)
 v_i_short = np.array(v_i_short)
 
@@ -230,7 +214,7 @@ def damage_intensity(y, y_bar_lower):
 intensity_dmg = damage_intensity(yt, y_bar_lower)
 intensity_distortion = np.mean(gt, axis=0)
 distorted_damage_probs = gt / np.mean(gt, axis=0) / n_model
-
+np.save('et_nodmg_no_tech_baseline', et)
 
 # In[ ]:
 

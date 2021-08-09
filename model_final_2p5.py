@@ -218,6 +218,7 @@ distorted_damage_probs = gt / np.mean(gt, axis=0) / n_model
 
 np.save('new_intensity_dmg_2p5.npy', intensity_dmg)
 np.save(f'new_dmg_intensity_distort_{ξ_p}.npy', intensity_distortion)
+np.save('et_nodmg_no_tech_2p5', et)
 
 
 # In[11]:

@@ -213,7 +213,7 @@ intensity_dmg = damage_intensity(yt, y_bar_lower)
 intensity_distortion = np.mean(gt, axis=0)
 distorted_damage_probs = gt / np.mean(gt, axis=0) / n_model
 
-
+np.save("et_nodmg_no_tech", et)
 # In[10]:
 
 
