@@ -1,170 +1,264 @@
 # -*- coding: utf-8 -*-
 """
-Functions to numerically solve a nonlinear ODE via false transient scheme.
-
-.. seealso::
-   For more details on false transient:
-   refer to :doc:`~app.appendices` (TODO:fix to ref).
-
-
-The ODE we solve is as follows:
-
-The state space descretize into :math:`y_1, y_2, \\dots, y_N` with equal interval :math:`\\Delta y`.
-For each :math:`y_n \\in \{y_1, y_2, \\dots, y_N\}` in the grid with , the value function satifies
-(we use upwinding first order derivative for concern of,
-and at :math:`y_1` we use forward derivative instead):
-
-.. math::
-   :label: ODE
-
-   \\begin{align}
-   \\frac{\\phi_{i+1}(y_n) - \\phi_{i}(y)}{\\epsilon} =& \\quad A_n \\phi_{i+1}(y) \\cr
-   & + B_{n} \\frac{\\phi_{i+1}(y_n) - \\phi_{i+1}(y_{n-1})}{\Delta y}  \\cr
-   & + C_n \\frac{\\phi_{i+1}(y_{n+1}) - 2 \\phi_{i+1}(y_{n}) + \\phi_{i+1}(y_{n-1})}{\Delta y^2} \\cr
-   & + D_n
-   \\end{align}
-
-
-
-where :math:`A_n`, :math:`B_n`, :math:`C_n` and :math:`D_n` are coefficients.
-The exact values are given by the HJB to be solved.
-Therefore, we construct the following linear system:
-
-.. math::
-   :label: FT
-
-   LHS \\cdot \\phi_{i+1}(Y) = - D - \\frac{1}{\\epsilon} \\phi_{i}(Y)
-
-where :math:`LHS` is a :math:`N\\times N` matrix of coefficients, :math:`Y = (y_1, y_2, \\dots, y_N)'`,
-and :math:`D = (D_1, D_2, \\dots, D_n)'`.
+Functions to numerically solve ψ and ϕ.
+includes:
+- solve_psi
+- compute_phi_r
+- trace_phi_r
+- compute_ell_r_phi
+- compute_sigma2
+- compute_h
 """
+
 import numpy as np
+from numba import njit
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import bicg
-from numba import njit
 
 
-@njit
-def compute_coefficient(LHS, A, B, C, i, dx, ϵ):
+# @njit(parallel=True)
+def solve_ψ(ell=1., b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
     r"""
-    Compute the coefficient of the equation at :math:`y_i`.
-    Values are computed according to :math:numref:`ODE`.
+    Given :math:`\ell`, numerically solve for ψ on a grid of b from 0 to 1.
 
     Parameters
     ----------
-    LHS : (I, I) ndarray
-        LHS matrix of the linear system.
-    A : (I,) ndarrays
-        Coefficient arrays for value function :math:`\phi(y_i)`.
-    B : (I,) ndarrays
-        Coefficient arrays for first order derivative.
-    C : (I,) ndarrays
-        Coefficient arrays for second order derivative.
-    i : int
-        Index for the grid point.
-    dx : float
-        Grid step, :math:`\Delta y`.
-    ϵ : float
-        False transient step size.
+    ell : float
+        Value of variable :math:`\ell`.
+    b_step : float
+        Step size of b grid. b is evenly spaced from b_step to 1.
+    args : list/tuple of floats
+        Values for δ, η, τ_1, τ_2 respectively.
 
     Returns
     -------
-    LHS : (I, I) ndarray
-        Updated LHS matrix of the linear system.
+    ψ_grid : (ell/b_step, ) ndarray
+        ψ values on the grid of b, given :math:`\ell`.
 
     """
-    I = len(A)
-    LHS[i, i] += A[i] - 1./ϵ
-    if i == 0:
-        LHS[i, i] += B[i] * (-1./dx) + C[i] * (1./dx**2)
-        LHS[i, i+1] += B[i] * (1./dx) + C[i] * (-2./dx**2)
-        LHS[i, i+2] += C[i] * (1./dx**2)
-    elif i == I-1:
-        LHS[i, i] += B[i] * (1./dx) + C[i] * (1./dx**2)
-        LHS[i, i-1] += B[i] * (-1./dx) + C[i] * (-2./dx**2)
-        LHS[i, i-2] += C[i] * (1./dx**2)
-    else:
-        LHS[i, i] += B[i] * ((-1./dx) * (B[i]>0) + (1./dx) * (B[i]<=0))\
-                    + C[i] * (-2./dx**2)
-        LHS[i, i-1] += B[i] * (-1./dx) * (B[i]<=0) + C[i] * (1./dx**2)
-        LHS[i, i+1] += B[i] * (1./dx) * (B[i]>0) + C[i] * (1./dx**2)
-    return LHS
+    δ, η, τ_1, τ_2 = args
+    b_size = int(1./b_step)
+    b_grid = np.linspace(b_step, 1., b_size)
 
-
-@njit
-def linearize(A, B, C, D, v0, ϵ, dx, bc, impose_bc):
-    r"""
-    Construct coefficient matrix of the linear system.
-
-    Parameters
-    ----------
-    A, B, C, D : (I,) ndarrays
-        see :func:`~source.solver.compute_coefficient` for further detail.
-    v0 : (I,) ndarray
-        Value function from last iteration, :math:`\phi_i(y)`.
-    ϵ : float
-        False transient step size.
-    dx : float
-        Grid step size.
-    bc : tuple of ndarrays::
-        Impose `v=bc[k]` at boundaries.
-
-        Order: lower boundary of x, upper boundary of x,
-    impose_bc : tuple of bools
-
-        Order: lower boundary of x, upper boundary of x,
-
-    Returns
-    -------
-    LHS : (I, I) ndarray
-        LHS of the linear system.
-    RHS : (I,) ndarray
-        RHS of the linear system.
-
-    """
-    I = len(A)
-    LHS = np.zeros((I, I))
-    RHS = - D - 1./ϵ*v0
-    for i in range(I):
-        if i == 0 and impose_bc[0]:
-            LHS[i, i] = 1.
-            RHS[i] = bc[0]
-        elif i == I-1 and impose_bc[1]:
-            LHS[i, i] = 1.
-            RHS[i] = bc[1]
+    # Construct a grid for the linear system Aψ+B=0
+    A = np.zeros((b_size, b_size))
+    B = np.zeros(b_size)
+    for i in range(b_size):
+        b = b_grid[i]
+        # Calculate e_star
+        if τ_2 == 0:
+            e_star = b*δ*η/(b*τ_1+ell)
         else:
-            LHS = compute_coefficient(LHS, A, B, C, i, dx, ϵ)
-    return LHS, RHS
+            e_star = (-b*τ_1-ell+np.sqrt((b*τ_1+ell)**2 + 4*b**2*τ_2*δ*η))/(2*b*τ_2)
+        # Construct coefficient B
+        B[i] = b*(δ*η*np.log(e_star)-τ_1*e_star-τ_2/2*e_star**2) - ell*e_star
+        # Construct coefficient matrix A
+        if i == 0:
+            # Impose boundary condition ψ(0;ell)=0
+            A[i, i+1] = -δ*b/(2*b_step)
+        elif i == b_size-1:
+            A[i, i-1] = δ*b/b_step
+            A[i, i] = - δ*b/b_step
+        else:
+            A[i, i-1] = δ*b/(2*b_step)
+            A[i, i+1] = -δ*b/(2*b_step)
+    ψ_grid = np.linalg.solve(A, -B)
+    return ψ_grid
 
 
-def false_transient(A, B, C, D, v0, ϵ, dx, bc, impose_bc):
+# @njit
+def compute_ϕ_r(ell=1., d_step=1e-9, b_step=1e-2, args=(0.01, 0.032, 0.00175 * 0.012, 0)):
     r"""
-    Implement false transient scheme of one iteration,
-    and update from :math:`\phi_i(y)` to :math:`\phi_{i+1}(y)`
-    according to :math:numref:`FT`.
-
-    See appendix B(TODO: cross-ref link) for further detail.
+    Given :math:`\ell`, compute a pair of ϕ and r.
 
     Parameters
     ----------
-    A, B, C, D:
-        Same as those in :func:`~source.solver.compute_coefficient`
-    v0 : (I, ) ndarrays
-        Value function from last iteration, :math:`\phi_i(y)`
-    ϵ : float
-        Step size of false transient
-    dx : float
-        Step size of Grid
-    bc :
-        See :func:`~source.solver.linearize`.
-    impose_bc:
-        See :func:`~source.solver.linearize`.
+    ell : float
+        Value of variable :math:`\ell`.
+    d_step : float
+        Step size of :math:`\ell`, used to calculate numerical derivative of ψ.
+    b_step : float
+        Step size of b grid. b is evenly spaced from b_step to 1.
+    args : list/tuple of floats
+        Values for δ, η, τ_1, τ_2 respectively.
 
     Returns
     -------
-    v :  (I, ) ndarrays
-        Updated value function, :math:`\phi_{i+1}(y)` according to :math:numref:`FT`.
+    r : float
+        Value of r evaluated at given :math:`\ell`.
+    ϕ : float
+        Value of ϕ evaluated at given :math:`\ell`.
+
     """
-    LHS, RHS = linearize(A, B, C, D, v0, ϵ, dx, bc, impose_bc)
-    v, exit_code = bicg(csc_matrix(LHS), RHS)
-    return v
+    ψ_ip1 = solve_ψ(ell+d_step, b_step, args)[-1]
+    ψ_i = solve_ψ(ell, b_step, args)[-1]
+    dψ_i = (ψ_ip1-ψ_i)/d_step  # One-sided derivative
+    r = - dψ_i
+    ϕ = ψ_i + ell * r
+    return r, ϕ
+
+
+# +
+# @njit(parallel=True)
+def trace_ϕ_r(log_ell_min=-20, log_ell_max=10, grid_size=1000,
+            d_step=1e-9, b_step=1e-2,
+            args=(0.01, 0.032, 0.00175 * 0.012, 0)):
+    r"""
+    Compute pairs of ϕ and r based on a grid of :math:`\log \ell`.
+
+    Parameters
+    ----------
+    log_ell_min : float
+        Minimum value of the grid for :math:`\log \ell`.
+    log_ell_max : float
+        Maximum value of the grid for :math:`\log \ell`.
+    grid_size : float
+        Number of points of the grid for :math:`\log \ell`.
+        The grid is evenly spaced.
+    d_step : float
+        Step size of :math:`\ell`, used to calculate numerical derivative of ψ.
+    b_step : float
+        Step size of b grid. b is evenly spaced from b_step to 1.
+    args : list/tuple of floats
+        Values for δ, η, τ_1, τ_2 respectively.
+
+    Returns
+    -------
+    r_grid_sorted : (grid_size, ) ndarray
+        Grid of r sorted from low to high.
+    ϕ_grid_sorted : (grid_size, ) ndarray
+        Grid of ϕ in the same order as r_grid_sorted.
+
+    """
+    log_ell_grid = np.linspace(log_ell_min, log_ell_max, grid_size)
+    ell_grid = np.exp(log_ell_grid)
+    r_grid = np.zeros_like(ell_grid)
+    ϕ_grid = np.zeros_like(ell_grid)
+    for i in range(grid_size):
+        ell = ell_grid[i]
+        r_grid[i], ϕ_grid[i] = compute_ϕ_r(ell, d_step, b_step, args)
+    sort_indices = np.argsort(r_grid) # Set r from low to high
+    r_grid_sorted = r_grid[sort_indices]
+    ϕ_grid_sorted = ϕ_grid[sort_indices]
+    return r_grid_sorted, ϕ_grid_sorted
+
+
+def compute_ell_r_phi(solu, log_ell=np.linspace(-13, -5, 200), ell_step=1e-7, z = np.linspace(1e-5, 2, 20)):
+    """compute sorted ell, r, and phi according to first order condition
+    Parameter
+    ---------
+    solu: dictionary, keys: ells, values: ems's and psi's
+    log_ell: original log grid of ell (default: np.linspace(-3,-5, 200))
+    ell_step: delta ell (Default: 1e-7)
+    Returns
+    -------
+    sorted grids of ell, r and phi
+    """
+    x_r,  = log_ell.shape
+    y_r, = z.shape
+    r = np.zeros((x_r, y_r))
+    phi = np.zeros((x_r, y_r))
+    ell_new = np.zeros(x_r)
+    for i, ell in enumerate(np.exp(log_ell)):
+        psi = solu[ell]["psi"][:, -1]
+        psi_next = solu[ell+ell_step]["psi"][:, -1]
+        dpsi = (psi_next - psi)/ell_step
+        psi_new = (psi + psi_next)/2
+        ell_new[i] = ell + ell_step/2
+        r[i] = - dpsi
+        phi[i] = psi_new + ell_new[i]*(-dpsi)
+    
+    index = np.argsort(r, axis=0)
+    phi_sorted = phi[index[:, 0]]
+    r_sorted = r[index[:, 0]]
+    ell_sorted = ell_new[index[:, 0]]
+    return ell_sorted, r_sorted, phi_sorted
+
+def compute_sigma2(rho, sigma_z, mu_2):
+    """
+    compute_sigma2
+    Parameters
+    ----------
+    rho: float
+    sigma_z: float
+    mu_2: float
+    """
+    return np.sqrt(2*sigma_z**2*rho/mu_2)
+
+from global_parameters import *
+SIGMA_2 = compute_sigma2(RHO, .21, .1)
+def compute_h(dphi_dz, z_new, args = (SIGMA_2, XI_M)):
+    sigma_2, xi_m = args
+    return - dphi_dz*z_new*sigma_2**2/xi_m
+
+
+# -
+
+@njit
+def get_coeff(v0, z_mat, y_mat, A, Bz, By, Czz, Cyy, D, epsilon, boundspec=()):
+    numz, numy = z_mat.shape
+    hz = z_mat[1,0] - z_mat[0,0]
+    hy = y_mat[0,1] - y_mat[0,0]
+    # coefficient matrix
+    LHS = np.zeros((numy*numz, numy*numz))
+    RHS = -D -1/epsilon*v0
+    for i in range(numz):
+        for j in range(numy):
+            idx = i*numy + j
+            idx_yp1 = idx + 1
+            idx_yp2 = idx + 2
+            idx_ym1 = idx - 1
+            idx_ym2 = idx - 2
+            idx_zp1 = (i+1)*numy + j
+            idx_zp2 = (i+2)*numy + j
+            idx_zm1 = (i-1)*numy + j
+            idx_zm2 = (i-2)*numy + j
+            LHS[idx, idx] += A[i,j] - 1/epsilon
+            # assign coefficient
+            # z grid relevant
+            if i == 0:
+                LHS[idx, idx] += -Bz[i,j]/hz + Czz[i,j]/(hz**2)  
+                LHS[idx, idx_zp1] += Bz[i,j]/hz - Czz[i,j]*2/(hz**2)
+                LHS[idx, idx_zp2] += Czz[i,j]/(hz**2)
+            elif i == numz-1:
+                if boundspec[0] == 1:
+                    LHS[idx, :] = 0 
+                    LHS[idx, idx] = 1
+                    RHS[idx] = boundspec[1][j]
+                else:
+                    LHS[idx, idx] += Bz[i,j]/hz + Czz[i,j]/(hz**2)
+                    LHS[idx, idx_zm1] += -Bz[i,j]/hz - 2*Czz[i,j]/(hz**2)
+                    LHS[idx, idx_zm2] += Czz[i,j]/(hz**2)            
+            else:
+                LHS[idx, idx_zp1] += Bz[i,j]*(1/hz)*(Bz[i,j] > 0) + Czz[i,j]/(hz**2)
+                LHS[idx, idx] += Bz[i,j]*((-1/hz)*(Bz[i,j] > 0) + (1/hz)*(Bz[i,j] <= 0))- 2*Czz[i,j]/(hz**2) 
+                LHS[idx, idx_zm1] +=  Bz[i,j]*(-1/hz)*(Bz[i,j] <= 0)+ Czz[i,j]/(hz**2)
+            # y grid relevant
+            if j == 0:
+                LHS[idx, idx_yp2] += Cyy[i,j]/(hy**2)
+                LHS[idx, idx_yp1] += By[i,j]/hy - 2*Cyy[i,j]/(hy**2)
+                LHS[idx, idx] +=  - By[i,j]/hy + Cyy[i,j]/(hy**2)
+            elif j == numy-1:  
+                if boundspec[0] == 2:
+                    LHS[idx, :] = 0 
+                    LHS[idx, idx] = 1
+                    RHS[idx] = boundspec[1][i]
+                else:
+                    LHS[idx, idx] += By[i,j]/hy + Cyy[i,j]/(hy**2)
+                    LHS[idx, idx_ym1] += -By[i,j]/hy - 2*Cyy[i,j]/(hy**2)
+                    LHS[idx, idx_ym2] += Cyy[i,j]/(hy**2)
+            else:
+                LHS[idx, idx_yp1] += By[i,j]*(1/hy)*(By[i,j] > 0) + Cyy[i,j]/(hy**2)
+                LHS[idx, idx] += By[i,j]*((-1/hy)*(By[i,j] > 0) + (1/hy)*(By[i,j] <= 0)) - 2*Cyy[i,j]/(hy**2)
+                LHS[idx, idx_ym1] += By[i,j]*(-1/hy)*(By[i,j] <= 0) + Cyy[i,j]/(hy**2)  
+#    phi_grid = np.linalg.solve(LHS, RHS) 
+    return LHS, RHS # phi_grid
+
+
+def pde_solve(v0, z_mat, y_mat, A, Bz, By, Czz, Cyy, D, epsilon, boundspec):
+    v0long = v0.reshape(-1)
+    D_long = D.reshape(-1)
+    LHS, RHS = get_coeff(v0long, z_mat, y_mat, A, Bz, By, Czz, Cyy, D_long, epsilon, boundspec)
+    phi_grid, exit_code = bicg(csc_matrix(LHS), RHS)
+    phi_mat = phi_grid.reshape(v0.shape)
+    return phi_mat

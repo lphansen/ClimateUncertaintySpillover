@@ -1,293 +1,238 @@
 # -*- coding: utf-8 -*-
 """
-module for simulation
+Functions to simulate deterministic or stochastic paths
+includes:
+- simulate_log_damage
+- simulate_emission_quadratic
+- _simulate_emission
+- simulate_log_damage_with_drift
+- simulate_emssion (newly added)
+- simulate_ems_h
 """
+import warnings
 import numpy as np
-from scipy import interpolate
-from .utilities import J
-# function claim
+from numba import njit
+from utilities import find_nearest_value
+from solver import trace_ϕ_r
 
 
-def simulate_jump(model_res, θ_list, ME=None,  y_start=1,  T=100, dt=1):
+# @njit
+def simulate_log_damage(exp_avg_response, σ_n, Et, Ws):
     """
-    Simulate temperature anomaly, emission, distorted probabilities of climate models,
-    distorted probabilities of damage functions, and drift distortion.
-    When ME is asigned value, it will also simulate paths for marginal value of emission
+    Simulate log damage.
 
     Parameters
     ----------
-    model_res : dict
-        A dictionary storing solution with misspecified jump process.
-        See :func:`~source.model.solve_hjb_y_jump` for detail.
-    θ_list : (N,) ndarray::
-        A list of matthew coefficients. Unit: celsius/gigaton of carbon.
-    ME : (N,) ndarray
-        Marginal value of emission as a function of y.
-    y_start : float, default=1
-        Initial value of y.
-    T : int, default=100
-        Time span of simulation.
-    dt : float, default=1
-        Time interval of simulation.
+    exp_avg_response, σ_n : float
+        Model parameters.
+    Et : (T, ) ndarray
+        Emission trajectory.
+    Ws : (N, T) ndarray
+        Iid normal shocks for N paths.
 
     Returns
     -------
-    simulation_res: dict of ndarrays
-        dict: {
-            yt : (T,) ndarray
-                Temperature anomaly trajectories.
-            et : (T,) ndarray
-                Emission trajectories.
-            πct : (T, L) ndarray
-                Trajectories for distorted probabilities of climate models.
-            πdt : (T, M) ndarray
-                Trajectories for distorted probabilities of damage functions.
-            ht : (T,) ndarray
-                Trajectories for drift distortion.
-            if ME is not None, the dictionary will also include
-                me_t : (T,) ndarray
-                    Trajectories for marginal value of emission.
-        }
+    Ys : (T, ) ndarray
+        Simulated log damages.
+
     """
-    y_grid = model_res["y"]
-    ems = model_res["e_tilde"]
-    πc = model_res["πc"]
-    πd = model_res["πd"]
-    h = model_res["h"]
-    periods = int(T/dt)
-    et = np.zeros(periods)
-    yt = np.zeros(periods)
-    πct = np.zeros((periods, len(θ_list)))
-    πdt = np.zeros((periods, len(πd)))
-    ht = np.zeros(periods)
-    if ME is not None:
-        me_t = np.zeros(periods)
-    # interpolate
-    get_πd = interpolate.interp1d(y_grid, πd)
-    get_πc = interpolate.interp1d(y_grid, πc)
-#     y = np.mean(θ_list)*290
-    y = y_start
-    for t in range(periods):
-        if y > np.max(y_grid):
-            break
-        else:
-            ems_point = np.interp(y, y_grid, ems)
-            πd_list = get_πd(y)
-            πc_list = get_πc(y)
-            h_point = np.interp(y, y_grid, h)
-            if ME is not None:
-                me_point = np.interp(y, y_grid, ME)
-                me_t[t] = me_point
-            et[t] = ems_point
-            πdt[t] = πd_list
-            πct[t] = πc_list
-            ht[t] = h_point
-            yt[t] = y
-            dy = ems_point*np.mean(θ_list)*dt
-            y = dy + y
-    if ME is not None:
-        simulation_res = dict(yt=yt, et=et, πct=πct, πdt=πdt, ht=ht, me_t=me_t)
-    else:
-        simulation_res = dict(yt=yt, et=et, πct=πct, πdt=πdt, ht=ht)
-    return simulation_res
+    Ys = np.zeros_like(Ws)
+    for path in range(Ws.shape[0]):
+        Y = 0.
+        for i in range(Ws.shape[1]):
+            dY = exp_avg_response * Et[i] * (1+σ_n*Ws[path,i])
+            Ys[path, i] = dY + Y
+            Y = Ys[path, i]
+    return Ys
 
 
-def simulate_me(y_grid, e_grid, ratio_grid, θ=1.86/1000., y_start=1, T=100, dt=1):
+def simulate_emission_quadratic(δ, η, τ_1, ξ, σ_n,
+                                args_trace_ϕ = (-20, -5, 1000, 1e-9, 1e-3),
+                                r_start=9000, T=100):
     """
-    simulate trajectories of uncertainty decomposition
-
-    .. math::
-
-        \\log(\\frac{ME_{new}}{ME_{baseline}})\\times 1000.
+    Simulate emission assuming the quadratic structure in Section 5.7.
 
     Parameters
     ----------
-    y_grid : (N, ) ndarray
-        Grid of y.
+    δ, η, τ_1, ξ, σ_n : float
+        Model parameters
+    args_trace_ϕ : list/tuple of floats
+        Values for log_ell_min, log_ell_max, grid_size, d_step,
+        b_step respectively.
+    r_start : float
+        Initial reserve.
+    T : int
+        Time length for the simulation.
+
+    Returns
+    -------
+    Et : (T, ) ndarrays
+        Emission trajectory.
+    r_grid, ϕ_grid, e_star : (N, ) ndarrays
+        Grids of reserve, ϕ and emission respectively.
+
+    """
+    τ_2 = (τ_1**2) * (σ_n**2) / ξ
+    args = (δ, η, τ_1, τ_2)
+
+    r_grid, ϕ_grid = trace_ϕ_r(*args_trace_ϕ, args)
+
+    # Calculate dϕ/dr, e_star and Et
+    r_grid, indices = np.unique(r_grid, return_index=True)
+    ϕ_grid = ϕ_grid[indices]
+    ϕ_der_grid = (ϕ_grid[1:]-ϕ_grid[:-1])/(r_grid[1:]-r_grid[:-1])
+    r_grid = (r_grid[1:]+r_grid[:-1])/2
+    ϕ_grid = (ϕ_grid[1:]+ϕ_grid[:-1])/2
+    if τ_2 == 0:
+        e_star = δ*η/(τ_1 + ϕ_der_grid)
+    else:
+        e_star = (-τ_1-ϕ_der_grid+np.sqrt((τ_1+ϕ_der_grid)**2+4*δ*η*τ_2))/(2*τ_2)
+    if np.max(r_grid) < r_start:
+        warnings.warn("r_start exceeds the maximum value of the grid of r. Try changing the grid of log ell or decreasing r_start.")
+    Et = _simulate_emission(e_star, r_grid, r_start=r_start, T=T)
+
+    return Et, r_grid, ϕ_grid, e_star
+
+
+# @njit(parallel=True)
+def _simulate_emission(e_grid, r_grid, r_start=9000, T=100):
+    """
+    Simulate emission trajectory baesd on grids of emission and reserve.
+
+    Parameters
+    ----------
     e_grid : (N, ) ndarray
-        Corresponding :math:`\\tilde{e}` on the grid of y.
-    ratio_grid : (N, ) ndarray::
-        Corresponding :math:`\\log(\\frac{ME_{new}}{ME_{baseline}})\\times 1000` on the grid of y.
-    θ : float, default=1.86/1000
-        Coefficient used for simulation.
-    y_start : floatsimulation
-        Initial value of y.
-    T : int, default=100
-        Time span of simulation.
-    dt : float, default=1
-        Time interval of simulation. Default=1 indicates yearly simulation.
+        Grid of emission.
+    r_grid : (N, ) ndarray
+        Grid of reserve.
 
     Returns
     -------
     Et : (T, ) ndarray
         Emission trajectory.
-    yt : (T, ) ndarray
-        Temperature anomaly trajectories.
-    ratio_t : (T, ) ndarray
-        Uncertainty decomposition ratio trajectories.
+
     """
-    periods = int(T/dt)
-    Et = np.zeros(periods+1)
-    yt = np.zeros(periods+1)
-    ratio_t = np.zeros(periods+1)
-    for i in range(periods+1):
-        Et[i] = np.interp(y_start, y_grid, e_grid)
-        ratio_t[i] = np.interp(y_start, y_grid, ratio_grid)
-        yt[i] = y_start
-        y_start = y_start + Et[i]*θ
-    return Et, yt, ratio_t
+    Et = np.zeros(T)
+    r_remain = r_start
+    for i in range(T):
+        loc = find_nearest_value(r_grid, r_remain)
+        Et[i] = e_grid[loc]
+        r_remain = r_remain - Et[i]
+    return Et
+
+def simulate_log_damage_with_drift(λ, σ_n, Et, Ht, Ws, with_drift = True):
+    """
+    Simulate log damage with or without drift term.
+
+    Parameters
+    ----------
+    λ: (T, n)
+        pulse experiment results.
+    σ_n : float
+        Model parameters.
+    Et : (T, ) ndarray
+        Emission trajectory.
+    Ht: (T,)
+        drift term.
+    Ws : (N, T) ndarray
+        iid normal shocks for N paths.
+
+    Returns
+    -------
+    Ys : (T, ) ndarray
+        Simulated log damage.
+
+    """
+    Ys = np.zeros(Ws.shape)
+    if with_drift:
+        for path in range(Ws.shape[0]):
+            Y = 0.
+            for J in range(Ws.shape[1]):
+                log_N = 0.
+                for j in range(J):
+                    log_N += λ[j] * Et[J-j] * (1+σ_n*(Ws[path,J-j] + Ht[J-j]))
+
+                Ys[path, J] = log_N
+    else:
+        for path in range(Ws.shape[0]):
+            Y = 0.
+            for J in range(Ws.shape[1]):
+                log_N = 0.
+                for j in range(J):
+                    log_N += λ[j] * Et[J-j] * (1+σ_n*Ws[path,J-j])
+
+                Ys[path, J] = log_N
+
+        return Ys
+
+def simulate_emission(ems, r, r_initial=1500, time = 500):
+    """simulate emission for a given z_2 value
+    Parameters
+    ----------
+    ems: array
+        emision array for a given z_2
+    r: array
+        reserve array for the same z_2
+    r_inital: float (Default 1500)
+        initial reserve
+    time: int (Default 500)
+        timespan for simulation
+    Returns
+    -------
+    ems_t: emission trajectory during time"""
+    ems_t = np.zeros(time)
+    r_remain = r_initial
+    for i in range(time):
+        loc = np.abs(r-r_remain).argmin()
+        ems_i =  ems[loc]
+        ems_t[i] = ems_i
+        r_remain = r_remain - ems_i
+    return ems_t
 
 
-def no_jump_simulation(
-    model_res,
-    y_start=1.1,
-    T=130,
-    dt=1,
-):
-    y = y_start
-    periods = int(T / dt)
-    e_tilde = model_res["e_tilde"]
-    y_grid_short = model_res["y"]
-    h = model_res["h"]
-    πc = model_res["πc"]
-    πd = model_res["πd"]
-    y_bar = model_res["model_args"][4]
-    θ_list = model_res["model_args"][8]
-    et = np.zeros(periods)
-    yt = np.zeros(periods)
-    ht = np.zeros(periods)
-    probt = np.zeros(periods)
-    πdt = np.zeros((periods, len(πd)))
-    πct = np.zeros((periods, len(πc)))
-
-    get_d = interpolate.interp1d(y_grid_short, πd)
-    get_c = interpolate.interp1d(y_grid_short, πc)
-    for t in range(periods):
-        if y <= y_bar:
-            e_i = np.interp(y, y_grid_short, e_tilde)
-            h_i = np.interp(y, y_grid_short, h)
-            intensity = J(y)
-            et[t] = e_i
-            ht[t] = h_i
-            probt[t] = intensity * dt
-            yt[t] = y
-            πct[t] = get_c(y)
-            πdt[t] = get_d(y)
-            y = y + e_i * np.mean(θ_list) * dt
-        else:
-            break
-    yt = yt[np.nonzero(yt)]
-    et = et[np.nonzero(et)]
-    ht = ht[np.nonzero(ht)]
-    probt = probt[:len(yt)]
-    πdt = πdt[:len(yt)]
-    πct = πct[:len(yt)]
-
-    res = {
-        "et": et,
-        "yt": yt,
-        "probt": probt,
-        "πct": πct,
-        "πdt": πdt,
-        "ht": ht,
-    }
-
-    return res
-
-
-def damage_intensity(y, y_underline):
-    r1 = 1.5
-    r2 = 2.5
-    return r1 * (np.exp(r2/2 * (y - y_underline)**2) - 1) * (y >= y_underline)
-
-
-class EvolutionState:
-    DAMAGE_MODEL_NUM = 20
-    DAMAGE_PROB = np.ones(20) / 20
-    dt = 1/4
-
-    def __init__(self, t, prob, damage_jump_state, damage_jump_loc, variables, y_underline, y_overline):
-        self.t = t
-        self.prob = prob
-        self.damage_jump_state = damage_jump_state
-        self.damage_jump_loc = damage_jump_loc
-        self.variables = variables
-        self.y_underline = y_underline
-        self.y_overline = y_overline
-
-    def set_damage(self, damage_model_num):
-        """set damage model number
-        """
-        self.DAMAGE_MODEL_NUM = damage_model_num
-        self.DAMAGE_PROB = np.ones(
-            self.DAMAGE_MODEL_NUM) / self.DAMAGE_MODEL_NUM
-
-    def set_time_step(self, dt):
-        self.dt = dt
-
-    def copy(self):
-        return EvolutionState(self.t,
-                              self.prob,
-                              self.damage_jump_state,
-                              self.damage_jump_loc,
-                              self.variables,
-                              self.y_underline,
-                              self.y_overline)
-
-    def evolve(self, θ_mean, fun_args):
-
-        e_fun_pre_damage, e_fun_post_damage = fun_args
-        [e, y, temp_anol] = self.variables
-
-        # Compute variables at t+1
-        if self.damage_jump_state == 'pre':
-            e_fun = e_fun_pre_damage
-        elif self.damage_jump_state == 'post':
-            e_fun = e_fun_post_damage[self.damage_jump_loc]
-        else:
-            raise ValueError(
-                'Invalid damage jump state. Should be one of [pre, post]')
-
-        e_new = e_fun(y)
-        y_new = y + e_new * θ_mean * self.dt
-        temp_anol_new = temp_anol + e_new * θ_mean * self.dt
-        variables_new = [e_new, y_new, temp_anol_new]
-        res_template = EvolutionState(self.t+ self.dt,
-                                      self.prob,
-                                      self.damage_jump_state,
-                                      self.damage_jump_loc,
-                                      variables_new,
-                                      self.y_underline,
-                                      self.y_overline)
-
-        states_new = []
-
-        # Update probabilities
-        temp = damage_intensity(y_new, self.y_underline)
-
-        damage_jump_prob = temp * self.dt
-        if damage_jump_prob > 1:
-            damage_jump_prob = 1
-        # damage has not jumped
-        if self.damage_jump_state == 'pre' and damage_jump_prob != 0:
-            # Damage jumps
-            for i in range(self.DAMAGE_MODEL_NUM):
-                temp = res_template.copy()
-                temp.prob *= self.DAMAGE_PROB[i] * damage_jump_prob
-                temp.damage_jump_state = 'post'
-                temp.damage_jump_loc = i
-                temp.variables[1] = self.y_overline
-                states_new.append(temp)
-
-            # Damage does not jump
-            temp = res_template.copy()
-            temp.prob *= (1 - damage_jump_prob)
-            temp.damage_jump_state = 'pre'
-            states_new.append(temp)
-        # damage has jumped
-        else:
-            temp = res_template.copy()
-            temp.prob *= 1
-            states_new.append(temp)
-
-        return states_new
+# import global values
+from global_parameters import *
+def simulate_ems_h(dphi_dz, z_grid, z_idx , r, ems, sigma_2, xi, 
+               z = np.linspace(1e-5, 2, 20), 
+               r_initial = 1500, time = 500):
+    """simulate h over a timespan for given z
+    Parameters
+    ----------
+    dphi_dz: array, contains partial derivatives for modified z grid
+        dphi_dz computed
+    z_grid: array
+        modified z grid
+    z_idx: int
+        index for the given z_2 value
+    r: array
+        reserve for the same z_2
+    ems: array
+        emission grid for the same z_2
+    z: array
+        original z grid, pre-modification
+    r_initial: float
+        initial reserve
+    time: int
+        timespan for simulation
+    xi: float
+        xi_m value used in computing solutions and distortion
+    Returns
+    -------
+    ems_t: emission trajectory over time
+    h_t: distortion trajectory over time"""
+    r_remain = r_initial
+    z_idx = int(z_idx)
+    loc = np.abs(z_grid - z[z_idx]).argmin()    
+    dphi = dphi_dz[:,loc]
+    zvalue = z_grid[loc]
+    ems_t = np.zeros(time)
+    print(zvalue)
+    h_t = np.zeros(time)
+    for i in range(time):
+        loc = np.abs(r-r_remain).argmin()
+        ems_i = ems[loc]
+        ems_t[i] = ems_i
+        dphi_dz_i = dphi[loc]
+        h_t[i] = - dphi_dz_i*zvalue*sigma_2**2/xi
+        r_remain = r_remain - ems_i
+    return  ems_t, h_t
