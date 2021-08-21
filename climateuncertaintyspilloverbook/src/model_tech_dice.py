@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
-from utilities_2d import compute_derivatives
-from solver_2d import false_transient_one_iteration_cpp
+from src.utilities_2d import compute_derivatives
+from src.solver_2d import false_transient_one_iteration_cpp
 from numba import njit
 from multiprocessing import Pool
 
@@ -41,10 +42,6 @@ def _hjb_iteration(v0, k_mat, y_mat, dk, dy, d_Λ, dd_Λ, theta, lambda_bar, var
             e_new = root2
     else:
         e_new = c / (-b)
-
-#     # Method 2 : Fix a and solve
-#     e_new = (a * e**2 + c) / (-b)
-
     e_new = e_new * (e_new > 0) + 1e-8 * (e_new <= 0)
     
     i = i_new * fraction + i * (1-fraction)
@@ -70,6 +67,10 @@ def _hjb_iteration(v0, k_mat, y_mat, dk, dy, d_Λ, dd_Λ, theta, lambda_bar, var
     h = - G * e * σ_y / ξ_b
 
     return πc, A, B_k, B_y, C_kk, C_yy, D, dvdk, dvdy, dvdkk, dvdyy, i, e, h
+
+#     # Method 2 : Fix a and solve
+#     e_new = (a * e**2 + c) / (-b)
+
 
 
 def hjb_post_damage_post_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fraction=.1,
@@ -121,9 +122,6 @@ def hjb_post_damage_post_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fra
 
         if print_iteration:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
-#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
     res = {'v': v,
            'e': e,
            'i': i,
@@ -131,6 +129,9 @@ def hjb_post_damage_post_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fra
            'h': h}
 
     return res
+
+#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+
 
 
 def hjb_post_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fraction=.1,
@@ -169,10 +170,10 @@ def hjb_post_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., frac
         πc, A, B_k, B_y, C_kk, C_yy, D, dvdk, dvdy, dvdkk, dvdyy, i, e, h = \
             _hjb_iteration(v0, k_mat, y_mat, dk, dy, d_Λ, dd_Λ, theta, lambda_bar, vartheta_bar,
                            δ, α, κ, μ_k, σ_k, πc_o, πc, θ, σ_y, ξ_a, ξ_b, i, e, fraction)
-        
+
 #         # Method 1:
 #         D -= ξ_g * I_g * (np.exp(- v_g / ξ_g) - np.exp(- v0 / ξ_g)) / (np.exp(- v0 / ξ_g))
-        
+
         # Method 2:
         g_tech = np.exp(1. / ξ_g * (v0 - v_g))
         A -= I_g * g_tech
@@ -190,9 +191,6 @@ def hjb_post_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., frac
 
         if print_iteration:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
-#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
     g_tech = np.exp(1. / ξ_g * (v - v_g))
 
     res = {'v': v,
@@ -203,6 +201,9 @@ def hjb_post_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., frac
            'h': h}
 
     return res
+
+#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+
 
 
 def hjb_pre_damage_post_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fraction=.1,
@@ -262,9 +263,6 @@ def hjb_pre_damage_post_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., frac
 
         if print_iteration:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
-#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
     g = np.exp(1. / ξ_p * (v - v_i))
 
     res = {'v': v,
@@ -275,6 +273,9 @@ def hjb_pre_damage_post_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., frac
            'h': h}
 
     return res
+
+#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
+
 
 
 def hjb_pre_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fraction=.1,
@@ -319,10 +320,6 @@ def hjb_pre_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fract
         πc, A, B_k, B_y, C_kk, C_yy, D, dvdk, dvdy, dvdkk, dvdyy, i, e, h = \
             _hjb_iteration(v0, k_mat, y_mat, dk, dy, d_Λ, dd_Λ, theta, lambda_bar, vartheta_bar,
                            δ, α, κ, μ_k, σ_k, πc_o, πc, θ, σ_y, ξ_a, ξ_b, i, e, fraction)
-
-#         # Method 1:
-#         D -= ξ_g * I_g * (np.exp(- v_g / ξ_g) - np.exp(- v0 / ξ_g)) / (np.exp(- v0 / ξ_g))
-        
         # Method 2:
         g_tech = np.exp(1. / ξ_g * (v0 - v_g))
         A -= I_g * g_tech
@@ -342,9 +339,6 @@ def hjb_pre_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fract
 
         if print_iteration:
             print("Iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
-#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
-
     g = np.exp(1. / ξ_p * (v - v_i))
     g_tech = np.exp(1. / ξ_g * (v - v_g))
 
@@ -358,9 +352,15 @@ def hjb_pre_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fract
 
     return res
 
+#         # Method 1:
+#         D -= ξ_g * I_g * (np.exp(- v_g / ξ_g) - np.exp(- v0 / ξ_g)) / (np.exp(- v0 / ξ_g))
+
+#     print("Converged. Total iteration %s: LHS Error: %s; RHS Error %s" % (count, lhs_error, rhs_error))
 
 def parallel_solve(fun, args_list):
     with Pool() as p:
         res_list = p.starmap(fun, args_list)
     return res_list
+
+
 

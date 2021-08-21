@@ -10,26 +10,10 @@ The latest version of the paper can be found through this `link <http://larspete
 
 For related research, also checkout: `Pricing Uncertainty Induced by Climate Change <https://github.com/lphansen/Climate>`_.
 
-.. toctree::
-   :hidden:
-   :caption: Contents:
-
-   sec1_Introduction
-   sec2_UncertainClimateDynamics
-   sec3_UncertainDamage
-   sec4_IllustrativeEconI
-   sec5_IllustrativeEconII
-   sec6_IllustrativeEconIII
-   sec7_Conclusion
-   appendices
-
-   Modules <modules_index.rst>
-   References <bib_file.rst>
-
-
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+

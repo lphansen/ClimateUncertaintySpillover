@@ -1,14 +1,15 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: My sample book
+title: Climate Change Uncertainty Spillover in the Macroeconomy
 author: The Jupyter Book Community
-logo: logo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
+  timeout: -1
   execute_notebooks: force
+
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -17,7 +18,7 @@ latex:
 
 # Add a bibtex file so that we can create citations
 bibtex_bibfiles:
-  - references.bib
+  - bib_file.rst
 
 # Information about where the book exists on the web
 repository:
