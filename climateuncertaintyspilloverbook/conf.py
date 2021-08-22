@@ -85,7 +85,7 @@ html_static_path = ['_static']
 
 # biblipgraphy file
 bibtex_bibfiles = ['climate.bib']
-
+bibtex_default_style = 'unsrt'
 # nbsphinx
 nbsphinx_allow_errors = True
 nbsphinx_kernel_name = "python"

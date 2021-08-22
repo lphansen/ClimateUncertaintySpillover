@@ -4,8 +4,8 @@ Functions that solve the HJBs in the draft paper.
 
 """
 import numpy as np
-from .utilities import compute_derivatives, J
-from .solver import false_transient
+from src.utilities import compute_derivatives, J
+from src.solver import false_transient
 
 def solve_hjb_y(y, model_args=(), v0=None, ϵ=1., tol=1e-8, max_iter=10_000, print_iteration=True):
     r"""

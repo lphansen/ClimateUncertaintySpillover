@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 """
 Functions that facilitate computation.
 
 """
 import numpy as np
 from numba import njit
+import numba
 from multiprocessing import Pool
 
 @njit
