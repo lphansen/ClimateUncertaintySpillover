@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
+# +
 import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+
 import numpy as np
 import pandas as pd
 import plotly.offline as pyo
 pyo.init_notebook_mode()
 import plotly.io as pio
 pio.templates.default = "none"
+# -
 
 θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0] / 1000.
 γ_3 = np.linspace(0, 1./3, 20)
@@ -380,7 +383,7 @@ def plot6(pre_jump_res):
                      showgrid=True,
                      linecolor="black",
                      linewidth=1,
-                     title = go.layout.xaxis.Title(text=r"$\gamma_3$", font=dict(size=13)),
+                     title = go.layout.xaxis.Title(text=r"γ₃", font=dict(size=13)),
                     )
     return fig
 
@@ -522,7 +525,7 @@ def plot89(pre_jump_res, y_grid_short, y_underline):
         if ξ_r_i == 100_000:
             name = "baseline"
         else:
-            name = r"$\xi_r = {}$".format(ξ_r_i)
+            name = r"ξᵣ = {}".format(ξ_r_i)
         fig.add_trace(
             go.Scatter(x=y_grid_short[loc_11 :loc_end + 1],
                        y=pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_end + 1],
@@ -540,44 +543,58 @@ def plot89(pre_jump_res, y_grid_short, y_underline):
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
-def plot1011(pre_jump_res, pre_jump175_res, y_grid_short, y_underline, y_underline_higher, args_scc):
+def plot1011(pre_jump_res, y_grid_short, y_underline, args_scc):
     def logSCC(y_grid, e_tilde, args=()):
         α, η, i_over_k, K0, γ_1, γ_2 = args
         C0 = (α - i_over_k) * K0
         return np.log(1000) + np.log(C0)  - (y_grid*γ_1 + γ_2/2*y_grid**2) \
             -np.log(e_tilde) + np.log(η) - np.log(1- η)
-
-
-    fig = make_subplots(2,1)
+    
+    fig = go.Figure()
     loc_11 = np.abs(y_grid_short - 1.1).argmin()
     loc_15 = np.abs(y_grid_short - y_underline).argmin()
+    for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
+        if ξ_r_i == 100_000:
+            name = "baseline"
+        else:
+            name = r"ξᵣ = {}".format(ξ_r_i)
+        e_tilde = pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_15 + 1]
+        log_SCC = logSCC(y_grid_short[loc_11 :loc_15 + 1], e_tilde, args_scc)
+        fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_15 + 1], y=log_SCC,
+                                 name=name, 
+                                 line=dict(color=color[i], width=2)))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black", title = "Temperature anomaly")
+    fig.update_yaxes(showline=True, range=[4.4, 5.7], title="Emissions")
+    fig.update_layout(width=800, height=500, title = "logSCC as a function of temperature anomaly <br> The thresholds are y̲ = 1.5 and ȳ = 2.0.")
+    return fig
+
+def plot1012( pre_jump175_res, y_grid_short, y_underline_higher, args_scc):
+    def logSCC(y_grid, e_tilde, args=()):
+        α, η, i_over_k, K0, γ_1, γ_2 = args
+        C0 = (α - i_over_k) * K0
+        return np.log(1000) + np.log(C0)  - (y_grid*γ_1 + γ_2/2*y_grid**2) \
+    -np.log(e_tilde) + np.log(η) - np.log(1- η)
+    
+    fig = go.Figure()
+    loc_11 = np.abs(y_grid_short - 1.1).argmin()
     loc_175 = np.abs(y_grid_short - y_underline_higher).argmin()
     for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
         if ξ_r_i == 100_000:
             name = "baseline"
         else:
-            name = r"$\xi_r = {}$".format(ξ_r_i)
-        e_tilde = pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_15 + 1]
-        log_SCC = logSCC(y_grid_short[loc_11 :loc_15 + 1], e_tilde, args_scc)
-        fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_15 + 1], y=log_SCC,
-                                 name=name, 
-                                line=dict(color=color[i], width=2)), col=1, row=1)
-
-    for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
-        if ξ_r_i == 100_000:
-            name = "baseline"
-        else:
-            name = r"$\xi_r = {}$".format(ξ_r_i)
+            name = r"ξᵣ = {}".format(ξ_r_i)
         e_tilde = pre_jump175_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_175 + 1]
         log_SCC = logSCC(y_grid_short[loc_11 :loc_175 + 1], e_tilde, args_scc)
         fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_175 + 1], y=log_SCC,
                                  name=name, 
-                                 showlegend=False,
-                                line=dict(color=color[i], width=2)), col=1, row=2)
-    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+                                 line=dict(color=color[i], width=2)))
+
+
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black", title = "Temperature anomaly")
     fig.update_yaxes(showline=True, range=[4.4, 5.7], title="Emissions")
-    fig.update_layout(width=800, height=1000)
+    fig.update_layout(width=800, height=500, title = "logSCC as a function of temperature anomaly <br> The thresholds are y̲ = 1.75 and ȳ = 2.0.")
     return fig
+
 
 def plot13(ratios, y_grid_long, y_underline):
     fig = go.Figure(layout=dict(width=800, height=500, plot_bgcolor="white"))
@@ -625,7 +642,7 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_first_7p5[:41],
-        name=r'$\xi_r = 7.5$',
+        name='ξᵣ = 7.5',
         line=dict(width=2.5, color=colors[1]),
     ),
                   row=1,
@@ -633,7 +650,7 @@ def plot14(
 
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=distorted_tech_prob_first_5[:41],
-                             name=r'$\xi_r = 5$',
+                             name='ξᵣ = 5',
                              line=dict(width=2.5, color=colors[2]),),
                   row=1,
                   col=1)
@@ -641,7 +658,7 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_first_2p5[:41],
-        name=r'$\xi_r = 2.5$',
+        name='ξᵣ = 2.5',
         line=dict(width=2.5, color=colors[3]),   
     ),
                   row=1,
@@ -662,8 +679,8 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_second_7p5[:41],
-        name=r'$\xi_r = 7.5$',
-          showlegend=False,
+        name='ξᵣ = 7.5',
+        showlegend=False,
         line=dict(width=2.5, color=colors[1]),
     ),
                   row=1,
@@ -671,8 +688,8 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_second_5[:41],
-        name=r'$\xi_r = 5$',
-          showlegend=False,
+        name='ξᵣ = 5',
+        showlegend=False,
         line=dict(width=2.5, color=colors[2]),
     ),
                   row=1,
@@ -680,8 +697,8 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_second_2p5[:41],
-        name=r'$\xi_r = 2.5$',
-          showlegend=False,
+        name='ξᵣ = 2.5',
+        showlegend=False,
         line=dict(width=2.5, color=colors[3]),
     ),
                   row=1,
@@ -696,7 +713,7 @@ def plot14(
                   col=3)
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=distorted_dmg_prob_7p5[:41],
-                             name=r'$\xi_r = 7.5$',
+                             name='ξᵣ = 7.5',
                             showlegend=False,
         line=dict(width=2.5, color=colors[1]),),
                   row=1,
@@ -704,7 +721,7 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_dmg_prob_5[:41],
-        name=r'$\xi_r = 5$',
+        name='ξᵣ = 5',
         showlegend=False,
         line=dict(width=2.5, color=colors[2]),
     ),
@@ -713,7 +730,7 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_dmg_prob_2p5[:41],
-        name=r'$\xi_r = 2.5$',
+        name='ξᵣ = 2.5',
         showlegend=False,
         line=dict(width=2.5, color=colors[3]),
     ),
