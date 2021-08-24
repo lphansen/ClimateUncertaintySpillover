@@ -13,6 +13,7 @@ from src.model_tech_dice import hjb_post_damage_post_tech, hjb_post_damage_pre_t
 from src.model_tech_dice import hjb_pre_damage_post_tech, hjb_pre_damage_pre_tech
 from src.utilities import find_nearest_value
 from src.simulation_2d import simulation_dice_prob
+import pickle
 # In[2]:
 
 
@@ -91,7 +92,7 @@ for i, γ_3_i in enumerate(γ_3):
     else:
         v_guess = model_res['v']
     model_res = hjb_post_damage_post_tech(k_grid, y_grid_long, model_args, v0=v_guess, ϵ=1., fraction=.05,
-                                          tol=1e-6, max_iter=2000, print_iteration=False)
+                                          tol=1e-6, max_iter=1000, print_iteration=False)
     model_post_damage_post_second_tech.append(model_res)
 
 
@@ -109,7 +110,7 @@ for i, γ_3_i in enumerate(γ_3):
     else:
         v_guess = model_res['v']
     model_res = hjb_post_damage_pre_tech(k_grid, y_grid_long, model_args, v0=v_guess, ϵ=1., fraction=.05,
-                                         tol=1e-6, max_iter=2000, print_iteration=False)
+                                         tol=1e-6, max_iter=1000, print_iteration=False)
     model_post_damage_post_first_tech.append(model_res)
 
 
@@ -127,7 +128,7 @@ for i, γ_3_i in enumerate(γ_3):
     else:
         v_guess = model_res['v']
     model_res = hjb_post_damage_pre_tech(k_grid, y_grid_long, model_args, v0=v_guess, ϵ=1., fraction=.05,
-                                         tol=1e-6, max_iter=2000, print_iteration=False)
+                                         tol=1e-6, max_iter=1000, print_iteration=False)
     model_post_damage_pre_tech.append(model_res)
 
 
@@ -187,7 +188,7 @@ model_args = (δ, α, κ, μ_k, σ_k, θ, πc_o, σ_y, ξ_a, ξ_b, ξ_g_first, �
 model_pre_damage_pre_tech = hjb_pre_damage_pre_tech(k_grid, y_grid_short, model_args=model_args, v0=np.mean(v_i_short, axis=0),
                                                     ϵ=.1, fraction=.05, tol=1e-6, max_iter=2_000, print_iteration=False)
 
-
+pickle.dump(model_pre_damage_pre_tech, open("model_pre_damage_pre_tech_5", "wb" ))
 # ## Simulation
 
 # In[9]:

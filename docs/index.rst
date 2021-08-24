@@ -21,7 +21,8 @@ For related research, also checkout: `Pricing Uncertainty Induced by Climate Cha
    sec5_IllustrativeEconII
    sec6_IllustrativeEconIII
    sec7_Conclusion
-   appendices
+   appendix1
+   appendix2_smoothambiguity
 
    Modules <modules_index.rst>
    References <bib_file.rst>

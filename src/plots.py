@@ -517,7 +517,7 @@ def plot89(pre_jump_res, y_grid_short, y_underline):
     loc_11 = np.abs(y_grid_short - 1.1).argmin()
     loc_end = np.abs(y_grid_short - y_underline).argmin()
 
-    for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
+    for i, ξ_r_i in enumerate([100_000, 5., 1., 0.3]):
         if ξ_r_i == 100_000:
             name = "baseline"
         else:
@@ -566,7 +566,7 @@ def plot1011(pre_jump_res, pre_jump175_res, y_grid_short, y_underline, y_underli
         if ξ_r_i == 100_000:
             name = "baseline"
         else:
-            name = r"$\xi_r = {}$".format(ξ_redr_i)
+            name = r"$\xi_r = {}$".format(ξ_r_i)
         e_tilde = pre_jump175_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_175 + 1]
         log_SCC = logSCC(y_grid_short[loc_11 :loc_175 + 1], e_tilde, args_scc)
         fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_175 + 1], y=log_SCC,
@@ -845,4 +845,85 @@ def plot15(θ_list, γ_3, distorted_damage_probs, πct):
         row=1,
         col=2
     )
+    return fig
+
+def plot_ems_app(pre_jump_res, y_grid_short, ξ_a_list, dt=1, model_res=True, y_underline=1.5, truncate=False):
+    fig = go.Figure()
+    loc_11 = np.abs(y_grid_short - 1.1).argmin()
+    loc_end = np.abs(y_grid_short - y_underline).argmin()
+
+    for i, ξ_a_i in enumerate(ξ_a_list):
+        if ξ_a_i == 100_000:
+            name = "baseline"
+        else:
+            name = r"$\xi_a = {}$".format(ξ_a_i)
+        if model_res:
+            y = pre_jump_res[ξ_a_i]["model_res"]["e_tilde"][loc_11 :loc_end + 1]
+            x = y_grid_short[loc_11 :loc_end + 1]
+            xlabel = 'Temperature anomaly'
+        else:
+            y = pre_jump_res[ξ_a_i]['simulation_res']['et']
+            periods = len(y)
+            x = np.arange(0, periods * dt, dt)
+            xlabel = "Years"
+            if truncate:
+                temperature_anomaly = pre_jump_res[ξ_a_i]['simulation_res']['yt']
+                end_periods = np.abs(temperature_anomaly - y_underline).argmin()
+                y = pre_jump_res[ξ_a_i]['simulation_res']['et'][:end_periods]
+                x = np.arange(0, end_periods*dt, dt)
+        fig.add_trace(
+            go.Scatter(x=x,
+                       y=y,
+                       name=name,
+                       line=dict(color=color[i]),
+                      legendgroup=name,
+                      hovertemplate="%{y:.2f}"
+                      ),
+        )
+
+
+
+    fig.update_yaxes(range=[0, 7], showline=True, title="Emission")
+    fig.update_xaxes(showline=True, title=xlabel)
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="normal"))
+    return fig
+
+def plot_logscc(pre_jump_res,  y_grid_short, y_underline, ξ_a_list, args_scc):
+    def logSCC(y_grid, e_tilde, args=()):
+        α, η, i_over_k, K0, γ_1, γ_2 = args
+        C0 = (α - i_over_k) * K0
+        return np.log(1000) + np.log(C0)  - (y_grid*γ_1 + γ_2/2*y_grid**2) \
+            -np.log(e_tilde) + np.log(η) - np.log(1- η)
+
+
+    fig = go.Figure()
+    loc_11 = np.abs(y_grid_short - 1.1).argmin()
+    loc_15 = np.abs(y_grid_short - y_underline).argmin()
+#     loc_175 = np.abs(y_grid_short - y_underline_higher).argmin()
+    for i, ξ_a_i in enumerate(ξ_a_list):
+        name = r"$\xi_a = {}$".format(ξ_a_i)
+        e_tilde = pre_jump_res[ξ_a_i]["model_res"]["e_tilde"][loc_11 :loc_15 + 1]
+        log_SCC = logSCC(y_grid_short[loc_11 :loc_15 + 1], e_tilde, args_scc)
+        fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_15 + 1], y=log_SCC,
+                                 name=name, 
+                                line=dict(color=color[i], width=2),
+                                hovertemplate="%{y:.2f}",
+                                )
+                     )
+
+#     for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
+#         if ξ_r_i == 100_000:
+#             name = "baseline"
+#         else:
+#             name = r"$\xi_r = {}$".format(ξ_redr_i)
+#         e_tilde = pre_jump175_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_175 + 1]
+#         log_SCC = logSCC(y_grid_short[loc_11 :loc_175 + 1], e_tilde, args_scc)
+#         fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_175 + 1], y=log_SCC,
+#                                  name=name, 
+#                                  showlegend=False,
+#                                 line=dict(color=color[i], width=2)), col=1, row=2)
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+    fig.update_xaxes(showline=True, title="Temperature anomaly")
+    fig.update_yaxes(showline=True, range=[4.4, 5.7], title=r"$\log SCC$")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig

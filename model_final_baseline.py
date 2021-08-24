@@ -132,7 +132,7 @@ for i, γ_3_i in enumerate(γ_3):
                                          tol=1e-6, max_iter=2000, print_iteration=False)
     model_post_damage_pre_tech.append(model_res)
 
-
+np.save("e_post_damage_pre_tech_base", np.array([model_post_damage_pre_tech[i]['e'] for i in range(len(θ))]))
 # In[ ]:
 
 
@@ -189,7 +189,7 @@ model_args = (δ, α, κ, μ_k, σ_k, θ, πc_o, σ_y, ξ_a, ξ_b, ξ_g_first, �
 model_pre_damage_pre_tech = hjb_pre_damage_pre_tech(k_grid, y_grid_short, model_args=model_args, v0=np.mean(v_i_short, axis=0),
                                                     ϵ=.1, fraction=.05, tol=1e-6, max_iter=2_000, print_iteration=False)
 
-
+np.save("e_pre_damage_pre_tech_base", model_pre_damage_pre_tech['e'])
 # ## Distortion
 
 # In[ ]:

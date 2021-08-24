@@ -347,14 +347,21 @@ def hjb_pre_damage_pre_tech(k_grid, y_grid, model_args=(), v0=None, ϵ=1., fract
 
     g = np.exp(1. / ξ_p * (v - v_i))
     g_tech = np.exp(1. / ξ_g * (v - v_g))
-
+    N = np.exp(γ_1 * y_mat + γ_2/2 * y_mat**2) 
+    temp = α - i - α * vartheta_bar * (1 - e / (α * lambda_bar * np.exp(k_mat))) ** theta
+    mc = 1. / temp
+    temperture_anomaly = - (dvdy * np.sum(θ*πc, axis=0) + dvdyy * σ_y**2 * e) * np.exp(k_mat) /(N*mc)
+    damage_part = 1 / δ * (d_Λ*np.sum(θ*πc, axis=0) + dd_Λ * σ_y**2 *e) * np.exp(k_mat) /(N*mc)
     res = {'v': v,
            'e': e,
            'i': i,
            'g': g,
            'g_tech': g_tech,
            'πc': πc,
-           'h': h}
+           'h': h,
+           'temperture_anomaly': temperture_anomaly,
+           'damage_part': damage_part,
+           }
 
     return res
 
