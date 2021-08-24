@@ -10,10 +10,3 @@ The latest version of the paper can be found through this `link <http://larspete
 
 For related research, also checkout: `Pricing Uncertainty Induced by Climate Change <https://github.com/lphansen/Climate>`_.
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-

@@ -11,6 +11,9 @@ chapters:
 - file: sec5_IllustrativeEconII
 - file: sec6_IllustrativeEconIII
 - file: sec7_Conclusion
-- file: appendices
+- file: appendix1
+- file: appendix2
+- file: appendix2_smoothambiguity
+- file: appendix3
 - file: bib_file
 - file: modules_index

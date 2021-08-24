@@ -7,7 +7,7 @@ The module ``src`` includes functions used for solving ODEs and simulating traje
 1 model
 ============
 .. automodule:: src.model
-   :members:
+   :members: 
 
 2 simulation
 ==================
