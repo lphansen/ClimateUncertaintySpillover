@@ -71,6 +71,15 @@ def solve_post_jump(y_grid, γ_3, func, args_list):
         ems_list[j] = res_list[j]['e_tilde']
     return ϕ_list, ems_list
 
+def dLambda(y_mat, z_mat, gamma1, gamma2, gamma2p, gammaBar):
+    """compute first derivative of Lambda, aka log damage function
+    :returns:
+    dlambda: (numz, numy) ndarray
+        first derivative of Lambda
+
+    """
+    dlambda = gamma1 + gamma2*y_mat*z_mat + gamma2p*(y_mat*z_mat - gammaBar)*(y_mat*z_mat>=gammaBar)
+    return dlambda
 
 def J(y_arr, y_underline=1.5):
     r1 = 1.5

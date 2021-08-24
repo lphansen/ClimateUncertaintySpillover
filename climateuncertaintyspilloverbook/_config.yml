@@ -3,7 +3,7 @@
 
 title: Climate Change Uncertainty Spillover in the Macroeconomy
 author: The Jupyter Book Community
-
+logo: download.png
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
