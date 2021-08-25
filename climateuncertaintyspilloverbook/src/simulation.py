@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
+# +
 """
 module for simulation
 """
 import numpy as np
+import pandas as pd
+import ray
 from scipy import interpolate
 from .utilities import J
+
 # function claim
+# -
 
 
 def simulate_jump(model_res, θ_list, ME=None,  y_start=1,  T=100, dt=1):
@@ -397,5 +402,102 @@ def simulate_jump_2(model_res_pre, model_res_post, y_upper, θ_list, ME=None,  y
     else:
         simulation_res = dict(yt=yt[0:K], et=et[0:K], πct=πct[0:K], πdt=πdt[0:K], ht=ht[0:K], threshold = threshold)
     return simulation_res
+
+
+@ray.remote
+def simulation_jump_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, y_lower=1.5, y_upper=2.0):
+    Et = np.ones(T+1)
+    y1t = np.zeros(T+1 )
+    Damage_func = np.zeros(T+1 )
+    if len(df[0])>10:
+        years = np.linspace(0,T, T+1, dtype=int)
+    else:
+        years = [0, 10,20,30,40,50, 60, 70, 80]
+    e_fun = interpolate.interp1d(years, df[model, 0:T+1])
+    r1 = 1.5
+    r2 = 2.
+    γ3 = 0
+    Jump = 0
+    for i in range(T+1 ):
+        if Jump == 0:
+            Et[i] = e_fun(i)
+            Intensity = r1 * (np.exp(r2 / 2 * (y1_0 - y_lower) ** 2) - 1) * (y1_0 >= y_lower)
+            rng = np.random.default_rng(iterer)
+            jump_prob = Intensity * dt
+            jump_prob = jump_prob * (jump_prob <= 1) + (jump_prob > 1)
+            Jump     = rng.choice([0,1], size=1, p=[1 - jump_prob, jump_prob])
+            y1t[i] = y1_0
+            y1_0 = y1_0 + Et[i] * θ * dt
+            else_loop = 0
+            Damage_func[i] = γ1 + γ2 * y1t[i]
+            K = i
+        elif Jump >= 1:
+            if else_loop == 0:
+                Jump = 1
+                K = i
+                γ3 = rng.choice(γ3_list)
+
+            Et[i] = e_fun(i)
+            y1t[i] = y1_0
+            Damage_func[i] = γ1 + γ2 * y1t[i] + γ3 * (y1t[i] - y_upper) * (y1t[i] > y_upper)
+            y1_0 = y1_0 + Et[i] * θ * dt
+            else_loop = 1
+    print(iterer)
+    result = dict(model=model, Et=Et, y1t=y1t, Damages=Damage_func, γ3=γ3, K=K)
+
+    return (result)
+
+
+# +
+@ray.remote
+def simulation_jump_pulse_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, y_lower=1.5, y_upper=2.0):
+    Et = np.ones(T+1)
+    y1t = np.zeros(T+1 )
+    Damage_func = np.zeros(T+1 )
+    if len(df[0])>10:
+        years = np.linspace(0,T, T+1, dtype=int)
+    else:
+        years = [0, 10,20,30,40,50, 60, 70, 80]
+    e_fun = interpolate.interp1d(years, df[model, 0:T+1])
+    r1 = 1.5
+    r2 = 2.
+    γ3 = 0
+    Jump = 0
+    for i in range(T + 1):
+        print(i)
+        if Jump == 0:
+            if i == 0:
+                Et[i] = e_fun(i) + 1
+            else:
+                Et[i] = e_fun(i)
+            Intensity = r1 * (np.exp(r2 / 2 * (y1_0 - y_lower) ** 2) - 1) * (y1_0 >= y_lower)
+            rng = np.random.default_rng(iterer)
+            jump_prob = Intensity * dt
+            jump_prob = jump_prob * (jump_prob <= 1) + (jump_prob > 1)
+            Jump      = rng.choice([0,1], size=1, p=[1 - jump_prob, jump_prob])
+            y1t[i] = y1_0
+            Damage_func[i] = γ1 + γ2 * y1t[i]
+            y1_0 = y1_0 + Et[i] * θ * dt
+            else_loop = 0
+            K = i
+        elif Jump >= 1:
+            if else_loop == 0:
+                Jump = 1
+                K = i
+                γ3 = rng.choice(γ3_list)
+
+            Et[i] = e_fun(i)
+            y1t[i] = y1_0
+            Damage_func[i] = γ1 + γ2 * y1t[i] + γ3 * (y1t[i] - y_upper) * (y1t[i] > y_upper)
+            y1_0 = y1_0 + Et[i] * θ * dt
+            else_loop = 1
+    result = dict(model=model, Et=Et, y1t=y1t, Damages=Damage_func, γ3=γ3, K=K)
+
+    return (result)
+
+
+# -
+
+
 
 

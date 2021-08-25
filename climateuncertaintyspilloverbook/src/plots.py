@@ -975,7 +975,7 @@ def plot_basic_y(simulation_res_high, simulation_res_low,T):
     fig.update_yaxes(showline=True, title="Emissions", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
-    
+
 def plot_basic_DMG(simulation_res_high, simulation_res_low,T, y_bar_high, y_bar_low, γ_1, γ_2, γ_2p):
     if T > len(simulation_res_high['yt']):
         print('Error: Simulation Length {:d} less than Time length {:d}'.format(len(simulation_res_high['yt']), T))
