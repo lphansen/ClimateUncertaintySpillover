@@ -996,3 +996,66 @@ def plot_basic_DMG(simulation_res_high, simulation_res_low,T, y_bar_high, y_bar_
     fig.update_yaxes(showline=True, title="Emissions", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
+
+
+def plot_DMG_np(list_len, T, iteration_list):
+    Damages_list = np.zeros((list_len, T+1))
+    for i in range(list_len):
+        Damages_list[i] = iteration_list[i]['Damages']
+    n_9 = np.quantile(Damages_list, 0.9, axis=0)
+    n_5 = np.mean(Damages_list, axis=0)
+    n_1 = np.quantile(Damages_list, 0.1, axis=0)
+    fig = go.Figure()
+    years = np.linspace(0,T, T+1)
+    fig.add_trace(go.Scatter(x = years, y = np.exp(-n_9), name = ".9 quantile",
+                             line=dict(color="red")))
+    fig.add_trace(go.Scatter(x = years, y = np.exp(-n_5), name = "mean",
+                             line=dict(color="blue")))
+    fig.add_trace(go.Scatter(x = years, y = np.exp(-n_1), name = ".1 quantile",
+                             line=dict(color="green")))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+    fig.update_xaxes(showline=True, title="Year (starts from 2020)")
+    fig.update_yaxes(showline=True, title="Damages", linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
+                      title = "Damage, exp(-n), with a pulse")
+    return fig
+
+
+
+# +
+def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
+    Damages_list       = np.zeros((list_len, T+1))
+    Damages_list_pulse = np.zeros((list_len, T+1))
+    for i in range(list_len):
+        Damages_list[i]       = iteration_list[i]['Damages']
+        Damages_list_pulse[i] = iteration_list_pulse[i]['Damages']
+
+    n_9 = np.quantile(Damages_list, 0.9, axis=0)
+    n_5 = np.mean(Damages_list, axis=0)
+    n_1 = np.quantile(Damages_list, 0.1, axis=0)
+    n_9_p = np.quantile(Damages_list_pulse, 0.9, axis=0)
+    n_5_p = np.mean(Damages_list_pulse, axis=0)
+    n_1_p = np.quantile(Damages_list_pulse, 0.1, axis=0)
+    t = np.arange(0, len(n_9))
+    years = np.linspace(0,T, T+1)
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = years, y = np.cumsum(np.exp( - 0.02 *t) 
+                            *(-n_9 + n_9_p) ) * 1000* 85, name = ".9 quantile",
+                             line=dict(color="red")))
+    fig.add_trace(go.Scatter(x = years, y = np.cumsum(np.exp( - 0.02 *t) 
+                            *(-n_5 + n_5_p) ) * 1000* 85, name = "mean",
+                             line=dict(color="blue")))
+    fig.add_trace(go.Scatter(x = years, y = np.cumsum(np.exp( - 0.02 *t) 
+                            *(-n_1 + n_1_p) ) * 1000* 85, name = ".1 quantile",
+                             line=dict(color="green")))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+    fig.update_xaxes(showline=True, title="Year (starts from 2020)")
+    fig.update_yaxes(showline=True, title="Damages", linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
+                      title = "Log damage difference")
+    return fig
+    
+    
+# -
+
+
