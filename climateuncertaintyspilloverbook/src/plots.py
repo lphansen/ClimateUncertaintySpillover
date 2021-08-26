@@ -1022,7 +1022,6 @@ def plot_DMG_np(list_len, T, iteration_list):
 
 
 
-# +
 def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
     Damages_list       = np.zeros((list_len, T+1))
     Damages_list_pulse = np.zeros((list_len, T+1))
@@ -1054,8 +1053,5 @@ def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
                       title = "Log damage difference")
     return fig
-    
-    
-# -
 
 

@@ -429,7 +429,7 @@ def simulation_jump_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, 
             y1t[i] = y1_0
             y1_0 = y1_0 + Et[i] * θ * dt
             else_loop = 0
-            Damage_func[i] = γ1 + γ2 * y1t[i]
+            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 
             K = i
         elif Jump >= 1:
             if else_loop == 0:
@@ -439,7 +439,7 @@ def simulation_jump_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, 
 
             Et[i] = e_fun(i)
             y1t[i] = y1_0
-            Damage_func[i] = γ1 + γ2 * y1t[i] + γ3 * (y1t[i] - y_upper) * (y1t[i] > y_upper)
+            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 + γ3/2 * (y1t[i] - y_upper)**2 * (y1t[i] > y_upper)
             y1_0 = y1_0 + Et[i] * θ * dt
             else_loop = 1
     print(iterer)
@@ -448,7 +448,6 @@ def simulation_jump_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, 
     return (result)
 
 
-# +
 @ray.remote
 def simulation_jump_pulse_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, y_lower=1.5, y_upper=2.0):
     Et = np.ones(T+1)
@@ -476,7 +475,7 @@ def simulation_jump_pulse_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T
             jump_prob = jump_prob * (jump_prob <= 1) + (jump_prob > 1)
             Jump      = rng.choice([0,1], size=1, p=[1 - jump_prob, jump_prob])
             y1t[i] = y1_0
-            Damage_func[i] = γ1 + γ2 * y1t[i]
+            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 
             y1_0 = y1_0 + Et[i] * θ * dt
             else_loop = 0
             K = i
@@ -488,15 +487,12 @@ def simulation_jump_pulse_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T
 
             Et[i] = e_fun(i)
             y1t[i] = y1_0
-            Damage_func[i] = γ1 + γ2 * y1t[i] + γ3 * (y1t[i] - y_upper) * (y1t[i] > y_upper)
+            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 + γ3/2 * (y1t[i] - y_upper)**2 * (y1t[i] > y_upper)
             y1_0 = y1_0 + Et[i] * θ * dt
             else_loop = 1
     result = dict(model=model, Et=Et, y1t=y1t, Damages=Damage_func, γ3=γ3, K=K)
 
     return (result)
-
-
-# -
 
 
 
