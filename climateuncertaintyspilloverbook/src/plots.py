@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
-# +
 import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
 import numpy as np
 import pandas as pd
 import plotly.offline as pyo
 pyo.init_notebook_mode()
 import plotly.io as pio
 pio.templates.default = "none"
-# -
 
 θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0] / 1000.
 γ_3 = np.linspace(0, 1./3, 20)
@@ -987,13 +984,13 @@ def plot_basic_DMG(simulation_res_high, simulation_res_low,T, y_bar_high, y_bar_
     DF_low = γ_1 * yt_low + γ_2/2 *yt_low **2 + γ_2p/2 *(yt_low - y_bar_low * np.ones_like(yt_low))**2 *(yt_low > y_bar_low * np.ones_like(yt_low))
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= DF_high[0:T],
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= np.exp(-DF_high[0:T]),
                              name = "Threshold 2.0",line=dict(color="red")))
-    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= DF_low[0:T], 
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= np.exp(-DF_low[0:T]), 
                              name = "Threshold 1.5",line=dict(color="blue")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
     fig.update_xaxes(showline=True, title="Year")
-    fig.update_yaxes(showline=True, title="Damages", linecolor="black")
+    fig.update_yaxes(showline=True, title="1/N", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
@@ -1049,9 +1046,81 @@ def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
                              line=dict(color="green")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
     fig.update_xaxes(showline=True, title="Year (starts from 2020)")
-    fig.update_yaxes(showline=True, title="Damages", linecolor="black")
+    fig.update_yaxes(showline=True, title=r"$N$", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
                       title = "Log damage difference")
     return fig
 
+
+def plot_2S_ey1y2(simul):
+    fig = make_subplots(cols=3, rows=1)
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul['et'], name="Emission"), col=1, row=1)
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul['y1t'], name="$Y_t^1$"), col=2, row=1)
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul['y2t'], name="$Y_t^2$"), col=3, row=1)
+    fig.update_layout(
+    #     legend
+        height=300,
+        width=1000
+    )
+    fig.update_xaxes(title="Years")
+    return fig 
+
+
+def plot_1S_vs_2S_ems(et_1state, simul):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(et_1state)), y=et_1state, name="Y has one state"))
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul["et"], name="Y has two states"))
+    fig.update_yaxes(range=[0,13])
+    fig.update_xaxes(title="Years")
+    fig.update_layout(title="Emissions")
+    return fig 
+
+
+def plot_1S_vs_2S_SCC(et_1state, scc, scc_1):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(scc)), y=scc, name="Y has two states"))
+    fig.add_trace(go.Scatter(x=np.arange(len(scc_1)), y=scc_1, name="Y has one state"))
+    fig.update_xaxes(title="Years")
+    fig.update_yaxes(title="Social cost of carbon")
+    return fig 
+
+
+def plot_2S_ey1y2_multi_λ(simul, λ_list):
+    fig = make_subplots(cols=3, rows=1)
+    for i in range(len(λ_list)): 
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]['et'], 
+                                 name=f"Emission, λ ={λ_list[i]}"), col=1, row=1)
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]['y1t'], 
+                                 name=f"$Y_t^1, λ ={λ_list[i]}$"), col=2, row=1)
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]['y2t'], 
+                                 name=f"$Y_t^2,  λ ={λ_list[i]}$"), col=3, row=1)
+    fig.update_layout(
+        #     legend
+            height=300,
+            width=1000
+        )
+    fig.update_xaxes(title="Years")
+    return fig 
+
+
+def plot_1S_vs_2S_ems_multi_λ(et_1state, simul, λ_list):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(et_1state)), y=et_1state, name="Y has one state"))
+    for i in range(len(λ_list)): 
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]["et"]
+                                 , name=f"Y has two states, λ={λ_list[i]}"))
+    fig.update_yaxes(range=[0,13])
+    fig.update_xaxes(title="Years")
+    fig.update_layout(title="Emissions")
+    return fig  
+
+
+def plot_1S_vs_2S_SCC_multi_λ(et_1state, scc_list, scc_1, λ_list):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(scc_1)), y=scc_1, name="Y has one state"))    
+    for i in range(len(λ_list)): 
+        fig.add_trace(go.Scatter(x=np.arange(len(scc_list[i])), y=scc_list[i], name=f"Y has two states, λ = {λ_list[i]}"))
+    fig.update_xaxes(title="Years")
+    fig.update_yaxes(title="Social cost of carbon")
+    return fig 
 

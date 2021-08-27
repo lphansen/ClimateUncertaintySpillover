@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import numpy as np
+from scipy import interpolate
 from scipy.interpolate import interp2d
 
 
@@ -255,3 +257,38 @@ def simulation_dice_prob(sim_args, k_grid, y_grid, e_mat, i_mat, g_mat, h_mat, �
         k0 = k0 + it[i] - κ / 2 * it[i]**2 + μ_k - .5 * σ_k**2
 
     return et, kt, yt, it, gt, πct, ht
+
+
+def simulation_2d(res, θ=1.86/1000., y1_0=1.1, y2_0=1.86/1000, T=100):
+    y1_grid = res["y1"]
+    y2_grid = res["y2"]
+    e_grid = res["ems"]
+    λ = res["λ"]
+    e_fun = interpolate.interp2d(y1_grid, y2_grid, e_grid.T)
+    Et = np.zeros(T+1)
+    y1t = np.zeros(T+1)
+    y2t = np.zeros(T+1)
+    for i in range(T+1):
+#         y2_0 = max(y2_0, 0)
+#         y2_0 = min(y2_0, 0.05)
+        Et[i] = e_fun(y1_0, y2_0)
+        y1t[i] = y1_0
+        y2t[i] = y2_0
+        y2_0 = np.exp(-λ)*y2_0 + (1 - np.exp(-λ))*θ*Et[i] 
+#         y2_0 = max(y2_0, 0)
+        y1_0 = y1_0 + y2_0
+    return Et, y1t, y2t
+
+
+# simulate
+def simulate_logkapital(invkap, αₖ,  σₖ, κ, k0, T=100, dt=1):
+    periods = int(T/dt)
+    Kt = np.zeros(periods)
+    i = invkap
+     # log capital
+    Kt[0] = np.log(k0)
+    k = np.log(k0)
+    for t in range(periods-1):
+        k +=   (αₖ + i - κ/2*i**2 - .5*σₖ**2)*dt
+        Kt[t+1] = k
+    return Kt
