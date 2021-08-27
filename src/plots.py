@@ -405,7 +405,8 @@ def plot7(pre_jump_res):
                                  y=prob_jump,
                                  name="jump probability",
                                  showlegend=False,
-                                 visible=False
+                                 visible=False,
+                                 hovertemplate="{%y:}"
                                 ),
                       col=1,
                       row=1)
@@ -578,8 +579,7 @@ def plot1011(pre_jump_res, pre_jump175_res, y_grid_short, y_underline, y_underli
     fig.update_layout(width=800, height=1000)
     return fig
 
-def plot13(ratios, y_grid_long, y_underline):
-    fig = go.Figure(layout=dict(width=800, height=500, plot_bgcolor="white"))
+def plot13(fig, ratios, y_grid_long, y_underline):
     loc_11 = np.abs(y_grid_long - 1.1).argmin()
     loc_15 = np.abs(y_grid_long - y_underline).argmin()
     colors = ["#d62728", "darkorange", "darkgreen", "navy"]
@@ -593,7 +593,9 @@ def plot13(ratios, y_grid_long, y_underline):
             go.Scatter(x=y_grid_long[loc_11:loc_15 + 1],
                        y=ratio,
                        name=label,
-                       line=dict(color=color)))
+                       line=dict(color=color),
+                       hovertemplate="{%y:.2f}",
+                      ))
 
     fig.update_yaxes(showline=True,
                      linecolor="black",
@@ -618,7 +620,9 @@ def plot14(
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=tech_prob_first[:41],
                              name='baseline',
-                             line=dict(width=2.5, color=colors[0])),
+                             line=dict(width=2.5, color=colors[0]),
+                             hovertemplate="{%y:.2f}",
+                            ),
                   col=1,
                   row=1)
     fig.add_trace(go.Scatter(

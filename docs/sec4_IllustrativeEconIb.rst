@@ -1,173 +1,49 @@
-5 Illustrative economy II: uncertainty decomposition
-====================================================
+4B Illustrative economy Ib: smooth ambiguity
+============================================
 
-This notebook presents compuations in section 8 of the paper.
+This notebook is to suppliment discussion in `Section
+4 <sec4_IllustrativeEconI.ipynb>`__ by focusing on a different aspect –
+impact of smooth ambiguity.
 
-| An advantage to the more structured approach implemented as smooth
-  ambiguity is that it allows us to “open the hood” so to speak on
-  uncertainty. We build on the work of :cite:t:``RickeCaldeira:2014`` by
-  exploring the relative contributions of uncertainty in the carbon
-  dynamics versus uncertainty in the temperature dynamics. We depart
-  from their analysis by studying the relative contributions in the
-  context of a decision problem and we include robustness to model
-  misspecification as a third source of uncertainty. This latter
-  adjustment applies primarily to the damage function specification.
-| We continue to use the social cost of carbon as a benchmark for
-  assessing these contributions. We perform these computations using the
-  model developed in the previous section, although the approach we
-  describe is applicable more generally.
-| For the uncertainty decomposition, we hold fixed the control law for
-  emissions, and hence also the implied state evolution for damages, and
-  explore the consequences of imposing constraints on minimization over
-  the probabilities across the different models.
+The same with `Section 4 <sec4_IllustrativeEconI.ipynb>`__, the penalty
+paramters are :math:`\xi_a` and :math:`\xi_r`.
 
-| Recall that we use climate sensitivity parameters from combinations of
-  16 models of temperature dynamics and 9 models of carbon dynamics.
-| A parameter :math:`\theta` corresponds to climate-temperature model
-  pair. Let :math:`\Theta` denote the full set of :math:`L = 144` pairs,
-  and let :math:`P_{j}` for :math:`j = 1,2,... J` be a partition of the
-  positive integers up to :math:`L`. The integer :math:`J` is set to 9
-  or 16 depending on whether we target the temperature models or the
-  carbon.
-| For any given such partition, we solve a constrained version of the
-  minimization problem in `section 4 <sec4_IllustrativeEconIa.ipynb>`__
-  by targeting the probabilities assigned to partitions while imposing
-  the benchmark probabilities conditioned on each partition.
+Without specifically pointed out, :math:`\xi_r = 1` in this example. And
+the smooth ambiguity parameter :math:`\xi_a` values we experiment with
+are :math:`\{0.02, 0.01, 0.005, 0.0025\}`.
+
+4B.1 Post-jump continuation value functions
+-------------------------------------------
+
+Conditioned on each of the damage functions,
+:math:`m = 1, 2, \dots, 20`. Solve for the corresponding
+:math:`\phi_m(y)`:
 
 .. math::
 
 
    \begin{align*}
-   \min_{{\overline \omega}_j, j=1,2,..., J} &
-   \left(\frac {\partial  V}{\partial  x }\right) \cdot
-   \sum_{j=1}^J {\overline \omega}_j \sum_{\ell \in P_j}  \left( {\frac {
-   \pi_\ell}  {\sum_{\ell \in P_j} \pi_\ell}} \right) \mu(x, a \mid \theta_\ell) \cr
-   &  + \xi_a \sum_{j=1}^J {\overline \omega}_j \left(\log {\overline \omega}_j - \log {\overline \pi}_j\right)
+   0 = \max_{\tilde e}  \min_h \min_{\omega_j, \sum_{\ell =1}^L \omega_\ell  = 1}
+   & - \delta \phi_m(y)    +  \eta \log \tilde e    \cr
+   & + \frac {d \phi_m(y)}{d y} {\tilde e}  \varsigma \cdot h  + {\frac {(\eta - 1)} \delta }\left[\gamma_1 +  \gamma_2 y + \gamma_3^m (y- {\overline y} ) \right] {\tilde e} \varsigma \cdot h + {\frac {\xi_r} 2} h'h \cr 
+   & + \frac {d \phi_m(y)}{d y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell {\tilde e} + {\frac 1 2} \frac {d^2 \phi_m(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
+   &+ {\frac {(\eta - 1)} \delta}  \left( \left[ \gamma_1 + \gamma_2 y + \gamma_3^m (y - \overline y) \right]   \sum_{\ell=1}^L \omega_\ell \theta_\ell {\tilde e} + {\frac 1 2} (\gamma_2 + 
+   \gamma_3^m) |\varsigma|^2 \tilde e^2 \right) \cr
+   &+ \xi_a \sum_{\ell = 1}^L \omega_\ell \left( \log \omega_\ell - \log \pi_\ell \right).
    \end{align*}
-
-where: :math:`{\overline \pi}_j = {\sum_{\ell \in P_j} \pi_\ell}` and
-
-.. math::
-
-
-   \frac {\pi_\ell}  {{\overline \pi}_\ell }  \hspace{.5cm} \ell \in P_j
-
-are the baseline conditional probabilities for partition :math:`j`. We
-only minimize the probabilities across partitions while imposing the
-baseline conditional probabilities within a partition.
-
-| We impose :math:`\xi_r = \infty` when performing this minimization and
-  let :math:`\xi_a = .01` as in `section
-  4 <sec4_IllustrativeEconIa.ipynb>`__.
-| We perform additional calculations where we let :math:`\xi_r=1` and
-  :math:`\xi_a = \infty` in order to target damage function uncertainty
-  rather than temperature or climate dynamics uncertainty[^1]. The two
-  states in our problem are :math:`x = (y,n)`, and we look for a value
-  function of the form
-  :math:`V(y,n) = \phi(y) + \frac{(\eta - 1)}{\delta} n` while imposing
-  that :math:`{\tilde e} = \epsilon(y)`. For each partition of interest,
-  we construct the corresponding HJB equation that supports this
-  minimization.
-
-Since we are imposing the control law for emissions but constraining the
-minimization, the first-order conditions for emissions will no longer be
-satisfied. Recall formula for :math:`\log SCC` from `section
-4 <sec4_IllustrativeEconIa.ipynb>`__ with adjustments for uncertainty.
-In the absence of optimality, the net benefit measure :math:`MV(x)` is
-not zero with the minimization constraints imposed. Consistent with the
-SCC computation from the previous section, we use
-
-.. math::
-
-
-   \begin{align*} 
-    - \frac {\partial V}{\partial x} (x) \cdot {\frac {\partial \mu}{\partial e}} \left[x, \phi(x) \right]  -  {\frac 1 2}  {\rm trace} \left[  \frac {\partial^2 V}{\partial x \partial x'} (x) \frac \partial  {\partial e} \Sigma \left[x, \phi(x)  \right] \right].
-   \end{align*}
-
-for our cost contributions in the SCC decomposition.
-
-| We obtain the smallest cost measure when we preclude minimization
-  altogether while solving for the value function and the largest one
-  when we allow for full minimization with :math:`\xi_r = 1` and
-  :math:`\xi_a = .01.` We have three intermediate cases corresponding to
-  temperature dynamic uncertainty, climate dynamic uncertainty and
-  damage function uncertainty. The smallest of these measures
-  corresponds to a full commitment to the baseline probabilities.
-| We form ratios with respect to the smallest measure, take logarithms
-  and multiply by 100 to convert the numbers to percentages.
-  Importantly, we change both probabilities and value functions in this
-  computation.
-
-We report the results in the figure below. From this figure, we see that
-the uncertainty adjustments in valuation account for twenty to thirty
-percent of the social cost of carbon. The contributions from temperature
-and carbon are essentially constant over time with the temperature
-uncertainty contribution being substantially larger. The damage
-contribution is initially below half the total uncertainty, but this
-changes to more than half by the time the temperature anomaly reaches
-the lower threshold of 1.5 degrees Celsius.
-
-For our uncertainty decomposition, we compute the logarithm of this
-expression for alternative partitions of the models. We start by
-activating separately uncertainty aversion over
-
-.. raw:: html
-
-   <ol style="list-style-type:lower-roman">
-
-.. raw:: html
-
-   <li>
-
-models of carbon dynamics,
-
-.. raw:: html
-
-   </li>
-
-.. raw:: html
-
-   <li>
-
-the models of temperature dynamics, and
-
-.. raw:: html
-
-   </li>
-
-.. raw:: html
-
-   <li>
-
-the models or economic damages
-
-.. raw:: html
-
-   </li>
-
-.. raw:: html
-
-   </ol>
-
-In each case we report the difference in logarithms between the
-computation using the baseline probabilities and the solutions from the
-constrained probability minimizations. Importantly, we change both
-probabilities and value functions in this computation.
 
 .. code:: ipython3
 
-    # packages
-    import pandas as pd
     import numpy as np
-    from src.model import solve_hjb_y, solve_hjb_y_jump, solve_baseline, minimize_g, minimize_π
+    import pandas as pd
+    from src.model import solve_hjb_y, solve_hjb_y_jump
     from src.utilities import find_nearest_value, solve_post_jump
-    from src.simulation import simulate_me
-    import plotly.io as pio
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
-    import plotly.offline as pyo
+    from src.simulation import simulate_jump, no_jump_simulation
     import pickle
+    import plotly.offline as pyo
     pyo.init_notebook_mode()
+    import plotly.io as pio
+    pio.templates.default = "none"
 
 
 
@@ -248,278 +124,147 @@ probabilities and value functions in this computation.
 
 .. code:: ipython3
 
-    # preparation
-    ξ_w = 100_000
-    ξ_a = 0.01
-    ξ_r = 1.
+    # Preference
+    η = 0.032
+    δ = 0.01
     
-    ϵ = 5.
-    η = .032
-    δ = .01
+    # Climate sensitivity
+    θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0] / 1000.
+    πc_o = np.ones_like(θ_list) / len(θ_list)
     
-    θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0]/1000.
-    πc_o = np.ones_like(θ_list)/len(θ_list)
-    
-    σ_y = 1.2*np.mean(θ_list)
+    # Damage functions
+    σ_y = 1.2 * np.mean(θ_list)
     y_underline = 1.5
     y_bar = 2.
-    γ_1 = 1.7675/10000
-    γ_2 = .0022*2
-    γ_3 = np.linspace(0., 1./3, 20)
-    πd_o = np.ones_like(γ_3)/len(γ_3)
+    γ_1 = 1.7675 / 10000
+    γ_2 = 0.0022 * 2
+    γ_3 = np.linspace(0., 1. / 3, 20)
+    πd_o = np.ones_like(γ_3) / len(γ_3)
     
+    # capital evolution
+    α = 0.115
+    i_over_k = 0.09
+    K0 = 85 / α
+    
+    # state variable
     y_step = .01
     y_grid_long = np.arange(0., 5., y_step)
-    y_grid_short = np.arange(0., y_bar+y_step, y_step)
+    y_grid_short = np.arange(0., 2.1 + y_step, y_step)
     n_bar = find_nearest_value(y_grid_long, y_bar) 
-    
-    # Uncertainty decomposition
-    n_temp = 16
-    n_carb = 9
-    θ_reshape = θ_list.reshape(n_temp, n_carb)
-    θ_temp = np.mean(θ_reshape, axis=1)
-    θ_carb = np.mean(θ_reshape, axis=0)
-    πc_o_temp = np.ones_like(θ_temp)/len(θ_temp)
-    πc_o_carb = np.ones_like(θ_carb)/len(θ_carb)
 
 .. code:: ipython3
 
-    pre_jump_res = pickle.load(open("pre_jump_res", "rb"))
-    v_list = pickle.load(open("v_list", "rb"))
-    e_tilde_list = pickle.load(open("e_tilde_list", "rb"))
-
-The results are reported below. For comparison we include the analogous
-computation when we activate an aversion to all three sources of
-uncertainty.
-
-With the penalties, :math:`\xi_p = 5` and :math:`\xi_a = 0.01`, the
-contributions from temperature are essentially constant over time with
-the temperature uncertainty contribution being substantially larger. The
-damage contribution is initially well below half the total uncertainty,
-but this changes to more than half after one hundred years. It is
-important to remember that these computations are performed while
-imposing the planner’s solution for emissions and damages. So called
-“business-as-usual” simulations would change substantially this
-uncertainty accounting.
-
-Since the uncertainty components are not “additive,” we explore the
-joint impacts by parti- tioning the uncertainty using the three
-different pairings of contributions. The results are reported in
-subfigure (b). Not surprisingly, the combination of temperature and
-damage uncertainty has the biggest impact accounting for about
-three-fourths of the total uncertainty. In contrast, the combination of
-temperature and carbon uncertainty accounts for somewhere between
-one-half and one-third of the total uncertainty depending on how many
-years in the future we look at.
-
-The quantitative importance of damages will increase as we reduce
-:math:`\xi_p`. We see the :math:`\xi_p` setting as dictating how much
-wiggle room a decision maker wants to entertain for the weighting of the
-alternative damage model specifications. For comparison, we set
-:math:`\xi_p = 0.3` to match what we used previously for :math:`\xi_b`
-(click the button with :math:`\xi_a = 0.01` and :math:`\xi_p = 0.3`) .
-With this change, minimizing probabilities are shifted almost entirely
-to the “extreme damage” specification, given us effectly an upper bound
-on the uncertainty contribution to the social cost of carbon. Now the
-overall uncertainty contribution ranges from thirty to sixty percent as
-shown in subfigure (a) with :math:`\xi_p = 0.3` and
-:math:`\xi_a = 0.01`. The damage uncertainty contribution alone accounts
-for more than half of this where as the temperature and climate
-contributions remain about the same as before. Temperature and damage
-uncertainty taken together account for most of the uncertainty as
-reflected in subfigure (b).
+    # Prepare ϕ conditional on low, high, extreme damage
+    ξ_r = 1.
+    v_list = {}
+    e_tilde_list = {}
+    for ξ_a_i in [0.02, 0.01, 0.005, 0.0025]:
+        model_args_list = []
+        for γ_3_m in γ_3:
+            model_arg = (η, δ, σ_y, y_bar, γ_1, γ_2, γ_3_m, θ_list, πc_o, ξ_r, ξ_a_i)
+            model_args_list.append((y_grid_long, model_arg, None, 1., 1e-8, 5_000, False))
+        v_list[ξ_a_i], e_tilde_list[ξ_a_i] = solve_post_jump(y_grid_long, γ_3, solve_hjb_y, model_args_list)
 
 .. code:: ipython3
 
-    ems_star = pre_jump_res[1]["model_res"]['e_tilde']
-    ME_total = η / ems_star
+    # pickle.dump(v_list, open("v_list_sa", "wb"))
+    # pickle.dump(e_tilde_list, open("e_tilde_list_sa", "wb"))
+    v_list = pickle.load(open("v_list_sa", "rb"))
+    e_tilde_list = pickle.load(open("e_tilde_list_sa", "rb"))
+
+4B Pre-jump value function
+--------------------------
+
+The pre-jump value function has a similar structure with two exceptions:
+- we include the intensity function discussed earlier and - we introduce
+robustness concerns for both the intensity and distribution over the
+alternative :math:`\gamma_3^m` coefficients.
+
+Given these modifications, we include:
+
+.. math::
+
+
+   \mathcal J (y) \sum_{m=1}^M g_m \pi_m \left[ \phi_m(\overline y) - \phi(y) \right]
+   + \xi_r {\mathcal J}(y)  \sum_{m=1}^M \pi_m \left( 1 - g_m + g_m \log g_m \right)\pi_m 
+
+in the HJB and solve for pre-jump value function :math:`\phi(y)` on
+:math:`[0, \overline{y}]`:
+
+.. math::
+
+
+   \begin{align*}
+   0 = \max_{\tilde e}  \min_h \min_{\omega_j, \sum_{\ell =1}^L \omega_\ell  = 1} \min_{g_m \geqslant 0}
+   & - \delta \phi(y)    +  \eta \log \tilde e    \cr
+   & + \frac {d \phi(y)}{d y} {\tilde e}  \varsigma \cdot h  + {\frac {(\eta - 1)} \delta }\left[\gamma_1 +  \gamma_2 y) \right] {\tilde e} \varsigma \cdot h + {\frac {\xi_r} 2} h'h \cr 
+   & + \frac {d \phi(y)}{d y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell {\tilde e} + {\frac 1 2} \frac {d^2 \phi(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
+   &+ {\frac {(\eta - 1)} \delta}  \left( \left[ \gamma_1 + \gamma_2 y\right]   \sum_{\ell=1}^L \omega_\ell \theta_\ell {\tilde e} + {\frac 1 2} \gamma_2  |\varsigma|^2 \tilde e^2 \right) \cr
+   &+ \xi_a \sum_{\ell = 1}^L \omega_\ell \left( \log \omega_\ell - \log \pi_\ell \right)\cr
+   &+ \mathcal J (y) \sum_{m=1}^M g_m \pi_m \left[ \phi_m(\overline y) - \phi(y) \right]
+   + \xi_r {\mathcal J}(y)  \sum_{m=1}^M \pi_m \left( 1 - g_m + g_m \log g_m \right)\pi_m 
+   \end{align*}
 
 .. code:: ipython3
 
-    ξ_a = 0.01
-    args = (δ, η, θ_list, γ_1, γ_2, γ_3, y_bar, πd_o, 100_000, 100_000, 100_000, σ_y, y_underline)
-    ME_base, ratio_base = solve_baseline(y_grid_long,
-                                         n_bar,
-                                         ems_star[:n_bar + 1],
-                                         v_list[100_000], 
-                                         args,
-                                         ϵ=1.,
-                                         tol=1e-8,
-                                         max_iter=500)
+    ξ_a_list = [0.02, 0.01, 0.005, 0.0025]
+
+.. code:: ipython3
+
+    pre_jump_res = {}
+    for ξ_a_i in ξ_a_list:
+        ϕ_list = v_list[ξ_a_i]
+        certainty_equivalent = -ξ_r * np.log(
+            np.average(
+                np.exp(-1. / ξ_r * np.array(ϕ_list)), axis=0, weights=πd_o))
+        # Change grid from 0-4 to 0-2
+        ϕ_i = np.array(
+            [temp[n_bar] * np.ones_like(y_grid_short) for temp in ϕ_list])
     
-    # carbon
-    print("--------------Carbon-----------------")
-    args_list_carb = []
-    for γ_3_m in γ_3:
-        args_func = (η, δ, σ_y, y_bar, γ_1, γ_2, γ_3_m, θ_carb, πc_o_carb, 100_000, ξ_a)
-        args_iter = (y_grid_long, args_func, None, 1., 1e-8, 5_000, False)
-        args_list_carb.append(args_iter)
-    
-    ϕ_list_carb, ems_list_carb = solve_post_jump(y_grid_long, γ_3, solve_hjb_y, args_list_carb)
-    args = (δ, η, θ_carb, γ_1, γ_2, γ_3, y_bar, πd_o, 100_000, ξ_a, 100_000, σ_y, y_underline)
-    ME_carb, ratiocarb = minimize_π(y_grid_long, n_bar, ems_star[:n_bar + 1], ϕ_list_carb, args)
-    
-    # temperature
-    print("-------------Temperature--------------")
-    args_list_temp = []
-    for γ_3_m in γ_3:
-        args_func = (η, δ, σ_y, y_bar, γ_1, γ_2, γ_3_m, θ_temp, πc_o_temp, 100_000, ξ_a)
-        args_iter = (y_grid_long, args_func, None, 1., 1e-8, 5_000, False)
-        args_list_temp.append(args_iter)
-    
-    ϕ_list_temp, ems_list_temp = solve_post_jump(y_grid_long, γ_3, solve_hjb_y, args_list_temp)
-    args = (δ, η, θ_temp, γ_1, γ_2, γ_3, y_bar, πd_o, 100_000, ξ_a, 100_000, σ_y, y_underline)
-    ME_temp, ratiotemp = minimize_π(y_grid_long, n_bar, ems_star[:n_bar + 1], ϕ_list_temp, args)
-    
-    # damage
-    print("-------------------Damage-----------------")
-    args = (δ, η, θ_list, γ_1, γ_2, γ_3, y_bar, πd_o, 1, 100_000, 100_000, σ_y, y_underline)
-    ME_dmg, ratiotemp = minimize_g(y_grid_long, n_bar, ems_star[:n_bar + 1], v_list[100_000], args)
+        # Compute ϕ with jump (impose boundary condition)
+        model_args = (η, δ, σ_y, y_underline, y_bar, γ_1, γ_2, γ_3, θ_list, πc_o, ϕ_i, πd_o,
+                      ξ_r, ξ_r, ξ_a_i)
+        model_res = solve_hjb_y_jump(y_grid_short,
+                                     model_args,
+                                     v0=None,
+                                     ϵ=1.,
+                                     tol=1e-8,
+                                     max_iter=5_000,
+                                     print_iteration=False)
+        simulation_res = no_jump_simulation(model_res, dt=1/4)
+        pre_jump_res[ξ_a_i] = dict(model_res=model_res,
+                               simulation_res=simulation_res,
+                               certainty_equivalent=certainty_equivalent)
 
 
 .. parsed-literal::
 
-    episode: 491,	 ode error: 0.0010387796011778055,	 ft error: 9.489615315771971e-09
-    --------------Carbon-----------------
-    episode: 3000,	 ode error: 0.19419068460195973,	 ft error: 5.794719224572198e-06
-    -------------Temperature--------------
-    episode: 3000,	 ode error: 0.13959865242237854,	 ft error: 2.6403373625805138e-05
-    -------------------Damage-----------------
-    episode: 129,	 ode error: 0.07545342779687313,	 ft error: 9.444086577585035e-07
+    Converged. Total iteration: 393;	 LHS Error: 9.833522440771958e-09;	 RHS Error 0.001529544287457392;	
+    Converged. Total iteration: 5000;	 LHS Error: 2.6890052743866466e-05;	 RHS Error 0.0015362103014727665;	
+    Converged. Total iteration: 5000;	 LHS Error: 2.20896645842239e-05;	 RHS Error 0.0015362876638518805;	
+    Converged. Total iteration: 5000;	 LHS Error: 3.8076951563437156e-05;	 RHS Error 0.0015380769168365626;	
 
 
 .. code:: ipython3
 
-    loc_11 = np.abs(y_grid_long - 1.1).argmin()
-    loc_15 = np.abs(y_grid_long - y_underline).argmin()
-    ratios = [
-        np.log(ME_total[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-        np.log(ME_dmg[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-        np.log(ME_temp[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-        np.log(ME_carb[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-    ]
+    # pickle.dump(pre_jump_res, open("pre_jump_res_sa", "wb"))
+    pre_jump_res = pickle.load(open("pre_jump_res_sa", "rb"))
 
-Here, we repeat the computation for a different ambiguity aversion
-parameter, :math:`\xi_a = 0.005` and compare it with the decompositions
-with :math:`\xi_a = 0.01`.
+4B.3 Emission and :math:`\log SCC` as a function of temperature anomaly
+-----------------------------------------------------------------------
 
 .. code:: ipython3
 
-    ξ_a = 0.005
-    pre_jump_res = pickle.load(open(f"pre_jump_res_{ξ_a}", "rb"))
-    v_list = pickle.load(open(f"v_list_{ξ_a}", "rb"))
-    e_tilde_list = pickle.load(open(f"e_tilde_list_{ξ_a}", "rb"))
-    ems_star = pre_jump_res[1]["model_res"]['e_tilde']
-    ME_total = η / ems_star
-    # perform uncertainty decomposition
-    args = (δ, η, θ_list, γ_1, γ_2, γ_3, y_bar, πd_o, 100_000, 100_000, 100_000, σ_y, y_underline)
-    ME_base, ratio_base = solve_baseline(y_grid_long,
-                                         n_bar,
-                                         ems_star[:n_bar + 1],
-                                         v_list[100_000], 
-                                         args,
-                                         ϵ=1.,
-                                         tol=1e-8,
-                                         max_iter=1_000)
-    
-    # carbon
-    print("--------------Carbon-----------------")
-    args_list_carb = []
-    for γ_3_m in γ_3:
-        args_func = (η, δ, σ_y, y_bar, γ_1, γ_2, γ_3_m, θ_carb, πc_o_carb, 100_000, ξ_a)
-        args_iter = (y_grid_long, args_func, None, 1., 1e-8, 5_000, False)
-        args_list_carb.append(args_iter)
-    
-    ϕ_list_carb, ems_list_carb = solve_post_jump(y_grid_long, γ_3, solve_hjb_y, args_list_carb)
-    args = (δ, η, θ_carb, γ_1, γ_2, γ_3, y_bar, πd_o, 100_000, ξ_a, 100_000, σ_y, y_underline)
-    ME_carb, ratiocarb = minimize_π(y_grid_long, n_bar, ems_star[:n_bar + 1], ϕ_list_carb, args)
-    
-    # temperature
-    print("-------------Temperature--------------")
-    args_list_temp = []
-    for γ_3_m in γ_3:
-        args_func = (η, δ, σ_y, y_bar, γ_1, γ_2, γ_3_m, θ_temp, πc_o_temp, 100_000, ξ_a)
-        args_iter = (y_grid_long, args_func, None, 1., 1e-8, 5_000, False)
-        args_list_temp.append(args_iter)
-    
-    ϕ_list_temp, ems_list_temp = solve_post_jump(y_grid_long, γ_3, solve_hjb_y, args_list_temp)
-    args = (δ, η, θ_temp, γ_1, γ_2, γ_3, y_bar, πd_o, 100_000, ξ_a, 100_000, σ_y, y_underline)
-    ME_temp, ratiotemp = minimize_π(y_grid_long, n_bar, ems_star[:n_bar + 1], ϕ_list_temp, args)
-    
-    # damage
-    print("-------------------Damage-----------------")
-    args = (δ, η, θ_list, γ_1, γ_2, γ_3, y_bar, πd_o, 1, 100_000, 100_000, σ_y, y_underline)
-    ME_dmg, ratiotemp = minimize_g(y_grid_long, n_bar, ems_star[:n_bar + 1], v_list[100_000], args, ϵ=0.5)
-    
-    # list of ratios
-    ratios_0p005 = [
-        np.log(ME_total[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-        np.log(ME_dmg[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-        np.log(ME_temp[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-        np.log(ME_carb[loc_11:loc_15 + 1] / ME_base[loc_11:loc_15 + 1]) * 100,
-    ]
-
-
-.. parsed-literal::
-
-    episode: 514,	 ode error: 0.0009358690136444525,	 ft error: 9.729609118380722e-09
-    --------------Carbon-----------------
-    episode: 2812,	 ode error: 0.16260714420754224,	 ft error: 7.324967438160357e-08
-    -------------Temperature--------------
-    episode: 372,	 ode error: 0.08720612091135668,	 ft error: 8.477497981385085e-08
-    -------------------Damage-----------------
-    episode: 594,	 ode error: 0.07488872204255662,	 ft error: 9.947612404914707e-07
-
-
-.. code:: ipython3
-
-    from src.plots import plot13
-    fig = go.Figure(layout=dict(width=800, height=500, plot_bgcolor="white"))
-    fig = plot13(fig, ratios, y_grid_long, y_underline)
-    fig = plot13(fig, ratios_0p005, y_grid_long, y_underline)
-    for i in range(int(len(fig.data)/2)):
-        fig.data[int(len(fig.data)/2) + i]["visible"] = False
-    buttons = []
-    ξ_a_s = [0.01, 0.005]
-    for i in range(len(ξ_a_s)):
-        # Hide all traces
-        button = dict(method='update',
-                    args=[
-                        {
-                            'visible': [False] * len(fig.data),
-                            'showlegend': [False] *len(fig.data),
-                        },
-                    ],
-                    label="ξa = {}".format(ξ_a_s[i]))
-        # Enable the two traces we want to see
-        for j in range(int(len(fig.data)/2)):
-            button['args'][0]["visible"][int(len(fig.data)/2)*i + j] = True
-            button['args'][0]["showlegend"][int(len(fig.data)/2)*i + j] = True
-        # Add step to step list
-        buttons.append(button)
-    
-    fig.update_layout(
-        updatemenus=[
-            dict(
-                type="buttons",
-                active=0,
-                x=1.23,
-                y=0.75,
-                buttons=buttons,
-                pad={"r": 10, "t": 10, "b":10},
-                showactive=True
-            )
-        ])
-    fig.update_yaxes(range=[0, 50])
-    fig
+    from src.plots import plot_ems_app
+    plot_ems_app(pre_jump_res, y_grid_short, ξ_a_list)
 
 
 
 .. raw:: html
 
-    <div>                            <div id="dee98658-3f01-49ce-97d6-131c7bc8d9b9" class="plotly-graph-div" style="height:500px; width:800px;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("dee98658-3f01-49ce-97d6-131c7bc8d9b9")) {                    Plotly.newPlot(                        "dee98658-3f01-49ce-97d6-131c7bc8d9b9",                        [{"line":{"color":"#d62728"},"name":"total uncertainty","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[26.789321954301332,26.92303260583505,27.059593652062038,27.1990935367501,27.34162359692,27.487279435584295,27.63616078708044,27.788371757827594,27.944020885819086,28.103221813380568,28.266092804618037,28.43275795605847,28.603346939736873,28.777994631479647,28.956842503628067,29.14003861831857,29.327737385461877,29.52010015619855,29.717295767043638,29.91950072930959,30.126899326612527,30.339684966598533,30.55805967406152,30.782235856135294,31.01243594148003,31.24889488313926,31.491860171622776,31.7415926852972,31.99836971067185,32.262484400185436,32.534242338258785,32.81396652436838,33.10203650802277,33.39892342800299,33.705040611713635,34.02046987025873,34.34569153446206,34.68371788866105,35.03659324619499,35.39533452929113,35.75225993713917]},{"line":{"color":"darkorange"},"name":"damage uncertainty","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[10.380631881361426,10.508524738322205,10.639166619775581,10.772642734616822,10.909040708476423,11.048451883805681,11.190971389279968,11.336699062323786,11.48574057772023,11.638208934325354,11.794223510442405,11.953908957498713,12.117391558602254,12.284796485287341,12.45624971724018,12.631881471408759,12.81183035838384,12.996247064622285,13.185295640269478,13.37915243211388,13.578003899087419,13.782045649112948,13.991480281994603,14.20651840868973,14.42737829479414,14.654288789495396,14.887489861759917,15.127233909447044,15.373789377724375,15.627441642746993,15.888491938595173,16.157260271831618,16.434104462032792,16.719425295102774,17.01354766214488,17.31652800496187,17.62877974546566,17.953151364126665,18.292405319353506,18.639630936225362,18.985344702382616]},{"line":{"color":"darkgreen"},"name":"temperature uncertainty","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[8.70383471292373,8.716874863116624,8.730320735862511,8.744188110839993,8.758492666091778,8.773251189611667,8.788481275429174,8.804201388668128,8.820430744149805,8.83718979929194,8.854499599992852,8.87238283491571,8.890863427383332,8.909965983505659,8.929716928277287,8.950144156472444,8.971276433754879,8.993143733216295,9.01577766040749,9.03921156218287,9.063480447308859,9.088622020835647,9.114675734723711,9.14168397085881,9.16969093980842,9.198744299332883,9.228894147861025,9.260192794613197,9.292697002742912,9.326467776872228,9.361568535157721,9.398067030724922,9.436050509288819,9.475621049483806,9.516772210829071,9.559249022817658,9.603329846927371,9.651861393998601,9.706709810470747,9.75868305372047,9.79985074979761]},{"line":{"color":"navy"},"name":"carbon uncertainty","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[3.3494479475453844,3.3550794558612713,3.3608906975884123,3.366888949727627,3.373080987360149,3.379474269809113,3.3860766088360674,3.392896204975291,3.399941502483772,3.407221664849696,3.41474590136745,3.42252447543437,3.4305682045706236,3.4388877945963228,3.4474949179552774,3.4564019261446477,3.4656213833793013,3.4751664609871105,3.4850512589872586,3.495290722199328,3.505900398641435,3.516897363873902,3.52829917898471,3.5401250009058844,3.552394430299689,3.56512906759315,3.5783514235480407,3.5920845952901357,3.606354394017112,3.6211890112826266,3.636617081384487,3.6526694165227127,3.6693936483060026,3.686848628819175,3.7049806344127316,3.7234839799015305,3.7425821645622164,3.7650683811991223,3.7927987273461015,3.81660418745782,3.828141525742781]},{"line":{"color":"#d62728"},"name":"total uncertainty","type":"scatter","visible":false,"x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[35.554083727733094,35.7111328289905,35.871711770350394,36.03593378504793,36.20391727208217,36.375785472701565,36.551667000479995,36.73169533541883,36.91601056359769,37.104758407054625,37.298091386473864,37.4961685670514,37.69915522456898,37.90722594331702,38.12056229021384,38.33935507501374,38.563803773777835,38.794118493338836,39.03051925008962,39.2732384382677,39.52252095800864,39.77862485388611,40.0418231023967,40.31240481932076,40.5906759287045,40.876961453062286,41.1716055868494,41.47497412799407,41.78745525113254,42.10945982805899,42.44142178903784,42.783800228609195,43.13708813313914,43.50180149660823,43.87837163668269,44.26704301552343,44.66865619027206,45.08638259631372,45.52173365924162,45.96589754336421,46.41313525199337]},{"line":{"color":"darkorange"},"name":"damage uncertainty","type":"scatter","visible":false,"x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[10.654482757658974,10.79712783662452,10.943019469920447,11.09226261412832,11.244967144410342,11.401247540112152,11.56122342545659,11.72501907496291,11.892765163567601,12.06459780391265,12.240659710865932,12.421099940292923,12.606073535457622,12.79574458858071,12.990283857477031,13.189870942939894,13.394693599938801,13.604949557140806,13.820845615887944,14.04259990326949,14.270441751003466,14.504612055179466,14.745364763436559,14.992967774340618,15.247703309619126,15.509869939185172,15.779782438218248,16.057774065906003,16.34419728784021,16.63942436925492,16.943849066434396,17.257891738366073,17.582010217080008,17.91668678951123,18.262328579639693,18.61920424224176,18.98824088557262,19.372684881714957,19.774076474994402,20.183634971621586,20.595655975462027]},{"line":{"color":"darkgreen"},"name":"temperature uncertainty","type":"scatter","visible":false,"x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[14.002092499488786,14.030331548905451,14.059429600343599,14.089419286214353,14.120335215174947,14.152213508130757,14.185092180699396,14.219010480308015,14.254010455872713,14.290135801035325,14.327432812005656,14.365949914768251,14.405737109647433,14.446848849470129,14.489341469101936,14.533275105751315,14.578712611563763,14.62572084021588,14.674369200989451,14.724731497840171,14.776885540940663,14.830913264686025,14.886901882945452,14.944944339862918,15.005139127332628,15.067591659252791,15.13241341333299,15.199723458832533,15.269648393697356,15.342322141848111,15.41788693246807,15.496497876574159,15.578332901082542,15.663576125953993,15.752311294363913,15.84445866880739,15.94059318960827,16.0436270639852,16.154766526399207,16.264856281110628,16.367762406572695]},{"line":{"color":"navy"},"name":"carbon uncertainty","type":"scatter","visible":false,"x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[6.368392938793997,6.381380020611546,6.394784618752874,6.4086229518893365,6.422912448826569,6.437671242375667,6.45291850657322,6.468673745455122,6.4849583108098825,6.501794190977373,6.5192049134423975,6.537215017234697,6.555849435681109,6.575136287187319,6.595104174985825,6.615783952765615,6.637207521175529,6.659409091345523,6.682423771618034,6.706289374319412,6.7310458539893565,6.756735160227775,6.783402125209564,6.81109467192646,6.839863409675216,6.869762809075334,6.900850149396183,6.933186830596429,6.966838073355984,7.001872462979117,7.038362684402453,7.076389914918871,7.116053543408343,7.157454046882572,7.200586019916823,7.245276121450571,7.29200293325849,7.343577964271734,7.401096808777327,7.455279346000666,7.499892529317783]}],                        {"height":500,"plot_bgcolor":"white","template":{"data":{"scatter":[{"type":"scatter"}]}},"title":{"text":"Figure 13: uncertainty decomposition for the logarithm of the marginal <br>value of emissions (scaled by 100)"},"updatemenus":[{"active":0,"buttons":[{"args":[{"showlegend":[true,true,true,true,false,false,false,false],"visible":[true,true,true,true,false,false,false,false]}],"label":"\u03bea = 0.01","method":"update"},{"args":[{"showlegend":[false,false,false,false,true,true,true,true],"visible":[false,false,false,false,true,true,true,true]}],"label":"\u03bea = 0.005","method":"update"}],"pad":{"b":10,"r":10,"t":10},"showactive":true,"type":"buttons","x":1.23,"y":0.75}],"width":800,"xaxis":{"linecolor":"black","showline":true,"title":{"text":"Temperature anomaly"}},"yaxis":{"linecolor":"black","range":[0,50],"showline":true,"title":{"text":"Log difference (scaled by 100)"}}},                        {"responsive": true}                    ).then(function(){
+    <div>                            <div id="85742e4a-0373-4318-89aa-d8f71599e710" class="plotly-graph-div" style="height:500px; width:800px;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("85742e4a-0373-4318-89aa-d8f71599e710")) {                    Plotly.newPlot(                        "85742e4a-0373-4318-89aa-d8f71599e710",                        [{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.02$","line":{"color":"#d62728"},"name":"$\\xi_a = 0.02$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[4.77645834103937,4.736117254617931,4.695778366119104,4.655440657345679,4.615103109469041,4.574764703008899,4.534424417817187,4.494081233061188,4.453734127210385,4.413382078023714,4.37302406253885,4.332659057065177,4.292286037177311,4.251903977712992,4.2115118527725866,4.171108635721283,4.130693299193901,4.090264815109197,4.049822154696603,4.00936428851383,3.9688901863710377,3.928398817037179,3.887889147803845,3.8473601446103567,3.806810773798537,3.766240004872772,3.7256468107604688,3.6850301659528837,3.6443890614963825,3.6037225818458856,3.563030053532252,3.522310891400277,3.4815629679641047,3.440779701365944,3.399952243797635,3.3590800175862308,3.318171760797742,3.2772348367290713,3.2362763206455445,3.1953029341625045,3.154317583594782]},{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.01$","line":{"color":"darkgreen"},"name":"$\\xi_a = 0.01$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[4.533621012778179,4.495320271970309,4.45702155859115,4.418723879655591,4.3804262430231145,4.342127657898894,4.3038271353180715,4.2655236885906795,4.227216333677756,4.188904089472066,4.150585977949226,4.1122610241579185,4.0739282560130325,4.035586703860783,3.9972353997873493,3.9588733766504167,3.9204996668270726,3.8821133006834234,3.843713304789255,3.8052986999210443,3.766868498935618,3.72842170472552,3.689957308702251,3.6514742905263,3.6129716199411286,3.5744482618042257,3.535903186663143,3.4973353922588037,3.458743944327873,3.4201280326214767,3.381486954798465,3.342819766352415,3.3041244895329647,3.26539797639236,3.226638074504316,3.187846025062734,3.1490250772882304,3.1101783106407535,3.071308305741772,3.0324166647012927,2.9935034612167497]},{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.005$","line":{"color":"darkorange"},"name":"$\\xi_a = 0.005$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[4.195504951062046,4.1600452744719,4.124587674257876,4.089131254138067,4.053675119044012,4.018218375745299,3.98276013352166,3.9472995048439454,3.9118356060146535,3.8763675577030585,3.8408944852995814,3.805415519002113,3.7699297935404714,3.7344364474416034,3.698934621742916,3.6634234580719482,3.6279020960296524,3.5923696698478937,3.5568253043300424,3.5212681101348355,3.4856971785240285,3.4501115757639917,3.414510337474333,3.3788924633443083,3.343256912745733,3.307602601753044,3.271928401939845,3.2362331412087935,3.2005156075392502,3.1647745615524636,3.129008777313343,3.0932171248246005,3.0573986118965704,3.02155225750558,2.985677155680591,2.949773418542798,2.913842862189256,2.877887608807754,2.8419089999929534,2.8059080247213863,2.7698850965299435]},{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.0025$","line":{"color":"navy"},"name":"$\\xi_a = 0.0025$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[3.846129914854665,3.813625012786114,3.7811222295570803,3.748620719363875,3.7161196310840694,3.68361810855856,3.651115291050824,3.618610313884916,3.5861023092589663,3.55359040722076,3.52107373678705,3.48855142718161,3.4560226091591586,3.423486416378725,3.390941986782316,3.3583884639289887,3.3258249982253343,3.293250747979503,3.260664880188348,3.228066570934851,3.195455005233071,3.1628293761297352,3.13018888290679,3.097532728391064,3.0648601156200845,3.0321702442269363,2.99946230653339,2.966735482391033,2.9339889334402924,2.9012218156383245,2.868433376176976,2.835623197917374,2.8027913933234205,2.769938203647631,2.7370630627871284,2.7041645941979366,2.671242027520972,2.63829546747364,2.6053244274464937,2.5723280083567257,2.5393052863540326]}],                        {"height":500,"legend":{"traceorder":"normal"},"template":{"data":{"scatter":[{"type":"scatter"}]}},"width":800,"xaxis":{"showline":true,"title":{"text":"Temperature anomaly"}},"yaxis":{"range":[0,7],"showline":true,"title":{"text":"Emission"}}},                        {"responsive": true}                    ).then(function(){
     
-    var gd = document.getElementById('dee98658-3f01-49ce-97d6-131c7bc8d9b9');
+    var gd = document.getElementById('85742e4a-0373-4318-89aa-d8f71599e710');
     var x = new MutationObserver(function (mutations, observer) {{
             var display = window.getComputedStyle(gd).display;
             if (!display || display === 'none') {{
@@ -544,4 +289,82 @@ with :math:`\xi_a = 0.01`.
                             })                };                });            </script>        </div>
 
 
+.. code:: ipython3
+
+    from src.plots import plot_logscc
+    args_scc = (α, η, i_over_k, K0, γ_1, γ_2)
+    plot_logscc(pre_jump_res, y_grid_short, 1.5, ξ_a_list, args_scc)
+
+
+
+.. raw:: html
+
+    <div>                            <div id="3df7a9b8-8869-40d7-b31e-d114e958a516" class="plotly-graph-div" style="height:500px; width:800px;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("3df7a9b8-8869-40d7-b31e-d114e958a516")) {                    Plotly.newPlot(                        "3df7a9b8-8869-40d7-b31e-d114e958a516",                        [{"hovertemplate":"%{y:.2f}","line":{"color":"#d62728","width":2},"name":"$\\xi_a = 0.02$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[4.848298283460539,4.856729579571206,4.865232522400487,4.873808570519652,4.882459222548511,4.8911860186319975,4.89999054198469,4.90887442050822,4.917839328484711,4.926886988351375,4.936019172560592,4.945237705530139,4.954544465689614,4.963941387627922,4.973430464348572,4.983013749639121,4.992693360561835,5.002471480071377,5.012350359766878,5.022332322792217,5.032419766915335,5.042615167830069,5.052921082676142,5.063340153609244,5.073875111142839,5.084528777408873,5.095304070270186,5.106204008245439,5.1172317111027725,5.128390383287706,5.139683276017046,5.151113732555815,5.1626856608169716,5.174404411924329,5.186276221918956,5.198305127806493,5.210492515707537,5.222840215743131,5.235350192380712,5.248024571591386,5.260866746703292]},{"hovertemplate":"%{y:.2f}","line":{"color":"darkgreen","width":2},"name":"$\\xi_a = 0.01$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[4.900476661739009,4.908910318898765,4.917415676529404,4.925994200607199,4.93464739708837,4.943376813262945,4.952184039174871,4.96107070911738,4.970038503214915,4.9790891491029585,4.988224423719823,4.9974461552247496,5.006756225058898,5.016156570165765,5.025649185388134,5.035236126058064,5.044919510793975,5.054701524516992,5.064584421694929,5.0745705298176835,5.084662253097712,5.09486207635423,5.1051725689724305,5.115596388745261,5.126136285350369,5.136795103127505,5.147575782437326,5.158481357951248,5.16951495120987,5.180679758187741,5.191979057290172,5.203416317760408,5.214995449121564,5.226720868002844,5.23859685612678,5.250626798525457,5.262813566841378,5.275160185841803,5.287669948459,5.300346589267137,5.313194494873843]},{"hovertemplate":"%{y:.2f}","line":{"color":"darkorange","width":2},"name":"$\\xi_a = 0.005$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[4.977983920084589,4.986421277500093,4.994930350465688,5.003512599808677,5.012169526052985,5.0209026707205,5.029713617679989,5.038603994555959,5.047575474213365,5.056629776339277,5.065768669146871,5.074993971232053,5.084307553617093,5.09371134201906,5.10320731938256,5.112797528716279,5.122484076270646,5.132269135087619,5.142154948945266,5.152143836707052,5.162238197069239,5.172440513679082,5.1827533605639955,5.193179407769114,5.20372142705953,5.214382297536537,5.225165011047195,5.236072677290486,5.247108528318477,5.258275920518712,5.269578327668067,5.281019319982069,5.292602554930197,5.304331823111185,5.316211033558882,5.328243899872285,5.3404336913053525,5.352783689136785,5.365297568045201,5.377979266932557,5.390833084558818]},{"hovertemplate":"%{y:.2f}","line":{"color":"navy","width":2},"name":"$\\xi_a = 0.0025$","type":"scatter","x":[1.1,1.11,1.12,1.1300000000000001,1.1400000000000001,1.1500000000000001,1.16,1.17,1.18,1.19,1.2,1.21,1.22,1.23,1.24,1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.3800000000000001,1.3900000000000001,1.4000000000000001,1.41,1.42,1.43,1.44,1.45,1.46,1.47,1.48,1.49,1.5],"y":[5.064930196691091,5.073367051275189,5.081875555804813,5.090457175845885,5.099113418556917,5.107845834152733,5.116656017387851,5.125545609059976,5.134516297535254,5.143569820300034,5.1527079655454875,5.161932573793872,5.1712455395780745,5.180648813187962,5.190144402500354,5.1997343749124,5.20942085940234,5.219206048747753,5.229092201939092,5.239081646839318,5.249176783157091,5.259380085815352,5.269694108792629,5.28012148946869,5.290664953429551,5.301327319645371,5.312111506051806,5.323020535888017,5.334057544620454,5.345225780999329,5.356528578725144,5.367969274079809,5.37955113573335,5.39127750420264,5.403152136864509,5.4151792330370485,5.42736292940373,5.43970719262808,5.452216369763161,5.464895141291211,5.477748388190039]}],                        {"height":500,"legend":{"traceorder":"reversed"},"template":{"data":{"scatter":[{"type":"scatter"}]}},"width":800,"xaxis":{"linecolor":"black","showgrid":true,"showline":true,"title":{"text":"Temperature anomaly"}},"yaxis":{"range":[4.4,5.7],"showline":true,"title":{"text":"$\\log SCC$"}}},                        {"responsive": true}                    ).then(function(){
+    
+    var gd = document.getElementById('3df7a9b8-8869-40d7-b31e-d114e958a516');
+    var x = new MutationObserver(function (mutations, observer) {{
+            var display = window.getComputedStyle(gd).display;
+            if (!display || display === 'none') {{
+                console.log([gd, 'removed!']);
+                Plotly.purge(gd);
+                observer.disconnect();
+            }}
+    }});
+    
+    // Listen for the removal of the full notebook cells
+    var notebookContainer = gd.closest('#notebook-container');
+    if (notebookContainer) {{
+        x.observe(notebookContainer, {childList: true});
+    }}
+    
+    // Listen for the clearing of the current output cell
+    var outputEl = gd.closest('.output');
+    if (outputEl) {{
+        x.observe(outputEl, {childList: true});
+    }}
+    
+                            })                };                });            </script>        </div>
+
+
+4B.4 Emission and logarithm of social cost of carbon trajectories
+-----------------------------------------------------------------
+
+The figure shows emission and :math:`\log SCC` over time before
+temperature anomaly reaches the upper bound of jump threshold,
+2\ :math:`^o C`.
+
+.. code:: ipython3
+
+    emission_traj = plot_ems_app(pre_jump_res, y_grid_short, ξ_a_list, dt=1/4, model_res=False)
+    emission_traj.update_yaxes(range=[0,14])
+
+
+
+.. raw:: html
+
+    <div>                            <div id="45048053-bb84-488d-9393-837239794ca8" class="plotly-graph-div" style="height:500px; width:800px;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("45048053-bb84-488d-9393-837239794ca8")) {                    Plotly.newPlot(                        "45048053-bb84-488d-9393-837239794ca8",                        [{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.02$","line":{"color":"#d62728"},"name":"$\\xi_a = 0.02$","type":"scatter","x":[0.0,0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0,3.25,3.5,3.75,4.0,4.25,4.5,4.75,5.0,5.25,5.5,5.75,6.0,6.25,6.5,6.75,7.0,7.25,7.5,7.75,8.0,8.25,8.5,8.75,9.0,9.25,9.5,9.75,10.0,10.25,10.5,10.75,11.0,11.25,11.5,11.75,12.0,12.25,12.5,12.75,13.0,13.25,13.5,13.75,14.0,14.25,14.5,14.75,15.0,15.25,15.5,15.75,16.0,16.25,16.5,16.75,17.0,17.25,17.5,17.75,18.0,18.25,18.5,18.75,19.0,19.25,19.5,19.75,20.0,20.25,20.5,20.75,21.0,21.25,21.5,21.75,22.0,22.25,22.5,22.75,23.0,23.25,23.5,23.75,24.0,24.25,24.5,24.75,25.0,25.25,25.5,25.75,26.0,26.25,26.5,26.75,27.0,27.25,27.5,27.75,28.0,28.25,28.5,28.75,29.0,29.25,29.5,29.75,30.0,30.25,30.5,30.75,31.0,31.25,31.5,31.75,32.0,32.25,32.5,32.75,33.0,33.25,33.5,33.75,34.0,34.25,34.5,34.75,35.0,35.25,35.5,35.75,36.0,36.25,36.5,36.75,37.0,37.25,37.5,37.75,38.0,38.25,38.5,38.75,39.0,39.25,39.5,39.75,40.0,40.25,40.5,40.75,41.0,41.25,41.5,41.75,42.0,42.25,42.5,42.75,43.0,43.25,43.5,43.75,44.0,44.25,44.5,44.75,45.0,45.25,45.5,45.75,46.0,46.25,46.5,46.75,47.0,47.25,47.5,47.75,48.0,48.25,48.5,48.75,49.0,49.25,49.5,49.75,50.0,50.25,50.5,50.75,51.0,51.25,51.5,51.75,52.0,52.25,52.5,52.75,53.0,53.25,53.5,53.75,54.0,54.25,54.5,54.75,55.0,55.25,55.5,55.75,56.0,56.25,56.5,56.75,57.0,57.25,57.5,57.75,58.0,58.25,58.5,58.75,59.0,59.25,59.5,59.75,60.0,60.25,60.5,60.75,61.0,61.25,61.5,61.75,62.0,62.25,62.5,62.75,63.0,63.25,63.5,63.75,64.0,64.25,64.5,64.75,65.0,65.25,65.5,65.75,66.0,66.25,66.5,66.75,67.0,67.25,67.5,67.75,68.0,68.25,68.5,68.75,69.0,69.25,69.5,69.75,70.0,70.25,70.5,70.75,71.0,71.25,71.5,71.75,72.0,72.25,72.5,72.75,73.0,73.25,73.5,73.75,74.0,74.25,74.5,74.75,75.0,75.25,75.5,75.75,76.0,76.25,76.5,76.75,77.0,77.25,77.5,77.75,78.0,78.25,78.5,78.75,79.0,79.25,79.5,79.75,80.0,80.25,80.5,80.75,81.0,81.25,81.5,81.75,82.0,82.25,82.5,82.75,83.0,83.25,83.5,83.75,84.0,84.25,84.5,84.75,85.0,85.25,85.5,85.75,86.0,86.25,86.5,86.75,87.0,87.25,87.5,87.75,88.0,88.25,88.5,88.75,89.0,89.25,89.5,89.75,90.0,90.25,90.5,90.75,91.0,91.25,91.5,91.75,92.0,92.25,92.5,92.75,93.0,93.25,93.5,93.75,94.0,94.25,94.5,94.75,95.0,95.25,95.5,95.75,96.0,96.25,96.5,96.75,97.0],"y":[4.77645834103937,4.767488980578369,4.758536463020904,4.749600756738922,4.740681830163764,4.731779888113728,4.722894910150323,4.71402661572573,4.705174973512862,4.696339952243457,4.687521762182401,4.678720146190432,4.669935056723139,4.661166462749172,4.65241434536668,4.643678684340063,4.634959425931079,4.626256539341156,4.617569993829556,4.608899626675121,4.600245487377463,4.591607597973066,4.582985927949476,4.574380428955084,4.565790706377041,4.55721711348806,4.548659619999984,4.540118195681528,4.531592606828933,4.523082619131198,4.514588612545823,4.506110557061488,4.497648422723234,4.489201705420138,4.480770505246501,4.472355139767101,4.463955579242691,4.455571793989876,4.447202954278364,4.4388496089158815,4.430511953950142,4.422189959909293,4.413883597376842,4.405591685304446,4.3973152763865215,4.389054415651332,4.380809073889833,4.372579144901679,4.364363331095989,4.356162954311391,4.34797798554265,4.33980839583903,4.331653956782576,4.323513422978843,4.315388187786511,4.307278222454701,4.299183498286563,4.291103721976389,4.283037589143748,4.274986618493868,4.266950781525878,4.258930049792488,4.250924150732847,4.242931553091978,4.234953983152093,4.226991412658075,4.21904381340793,4.211111047217401,4.203191131971293,4.195286111857801,4.187395958863369,4.17952064502713,4.1716601424408,4.163812235253668,4.155978926767927,4.14816035495098,4.140356492078984,4.1325673104802565,4.124790863031642,4.1170284404026685,4.109280625836765,4.1015473918430905,4.093828710982542,4.086123104077565,4.078430753712156,4.070752884617291,4.063089469531184,4.055440481243375,4.047805134513484,4.040182054748358,4.032573331243766,4.024978936963102,4.017398844920674,4.009833028181613,4.002278617484417,3.994738251327462,3.987212091358334,3.9797001108123173,3.9722022829751187,3.964716801479211,3.957244015766741,3.9497853149256756,3.942340672408539,3.9349100617178907,3.9274930472324088,3.920087076088672,3.912695070191448,3.9053170032068354,3.8979528488505912,3.890602580888035,3.8832639667370703,3.875937902389637,3.868625659203804,3.8613272111049297,3.854042532067563,3.8467713003436788,3.839510435033832,3.8322632747667154,3.8250297936737607,3.817809965935227,3.810603765780107,3.803409373496099,3.7962265663699357,3.7890573241044394,3.781901621082126,3.7747594317338917,3.767630730538919,3.760512327843285,3.7534066070969123,3.7463143130495973,3.7392354203307603,3.7321699036177614,3.7251174319901748,3.7180745257507444,3.711044935206511,3.7040286351821097,3.6970256005497713,3.6900358062292375,3.683058040273522,3.6760904603657303,3.669136061670192,3.6621948192507956,3.6552667082186012,3.648351703731756,3.641447945789052,3.6345547823098947,3.6276746674046723,3.620807576372783,3.613953484560384,3.6071123673603007,3.600281997777756,3.5934623948777853,3.5866557095725313,3.57986191739367,3.573080993919225,3.56631291477348,3.5595553828947972,3.552808510736832,3.546074426772621,3.539353106763096,3.5326445265151296,3.525948661881454,3.519263337690971,3.5125881245061925,3.5059255726277123,3.4992756580400153,3.4926383567731403,3.4860136449025894,3.479399623774846,3.4727942984238824,3.466201512685412,3.459621242754116,3.453053464869866,3.4464981553176415,3.4399543971316815,3.4334168788717916,3.4268917849466645,3.4203790917442674,3.413878775697441,3.407390813283816,3.400915181025726,3.394445824134371,3.387987719628846,3.3815419019930983,3.375108347850736,3.368687033869846,3.362277936762902,3.355878213248212,3.349487857164469,3.3431096697734737,3.336743627903265,3.330389708426007,3.3240478882579034,3.3177178264783125,3.3113957092103905,3.305085639129372,3.298787593278595,3.2925015487451423,3.2862274826597586,3.2799653721967674,3.2737133381529833,3.267471783822093,3.261242129433696,3.255024352299753,3.248818429775482,3.2426243392592715,3.2364420581926057,3.2302693839729515,3.224108422471272,3.2179592115210514,3.211821728710942,3.205695951672338,3.199581858079297,3.1934788931903886,3.187386322206451,3.1813053747285496,3.175236028581172,3.169178261631111,3.163132051787384,3.1570973770011577,3.1521598744588544,3.1481591244681857,3.1441634522658037,3.1401728514069327,3.136187315454978,3.132206837981514,3.1282314125662727,3.127648814274346,3.1284988101801026,3.1293490370878305,3.1301994950603076,3.1310501841603307,3.131901104450713,3.132752255994284,3.138312675009051,3.1447911557553314,3.1512830101571803,3.157788265822098,3.164306950414576,3.170839091656215,3.177500431894026,3.1892049076407534,3.200952497387129,3.2127433599456467,3.224577654713792,3.236455541676199,3.2483771814068123,3.2618373272349137,3.2783730976045287,3.294992695484311,3.311696545834896,3.3284850757712414,3.345358714573548,3.3623178936982376,3.382632902182261,3.4037617012377517,3.425022476231053,3.446416051517968,3.467943256603441,3.4896049261737203,3.5133205051896814,3.538792664335408,3.5644495008797934,3.590292353764752,3.616322571639748,3.6425415129321874,3.670584300281631,3.700362883905734,3.730383054146603,3.7606467709394082,3.791156010119813,3.8219127635529677,3.8550715695449527,3.889221990339788,3.923674935022814,3.9584330835230266,3.993499139509759,4.029538268688299,4.067842959008717,4.1065117727603315,4.145548171291406,4.184955648853686,4.224779794609541,4.267317512240958,4.310283526140882,4.3536821486632356,4.397517735581413,4.4418656880898935,4.488757061965877,4.536143453273358,4.584030087755094,4.632422246320365,4.681892003148151,4.733288825992828,4.785249872317405,4.837781336048229,4.890889479107267,4.945944555567441,5.002019035223407,5.058729257402029,5.116082429812727,5.174823895824258,5.235063728596993,5.2960048098615715,5.357655302812084,5.420527942598578,5.484986655208948,5.550211884600594,5.6162127458791735,5.683513358054803,5.7522241704727115,5.821765661987457,5.892147875090716,5.964044134329275,6.037072995041397,6.110996083625879,6.185924006066062,6.262356394288778,6.339733170118532,6.4180660022729095,6.497619953369821,6.578259706588271,6.659900252380898,6.742659088750306,6.8265864657701565,6.911558505514418,6.9975619812965,7.084564137681183,7.172648010131519,7.261753984466582,7.351718125423442,7.442796810700505,7.534814395108383,7.62751759095037,7.721361343423037,7.815780108325296,7.910688096925031,8.006748565018206,8.1036783997186,8.201672096529926,8.300816481597032,8.400781962048809,8.501951311698766,8.601815201337908,8.700484532196807,8.800280214160109,8.901018063725513,9.002909071382257,9.106361190501898,9.211262089395438,9.315948756492343,9.417469283058457,9.5200961292903,9.623567948351655,9.728150273255821,9.830474375964048,9.932487291758559,10.034666154341323,10.137077629676481,10.239760543870817,10.342231341098094,10.444498083638258,10.544729730378824,10.645288531441482,10.744745544551224,10.844661249225174,10.94386220184431,11.042987974427563,11.140004882215278,11.231887997304128,11.310870923165092,11.394424918241606,11.484777958701663,11.58806664057248,11.704075919695546,11.807225122821709,11.903870751291096,11.979319502047478,12.050541227952754,12.115058918563838,12.179736489040494,12.244213833412093,12.30902988475032,12.374186326061436,12.441208646886794,12.509113776337664,12.577292846292627,12.644188147515287,12.707581344594042]},{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.01$","line":{"color":"darkgreen"},"name":"$\\xi_a = 0.01$","type":"scatter","x":[0.0,0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0,3.25,3.5,3.75,4.0,4.25,4.5,4.75,5.0,5.25,5.5,5.75,6.0,6.25,6.5,6.75,7.0,7.25,7.5,7.75,8.0,8.25,8.5,8.75,9.0,9.25,9.5,9.75,10.0,10.25,10.5,10.75,11.0,11.25,11.5,11.75,12.0,12.25,12.5,12.75,13.0,13.25,13.5,13.75,14.0,14.25,14.5,14.75,15.0,15.25,15.5,15.75,16.0,16.25,16.5,16.75,17.0,17.25,17.5,17.75,18.0,18.25,18.5,18.75,19.0,19.25,19.5,19.75,20.0,20.25,20.5,20.75,21.0,21.25,21.5,21.75,22.0,22.25,22.5,22.75,23.0,23.25,23.5,23.75,24.0,24.25,24.5,24.75,25.0,25.25,25.5,25.75,26.0,26.25,26.5,26.75,27.0,27.25,27.5,27.75,28.0,28.25,28.5,28.75,29.0,29.25,29.5,29.75,30.0,30.25,30.5,30.75,31.0,31.25,31.5,31.75,32.0,32.25,32.5,32.75,33.0,33.25,33.5,33.75,34.0,34.25,34.5,34.75,35.0,35.25,35.5,35.75,36.0,36.25,36.5,36.75,37.0,37.25,37.5,37.75,38.0,38.25,38.5,38.75,39.0,39.25,39.5,39.75,40.0,40.25,40.5,40.75,41.0,41.25,41.5,41.75,42.0,42.25,42.5,42.75,43.0,43.25,43.5,43.75,44.0,44.25,44.5,44.75,45.0,45.25,45.5,45.75,46.0,46.25,46.5,46.75,47.0,47.25,47.5,47.75,48.0,48.25,48.5,48.75,49.0,49.25,49.5,49.75,50.0,50.25,50.5,50.75,51.0,51.25,51.5,51.75,52.0,52.25,52.5,52.75,53.0,53.25,53.5,53.75,54.0,54.25,54.5,54.75,55.0,55.25,55.5,55.75,56.0,56.25,56.5,56.75,57.0,57.25,57.5,57.75,58.0,58.25,58.5,58.75,59.0,59.25,59.5,59.75,60.0,60.25,60.5,60.75,61.0,61.25,61.5,61.75,62.0,62.25,62.5,62.75,63.0,63.25,63.5,63.75,64.0,64.25,64.5,64.75,65.0,65.25,65.5,65.75,66.0,66.25,66.5,66.75,67.0,67.25,67.5,67.75,68.0,68.25,68.5,68.75,69.0,69.25,69.5,69.75,70.0,70.25,70.5,70.75,71.0,71.25,71.5,71.75,72.0,72.25,72.5,72.75,73.0,73.25,73.5,73.75,74.0,74.25,74.5,74.75,75.0,75.25,75.5,75.75,76.0,76.25,76.5,76.75,77.0,77.25,77.5,77.75,78.0,78.25,78.5,78.75,79.0,79.25,79.5,79.75,80.0,80.25,80.5,80.75,81.0,81.25,81.5,81.75,82.0,82.25,82.5,82.75,83.0,83.25,83.5,83.75,84.0,84.25,84.5,84.75,85.0,85.25,85.5,85.75,86.0,86.25,86.5,86.75,87.0,87.25,87.5,87.75,88.0,88.25,88.5,88.75,89.0,89.25,89.5,89.75,90.0,90.25,90.5,90.75,91.0,91.25,91.5,91.75,92.0,92.25,92.5,92.75,93.0,93.25,93.5,93.75,94.0,94.25,94.5,94.75,95.0,95.25,95.5,95.75,96.0,96.25,96.5,96.75,97.0,97.25,97.5,97.75,98.0,98.25,98.5,98.75,99.0,99.25,99.5,99.75,100.0,100.25,100.5,100.75,101.0,101.25,101.5,101.75,102.0,102.25,102.5],"y":[4.533621012778179,4.525538241674082,4.51746988094715,4.509415904905828,4.501376287904363,4.493351108584828,4.485340556779395,4.4773442858388846,4.4693622703039875,4.461394484760785,4.453441000553714,4.4455018132031485,4.437576779109758,4.429665873042407,4.421769069814944,4.413886349629591,4.4060176853850646,4.398163048660074,4.390322414447666,4.3824957577854695,4.374682911517919,4.366883942353496,4.359098876807064,4.351327690091936,4.343570357465615,4.335826535483379,4.32809644652026,4.3203801390760495,4.31267758858049,4.304988770507131,4.297313163086159,4.289651152409075,4.282002802921061,4.274368090264531,4.266746990125328,4.2591388268375185,4.251544105298041,4.243962926354287,4.236395265857656,4.228841099702607,4.221299648757145,4.213771439759639,4.206256656468771,4.198755274941314,4.191267271276745,4.183791838822951,4.176329378087709,4.1688802278426556,4.161444364346408,4.154021763899927,4.146611693305538,4.139214228604599,4.131829960819128,4.124458866406119,4.117100921864561,4.109755592988928,4.102422383849495,4.095102259662457,4.087795197079783,4.080501172795104,4.0732200012832624,4.06595031865499,4.058693610598555,4.05144985395758,4.044219025617016,4.037001102503069,4.029794588771412,4.0226005803991995,4.015419414804781,4.008251069061169,4.001095520282305,3.9939518281319324,3.9868198136080073,3.9797005347487464,3.972593968812027,3.9655000930963364,3.9584187464834018,3.9513480301328485,3.9442899438330583,3.9372444650236327,3.9302115711844707,3.9231912398356976,3.916182024973352,3.909184446706427,3.902199371970056,3.8952267784224692,3.888266643761819,3.88131866367649,3.8743809180539306,3.8674555734523874,3.8605426077053933,3.8536419986861,3.8467537243072134,3.8398763033192655,3.8330100234971263,3.8261560216222104,3.8193142757396905,3.812484763933998,3.8056674643287516,3.798859741966268,3.792064048067366,3.785280510830912,3.778509108510127,3.771749819397137,3.765001816182613,3.7582637818945974,3.7515378063274754,3.7448238679003616,3.738121945070992,3.7314320163356562,3.7247523810984084,3.7180833273522826,3.711426214340283,3.704781020682895,3.6981477250388837,3.6915263061052244,3.6849143022773725,3.6783133831546677,3.671724288495082,3.66514699711703,3.658581487876871,3.652027739668839,3.645482673202942,3.638949054502699,3.6324271456848347,3.6259169257623056,3.619418373785682,3.612931447269825,3.606452689346996,3.599985549221193,3.593530006059224,3.587086039065255,3.5806536274807437,3.5742326290929376,3.5678196532298707,3.561418183685415,3.555028199814651,3.548649681009702,3.542282606699665,3.535926956350546,3.5295789840454144,3.5232423941308886,3.5169171801827104,3.510603321777812,3.504300798529789,3.498009590088838,3.4917262381707777,3.485453760076326,3.4791925497556813,3.472942586967604,3.4667038515072166,3.4604763232059366,3.454257139471357,3.4480480366711914,3.441850094869188,3.435663294003208,3.429487614047175,3.423323035011009,3.417167608879203,3.411021172277791,3.404885791230926,3.398761445853055,3.3926481162943936,3.3865457827408623,3.380453727711288,3.374369219463978,3.368295662776308,3.3622330379364707,3.356181325268137,3.3501405051303954,3.3441105579176833,3.338088029356413,3.332075411022721,3.3260736227147523,3.3200826449252894,3.314102458182251,3.3081330430486293,3.3021728059188318,3.2962200772720016,3.2902780794319537,3.284346793054582,3.278426198830652,3.272516277485736,3.2666170097801537,3.2607243505308743,3.2548412719502857,3.248968807763883,3.2431069388209153,3.237255646005186,3.231414910234988,3.2255838388020934,3.219759334737837,3.2139453481021416,3.208141859903468,3.202348851184569,3.1965663030224283,3.1907941965282025,3.1850304169070336,3.1792748565611526,3.173529696892992,3.1677949191078403,3.1620705044449484,3.1563564341774706,3.1506526896124,3.1449565480085577,3.1392696240690987,3.13359298361159,3.12792660804074,3.122270478794885,3.1166245773459234,3.1109888851992586,3.105360503590217,3.099741820803078,3.0941333041773955,3.0885349353190303,3.0829466958671237,3.077368567494038,3.0718005319052963,3.0662397511085406,3.0606887633217847,3.055147824803159,3.049616917359902,3.0440960228321896,3.0385851230930725,3.0330842000484184,3.027590561413892,3.022106503641703,3.016632379474814,3.0111681709198868,3.005713860016173,3.000269428835458,2.9948348594820047,2.9906260093905375,2.9868179948957554,2.9830148292100005,2.979216506159204,2.9754230195771556,2.971634363305499,2.967850531193718,2.9663638447436242,2.9667545131711814,2.967145233049548,2.9675360043854995,2.9679268271858135,2.9683177014572673,2.96870862720664,2.970679272462869,2.9761633766814652,2.9816576049815664,2.987161976053012,2.992676508620145,2.9982012214418727,3.003736133311736,3.00982134360994,3.020037581009097,3.0302884953856157,3.0405742044435713,3.050894826286558,3.061250479419053,3.0716412827477706,3.082265921437409,3.0967950756178926,3.1113927171796036,3.1260591689576707,3.140794755309001,3.1555998021194527,3.1704746368110417,3.186034706982332,3.2046097368081723,3.223293061666794,3.242085312933445,3.260987125664386,3.2799991386183422,3.2991219942780887,3.3200320684672815,3.342541720586254,3.365203987025831,3.3880199025035083,3.4109905087521137,3.434116854567374,3.4578417304856104,3.484102213027142,3.510562130070617,3.5372229962157924,3.564086337565017,3.5911536918105766,3.6185703781281813,3.648596316150065,3.678871401448328,3.7093977013810404,3.7401773004606627,3.771212300496388,3.8030466907345937,3.836922998109543,3.8711010646514663,3.9055835783332222,3.940373251071269,3.975472818938926,4.012335975467813,4.050202769685214,4.088426935297502,4.127011845030475,4.165960903440352,4.206058762100284,4.247687683824258,4.2897286224081785,4.332185655735539,4.37506290205016,4.419026406384291,4.46451775433332,4.510477409675857,4.556910193368513,4.603820975996898,4.6521457996684425,4.701618546935002,4.751617406844519,4.802147974285669,4.853262875895036,4.9062683405822485,4.959852710504668,5.014022308241931,5.068783525426439,5.124972255422014,5.18216571739006,5.239997444684992,5.298474560194874,5.358150389660542,5.418974385067554,5.4804888348568115,5.5427015768438155,5.606088431752328,5.6705562137560985,5.735765349551749,5.80172436441233,5.8689236233968725,5.937042985555236,6.005952994823468,6.075718941584387,6.146652581237554,6.21841436670899,6.291013966549469,6.3645886995635665,6.439094201217117,6.514471883311334,6.590722281048112,6.667841534777372,6.745863175080085,6.824780477395746,6.904363665414387,6.9848748662586715,7.066324901407681,7.148361215645815,7.231331361828246,7.315264532254952,7.399583379184469,7.484841821383305,7.571027845883062,7.657043329035125,7.744036045859084,7.831754695893002,7.919609094536259,8.008449018858078,8.097865070229151,8.187875510323098,8.278886446134821,8.369491666871061,8.460871100807774,8.552576239832087,8.643688195829387,8.735770781996223,8.82731447221121,8.919432521466963,9.011971494471906,9.104517600460001,9.198014084702043,9.289955972009883,9.382784033493362,9.474742516369117,9.566701489167198,9.658517872318404,9.749649462407026,9.84124290443446,9.931865829523163,10.02331327719804,10.11336770618707,10.204231228931453,10.286341422331532,10.367701900305436,10.45436754864073,10.543093191043722,10.630790963987414,10.718519014349418,10.808742381153799,10.900507227229493,10.98567259251023,11.068386751772014,11.137140962235724,11.201315286394946,11.261955138423511,11.322021095720887,11.388891381075245,11.456906651017313,11.529173357213045,11.60144689831358,11.671406624479268,11.73989770725295,11.804180568328798,11.865842611875904,11.924365831742403,11.979940317825124,12.034039280205091]},{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.005$","line":{"color":"darkorange"},"name":"$\\xi_a = 0.005$","type":"scatter","x":[0.0,0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0,3.25,3.5,3.75,4.0,4.25,4.5,4.75,5.0,5.25,5.5,5.75,6.0,6.25,6.5,6.75,7.0,7.25,7.5,7.75,8.0,8.25,8.5,8.75,9.0,9.25,9.5,9.75,10.0,10.25,10.5,10.75,11.0,11.25,11.5,11.75,12.0,12.25,12.5,12.75,13.0,13.25,13.5,13.75,14.0,14.25,14.5,14.75,15.0,15.25,15.5,15.75,16.0,16.25,16.5,16.75,17.0,17.25,17.5,17.75,18.0,18.25,18.5,18.75,19.0,19.25,19.5,19.75,20.0,20.25,20.5,20.75,21.0,21.25,21.5,21.75,22.0,22.25,22.5,22.75,23.0,23.25,23.5,23.75,24.0,24.25,24.5,24.75,25.0,25.25,25.5,25.75,26.0,26.25,26.5,26.75,27.0,27.25,27.5,27.75,28.0,28.25,28.5,28.75,29.0,29.25,29.5,29.75,30.0,30.25,30.5,30.75,31.0,31.25,31.5,31.75,32.0,32.25,32.5,32.75,33.0,33.25,33.5,33.75,34.0,34.25,34.5,34.75,35.0,35.25,35.5,35.75,36.0,36.25,36.5,36.75,37.0,37.25,37.5,37.75,38.0,38.25,38.5,38.75,39.0,39.25,39.5,39.75,40.0,40.25,40.5,40.75,41.0,41.25,41.5,41.75,42.0,42.25,42.5,42.75,43.0,43.25,43.5,43.75,44.0,44.25,44.5,44.75,45.0,45.25,45.5,45.75,46.0,46.25,46.5,46.75,47.0,47.25,47.5,47.75,48.0,48.25,48.5,48.75,49.0,49.25,49.5,49.75,50.0,50.25,50.5,50.75,51.0,51.25,51.5,51.75,52.0,52.25,52.5,52.75,53.0,53.25,53.5,53.75,54.0,54.25,54.5,54.75,55.0,55.25,55.5,55.75,56.0,56.25,56.5,56.75,57.0,57.25,57.5,57.75,58.0,58.25,58.5,58.75,59.0,59.25,59.5,59.75,60.0,60.25,60.5,60.75,61.0,61.25,61.5,61.75,62.0,62.25,62.5,62.75,63.0,63.25,63.5,63.75,64.0,64.25,64.5,64.75,65.0,65.25,65.5,65.75,66.0,66.25,66.5,66.75,67.0,67.25,67.5,67.75,68.0,68.25,68.5,68.75,69.0,69.25,69.5,69.75,70.0,70.25,70.5,70.75,71.0,71.25,71.5,71.75,72.0,72.25,72.5,72.75,73.0,73.25,73.5,73.75,74.0,74.25,74.5,74.75,75.0,75.25,75.5,75.75,76.0,76.25,76.5,76.75,77.0,77.25,77.5,77.75,78.0,78.25,78.5,78.75,79.0,79.25,79.5,79.75,80.0,80.25,80.5,80.75,81.0,81.25,81.5,81.75,82.0,82.25,82.5,82.75,83.0,83.25,83.5,83.75,84.0,84.25,84.5,84.75,85.0,85.25,85.5,85.75,86.0,86.25,86.5,86.75,87.0,87.25,87.5,87.75,88.0,88.25,88.5,88.75,89.0,89.25,89.5,89.75,90.0,90.25,90.5,90.75,91.0,91.25,91.5,91.75,92.0,92.25,92.5,92.75,93.0,93.25,93.5,93.75,94.0,94.25,94.5,94.75,95.0,95.25,95.5,95.75,96.0,96.25,96.5,96.75,97.0,97.25,97.5,97.75,98.0,98.25,98.5,98.75,99.0,99.25,99.5,99.75,100.0,100.25,100.5,100.75,101.0,101.25,101.5,101.75,102.0,102.25,102.5,102.75,103.0,103.25,103.5,103.75,104.0,104.25,104.5,104.75,105.0,105.25,105.5,105.75,106.0,106.25,106.5,106.75,107.0,107.25,107.5,107.75,108.0,108.25,108.5,108.75,109.0,109.25,109.5,109.75,110.0,110.25,110.5,110.75,111.0],"y":[4.195504951062046,4.188579837465528,4.1816661544831755,4.17476388324758,4.167873004922479,4.160993500702697,4.154125698460974,4.14726928709564,4.140424192281664,4.1335903953410025,4.1267678776264445,4.119956774651548,4.113156985633252,4.106368419337238,4.0995910572409455,4.092824880852386,4.086069896319819,4.079326090164469,4.072593414244922,4.065871850191414,4.059161379664494,4.052461963545207,4.045773510478593,4.039096096480286,4.0324297033306715,4.025774312840208,4.019129906849373,4.0124962253363705,4.005873454421159,3.999261614630148,3.992660687921121,3.9860706562816373,3.9794912817395276,3.9729225446163463,3.9663646501623253,3.95981758048004,3.9532813177016086,3.9467557938526623,3.940240490698194,3.9337359430040104,3.927242133015001,3.920759043005366,3.9142866552785676,3.907824482897467,3.901372692729567,3.8949315544209178,3.8885010503853765,3.882081163065835,3.8756717763898663,3.8692721637251197,3.8628831182715877,3.8565046225804087,3.8501366592315343,3.843779210833679,3.8374316847713477,3.8310941623542627,3.8247671063620383,3.8184504995093635,3.8121443245394726,3.8058485642241013,3.7995620864274664,3.793285910233112,3.7870201011249436,3.7807646419784477,3.774519515697394,3.768284351927474,3.7620585040577015,3.7558429423495014,3.7496376498083834,3.743442609467933,3.737257804389767,3.7310824165542744,3.724916559908088,3.718760892741505,3.7126153982157466,3.7064800595198615,3.70035485987068,3.6942385476388484,3.6881319721075143,3.682035490744231,3.6759490868633415,3.669872743806769,3.6638064449439733,3.6577485443741002,3.6517005503992523,3.645662556628266,3.6396345465260596,3.6336165035848915,3.6276083198478526,3.621608293668891,3.6156181914704075,3.6096379968382424,3.6036676933853844,3.597707264751927,3.591756488637734,3.5858137648540187,3.579880873575954,3.5739577985352144,3.5680445234903897,3.562141032226943,3.5562470999468503,3.5503610044110157,3.544484651201764,3.538618024194156,3.5327611072899434,3.5269138844175223,3.52107626544189,3.5152461310621437,3.5094256501134296,3.503614806611771,3.497813584599657,3.4920219681459996,3.486239941346089,3.48046533134781,3.474700062926631,3.46894434446984,3.4631981601582558,3.4574614941989035,3.451734330824967,3.4460148550774985,3.4403041446003684,3.4346028978706467,3.42891109920508,3.4232287329464066,3.4175557834633117,3.4118910117566355,3.4062342089706257,3.400586784977095,3.3949487242263143,3.389320011194336,3.383700630382951,3.378090168353514,3.37248662670031,3.3668923801450745,3.3613074132691922,3.3557317106796263,3.350165257008872,3.3446080369149174,3.3390578256280627,3.333516114520616,3.327983600786681,3.3224602691617164,3.316946104406513,3.311441091307157,3.305944290145151,3.3004544757096763,3.294973777599189,3.28950218067522,3.2840396698244385,3.278586229958614,3.273141846014569,3.267704010478676,3.2622744939042625,3.2568539988477516,3.2514425103192672,3.246040013353838,3.2406464930113597,3.2352613283680896,3.2298823633124027,3.224512341356557,3.2191512476317,3.2137990672937007,3.208455785523109,3.203121387525112,3.197794068159474,3.192473896511903,3.1871625760366578,3.1818600920080384,3.176566429724844,3.171281574510332,3.1660055117121777,3.1607354329434014,3.1554732760709188,3.1502198799111047,3.1449752298786686,3.1397393114126038,3.134512109976143,3.1292936110567213,3.124080238087236,3.1188753448788886,3.113679123315072,3.1084915589483395,3.103312637355314,3.0981423441366487,3.0929804874617277,3.0878235409714967,3.0826751926917013,3.077535428286489,3.0724042334439097,3.0672815938758755,3.0621674953181226,3.057061661824812,3.0519606411204703,3.046868131991983,3.0417841202369136,3.0367085916765237,3.0316415321557333,3.026582927543081,3.0215327480974103,3.016486967742671,3.0114496135416466,3.00642067142316,3.0014001273395325,2.996387967266544,2.991384177203395,2.986388743172666,2.981398238535675,2.9764155064119637,2.9714411017968336,2.96647501077274,2.961517219445398,2.9565677139437434,2.951626480419894,2.94669120442887,2.9417627986034316,2.936842635645092,2.931930701767476,2.9270269832072637,2.922131466224157,2.917244137100837,2.9123639663154965,2.9074896254519484,2.902623442634279,2.897765404208599,2.8929154965438713,2.888073706031872,2.883240019087152,2.878414422147002,2.8735941145592396,2.868781537622033,2.8639770205902457,2.8591805499654805,2.8543921122719462,2.8496116940564207,2.8448392818882136,2.84007372214939,2.835314326896468,2.830562907437624,2.8258194504070233,2.8210839424612293,2.816356370279166,2.8116367205620807,2.8069249800335094,2.8022188872227782,2.797520065565027,2.7928291229937643,2.788146046297166,2.783470822285562,2.778803437791399,2.774143879669204,2.7695919417783377,2.7661273715529133,2.762667135268047,2.7592112275022758,2.7557596428409177,2.7523123758760657,2.7488694212065754,2.745430773438061,2.7430073592295594,2.7429933401968367,2.742979321235763,2.7429653023463376,2.7429512835285603,2.7429372647824306,2.7429232461079485,2.7429092275051135,2.7449412819974444,2.7493417046836717,2.753749181699238,2.7581637243529564,2.7625853439717707,2.767014051900783,2.7714498595032806,2.7758927781607707,2.7830517712245935,2.7915394486844387,2.8000530116378304,2.808592539029659,2.8171581100455816,2.8257498041127502,2.8343677009005557,2.8430733921303277,2.855228251518762,2.8674350760119878,2.8796940877740003,2.8920055099186013,2.904369566513461,2.9167864825841945,2.9292564841184623,2.943488805255014,2.9591121737633834,2.974818467555217,2.9906081267790436,3.006481593919594,3.022439313810214,3.038481733645323,3.0555797612902906,3.0744749565249205,3.093486996493071,3.11261660374307,3.1318645052913654,3.151231432650153,3.1707181218551788,3.19138612525431,3.2135139050777735,3.235795109971318,3.2582308037222827,3.280822057493886,3.303569949876356,3.3264755669384276,3.3513120397775253,3.376714651066252,3.402309811617065,3.428098980934184,3.4540836295847233,3.480265239282552,3.5076258962662714,3.5361768793215447,3.564960258492462,3.59397792541107,3.623231787106717,3.652723766131367,3.6833047900169826,3.715075148702243,3.7471195427303607,3.7794403357941726,3.812039911974554,3.844920675916276,3.8792840108123223,3.9143787038295903,3.9497908877741916,3.9855234348891972,4.021579243401984,4.058366412658589,4.0965568963029755,4.135106764214993,4.174019398311797,4.21329821233543,4.2530428213559235,4.294389873403313,4.336138891474749,4.378293783386548,4.420858494945866,4.4639710599785385,4.50854515430448,4.553564334375439,4.599033044506514,4.644955773390631,4.691730536688225,4.739606864180766,4.787971741200237,4.836830153104801,4.88618713612525,4.936803243706022,4.988056845585888,5.039842559355974,5.092165909370735,5.14542426475245,5.199556263800134,5.254257753947117,5.309534726476155,5.3656229029990525,5.422617903119721,5.48021831851043,5.538430580044917,5.597434854295409,5.657269106020507,5.717742961023302,5.778863256396948,5.840766842389075,5.903399458561177,5.966703706509451,6.030687041387402,6.09537638770083,6.160759636963911,6.226844232462607,6.293572470073761,6.360949563671953,6.429047976165469,6.4978383529484045,6.567061610940388,6.637022323326701,6.7077283464117095,6.77870824441802,6.85034691548775,6.922742677585383,6.995452058807692,7.068709774534554,7.142734659111749,7.217026192113058,7.2917752159381095,7.367298439054401,7.44290686997748,7.518919163673974,7.595707749334608,7.672311807220357,7.749406111386108,7.827275088412421,7.904544058508743,7.982545517961261,8.060911836539455,8.138876156556073,8.217594539552028,8.296027799498601,8.374529745442961,8.453731843542801,8.531801813876628,8.610592758140163,8.68911301295587,8.767339749837411,8.84620128558189,8.92360253018902,9.001681009291874,9.079251555556025,9.156747948543854,9.234140057622753,9.309905513239034,9.386292618974215,9.455220607246416,9.524076012675195,9.599801562658259,9.679476312107784,9.758494078943501,9.836314634753254,9.912507379976152,9.981277932662314,10.050160021204578,10.113543562985024,10.177326846994463,10.23601998377799,10.29461856067876,10.35348821767836,10.412680713329722,10.473086424053786,10.534142031120437,10.594770529221565,10.655397959106994,10.714918474637015,10.774027023450572,10.831215033862811,10.88752155298694,10.940953656604668,10.993085335530377,11.042113135852773,11.089952630840818]},{"hovertemplate":"%{y:.2f}","legendgroup":"$\\xi_a = 0.0025$","line":{"color":"navy"},"name":"$\\xi_a = 0.0025$","type":"scatter","x":[0.0,0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0,3.25,3.5,3.75,4.0,4.25,4.5,4.75,5.0,5.25,5.5,5.75,6.0,6.25,6.5,6.75,7.0,7.25,7.5,7.75,8.0,8.25,8.5,8.75,9.0,9.25,9.5,9.75,10.0,10.25,10.5,10.75,11.0,11.25,11.5,11.75,12.0,12.25,12.5,12.75,13.0,13.25,13.5,13.75,14.0,14.25,14.5,14.75,15.0,15.25,15.5,15.75,16.0,16.25,16.5,16.75,17.0,17.25,17.5,17.75,18.0,18.25,18.5,18.75,19.0,19.25,19.5,19.75,20.0,20.25,20.5,20.75,21.0,21.25,21.5,21.75,22.0,22.25,22.5,22.75,23.0,23.25,23.5,23.75,24.0,24.25,24.5,24.75,25.0,25.25,25.5,25.75,26.0,26.25,26.5,26.75,27.0,27.25,27.5,27.75,28.0,28.25,28.5,28.75,29.0,29.25,29.5,29.75,30.0,30.25,30.5,30.75,31.0,31.25,31.5,31.75,32.0,32.25,32.5,32.75,33.0,33.25,33.5,33.75,34.0,34.25,34.5,34.75,35.0,35.25,35.5,35.75,36.0,36.25,36.5,36.75,37.0,37.25,37.5,37.75,38.0,38.25,38.5,38.75,39.0,39.25,39.5,39.75,40.0,40.25,40.5,40.75,41.0,41.25,41.5,41.75,42.0,42.25,42.5,42.75,43.0,43.25,43.5,43.75,44.0,44.25,44.5,44.75,45.0,45.25,45.5,45.75,46.0,46.25,46.5,46.75,47.0,47.25,47.5,47.75,48.0,48.25,48.5,48.75,49.0,49.25,49.5,49.75,50.0,50.25,50.5,50.75,51.0,51.25,51.5,51.75,52.0,52.25,52.5,52.75,53.0,53.25,53.5,53.75,54.0,54.25,54.5,54.75,55.0,55.25,55.5,55.75,56.0,56.25,56.5,56.75,57.0,57.25,57.5,57.75,58.0,58.25,58.5,58.75,59.0,59.25,59.5,59.75,60.0,60.25,60.5,60.75,61.0,61.25,61.5,61.75,62.0,62.25,62.5,62.75,63.0,63.25,63.5,63.75,64.0,64.25,64.5,64.75,65.0,65.25,65.5,65.75,66.0,66.25,66.5,66.75,67.0,67.25,67.5,67.75,68.0,68.25,68.5,68.75,69.0,69.25,69.5,69.75,70.0,70.25,70.5,70.75,71.0,71.25,71.5,71.75,72.0,72.25,72.5,72.75,73.0,73.25,73.5,73.75,74.0,74.25,74.5,74.75,75.0,75.25,75.5,75.75,76.0,76.25,76.5,76.75,77.0,77.25,77.5,77.75,78.0,78.25,78.5,78.75,79.0,79.25,79.5,79.75,80.0,80.25,80.5,80.75,81.0,81.25,81.5,81.75,82.0,82.25,82.5,82.75,83.0,83.25,83.5,83.75,84.0,84.25,84.5,84.75,85.0,85.25,85.5,85.75,86.0,86.25,86.5,86.75,87.0,87.25,87.5,87.75,88.0,88.25,88.5,88.75,89.0,89.25,89.5,89.75,90.0,90.25,90.5,90.75,91.0,91.25,91.5,91.75,92.0,92.25,92.5,92.75,93.0,93.25,93.5,93.75,94.0,94.25,94.5,94.75,95.0,95.25,95.5,95.75,96.0,96.25,96.5,96.75,97.0,97.25,97.5,97.75,98.0,98.25,98.5,98.75,99.0,99.25,99.5,99.75,100.0,100.25,100.5,100.75,101.0,101.25,101.5,101.75,102.0,102.25,102.5,102.75,103.0,103.25,103.5,103.75,104.0,104.25,104.5,104.75,105.0,105.25,105.5,105.75,106.0,106.25,106.5,106.75,107.0,107.25,107.5,107.75,108.0,108.25,108.5,108.75,109.0,109.25,109.5,109.75,110.0,110.25,110.5,110.75,111.0,111.25,111.5,111.75,112.0,112.25,112.5,112.75,113.0,113.25,113.5,113.75,114.0,114.25,114.5,114.75,115.0,115.25,115.5,115.75,116.0,116.25,116.5,116.75,117.0,117.25,117.5,117.75,118.0,118.25,118.5,118.75,119.0,119.25,119.5,119.75,120.0,120.25,120.5,120.75,121.0,121.25],"y":[3.846129914854665,3.840310481415336,3.8344998531402386,3.8286980167066114,3.822904958811853,3.8171206661734884,3.8113452741441165,3.8055788479369337,3.7998211461220093,3.794072155499656,3.7883318628901574,3.7826002551337385,3.776877485350852,3.7711634314603244,3.765458022386048,3.7597612450492433,3.7540730863909184,3.7483935363210192,3.742722649533923,3.737060342144012,3.731406601171647,3.7257614136568282,3.7201247666591604,3.7144966255732075,3.708876945816441,3.7032657681001253,3.6976630795614844,3.6920688673571997,3.686483118663385,3.6809057126078586,3.675336630820185,3.6697759748587564,3.664223731975592,3.658679889441997,3.6531444345485378,3.647617122183709,3.642098038178136,3.6365873049087396,3.6310849097403075,3.6255908400567476,3.6201050832610533,3.614627255834362,3.6091575782715393,3.603696177460515,3.598243040876854,3.5927981560150744,3.587361510388616,3.5819325916787643,3.5765117380623694,3.571099088300507,3.5656946299775645,3.560298350696715,3.5549102380798954,3.549529684284513,3.5441570809741725,3.5387926096894518,3.5334362581216356,3.528088013980641,3.5227478649949853,3.5174151645374674,3.512090246773985,3.506773390256577,3.501464582781546,3.4961638121636676,3.4908710662361675,3.4855857394712304,3.4803079514079767,3.475038154841396,3.469776337670962,3.4645224878144676,3.4592765932080036,3.4540381920115597,3.44880698674574,3.4435837042378674,3.438368332488776,3.433160859517475,3.4279612733611176,3.4227693805971664,3.4175842201938997,3.4124069148008362,3.407237452518405,3.402075821465061,3.396922009777259,3.3917760056094264,3.3866365944979453,3.3815047382327204,3.376380658399361,3.3712643432140412,3.366155780910794,3.36105495974148,3.3559611268184852,3.350874200637089,3.34579498515823,3.340723468694116,3.3356596395746716,3.3306034861475116,3.3255549073573927,3.320512401112604,3.3154775407705106,3.3104503147377047,3.3054307114383588,3.3004187193141967,3.295414326824468,3.290416511981344,3.285425506342168,3.2804420712148707,3.2754661951162656,3.270497866580584,3.265537074159448,3.26058377546744,3.255636132730596,3.2506959975967873,3.245763358673902,3.2408382045871136,3.2359205239788564,3.2310103055087995,3.2261067411922326,3.2212094235186153,3.2163195401062668,3.211437079669777,3.206562030940867,3.201694382668363,3.196834123618171,3.1919797445489118,3.1871321430062047,3.182291903427733,3.1774590146330146,3.172633465458548,3.167815244757785,3.163004341401107,3.158198635487724,3.153400151523992,3.1486089582506214,3.143825044590329,3.139048399482661,3.1342790118839714,3.129516548328058,3.124759361713926,3.120009406512101,3.115266671730093,3.110531146392123,3.105802819539094,3.101081680228571,3.096367130385212,3.0916579621305678,3.0869559559031376,3.0822611008104164,3.077573385976467,3.0728928005418923,3.068219333663811,3.06355228404597,3.0588905617113245,3.054235932989946,3.0495883870876805,3.0449479132267983,3.040314500645971,3.035688138600245,3.0310682076487208,3.0264533664123974,3.0218455513325897,3.0172447517118823,3.012650956869146,3.0080641561395143,3.003484338874357,2.9989111763874434,2.99434265819068,2.989781099639363,2.985226490131222,2.9806788190801394,2.976138075916122,2.97160425008528,2.967077331049803,2.9625547900575264,2.958038936785958,2.953529967076792,2.9490278704373436,2.94453263639092,2.940044254476799,2.9355627142502034,2.931086183143407,2.926615491418425,2.92215161869611,2.917694554575656,2.913244288672121,2.908800810616402,2.904364110055213,2.899933338780605,2.89550728531664,2.891087987162875,2.8866754340089487,2.8822696155602348,2.877870521537819,2.873478141678476,2.8690924657346444,2.8647110171784056,2.86033582330967,2.855967311553466,2.851605471704389,2.8472502935726194,2.8429017669839007,2.8385598817795157,2.834223705969864,2.8298922213757836,2.8255673564986825,2.8212491012217855,2.81693744544378,2.81263237907879,2.8083338920563534,2.804041974321401,2.799754639123968,2.795473045869534,2.7911980003462973,2.7869294925409807,2.782667512455618,2.778412050107535,2.7741630955293215,2.769920627032665,2.765681827866228,2.761449515318288,2.7572236794623968,2.7530043103872965,2.7487913981968966,2.7445849330102505,2.7403849049615334,2.7361906856126197,2.73200053208469,2.7278167952830064,2.723639465381109,2.719468532567587,2.715303987046052,2.7111458190351203,2.706994018768386,2.70284761251305,2.698705488091322,2.6945697114912943,2.6904402729849046,2.686317162859,2.682200371415313,2.6780898889704385,2.673985705855812,2.669886825490242,2.665792231709486,2.661703917482631,2.6576218731792216,2.653546089183575,2.6494765558947533,2.645413263726542,2.641356203107429,2.6373046288134523,2.6332569985243395,2.6292155803772674,2.6251803648380863,2.621151342387281,2.6171285035199454,2.6131118387457617,2.609101338588977,2.6050968185238967,2.601095541935738,2.597100411074764,2.5931114165014963,2.5891285487909546,2.5851517985326358,2.5811811563304907,2.577216612802902,2.5732581585826617,2.569303375167776,2.565353929447277,2.5614105546803474,2.5574732415349257,2.553541980693293,2.549616762852054,2.545697578722113,2.541784419028656,2.538195774505415,2.5351643551856973,2.532136556352305,2.5291123736812167,2.5260918028535757,2.5230748395556826,2.520061479478991,2.5170517183200998,2.5140455517807476,2.513470510979981,2.5132661270335683,2.513061759706725,2.5128574089980997,2.512653074906341,2.5124487574300978,2.512244456568019,2.5120401723187533,2.5130326356025496,2.516586411829383,2.5201452135880333,2.523709047985301,2.5272779221380324,2.53085184317314,2.5344308182276154,2.5380148544485412,2.5416039589931088,2.54795180851162,2.55495588004597,2.5619792050912755,2.5690218365735635,2.576083827564351,2.5831652312810416,2.5902661010873302,2.597386490493602,2.6058313433785205,2.615923338735915,2.6260544188831014,2.6362247351896317,2.646434439611287,2.6566836846923514,2.666972623567888,2.677301409966031,2.6884344567931526,2.701384376003759,2.7143966736767213,2.7274716502828387,2.740609607740249,2.7538108494213955,2.767075680160039,2.780404406258295,2.7947572367105353,2.810454354302652,2.826239636797775,2.842113579385552,2.8580766800369246,2.8741294395197583,2.890272361414544,2.9065059521301966,2.924554025219992,2.942980146181332,2.961522360718223,2.9801814002769813,2.998958000912392,3.0178529033167454,3.036866852849054,3.0571201904678476,3.078182952894533,3.0993908322722707,3.120744828419084,3.1422459480414844,3.163895204781922,3.185693619266587,3.2087978013843856,3.2325430883309076,3.256464091756645,3.280562111973578,3.3048384589160693,3.3292944522120673,3.354105979683068,3.3804122702806585,3.406924881408727,3.4336454312414952,3.460575550644539,3.487716883274338,3.515071085678582,3.5437730850918827,3.5729284480696735,3.602323678321681,3.631960749286181,3.66184165063734,3.691968388418789,3.7233957378249087,3.75526480273783,3.787406639434878,3.81982358260791,3.8525179869317285,3.8856707457673614,3.9200347968197664,3.9547027562787225,3.9896773118459627,4.024961174992687,4.060557081169779,4.097186820311612,4.134410100081808,4.171971556415001,4.209874261673122,4.248121316130769,4.287190202896485,4.327001905836855,4.367183308187792,4.407737843051733,4.448668975411581,4.490424153261935,4.532857791277634,4.575692418949053,4.6189318255507255,4.662579836165099,4.707168233826592,4.752254519492137,4.797772651451279,4.843726766022159,4.89028589346159,4.937592335750942,4.985356399441341,5.0335825113578965,5.082281107151036,5.131770273526981,5.181741345082299,5.23219901441174,5.2831480198046,5.3347475882202495,5.386877392616674,5.439516596279225,5.492670176928716,5.5463785791580795,5.600618252165891,5.655388350943602,5.710693853312217,5.766440125871517,5.822730578697536,5.87957052393312,5.936882783494178,5.994550225347716,6.052777815341482,6.111570994430178,6.170646261797189,6.230171685072152,6.290271323083425,6.350829009033335,6.411587271344841,6.47292680681515,6.534853176473697,6.5966942027767415,6.659036009472167,6.721966975031501,6.784937092538978,6.848183647409758,6.91201976216127,6.9759806564881535,7.040035745816558,7.104679003987583,7.1694237474478575,7.234083749561362,7.299326910938513,7.3645767092235355,7.4296710569768045,7.495340763542496,7.560814153923302,7.62618882480484,7.69212875856758,7.7575311931538495,7.823025773576098,7.8890733056988145,7.9540837745465796,8.01952871077569,8.085079270828453,8.149772094193832,8.214982557678102,8.279673415107196,8.344156193421828,8.409138064016966,8.473347538691348,8.538047296270658,8.597547655114884,8.65082867693844,8.704439893766486,8.77992747775126,8.856782489565857,8.923005855147322,8.979098357642307,9.035301729591382,9.089918316562398,9.144865049848573,9.199208757320404,9.253548834293504,9.308448614140666,9.3640252281011,9.419542587959226,9.47189596377878,9.524540317205167,9.575925580428635,9.627262715361162,9.677909512961586,9.72812509321071,9.777408445025687,9.824831321554916,9.872145457862333,9.917993425348007,9.964054318801145,10.007565477255575,10.051252953700205,10.092413398968612,10.133241003340205]}],                        {"height":500,"legend":{"traceorder":"normal"},"template":{"data":{"scatter":[{"type":"scatter"}]}},"width":800,"xaxis":{"showline":true,"title":{"text":"Years"}},"yaxis":{"range":[0,14],"showline":true,"title":{"text":"Emission"}}},                        {"responsive": true}                    ).then(function(){
+    
+    var gd = document.getElementById('45048053-bb84-488d-9393-837239794ca8');
+    var x = new MutationObserver(function (mutations, observer) {{
+            var display = window.getComputedStyle(gd).display;
+            if (!display || display === 'none') {{
+                console.log([gd, 'removed!']);
+                Plotly.purge(gd);
+                observer.disconnect();
+            }}
+    }});
+    
+    // Listen for the removal of the full notebook cells
+    var notebookContainer = gd.closest('#notebook-container');
+    if (notebookContainer) {{
+        x.observe(notebookContainer, {childList: true});
+    }}
+    
+    // Listen for the clearing of the current output cell
+    var outputEl = gd.closest('.output');
+    if (outputEl) {{
+        x.observe(outputEl, {childList: true});
+    }}
+    
+                            })                };                });            </script>        </div>
 

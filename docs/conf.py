@@ -56,6 +56,7 @@ import sphinx_material
 html_context = sphinx_material.get_html_context()
 html_theme_path = sphinx_material.html_theme_path()
 html_theme = 'sphinx_material'
+html_logo = "mfr.png"
 html_theme_options = {
     'navigation_with_keys': True,
     'nav_title': 'UncertaintySpillover',
