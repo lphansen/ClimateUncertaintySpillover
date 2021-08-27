@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
@@ -379,7 +380,7 @@ def plot6(pre_jump_res):
                      showgrid=True,
                      linecolor="black",
                      linewidth=1,
-                     title = go.layout.xaxis.Title(text=r"$\gamma_3$", font=dict(size=13)),
+                     title = go.layout.xaxis.Title(text=r"γ₃", font=dict(size=13)),
                     )
     return fig
 
@@ -405,8 +406,7 @@ def plot7(pre_jump_res):
                                  y=prob_jump,
                                  name="jump probability",
                                  showlegend=False,
-                                 visible=False,
-                                 hovertemplate="{%y:}"
+                                 visible=False
                                 ),
                       col=1,
                       row=1)
@@ -518,11 +518,11 @@ def plot89(pre_jump_res, y_grid_short, y_underline):
     loc_11 = np.abs(y_grid_short - 1.1).argmin()
     loc_end = np.abs(y_grid_short - y_underline).argmin()
 
-    for i, ξ_r_i in enumerate([100_000, 5., 1., 0.3]):
+    for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
         if ξ_r_i == 100_000:
             name = "baseline"
         else:
-            name = r"$\xi_r = {}$".format(ξ_r_i)
+            name = r"ξᵣ = {}".format(ξ_r_i)
         fig.add_trace(
             go.Scatter(x=y_grid_short[loc_11 :loc_end + 1],
                        y=pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_end + 1],
@@ -540,46 +540,61 @@ def plot89(pre_jump_res, y_grid_short, y_underline):
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
-def plot1011(pre_jump_res, pre_jump175_res, y_grid_short, y_underline, y_underline_higher, args_scc):
+def plot1011(pre_jump_res, y_grid_short, y_underline, args_scc):
     def logSCC(y_grid, e_tilde, args=()):
         α, η, i_over_k, K0, γ_1, γ_2 = args
         C0 = (α - i_over_k) * K0
         return np.log(1000) + np.log(C0)  - (y_grid*γ_1 + γ_2/2*y_grid**2) \
             -np.log(e_tilde) + np.log(η) - np.log(1- η)
-
-
-    fig = make_subplots(2,1)
+    
+    fig = go.Figure()
     loc_11 = np.abs(y_grid_short - 1.1).argmin()
     loc_15 = np.abs(y_grid_short - y_underline).argmin()
+    for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
+        if ξ_r_i == 100_000:
+            name = "baseline"
+        else:
+            name = r"ξᵣ = {}".format(ξ_r_i)
+        e_tilde = pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_15 + 1]
+        log_SCC = logSCC(y_grid_short[loc_11 :loc_15 + 1], e_tilde, args_scc)
+        fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_15 + 1], y=log_SCC,
+                                 name=name, 
+                                 line=dict(color=color[i], width=2)))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black", title = "Temperature anomaly")
+    fig.update_yaxes(showline=True, range=[4.4, 5.7], title="Emissions")
+    fig.update_layout(width=800, height=500, title = "logSCC as a function of temperature anomaly <br> The thresholds are y̲ = 1.5 and ȳ = 2.0.")
+    return fig
+
+def plot1012( pre_jump175_res, y_grid_short, y_underline_higher, args_scc):
+    def logSCC(y_grid, e_tilde, args=()):
+        α, η, i_over_k, K0, γ_1, γ_2 = args
+        C0 = (α - i_over_k) * K0
+        return np.log(1000) + np.log(C0)  - (y_grid*γ_1 + γ_2/2*y_grid**2) \
+    -np.log(e_tilde) + np.log(η) - np.log(1- η)
+    
+    fig = go.Figure()
+    loc_11 = np.abs(y_grid_short - 1.1).argmin()
     loc_175 = np.abs(y_grid_short - y_underline_higher).argmin()
     for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
         if ξ_r_i == 100_000:
             name = "baseline"
         else:
-            name = r"$\xi_r = {}$".format(ξ_r_i)
-        e_tilde = pre_jump_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_15 + 1]
-        log_SCC = logSCC(y_grid_short[loc_11 :loc_15 + 1], e_tilde, args_scc)
-        fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_15 + 1], y=log_SCC,
-                                 name=name, 
-                                line=dict(color=color[i], width=2)), col=1, row=1)
-
-    for i, ξ_r_i in enumerate([0.3, 1, 5, 100_000]):
-        if ξ_r_i == 100_000:
-            name = "baseline"
-        else:
-            name = r"$\xi_r = {}$".format(ξ_r_i)
+            name = r"ξᵣ = {}".format(ξ_r_i)
         e_tilde = pre_jump175_res[ξ_r_i]["model_res"]["e_tilde"][loc_11 :loc_175 + 1]
         log_SCC = logSCC(y_grid_short[loc_11 :loc_175 + 1], e_tilde, args_scc)
         fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_175 + 1], y=log_SCC,
                                  name=name, 
-                                 showlegend=False,
-                                line=dict(color=color[i], width=2)), col=1, row=2)
-    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+                                 line=dict(color=color[i], width=2)))
+
+
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black", title = "Temperature anomaly")
     fig.update_yaxes(showline=True, range=[4.4, 5.7], title="Emissions")
-    fig.update_layout(width=800, height=1000)
+    fig.update_layout(width=800, height=500, title = "logSCC as a function of temperature anomaly <br> The thresholds are y̲ = 1.75 and ȳ = 2.0.")
     return fig
 
-def plot13(fig, ratios, y_grid_long, y_underline):
+
+def plot13(ratios, y_grid_long, y_underline):
+    fig = go.Figure(layout=dict(width=800, height=500, plot_bgcolor="white"))
     loc_11 = np.abs(y_grid_long - 1.1).argmin()
     loc_15 = np.abs(y_grid_long - y_underline).argmin()
     colors = ["#d62728", "darkorange", "darkgreen", "navy"]
@@ -593,9 +608,7 @@ def plot13(fig, ratios, y_grid_long, y_underline):
             go.Scatter(x=y_grid_long[loc_11:loc_15 + 1],
                        y=ratio,
                        name=label,
-                       line=dict(color=color),
-                       hovertemplate="{%y:.2f}",
-                      ))
+                       line=dict(color=color)))
 
     fig.update_yaxes(showline=True,
                      linecolor="black",
@@ -620,15 +633,13 @@ def plot14(
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=tech_prob_first[:41],
                              name='baseline',
-                             line=dict(width=2.5, color=colors[0]),
-                             hovertemplate="{%y:.2f}",
-                            ),
+                             line=dict(width=2.5, color=colors[0])),
                   col=1,
                   row=1)
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_first_7p5[:41],
-        name=r'$\xi_r = 7.5$',
+        name='ξᵣ = 7.5',
         line=dict(width=2.5, color=colors[1]),
     ),
                   row=1,
@@ -636,7 +647,7 @@ def plot14(
 
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=distorted_tech_prob_first_5[:41],
-                             name=r'$\xi_r = 5$',
+                             name='ξᵣ = 5',
                              line=dict(width=2.5, color=colors[2]),),
                   row=1,
                   col=1)
@@ -644,7 +655,7 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_first_2p5[:41],
-        name=r'$\xi_r = 2.5$',
+        name='ξᵣ = 2.5',
         line=dict(width=2.5, color=colors[3]),   
     ),
                   row=1,
@@ -665,8 +676,8 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_second_7p5[:41],
-        name=r'$\xi_r = 7.5$',
-          showlegend=False,
+        name='ξᵣ = 7.5',
+        showlegend=False,
         line=dict(width=2.5, color=colors[1]),
     ),
                   row=1,
@@ -674,8 +685,8 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_second_5[:41],
-        name=r'$\xi_r = 5$',
-          showlegend=False,
+        name='ξᵣ = 5',
+        showlegend=False,
         line=dict(width=2.5, color=colors[2]),
     ),
                   row=1,
@@ -683,8 +694,8 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_tech_prob_second_2p5[:41],
-        name=r'$\xi_r = 2.5$',
-          showlegend=False,
+        name='ξᵣ = 2.5',
+        showlegend=False,
         line=dict(width=2.5, color=colors[3]),
     ),
                   row=1,
@@ -699,7 +710,7 @@ def plot14(
                   col=3)
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=distorted_dmg_prob_7p5[:41],
-                             name=r'$\xi_r = 7.5$',
+                             name='ξᵣ = 7.5',
                             showlegend=False,
         line=dict(width=2.5, color=colors[1]),),
                   row=1,
@@ -707,7 +718,7 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_dmg_prob_5[:41],
-        name=r'$\xi_r = 5$',
+        name='ξᵣ = 5',
         showlegend=False,
         line=dict(width=2.5, color=colors[2]),
     ),
@@ -716,7 +727,7 @@ def plot14(
     fig.add_trace(go.Scatter(
         x=np.arange(0, 40),
         y=distorted_dmg_prob_2p5[:41],
-        name=r'$\xi_r = 2.5$',
+        name='ξᵣ = 2.5',
         showlegend=False,
         line=dict(width=2.5, color=colors[3]),
     ),
@@ -860,7 +871,7 @@ def plot_ems_app(pre_jump_res, y_grid_short, ξ_a_list, dt=1, model_res=True, y_
         if ξ_a_i == 100_000:
             name = "baseline"
         else:
-            name = r"$\xi_a = {}$".format(ξ_a_i)
+            name = r"ξᵣ = {}".format(ξ_a_i)
         if model_res:
             y = pre_jump_res[ξ_a_i]["model_res"]["e_tilde"][loc_11 :loc_end + 1]
             x = y_grid_short[loc_11 :loc_end + 1]
@@ -905,7 +916,7 @@ def plot_logscc(pre_jump_res,  y_grid_short, y_underline, ξ_a_list, args_scc):
     loc_15 = np.abs(y_grid_short - y_underline).argmin()
 #     loc_175 = np.abs(y_grid_short - y_underline_higher).argmin()
     for i, ξ_a_i in enumerate(ξ_a_list):
-        name = r"$\xi_a = {}$".format(ξ_a_i)
+        name = r"ξᵣ= {}".format(ξ_a_i)
         e_tilde = pre_jump_res[ξ_a_i]["model_res"]["e_tilde"][loc_11 :loc_15 + 1]
         log_SCC = logSCC(y_grid_short[loc_11 :loc_15 + 1], e_tilde, args_scc)
         fig.add_trace(go.Scatter(x=y_grid_short[loc_11 :loc_15 + 1], y=log_SCC,
@@ -932,6 +943,58 @@ def plot_logscc(pre_jump_res,  y_grid_short, y_underline, ξ_a_list, args_scc):
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
+def plot_basic_ems(simulation_res_high, simulation_res_low,T):
+    if T > len(simulation_res_high['yt']):
+        print('Error: Simulation Length {:d} less than Time length {:d}'.format(len(simulation_res_high['yt']), T))
+        return "Error"
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_high['et'][0:T],
+                             name = "Threshold 2.0",line=dict(color="red")))
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_low['et'][0:T], 
+                             name = "Threshold 1.5",line=dict(color="blue")))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+    fig.update_xaxes(showline=True, title="Year")
+    fig.update_yaxes(showline=True, title="Emissions", linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
+    return fig
+
+def plot_basic_y(simulation_res_high, simulation_res_low,T):
+    if T > len(simulation_res_high['yt']):
+        print('Error: Simulation Length {:d} less than Time length {:d}'.format(len(simulation_res_high['yt']), T))
+        return "Error"
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_high['yt'][0:T],
+                             name = "Threshold 2.0",line=dict(color="red")))
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_low['yt'][0:T], 
+                             name = "Threshold 1.5",line=dict(color="blue")))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+    fig.update_xaxes(showline=True, title="Year")
+    fig.update_yaxes(showline=True, title="Temperature Anomaly", linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
+    return fig
+
+def plot_basic_DMG(simulation_res_high, simulation_res_low,T, y_bar_high, y_bar_low, γ_1, γ_2, γ_2p):
+    if T > len(simulation_res_high['yt']):
+        print('Error: Simulation Length {:d} less than Time length {:d}'.format(len(simulation_res_high['yt']), T))
+        return "Error"
+    yt_high = simulation_res_high['yt']
+    yt_low = simulation_res_low['yt']
+    
+    DF_high = γ_1 * yt_high + γ_2/2 *yt_high **2 + γ_2p/2 *(yt_high - y_bar_high * np.ones_like(yt_high))**2 *(yt_high > y_bar_high * np.ones_like(yt_high))
+    DF_low = γ_1 * yt_low + γ_2/2 *yt_low **2 + γ_2p/2 *(yt_low - y_bar_low * np.ones_like(yt_low))**2 *(yt_low > y_bar_low * np.ones_like(yt_low))
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= np.exp(-DF_high[0:T]),
+                             name = "Threshold 2.0",line=dict(color="red")))
+    fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= np.exp(-DF_low[0:T]), 
+                             name = "Threshold 1.5",line=dict(color="blue")))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+    fig.update_xaxes(showline=True, title="Year")
+    fig.update_yaxes(showline=True, title="1/N", linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
+    return fig
+
+
 def plot_DMG_np(list_len, T, iteration_list):
     Damages_list = np.zeros((list_len, T+1))
     for i in range(list_len):
@@ -951,12 +1014,11 @@ def plot_DMG_np(list_len, T, iteration_list):
     fig.update_xaxes(showline=True, title="Year (starts from 2020)")
     fig.update_yaxes(showline=True, title="Damages", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
-                      title = "Damage, exp(-n), with a pulse")
+                      title = "Damage, -n, with a pulse")
     return fig
 
 
 
-# +
 def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
     Damages_list       = np.zeros((list_len, T+1))
     Damages_list_pulse = np.zeros((list_len, T+1))
@@ -984,7 +1046,81 @@ def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
                              line=dict(color="green")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
     fig.update_xaxes(showline=True, title="Year (starts from 2020)")
-    fig.update_yaxes(showline=True, title="Damages", linecolor="black")
+    fig.update_yaxes(showline=True, title=r"$N$", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
                       title = "Log damage difference")
     return fig
+
+
+def plot_2S_ey1y2(simul):
+    fig = make_subplots(cols=3, rows=1)
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul['et'], name="Emission"), col=1, row=1)
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul['y1t'], name="$Y_t^1$"), col=2, row=1)
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul['y2t'], name="$Y_t^2$"), col=3, row=1)
+    fig.update_layout(
+    #     legend
+        height=300,
+        width=1000
+    )
+    fig.update_xaxes(title="Years")
+    return fig 
+
+
+def plot_1S_vs_2S_ems(et_1state, simul):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(et_1state)), y=et_1state, name="Y has one state"))
+    fig.add_trace(go.Scatter(x=np.arange(len(simul["et"])), y=simul["et"], name="Y has two states"))
+    fig.update_yaxes(range=[0,13])
+    fig.update_xaxes(title="Years")
+    fig.update_layout(title="Emissions")
+    return fig 
+
+
+def plot_1S_vs_2S_SCC(et_1state, scc, scc_1):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(scc)), y=scc, name="Y has two states"))
+    fig.add_trace(go.Scatter(x=np.arange(len(scc_1)), y=scc_1, name="Y has one state"))
+    fig.update_xaxes(title="Years")
+    fig.update_yaxes(title="Social cost of carbon")
+    return fig 
+
+
+def plot_2S_ey1y2_multi_λ(simul, λ_list):
+    fig = make_subplots(cols=3, rows=1)
+    for i in range(len(λ_list)): 
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]['et'], 
+                                 name=f"Emission, λ ={λ_list[i]}"), col=1, row=1)
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]['y1t'], 
+                                 name=f"$Y_t^1, λ ={λ_list[i]}$"), col=2, row=1)
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]['y2t'], 
+                                 name=f"$Y_t^2,  λ ={λ_list[i]}$"), col=3, row=1)
+    fig.update_layout(
+        #     legend
+            height=300,
+            width=1000
+        )
+    fig.update_xaxes(title="Years")
+    return fig 
+
+
+def plot_1S_vs_2S_ems_multi_λ(et_1state, simul, λ_list):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(et_1state)), y=et_1state, name="Y has one state"))
+    for i in range(len(λ_list)): 
+        fig.add_trace(go.Scatter(x=np.arange(len(simul[λ_list[i]]["et"])), y=simul[λ_list[i]]["et"]
+                                 , name=f"Y has two states, λ={λ_list[i]}"))
+    fig.update_yaxes(range=[0,13])
+    fig.update_xaxes(title="Years")
+    fig.update_layout(title="Emissions")
+    return fig  
+
+
+def plot_1S_vs_2S_SCC_multi_λ(et_1state, scc_list, scc_1, λ_list):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=np.arange(len(scc_1)), y=scc_1, name="Y has one state"))    
+    for i in range(len(λ_list)): 
+        fig.add_trace(go.Scatter(x=np.arange(len(scc_list[i])), y=scc_list[i], name=f"Y has two states, λ = {λ_list[i]}"))
+    fig.update_xaxes(title="Years")
+    fig.update_yaxes(title="Social cost of carbon")
+    return fig 
+
