@@ -5,6 +5,7 @@ from src.derivative import derivatives_2d
 from src.solver_2d import false_transient_one_iteration_cpp
 import SolveLinSys
 
+
 def pde_2d(stateSpace, A, B_r, B_f, C_rr, C_ff, D, v0, ε = 1, tol = -10, smartguess = False):
 
     A = A.reshape(-1,1,order = 'F')
@@ -77,6 +78,7 @@ def solve_pre_jump_2state(res_list, args=(), tol=1e-6, ε=1., max_iter=10_000, f
     δ, η, θ_list,  γ1, γ2, γ3_list, ξa, ξp = args
     # get grid info
     res = res_list[0]
+    print(res["λ"])
     λ = res["λ"]
     y1_grid = res["y1"]
     y2_grid = res["y2"]

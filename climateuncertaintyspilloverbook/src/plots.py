@@ -9,6 +9,8 @@ import pandas as pd
 import plotly.offline as pyo
 pyo.init_notebook_mode()
 import plotly.io as pio
+import plotly.express as px
+import plotly.offline as py
 pio.templates.default = "none"
 
 θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0] / 1000.
