@@ -26,8 +26,8 @@ guide to how we confront uncertainty in policy analysis.
 In climate economics, :cite:t:`Weitzman:2012` , :cite:t:`WagnerWeitzman:2015` and
 others have emphasized uncertainty in the climate system’s dynamics and
 how this uncertainty could create fat-tailed distributions of potential
-damages. Relatedly, :raw-latex:`\cite{Pindyck:2013}` and
-:raw-latex:`\cite{MorganVaishnavDowlatabadiAzevedo:2017}` find existing
+damages. Relatedly, :cite:t:`Pindyck:2013` and
+:cite:t:`MorganVaishnavDowlatabadiAzevedo:2017` find existing
 integrated assessment models in climate economics to be of little value
 in the actual prudent policy. We are sympathetic to their skepticism,
 and are not offering simple repairs to the existing integrated
@@ -101,8 +101,8 @@ a cash flow is the impulse response from a marginal increase in
 emissions to a marginal impact on damages induced by climate changes in
 future time periods. This cash flow is discounted stochastically in ways
 that account for uncertainty. This follows in part revealing discussions
-in :raw-latex:`\cite{Golosovetal:2014}` and
-:raw-latex:`\cite{CaiJuddLontzek:2017}` who explore some of the risk
+in :cite:`Golosovetal:2014` and
+:cite:`CaiJuddLontzek:2017` who explore some of the risk
 consequences for the social cost of carbon. We extend this by taking a
 broader perspective on uncertainty. The common discussion in
 environmental economics about what “rate” should be used to discount
@@ -130,8 +130,7 @@ function uncertainty. The approach that is described and implemented in
 applicable to other economic environments. Finally, the third example
 investigates the interacting implications of the uncertainties in the
 development of green technologies and in environmental damages for
-prudent policy. This example is developed in Section
-:raw-latex:`\ref{sec:abate}`.
+prudent policy. This example is developed in `section 6 <sec6_IllustrativeEconIII.ipynb>`__.
 
 In the next section, we elaborate on some the prior contributions that
 motivate our analysis.

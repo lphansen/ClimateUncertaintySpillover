@@ -953,7 +953,7 @@ def plot_basic_ems(simulation_res_high, simulation_res_low,T):
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_low['et'][0:T], 
                              name = "Threshold 1.5",line=dict(color="blue")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
-    fig.update_xaxes(showline=True, title="Year")
+    fig.update_xaxes(showline=True, title="Years")
     fig.update_yaxes(showline=True, title="Emissions", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
@@ -968,8 +968,8 @@ def plot_basic_y(simulation_res_high, simulation_res_low,T):
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_low['yt'][0:T], 
                              name = "Threshold 1.5",line=dict(color="blue")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
-    fig.update_xaxes(showline=True, title="Year")
-    fig.update_yaxes(showline=True, title="Temperature Anomaly", linecolor="black")
+    fig.update_xaxes(showline=True, title="Years")
+    fig.update_yaxes(showline=True, title="Temperature anomaly", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
@@ -989,8 +989,8 @@ def plot_basic_DMG(simulation_res_high, simulation_res_low,T, y_bar_high, y_bar_
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= np.exp(-DF_low[0:T]), 
                              name = "Threshold 1.5",line=dict(color="blue")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
-    fig.update_xaxes(showline=True, title="Year")
-    fig.update_yaxes(showline=True, title="1/N", linecolor="black")
+    fig.update_xaxes(showline=True, title="Years")
+    fig.update_yaxes(showline=True, title="Proportional reduction in economic output", linecolor="black")
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
@@ -1013,8 +1013,7 @@ def plot_DMG_np(list_len, T, iteration_list):
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
     fig.update_xaxes(showline=True, title="Year (starts from 2020)")
     fig.update_yaxes(showline=True, title="Damages", linecolor="black")
-    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
-                      title = "Damage, -n, with a pulse")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), )
     return fig
 
 
@@ -1046,9 +1045,8 @@ def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
                              line=dict(color="green")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
     fig.update_xaxes(showline=True, title="Year (starts from 2020)")
-    fig.update_yaxes(showline=True, title=r"$N$", linecolor="black")
-    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
-                      title = "Log damage difference")
+    fig.update_yaxes(showline=True, linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), )
     return fig
 
 
