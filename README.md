@@ -67,11 +67,14 @@ The notebooks are separated according to section in the paper.
 - Section 1: [Introduction](sec1_Introduction.ipynb)
 - Section 2: [Climate Dynamics](sec2_UncertainClimateDynamics.ipynb)
 - Section 3: [Uncertain Damage](sec3_UncertainDamage.ipynb)
-- Section 4: [Illustrative Economy I: Uncertain Damages](sec4_IllustrativeEconI.ipynb)
+- Section 4: [Illustrative Economy Ia: Uncertain Damages](sec4_IllustrativeEconIa.ipynb) and [Ib: Smooth Ambiguity](sec4_IllustrativeEconIb.ipynb)
 - Section 5: [Illustrative Economy II: Uncertainty Decomposition](sec5_IllustrativeEconII.ipynb)
 - Section 6: [Illustrative Economy III: Carbon abatement technology](sec6_IllustrativeEconIII.ipynb)
-- Section 7: [Conclusion](sec7_Conclusion.ipynb)
+- Section 7: [Illustrative Economy IV: exogenous emissions](sec7_IllustrativeEconIV.ipynb)
+- Section 8: [Illustrqtive Economy V: tail-end damages](sec8_IllustrativeEconV.ipynb)
+- Section 9: [Conclusion](sec9_Conclusion.ipynb)
 
-As well as [appendices](appendices.ipynb):
-- A. Complete model
-- B. Computation methods
+As well as appendices:
+- [Appendix A.](appendix1.ipynb#A) Complete model
+- [Appendix B.](appendix1.ipynb#B) Computation methods
+- [Appendix C.](appendix2_remark3p1) 2-state model in remark 3.1
