@@ -160,3 +160,4 @@ dmypy.json
 .pyre/
 .virtual_documents/
 tags
+.DS_Store
