@@ -4,6 +4,7 @@
 format: jb-book
 root: index
 chapters:
+- file: sec0_prep
 - file: sec1_Introduction
 - file: sec2_UncertainClimateDynamics
 - file: sec3_UncertainDamage
@@ -14,8 +15,8 @@ chapters:
 - file: sec7_IllustrativeEconIV
 - file: sec8_IllustrativeEconV
 - file: sec9_Conclusion
-- file: appendix1
-- file: appendix2
-- file: appendix2_remark3p1
+- file: appendixA
+- file: appendixB
+- file: appendixC
 - file: bib_file
 - file: modules_index
