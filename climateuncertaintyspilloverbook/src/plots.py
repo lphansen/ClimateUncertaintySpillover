@@ -997,35 +997,12 @@ def plot_basic_DMG(simulation_res_high, simulation_res_low,T, y_bar_high, y_bar_
     return fig
 
 
-def plot_DMG_np(list_len, T, iteration_list):
-    Damages_list = np.zeros((list_len, T+1))
-    for i in range(list_len):
-        Damages_list[i] = iteration_list[i][1]
-    n_9 = np.quantile(np.exp(-Damages_list), 0.9, axis=0)
-    n_5 = np.mean(np.exp(-Damages_list), axis=0)
-    n_1 = np.quantile(np.exp(-Damages_list), 0.1, axis=0)
-    fig = go.Figure()
-    years = np.linspace(0,T, T+1)
-    fig.add_trace(go.Scatter(x = years, y = n_9, name = ".9 quantile",
-                             line=dict(color="red")))
-    fig.add_trace(go.Scatter(x = years, y = n_5, name = "mean",
-                             line=dict(color="blue")))
-    fig.add_trace(go.Scatter(x = years, y = n_1, name = ".1 quantile",
-                             line=dict(color="green")))
-    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
-    fig.update_xaxes(showline=True, title="Year (starts from 2020)")
-    fig.update_yaxes(showline=True, title="Damages", linecolor="black")
-    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), )
-    return fig
-
-
-
 def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
     Damages_list       = np.zeros((list_len, T+1))
     Damages_list_pulse = np.zeros((list_len, T+1))
     for i in range(list_len):
-        Damages_list[i]       = iteration_list[i]['Damages']
-        Damages_list_pulse[i] = iteration_list_pulse[i]['Damages']
+        Damages_list[i]       = iteration_list[i][1]
+        Damages_list_pulse[i] = iteration_list_pulse[i][1]
 
     n_9 = np.quantile(Damages_list, 0.9, axis=0)
     n_5 = np.mean(Damages_list, axis=0)
@@ -1047,10 +1024,32 @@ def plot_DMG_Diff(iteration_list, iteration_list_pulse, list_len, T):
                              line=dict(color="green")))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
     fig.update_xaxes(showline=True, title="Year (starts from 2020)")
-    fig.update_yaxes(showline=True, title=r"$N$", linecolor="black")
-    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), 
-                      title = "Log damage difference")
+    fig.update_yaxes(showline=True, linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), )
     return fig
+
+
+def plot_DMG_np(list_len, T, iteration_list):
+    Damages_list = np.zeros((list_len, T+1))
+    for i in range(list_len):
+        Damages_list[i] = iteration_list[i][1]
+    n_9 = np.quantile(np.exp(-Damages_list), 0.9, axis=0)
+    n_5 = np.mean(np.exp(-Damages_list), axis=0)
+    n_1 = np.quantile(np.exp(-Damages_list), 0.1, axis=0)
+    fig = go.Figure()
+    years = np.linspace(0,T, T+1)
+    fig.add_trace(go.Scatter(x = years, y = n_9, name = ".9 quantile",
+                             line=dict(color="red")))
+    fig.add_trace(go.Scatter(x = years, y = n_5, name = "mean",
+                             line=dict(color="blue")))
+    fig.add_trace(go.Scatter(x = years, y = n_1, name = ".1 quantile",
+                             line=dict(color="green")))
+    fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
+    fig.update_xaxes(showline=True, title="Year (starts from 2020)")
+    fig.update_yaxes(showline=True, title="Damages", linecolor="black")
+    fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"), )
+    return fig
+
 
 
 def plot_2S_ey1y2(simul):

@@ -419,7 +419,7 @@ def Intensity(y, r1=1.5, r2=2.5, y_underline=1.5):
 
 
 # +
-def one_path(Et, θ, k,args=(), dt=1, Y0=1.1):
+def one_path(Et, θ,args=(), dt=1, Y0=1.1):
     γ_1, γ_2, γ_3_list = args
     T = len(Et)
     Yt = np.zeros(T+1)
@@ -428,7 +428,7 @@ def one_path(Et, θ, k,args=(), dt=1, Y0=1.1):
     logNt[0] = Γ(Yt[0], 0)
     jumped = False
     γ_3_j = 0
-    rng = np.random.default_rng(k)
+    rng = np.random.default_rng()
     for i in range(T):
         J_y = Intensity(Yt[i])
         jump_prob = J_y * dt
