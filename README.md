@@ -1,10 +1,12 @@
 # Climate Change Uncertainty Spillover in the Macroeconomy
 This repository contains codes and jupyter notebooks which compute and demonstrate results of "Climate Change Uncertainty Spillover in the Macroeconomy" by [Micheal Barnett][id1], [William Brock][id2] and [Lars Peter Hansen][id3]. Latest version could be found [here][id4].
 
-[id1]: tocomplete
+Check out online demonstration: ![Online demonstration](https://climateuncertaintyspillover.readthedocs.io/badge/?version=latest&style=plastic) 
+
+[id1]: https://wpcarey.asu.edu/people/profile/3490536
 [id2]: https://economics.missouri.edu/people/brock
 [id3]: https://larspeterhansen.org/
-[id4]: https://larspeterhansen.org/research/papers/
+[id4]: http://larspeterhansen.org/wp-content/uploads/2021/07/BBHannualLPH-16.pdf
 
 ## Table of contents
 - [Prerequisite](#prerequisite)
@@ -17,7 +19,7 @@ This repository contains codes and jupyter notebooks which compute and demonstra
 To go to the documentation of this project, please go to: (link avaliable when published).
 
 This project has been tested in an environment with
-> `Python == 3.8.7` and  `jupyter notebook == 5.7.10`
+> `Python == 3.8.11` and  `jupyter notebook == 5.7.10`
 
 ## <a name="acessing"></a>Acessing our project
 
