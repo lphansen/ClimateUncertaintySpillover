@@ -3,6 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. admonition::
+    .. image:: https://mybinder.org/badge_logo.svg
+     :target: https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2
+
 Welcome to the documentation for *Climate Change Uncertainty Spillover in the Macroeconomy*!
 ============================================================================================
 This documentation represents the computations in *Climate Change Uncertainty Spillover in the Macroeconomy* by Mike Barnett, William Brock and Lars Peter Hansen.
