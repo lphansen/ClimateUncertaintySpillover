@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appendix A. Complete model &#8212; Climate Change Uncertainty Spillover in the Macroeconomy</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="_static/contentui.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/contentui.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appendix B. Computation methods" href="appendixB.html" />
+    <link rel="prev" title="8 Conclusion" href="sec8_Conclusion.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/mfr.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Climate Change Uncertainty Spillover in the Macroeconomy</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="index.html">
+   Welcome to the documentation for Climate Change Uncertainty Spillover in the Macroeconomy!
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec1_Introduction.html">
+   1 Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec2_UncertainClimateDynamics.html">
+   2 Uncertain climate dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec3_UncertainDamage.html">
+   3 Uncertain environmental and economic damages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec4_IllustrativeEconIA.html">
+   4 Illustrative economy I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec5_IllustrativeEconII.html">
+   5 Illustrative economy II: uncertainty decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec6_IllustrativeEconIII.html">
+   6 Illustrative economy III: carbon abatement technology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec7_IllustrativeEconIV.html">
+   7 Illustrative economy IV: tail-end damages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec8_Conclusion.html">
+   8 Conclusion
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Appendix A. Complete model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="appendixB.html">
+   Appendix B. Computation methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="appendixC.html">
+   Appendix C: when
+   <span class="math notranslate nohighlight">
+    \(Y\)
+   </span>
+   has two states:
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="modules_index.html">
+   Modules:
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bib_file.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/appendixA.rst"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/lphansen/ClimateUncertaintySpillover"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/lphansen/ClimateUncertaintySpillover/issues/new?title=Issue%20on%20page%20%2FappendixA.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-1-description">
+   A.1 Description
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-2-consumption-capital-dynamics">
+   A.2 Consumption-capital dynamics
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="appendix-a-complete-model">
+<h1>Appendix A. Complete model<a class="headerlink" href="#appendix-a-complete-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="a-1-description">
+<h2>A.1 Description<a class="headerlink" href="#a-1-description" title="Permalink to this headline">¶</a></h2>
+<p>Suppose the value function is <span class="math notranslate nohighlight">\(V\)</span>. State variable:
+<span class="math notranslate nohighlight">\(x = (\log k, z, y, n)\)</span> (realization of
+<span class="math notranslate nohighlight">\(\log K, \log N, Y, Z\)</span>), control variable : <span class="math notranslate nohighlight">\((\tilde e, i)\)</span>.
+Suppose the value function is separable as follows:</p>
+<div class="math notranslate nohighlight">
+\[V(\log k, n, y, z) = v_k \log k + \zeta(z) + \phi(y) + v_n n\]</div>
+<p>Consider the model without jump misspecification with damage function</p>
+<div class="math notranslate nohighlight">
+\[\Lambda (y)  = \gamma_1 y + \frac{\gamma_2}{2}y^2 + \frac{\gamma_3}{2} (y - \bar y)^2 \mathbb{I}\{y &gt; \bar y\}\]</div>
+<p>For models with jump misspecification, the modification can be make to
+<span class="math notranslate nohighlight">\((y,n)\)</span> without affecting <span class="math notranslate nohighlight">\((\log k, z)\)</span>, as the HJB is
+separable. The complete HJB is as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+ 0 = \max_{\tilde e, i }\min_{\omega_\ell:\sum_{\ell=1}^L \omega_\ell = 1} \min_{h}\quad &amp; - \delta V + (1 - \eta) [\log(\alpha - i) + \log k - n] + \eta \log \tilde e \\
+ &amp; + v_k \cdot \left[\mu_k(z) + i  - \frac{\kappa}{2} i^2  - \frac{|\sigma_k(z)|^2}{2} + \sigma_k(z)' h \right] \\
+ &amp; + \frac{\partial \zeta }{\partial z}(z)\cdot \left[\mu_z(z) + \sigma_z(z)'h \right] + \frac{1}{2} trace\left[\sigma_z(z)' \frac{\partial^2 \zeta(z)}{\partial z\partial z'} \sigma_z(z)'\right] \\
+ &amp; + \frac{d \phi(y)}{dy} \sum_{\ell=1}^L \omega_\ell\cdot \tilde e\cdot\theta_\ell + \frac12 \frac{d^2 \phi(y)}{dy^2} (\tilde e)^2 |\varsigma|^2\\
+ &amp; + v_n \left[(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\}) (\sum_{\ell=1}^L \omega_\ell \theta_\ell \tilde e  + \tilde e \varsigma' h )+ \frac12 \left(\gamma_2 + \gamma_3 \mathbb{I}\{y &gt; \bar y\} \right)\cdot |\varsigma|^2 (\tilde e)^2 \right]  \\
+ &amp; + \frac{\xi_b}{2} h'h + \xi_a \sum_{\ell=1}^L \omega_\ell \left( \log \omega_\ell - \log \pi^a_\ell \right)
+\end{aligned}\end{split}\]</div>
+</div>
+<div class="section" id="a-2-consumption-capital-dynamics">
+<h2>A.2 Consumption-capital dynamics<a class="headerlink" href="#a-2-consumption-capital-dynamics" title="Permalink to this headline">¶</a></h2>
+<p>The undamaged version of consumption capital model has a straightforward
+solution. The HJB equation for this component is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+ 0 = \max_{ i } \min_{h}\quad &amp; - \delta \left[ v_k \log k + \zeta(z)\right] + (1 - \eta) [\log(\alpha - i) + \log k - n] +  \frac{\xi_b}{2} h'h \\
+ &amp; + v_k \cdot \left[\mu_k(z) + i  - \frac{\kappa}{2} i^2  - \frac{|\sigma_k(z)|^2}{2} + \sigma_k(z)' h \right] \\
+ &amp; + \frac{\partial \zeta }{\partial z}(z)\cdot \left[\mu_z(z) + \sigma_z(z)'h \right] + \frac{1}{2} trace\left[\sigma_z(z)' \frac{\partial^2 \zeta(z)}{\partial z\partial z'} \sigma_z(z)'\right] \\
+\end{aligned}\end{split}\]</div>
+<p>Coefficients of <span class="math notranslate nohighlight">\(\log k\)</span> satisfy that</p>
+<div class="math notranslate nohighlight">
+\[-\delta v_k + (1 - \eta) = 0 \quad \Longrightarrow \quad v_k = \frac{1 - \eta}{\delta}\]</div>
+<p>The first order condition for the investment-capital ratio is</p>
+<div class="math notranslate nohighlight">
+\[- (1 - \eta) \frac{1}{\alpha - i} + v_k (1 - \kappa i) = 0\quad \Longrightarrow \quad - \frac{1}{\alpha -i} + \frac{1 - \kappa i}{\delta} = 0\]</div>
+<p>The first order condition for <span class="math notranslate nohighlight">\(h\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\xi_b h + \sigma_k v_k + \sigma_z \frac{\partial \zeta}{\partial z} = 0\]</div>
+<p>and is therefore:</p>
+<div class="math notranslate nohighlight">
+\[h = - \frac{1}{\xi_b} \left[ \sigma_k v_k + \sigma_k \frac{\partial \zeta}{\partial z}\right]\]</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="sec8_Conclusion.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">8 Conclusion</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="appendixB.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Appendix B. Computation methods</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Suri Chen<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

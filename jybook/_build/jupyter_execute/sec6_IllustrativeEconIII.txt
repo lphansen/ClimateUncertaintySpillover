@@ -1,0 +1,76 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+arrival = 20
+γ_3 = np.linspace(0, 1./3, 20)
+πd_o = np.ones_like(γ_3) / len(γ_3)
+θ = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0]/1000.
+πc_o = np.ones_like(θ) / len(θ)
+
+!python "model_final_5.py"
+!python "model_final_7p5.py"
+!python "model_final_2p5.py"
+!python "model_final_baseline.py"
+
+gt_tech_2p5 = np.load('new_gt_tech_2p5.npy')
+gt_tech_5 = np.load('new_gt_tech_5.npy')
+gt_tech_7p5 = np.load('new_gt_tech_7p5.npy')
+
+gt_tech_new_2p5 = np.load('new_gt_tech_new_2p5.npy')
+gt_tech_new_5 = np.load('new_gt_tech_new_5.npy')
+gt_tech_new_7p5 = np.load('new_gt_tech_new_7p5.npy')
+
+dmg_intensity_distort_2p5 = np.load('new_dmg_intensity_distort_2.5.npy')
+dmg_intensity_distort_5 = np.load('new_dmg_intensity_distort_5.0.npy')
+dmg_intensity_distort_7p5 = np.load('new_dmg_intensity_distort_7.5.npy')
+dmg_intensity_distort_baseline = np.load('new_dmg_intensity_distort_baseline.npy')
+
+intensity_dmg_2p5 = np.load('new_intensity_dmg_2p5.npy')
+intensity_dmg_5 = np.load('new_intensity_dmg_5.npy')
+intensity_dmg_7p5 = np.load('new_intensity_dmg_7p5.npy')
+intensity_dmg_baseline = np.load('new_intensity_dmg_baseline.npy')
+
+πct = np.load("πct.npy")
+distorted_damage_probs = np.load("distorted_damage_probs.npy")4\ref{fig:histogram_worstcase}
+
+distorted_tech_intensity_first_2p5 = gt_tech_2p5 * 1/arrival
+distorted_tech_intensity_first_5 = gt_tech_5 * 1/arrival
+distorted_tech_intensity_first_7p5 = gt_tech_7p5 * 1/arrival
+tech_intensity_first = np.ones_like(distorted_tech_intensity_first_2p5) * 1/arrival
+
+distorted_tech_intensity_second_2p5 = gt_tech_new_2p5 * 1/arrival
+distorted_tech_intensity_second_5 = gt_tech_new_5 * 1/arrival
+distorted_tech_intensity_second_7p5 = gt_tech_new_7p5 * 1/arrival
+tech_intensity_second = np.ones_like(distorted_tech_intensity_second_2p5) * 1/arrival
+
+distorted_dmg_intensity_2p5 = dmg_intensity_distort_2p5*intensity_dmg_2p5
+distorted_dmg_intensity_5 = dmg_intensity_distort_5*intensity_dmg_5
+distorted_dmg_intensity_7p5 = dmg_intensity_distort_7p5*intensity_dmg_7p5
+distorted_dmg_intensity_baseline = dmg_intensity_distort_baseline*intensity_dmg_baseline
+
+distorted_tech_prob_first_2p5 = 1 - np.exp(-np.cumsum(np.insert(distorted_tech_intensity_first_2p5, 0, 0)))[:-1]
+distorted_tech_prob_first_5 = 1 - np.exp(-np.cumsum(np.insert(distorted_tech_intensity_first_5, 0, 0)))[:-1]
+distorted_tech_prob_first_7p5 = 1 - np.exp(-np.cumsum(np.insert(distorted_tech_intensity_first_7p5, 0, 0)))[:-1]
+tech_prob_first = 1 - np.exp(-np.cumsum(np.insert(tech_intensity_first, 0, 0)))[:-1]
+
+distorted_tech_prob_second_2p5 = 1 - np.exp(-np.cumsum(np.insert(distorted_tech_intensity_second_2p5, 0, 0)))[:-1]
+distorted_tech_prob_second_5 = 1 - np.exp(-np.cumsum(np.insert(distorted_tech_intensity_second_5, 0, 0)))[:-1]
+distorted_tech_prob_second_7p5 = 1 - np.exp(-np.cumsum(np.insert(distorted_tech_intensity_second_7p5, 0, 0)))[:-1]
+tech_prob_second = 1 - np.exp(-np.cumsum(np.insert(tech_intensity_second, 0, 0)))[:-1]
+
+distorted_dmg_prob_2p5 = 1 - np.exp(-np.cumsum(np.insert(distorted_dmg_intensity_2p5, 0, 0)))[:-1]
+distorted_dmg_prob_5 = 1 - np.exp(-np.cumsum(np.insert(distorted_dmg_intensity_5, 0, 0)))[:-1]
+distorted_dmg_prob_7p5 = 1 - np.exp(-np.cumsum(np.insert(distorted_dmg_intensity_7p5, 0, 0)))[:-1]
+dmg_prob = 1 - np.exp(-np.cumsum(np.insert(intensity_dmg_baseline, 0, 0)))[:-1]
+
+from src.plots import plot14
+plot14(
+    tech_prob_first, distorted_tech_prob_first_7p5, distorted_tech_prob_first_5,distorted_tech_prob_first_2p5,
+    tech_prob_second, distorted_tech_prob_second_7p5, distorted_tech_prob_second_5, distorted_tech_prob_second_2p5,
+    dmg_prob, distorted_dmg_prob_7p5, distorted_dmg_prob_5, distorted_dmg_prob_2p5
+)
+
+from src.plots import plot15
+plot15(θ, γ_3, distorted_damage_probs, πct)

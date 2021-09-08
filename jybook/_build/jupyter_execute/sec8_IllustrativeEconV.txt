@@ -1,0 +1,303 @@
+# packages
+import numpy as np
+import pandas as pd
+from src.model import solve_hjb_y, solve_hjb_y_jump_old
+from src.utilities import find_nearest_value
+from src.simulation import simulate_jump_2
+from src.plots import plot_basic_ems, plot_basic_y, plot_basic_DMG
+import plotly.graph_objects as go
+import plotly.offline as pyo
+pyo.init_notebook_mode()
+
+# Uncertainty parameters
+ξ_w = 1.
+ξ_a = 1/100
+ξ_p = 1.
+
+# Preference
+η = .032
+δ = .01
+
+# Climate sensitivity
+θ_list = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0]/1000.
+πc_o = np.ones_like(θ_list)/len(θ_list)
+
+# Damage function
+σ_y = 1.2*np.mean(θ_list)
+y_bar_high = 2.0
+y_bar_low = 1.5
+γ_1 = 1.7675/10000
+γ_2 = .0022*2
+γ_2p = np.array([1./3])
+πd_o = np.array([1])
+
+y_step = .01
+y_grid_long = np.arange(0., 4., y_step)
+y_grid_short_high = np.arange(0., y_bar_high+y_step, y_step)
+y_grid_short_low  = np.arange(0., y_bar_low+y_step, y_step)
+n_bar_high = find_nearest_value(y_grid_long, y_bar_high) + 1
+n_bar_low = find_nearest_value(y_grid_long, y_bar_low) + 1
+
+def DamageFunc(y, y_bar, γ_3=1/3):
+    logN = γ_1 * y**2 + γ_2/2 * y**2 + γ_3/2 * (y - y_bar)**2 * (y > y_bar)
+    return np.exp(-logN)
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=y_grid_long, y=DamageFunc(y_grid_long, 1.5), name="Threshold 1.5", line=dict(color="blue")) )
+fig.add_trace(go.Scatter(x=y_grid_long, y=DamageFunc(y_grid_long, 2.0), name="Threshold 2.0", line=dict(color="red")) )
+fig.update_xaxes(range=[0,3],title="Temperature anomaly", showline=True)
+fig.update_yaxes(range=[0.4, 1.05],title="Proprotional reduction to economic output")
+
+# Prepare ϕ conditional on low, high, extreme damage
+model_res_list_high = []
+model_res_list_low  = []
+for γ_2p_i in γ_2p:
+    model_args_high = (η, δ, σ_y, y_bar_high, γ_1, γ_2, γ_2p_i, θ_list, πc_o, ξ_w, ξ_a) 
+    model_args_low  = (η, δ, σ_y, y_bar_low,  γ_1, γ_2, γ_2p_i, θ_list, πc_o, ξ_w, ξ_a) 
+    model_res_high  = solve_hjb_y(y_grid_long, model_args_high, v0=None, ϵ=1.,
+                            tol=1e-8, max_iter=5_000, print_iteration=False)
+    model_res_low   = solve_hjb_y(y_grid_long, model_args_low, v0=None, ϵ=1.,
+                            tol=1e-8, max_iter=5_000, print_iteration=False)
+    model_res_list_high.append(model_res_high)
+    model_res_list_low.append(model_res_low)
+    
+ϕ_list_high = [res['v'] for res in model_res_list_high]
+ϕ_list_low  = [res['v'] for res in model_res_list_low]
+
+ξ_p_list = [1]
+solution_high = dict()
+solution_low  = dict()
+
+for ξ_p_i in ξ_p_list:
+    certainty_equivalent_high = -ξ_p_i*np.log(np.average(np.exp(-1./ξ_p_i*np.array(ϕ_list_high)), axis=0, weights=πd_o))
+    certainty_equivalent_low  = -ξ_p_i*np.log(np.average(np.exp(-1./ξ_p_i*np.array(ϕ_list_low)), axis=0, weights=πd_o))
+    # Change grid from 0-4 to 0-2
+    ϕ_i_high = np.array([temp[:n_bar_high] for temp in ϕ_list_high])
+    ϕ_i_low  = np.array([temp[:n_bar_low] for temp in ϕ_list_low])
+    # Compute ϕ with jump (impose boundary condition)
+    model_args_high = (η, δ, σ_y, y_bar_high, γ_1, γ_2, γ_2p, θ_list, πc_o, ϕ_i_high, πd_o, ξ_w, ξ_p_i, ξ_a)
+    model_args_low  = (η, δ, σ_y, y_bar_low, γ_1, γ_2, γ_2p, θ_list, πc_o, ϕ_i_low, πd_o, ξ_w, ξ_p_i, ξ_a)
+    
+    model_res_high_pre = solve_hjb_y_jump_old(y_grid_short_high, model_args_high, 
+                             v0=np.average(ϕ_i_high, weights=πd_o, axis=0),
+                             ϵ=1., tol=1e-8, max_iter=5_000, print_iteration=False)
+    model_res_low_pre  = solve_hjb_y_jump_old(y_grid_short_low, model_args_low, 
+                             v0=np.average(ϕ_i_low, weights=πd_o, axis=0),
+                             ϵ=1., tol=1e-8, max_iter=5_000, print_iteration=False)
+    simulation_res_high = simulate_jump_2(model_res_high_pre, model_res_high, y_bar_high, θ_list, ME=None,  y_start=1.1,  T=300, dt=1)
+    simulation_res_low  = simulate_jump_2(model_res_low_pre,  model_res_low,  y_bar_low,  θ_list, ME=None,  y_start=1.1,  T=300, dt=1)
+    
+    solution_high[ξ_p_i] = dict(
+        model_res_high=model_res_high, 
+        simulation_res_high=simulation_res_high, 
+        certainty_equivalent_high=certainty_equivalent_high
+    )
+    solution_high[ξ_p_i] = dict(
+        model_res_low=model_res_low, 
+        simulation_res_low=simulation_res_low, 
+        certainty_equivalent_low=certainty_equivalent_low
+    )
+
+fig = plot_basic_ems(simulation_res_high, simulation_res_low, 299)
+fig.add_vline(x=87, line_width=2, line_dash="dash", line_color="blue")
+fig.add_vline(x=154, line_width=2, line_dash="dash", line_color="red")
+fig
+
+fig = plot_basic_y(simulation_res_high, simulation_res_low, 299)
+fig.add_shape(type="line",
+    x0=87, y0=1, x1=87, y1=1.5,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=1.5, x1=87, y1=1.5,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=153, y0=1, x1=153, y1=2.0,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=2.0, x1=153, y1=2.0,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)
+
+fig = plot_basic_DMG(simulation_res_high, simulation_res_low, 299,
+               y_bar_high, y_bar_low, γ_1, γ_2, γ_2p)
+fig.add_shape(type="line",
+    x0=87, y0=0.96, x1=87, y1=0.9947,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=0.9947, x1=87, y1=0.9947,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=153, y0=0.96, x1=153, y1=0.99,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=0.9908, x1=153, y1=0.9908,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=y_grid_long, y=DamageFunc(y_grid_long, 1.5, γ_3=2./3), name="Threshold 1.5", line=dict(color="blue")) )
+fig.add_trace(go.Scatter(x=y_grid_long, y=DamageFunc(y_grid_long, 2.0, γ_3=2./3), name="Threshold 2.0", line=dict(color="red")) )
+fig.update_xaxes(range=[0, 3], title="Temperature anomaly", showline=True)
+fig.update_yaxes(range=[0.4, 1.05], title="Proprotional reduction to economic output")
+
+γ_2p = np.array([2./3])
+# Prepare ϕ conditional on low, high, extreme damage
+model_res_list_high = []
+model_res_list_low  = []
+for γ_2p_i in γ_2p:
+    model_args_high = (η, δ, σ_y, y_bar_high, γ_1, γ_2, γ_2p_i, θ_list, πc_o, ξ_w, ξ_a) 
+    model_args_low  = (η, δ, σ_y, y_bar_low,  γ_1, γ_2, γ_2p_i, θ_list, πc_o, ξ_w, ξ_a) 
+    model_res_high  = solve_hjb_y(y_grid_long, model_args_high, v0=None, ϵ=1.,
+                            tol=1e-8, max_iter=5_000, print_iteration=False)
+    model_res_low   = solve_hjb_y(y_grid_long, model_args_low, v0=None, ϵ=1.,
+                            tol=1e-8, max_iter=5_000, print_iteration=False)
+    model_res_list_high.append(model_res_high)
+    model_res_list_low.append(model_res_low)
+    
+ϕ_list_high = [res['v'] for res in model_res_list_high]
+ϕ_list_low  = [res['v'] for res in model_res_list_low]
+
+ξ_p_list = [1]
+solution_high = dict()
+solution_low  = dict()
+
+for ξ_p_i in ξ_p_list:
+    certainty_equivalent_high = -ξ_p_i*np.log(np.average(np.exp(-1./ξ_p_i*np.array(ϕ_list_high)), axis=0, weights=πd_o))
+    certainty_equivalent_low  = -ξ_p_i*np.log(np.average(np.exp(-1./ξ_p_i*np.array(ϕ_list_low)), axis=0, weights=πd_o))
+    # Change grid from 0-4 to 0-2
+    ϕ_i_high = np.array([temp[:n_bar_high] for temp in ϕ_list_high])
+    ϕ_i_low  = np.array([temp[:n_bar_low] for temp in ϕ_list_low])
+    # Compute ϕ with jump (impose boundary condition)
+    model_args_high = (η, δ, σ_y, y_bar_high, γ_1, γ_2, γ_2p, θ_list, πc_o, ϕ_i_high, πd_o, ξ_w, ξ_p_i, ξ_a)
+    model_args_low  = (η, δ, σ_y, y_bar_low, γ_1, γ_2, γ_2p, θ_list, πc_o, ϕ_i_low, πd_o, ξ_w, ξ_p_i, ξ_a)
+    
+    model_res_high_pre = solve_hjb_y_jump_old(y_grid_short_high, model_args_high, 
+                             v0=np.average(ϕ_i_high, weights=πd_o, axis=0),
+                             ϵ=0.5, tol=1e-8, max_iter=5_000, print_iteration=False)
+    model_res_low_pre  = solve_hjb_y_jump_old(y_grid_short_low, model_args_low, 
+                             v0=np.average(ϕ_i_low, weights=πd_o, axis=0),
+                             ϵ=0.5, tol=1e-8, max_iter=5_000, print_iteration=False)
+    simulation_res_high = simulate_jump_2(model_res_high_pre, model_res_high, y_bar_high, θ_list, ME=None,  y_start=1.1,  T=300, dt=1)
+    simulation_res_low  = simulate_jump_2(model_res_low_pre,  model_res_low,  y_bar_low,  θ_list, ME=None,  y_start=1.1,  T=300, dt=1)
+    
+    solution_high[ξ_p_i] = dict(
+        model_res_high=model_res_high, 
+        simulation_res_high=simulation_res_high, 
+        certainty_equivalent_high=certainty_equivalent_high
+    )
+    solution_high[ξ_p_i] = dict(
+        model_res_low=model_res_low, 
+        simulation_res_low=simulation_res_low, 
+        certainty_equivalent_low=certainty_equivalent_low
+    )
+
+fig = plot_basic_ems(simulation_res_high, simulation_res_low, 299)
+fig.add_vline(x=108, line_width=2, line_dash="dash", line_color="blue")
+fig.add_vline(x=182, line_width=2, line_dash="dash", line_color="red")
+
+fig = plot_basic_y(simulation_res_high, simulation_res_low, 299)
+fig.add_shape(type="line",
+    x0=108, y0=1, x1=108, y1=1.5,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=1.5, x1=108, y1=1.5,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=182, y0=1, x1=182, y1=2.0,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=2.0, x1=182, y1=2.0,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)
+
+fig = plot_basic_DMG(simulation_res_high, simulation_res_low, 299,
+               y_bar_high, y_bar_low, γ_1, γ_2, γ_2p)
+fig.add_shape(type="line",
+    x0=108, y0=0.96, x1=108, y1=0.9947,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=0.9947, x1=108, y1=0.9947,
+    line=dict(
+        color="blue",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=182, y0=0.96, x1=182, y1=0.99,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)
+fig.add_shape(type="line",
+    x0=0, y0=0.9908, x1=182, y1=0.9908,
+    line=dict(
+        color="red",
+        width=2,
+        dash="dash",
+    )
+)

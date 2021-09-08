@@ -1,0 +1,20 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: index
+chapters:
+- file: sec1_Introduction
+- file: sec2_UncertainClimateDynamics
+- file: sec3_UncertainDamage
+- file: sec4_IllustrativeEconIA
+- file: sec5_IllustrativeEconII
+- file: sec6_IllustrativeEconIII
+- file: sec7_IllustrativeEconIV
+- file: sec8_Conclusion
+- file: appendixA
+- file: appendixB
+- file: appendixC
+- file: modules_index
+- file: bib_file
+

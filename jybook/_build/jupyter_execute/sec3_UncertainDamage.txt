@@ -1,0 +1,5 @@
+from src.plots import plot4, plot3
+plot4()
+
+# Intensity function
+plot3()
