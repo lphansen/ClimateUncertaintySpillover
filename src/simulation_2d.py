@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 from scipy.interpolate import interp2d
 
@@ -217,7 +218,6 @@ class EvolutionState:
         return states_new
 
 
-
 def simulation_dice_prob(sim_args, k_grid, y_grid, e_mat, i_mat, g_mat, h_mat, πc_mat, K0=80/0.115, y0=1.1, T=100):
     κ, μ_k, σ_k, θ_mean = sim_args
     e_fun = interp2d(k_grid, y_grid, e_mat.T)
@@ -255,3 +255,31 @@ def simulation_dice_prob(sim_args, k_grid, y_grid, e_mat, i_mat, g_mat, h_mat, �
         k0 = k0 + it[i] - κ / 2 * it[i]**2 + μ_k - .5 * σ_k**2
 
     return et, kt, yt, it, gt, πct, ht
+
+
+# simulate log capital
+def simulate_logkapital(invkap, αₖ,  σₖ, κ, k0, T=100, dt=1):
+    periods = int(T/dt)
+    Kt = np.zeros(periods)
+    i = invkap
+     # log capital
+    Kt[0] = np.log(k0)
+    k = np.log(k0)
+    for t in range(periods-1):
+        k +=   (αₖ + i - κ/2*i**2 - .5*σₖ**2)*dt
+        Kt[t+1] = k
+    return Kt
+
+
+def simulation_2d(y1_grid, y2_grid, e_grid, λ, θ=1.86/1000., y1_0=.5394, y2_0=1.86/1000, T=100):
+    e_fun = interp2d(y1_grid, y2_grid, e_grid.T)
+    Et = np.zeros(T+1)
+    y1t = np.zeros(T+1)
+    y2t = np.zeros(T+1)
+    for i in range(T+1):
+        Et[i] = e_fun(y1_0, y2_0)
+        y1t[i] = y1_0
+        y2t[i] = y2_0
+        y2_0 = y2_0 - λ*y2_0 + λ*θ*Et[i] 
+        y1_0 = y1_0 + y2_0
+    return Et, y1t, y2t

@@ -85,7 +85,7 @@ of pulse experiments applied to the models. We then take the outcomes of
 these pulse experiments as inputs into our simplified specification of
 the climate dynamics inside our economic model. We follow much of the
 environmental macroeconomic modeling literature in the use of
-{:raw-latex:`\em ad hoc`} static damage functions, and explore the
+*ad hoc* static damage functions, and explore the
 consequences of changing the curvature in these damage functions. Even
 with these simplifications, our uncertainty analysis is sufficiently
 rich to show how uncertainty about the alternative channels by which
@@ -134,8 +134,3 @@ prudent policy. This example is developed in `section 6 <sec6_IllustrativeEconII
 
 In the next section, we elaborate on some the prior contributions that
 motivate our analysis.
-
-**To next section:**
-
-`Section 2: Uncertainty climate
-dynamics <sec2_UncertainClimateDynamics.ipynb>`__

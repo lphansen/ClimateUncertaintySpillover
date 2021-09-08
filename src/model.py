@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+model.py
+=================================================
 Functions that solve the HJBs in the draft paper.
 
 """
@@ -370,10 +372,10 @@ def solve_hjb_y_jump_old(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10
         An evenly spaced grid of y.
     model_args : tuple of model inputs::
         The ten float elements are for :math:`η, δ, σ_y, \bar{y}, γ_1, γ_2, γ_3, ξ_w, ξ_p, ξ_a`;
-        
+
         Two `(L,) ndarrays` are for :math:`\{θ_\ell\}_{\ell=1}^L`, :math:`\{\pi^a_\ell\}_{\ell=1}^L`;
-        
-        Two `(M,N) ndarrays` are  for :math:`\{\phi_m(y)\}_{m=1}^M`, :math:`\{\pi_p^m\}_{m=1}^M`. 
+
+        Two `(M,N) ndarrays` are  for :math:`\{\phi_m(y)\}_{m=1}^M`, :math:`\{\pi_p^m\}_{m=1}^M`.
     v0 : (N,) ndarray
         Initial guess of the value function
     ϵ : float
@@ -621,6 +623,7 @@ def uncertainty_decomposition(y, model_args=(), e_tilde=None, h=None, πc=None, 
            'ME': ME}
     return res
 
+# +
 def minimize_π(y_grid, numy_bar, ems_star,  ϕ_list, args, with_damage=False, ϵ=2, tol=1e-7, max_iter=3_000):
     """
     compute jump model with ambiguity over climate models
@@ -635,12 +638,12 @@ def minimize_π(y_grid, numy_bar, ems_star,  ϕ_list, args, with_damage=False, �
     r1 = 1.5
     r2 = 2.5
     intensity = r1*(np.exp(r2/2*(y_grid_cap- y_lower)**2)-1) *(y_grid_cap >= y_lower)
-    
+
     loc_2 = np.abs(y_grid_cap - 2).argmin()
     ϕ_ref = np.zeros((len(γ3_list), numy_bar + 1))
     for i in range(len(γ3_list)):
         ϕ_ref[i, :] = ϕ_list[i, loc_2]
-    
+
     πᶜo = np.ones((len(θ_list), len(y_grid_cap)))/len(θ_list)
     if with_damage == False:
         ϕ_bound = np.average(ϕ_list, axis=0, weights=dmg_weight)[:numy_bar+1]
@@ -662,7 +665,7 @@ def minimize_π(y_grid, numy_bar, ems_star,  ϕ_list, args, with_damage=False, �
         πᶜ = πᶜo*np.exp(weight)
         πᶜ[πᶜ <= 1e-15] = 1e-15
         πᶜ = πᶜ/np.sum(πᶜ, axis=0)
-        
+
         g_list = np.exp(1 / ξp * (ϕ - ϕ_ref))
         A = -δ*np.ones(y_grid_cap.shape) - intensity*(dmg_weight@g_list)
         B = (θ_list@πᶜ)*ems_star
@@ -686,7 +689,7 @@ def minimize_π(y_grid, numy_bar, ems_star,  ϕ_list, args, with_damage=False, �
     ratio = ME/(η/ems_star)
     return ME, ratio
 
-
+# +
 # solve for decompose
 def minimize_g(y_grid, numy_bar, ems_star, ϕ_list, args, ϵ=3, tol=1e-6, max_iter=3_000):
     """
@@ -702,18 +705,18 @@ def minimize_g(y_grid, numy_bar, ems_star, ϕ_list, args, ϵ=3, tol=1e-6, max_it
     dΛ = γ1 + γ2*y_grid_cap
     ddΛ = γ2
     πᶜo = np.ones((len(θ_list), len(y_grid_cap)))/len(θ_list)
-    θ = θ_list@πᶜo 
-    
+    θ = θ_list@πᶜo
+
     r1 = 1.5
     r2 = 2.5
     intensity = r1*(np.exp(r2/2*(y_grid_cap- y_lower)**2)-1) *(y_grid_cap >= y_lower)
-    
+
 
     loc_2 = np.abs(y_grid_cap - 2).argmin()
     ϕ_ref = np.zeros((len(γ3_list), numy_bar + 1))
     for i in range(len(γ3_list)):
         ϕ_ref[i, :] = ϕ_list[i, loc_2]
-    
+
     ϕ = np.average(ϕ_list, axis=0, weights=dmg_weight)[:numy_bar+1]
     episode = 0
     lhs_error = 1
@@ -741,11 +744,14 @@ def minimize_g(y_grid, numy_bar, ems_star, ϕ_list, args, ϵ=3, tol=1e-6, max_it
 
 #     dϕdy = derivative_1d(ϕ, 1, dy, "up")
 #     dϕdyy = derivative_1d(ϕ, 2, dy, "up")
-#     temp = dϕdy + (η-1)*dΛ    
+#     temp = dϕdy + (η-1)*dΛ
     ME = -temp*θ - ( dϕdyy+(η-1)/δ*ddΛ)*σy**2*ems_star
     ratio = ME/(η/ems_star)
 
     return ME, ratio
+
+
+# -
 
 def solve_baseline(y_grid, num_stop, ems_star, ϕ_list, args, ϵ=2, tol=1e-8, max_iter=3_000):
     """
@@ -756,7 +762,7 @@ def solve_baseline(y_grid, num_stop, ems_star, ϕ_list, args, ϵ=2, tol=1e-8, ma
     r2=2.5
     y_grid_cap = y_grid[:num_stop+1]
     intensity =  r1*(np.exp(r2/2*(y_grid_cap- y_lower)**2)-1) *(y_grid_cap >= y_lower)
-    
+
     dΛ = γ1 + γ2*y_grid_cap
     ddΛ = γ2
 
@@ -766,7 +772,7 @@ def solve_baseline(y_grid, num_stop, ems_star, ϕ_list, args, ϵ=2, tol=1e-8, ma
     ϕ_ref = np.zeros((len(γ3_list), num_stop + 1))
     for i in range(len(γ3_list)):
         ϕ_ref[i, :] = ϕ_list[i, loc_2]
-    
+
     dy = y_grid_cap[1] - y_grid_cap[0]
     episode = 0
     lhs_error = 1
@@ -781,7 +787,7 @@ def solve_baseline(y_grid, num_stop, ems_star, ϕ_list, args, ϵ=2, tol=1e-8, ma
         dϕdy = compute_derivatives(ϕ, 1, dy)
         dϕdyy = compute_derivatives(ϕ, 2, dy)
         # update control
-        temp = dϕdy + (η-1)/δ*dΛ 
+        temp = dϕdy + (η-1)/δ*dΛ
         weight = np.array([ - 1/ξa*temp*ems_star*θ for θ in θ_list])
         weight = weight - np.max(weight, axis=0)
         πᶜ = πᶜo*np.exp(weight)
@@ -805,10 +811,10 @@ def solve_baseline(y_grid, num_stop, ems_star, ϕ_list, args, ϵ=2, tol=1e-8, ma
         rhs = -δ*ϕ_new + By*dϕdy + Cyy*dϕdyy + D
         rhs_error = np.max(abs(rhs))
         lhs_error = np.max(abs((ϕ_new - ϕ_old)/ϵ))
-        ϕ = ϕ_new 
+        ϕ = ϕ_new
         episode += 1
-        
-    
+
+
     print("episode: {},\t ode error: {},\t ft error: {}".format(episode, rhs_error, lhs_error))
     dϕdy = compute_derivatives(ϕ, 1, dy)
     dϕdyy = compute_derivatives(ϕ, 2, dy)

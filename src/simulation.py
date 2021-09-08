@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # +
 """
+simulation.py
+========================
 module for simulation
 """
 import numpy as np
@@ -23,7 +25,7 @@ def simulate_jump(model_res, θ_list, ME=None,  y_start=1,  T=100, dt=1):
     ----------
     model_res : dict
         A dictionary storing solution with misspecified jump process.
-        See :func:`~source.model.solve_hjb_y_jump` for detail.
+        See :func:`~src.model.solve_hjb_y_jump` for detail.
     θ_list : (N,) ndarray::
         A list of matthew coefficients. Unit: celsius/gigaton of carbon.
     ME : (N,) ndarray
@@ -310,8 +312,8 @@ def simulate_jump_2(model_res_pre, model_res_post, y_upper, θ_list, ME=None,  y
     Parameters
     ----------
     model_res : dict
-        A dictionary storing solution with misspecified jump process. 
-        See :func:`~source.model.solve_hjb_y_jump` for detail.
+        A dictionary storing solution with misspecified jump process.
+        See :func:`~src.model.solve_hjb_y_jump` for detail.
     θ_list : (N,) ndarray::
         A list of matthew coefficients. Unit: celsius/gigaton of carbon.
     ME : (N,) ndarray
@@ -429,7 +431,7 @@ def simulation_jump_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, 
             y1t[i] = y1_0
             y1_0 = y1_0 + Et[i] * θ * dt
             else_loop = 0
-            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 
+            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2
             K = i
         elif Jump >= 1:
             if else_loop == 0:
@@ -516,7 +518,7 @@ def simulation_jump_pulse_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T
             jump_prob = jump_prob * (jump_prob <= 1) + (jump_prob > 1)
             Jump      = rng.choice([0,1], size=1, p=[1 - jump_prob, jump_prob])
             y1t[i] = y1_0
-            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 
+            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2
             y1_0 = y1_0 + Et[i] * θ * dt
             else_loop = 0
             K = i

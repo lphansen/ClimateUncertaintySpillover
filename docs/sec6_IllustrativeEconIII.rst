@@ -1,7 +1,7 @@
 6 Illustrative economy III: carbon abatement technology
 =======================================================
 
-While the model posed in section `4 <sec4_IllustrativeEconI.ipynb>`__
+While the model posed in section `4 <sec4_IllustrativeEconI.rst>`__
 illustrated how the unfolding of damages should alter policy, the
 economic model was not designed to confront transitions to fully
 carbon-neutral economies. There have been several calls for such
@@ -9,11 +9,11 @@ transitions with little regard for the role or impact of uncertainty. We
 now modify the model to allow for green technology in decades to come.
 
 We next consider a technology that is close to the Dynamic Integrated
-Climate-Economy (DICE) model of :raw-latex:`\cite{Nordhaus:2017}`. See
-also :raw-latex:`\cite{CaiJuddLontzek:2017}` and
-:raw-latex:`\cite{CaiLontzek:2019}` for a stochastic extension (DSICE)
+Climate-Economy (DICE) model of :cite:t:`Nordhaus:2017`. See
+also :cite:t:`CaiJuddLontzek:2017` and
+:cite:t:`CaiLontzek:2019` for a stochastic extension (DSICE)
 of the DICE
-model.:raw-latex:`\footnote{Among other stochastic components, the DSICE incorporates tipping elements and characterizes the SCC as a stochastic process. From a decision theory perspective, DSICE focuses on risk aversion and intertemporal substitution under an assumption of rational expectations.}`
+model. [#]_ 
 For our setting, we alter the output equation from our previous
 specification as follows:
 
@@ -24,13 +24,11 @@ specification as follows:
 
 where:
 
-.. math::
+.. math:: :label: output_loss
 
-
-   \begin{equation}
     \frac {J_t} {K_t} =   \left\{ \begin{matrix}   \alpha {\vartheta_t}  \left[ 1  -  \left({\frac {{\mathcal E}_t} { \alpha \lambda_t K_t}}\right)\right]^\theta & \left({\frac {{\mathcal E}_t} {\alpha  K_t}}\right)  \le \lambda_t \cr
    0 & \left({\frac {{\mathcal E}_t} {\alpha  K_t}}\right)  \ge \lambda_t  \end{matrix} \right.
-   \end{equation}
+    
 
 To motivate the term :math:`J_t`, express the emissions to capital ratio
 as:
@@ -40,7 +38,7 @@ as:
 
    \frac {{\mathcal E}_t} {K_t}  = \alpha \lambda_t  ( 1 - \iota_t ) 
 
-| where :math:`0 \le \iota_t \le 1` is {:raw-latex:`\em abatement`} at
+| where :math:`0 \le \iota_t \le 1` is *abatement* at
   date :math:`t`. The exogenously specified process :math:`\lambda`
   gives the emissions to output ratio in the absence of any abatement.
 | By investing in :math:`\iota_t`, this ratio can be reduced, but there
@@ -52,21 +50,9 @@ as:
 
    J_t  = \alpha K_t \vartheta (\iota_t)^\theta 
 
-Equation :raw-latex:`\eqref{output_loss}` follows by solving for
-abatement :math:`\iota_t` in terms of emissions.\footnote{ The link to
-the specification used in :raw-latex:`\cite{CaiLontzek:2019}` is then:
+Equation :math:numref:`output_loss` follows by solving for
+abatement :math:`\iota_t` in terms of emissions. [#]_ 
 
-.. math::
-
-
-   \begin{align*}
-   \sigma_t & = \lambda_t \cr
-   \vartheta_t & = \theta_{
-   In [ ]:
-   1,t} \cr
-   \theta & = \theta_2 \cr
-   \mu_t & = \iota_t 
-   \end{align*}
 
 The planner’s preferences are logarithmic over damaged consumption:
 
@@ -97,9 +83,9 @@ value function of the form: :math:`\upsilon_d d + \Phi^m(k,y)`.
    & + \frac {\partial \Phi^m(k,y)}{\partial k} 
     \left[ \mu_k    + i   -
    {\frac { \kappa} 2} i^2  -  \frac  {|\sigma_k|^2}  2 + \frac {|\sigma_k|^2} 2  \frac {\partial^2 \Phi^m(k,y)}{\partial k^2}\right]  \cr
-   & + \frac {\partial  \Phi^m(k,y)}{\partial y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell {e} + {\frac 1 2} \frac {\partial^2 \Phi^m(k,y)}{\partial y^2} |\varsigma|^2 e^2  \cr
+   & + \frac {\partial  \Phi^m(k,y)}{\partial y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell {e} + {\frac 1 2} \frac {\partial^2 \Phi^m(k,y)}{\partial y^2} \mid \varsigma \mid ^2 e^2  \cr
    & + \upsilon_d \left( \left[ \gamma_1 + \gamma_2 y + \gamma_3^m (y - \overline y) \right]   \sum_{\ell=1}^L \omega_\ell \theta_\ell { e} + {\frac 1 2} (\gamma_2 + 
-   \gamma_3^m) |\varsigma|^2  e^2 \right) \cr
+   \gamma_3^m) \mid \varsigma \mid ^2  e^2 \right) \cr
    & + \xi_a \sum_{\ell = 1}^L \omega_\ell \left( \log \omega_\ell - \log \pi_\ell \right) 
    \end{align*} 
 
@@ -128,10 +114,10 @@ First-order conditions for :math:`i`:
 
    \begin{align*} 
     & mc  \left( \frac{\theta {\overline \vartheta}}{ \overline \lambda} \left[1 - \left({\frac {e} { \alpha \overline\lambda \exp(k)}}\right)  \right]^{\theta - 1}\right) \exp(-k)  \cr 
-    &+  \frac {\partial  \Phi^m(k,y)}{\partial y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell  + \frac {\partial^2 \Phi^m(k,y)}{\partial y^2} |\varsigma|^2 e \cr 
+    &+  \frac {\partial  \Phi^m(k,y)}{\partial y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell  + \frac {\partial^2 \Phi^m(k,y)}{\partial y^2} \mid \varsigma \mid ^2 e \cr 
     & + 
     \upsilon_d \left( \left[ \gamma_1 + \gamma_2 y + \gamma_3^m (y - \overline y) \right]   \sum_{\ell=1}^L \omega_\ell \theta_\ell  + (\gamma_2 + 
-   \gamma_3^m) |\varsigma|^2 e \right) 
+   \gamma_3^m) \mid \varsigma \mid ^2 e \right) 
    \end{align*}
 
 Given :math:`mc` and :math:`\theta = 3`, the first-order conditions for
@@ -176,7 +162,6 @@ Given :math:`\Phi^m(k, y)` for :math:`m = 1, 2, \dots, M`, solve
 .. code:: ipython3
 
     !python "model_final_5.py"
-    
     !python "model_final_7p5.py"
     !python "model_final_2p5.py"
     !python "model_final_baseline.py"
@@ -405,3 +390,17 @@ and climate sensitivity models. Here, we have imposed
 function probability distortions are relatively modest, consistent with
 our previous discussion. The climate model distortions, by design, are
 of similar magnitude as those reported previously in Figure 5.
+
+.. [#] Among other stochastic components, the DSICE incorporates tipping elements and characterizes the SCC as a stochastic process. From a decision theory perspective, DSICE focuses on risk aversion and intertemporal substitution under an assumption of rational expectations.
+
+.. [#] The link to the specification used in :cite:t:`CaiLontzek:2019` is then:
+
+.. math::
+
+
+   \begin{align*}
+   \sigma_t & = \lambda_t \cr
+   \vartheta_t & = \theta_{1,t} \cr
+   \theta & = \theta_2 \cr
+   \mu_t & = \iota_t 
+   \end{align*}

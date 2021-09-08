@@ -1,8 +1,6 @@
 # Climate Change Uncertainty Spillover in the Macroeconomy
 This repository contains codes and jupyter notebooks which compute and demonstrate results of "Climate Change Uncertainty Spillover in the Macroeconomy" by [Micheal Barnett][id1], [William Brock][id2] and [Lars Peter Hansen][id3]. Latest version could be found [here][id4].
 
-For further detail of computation, see also: [online documentation](https://climateuncertaintyspillover.readthedocs.io/en/latest/)
-
 [id1]: tocomplete
 [id2]: https://economics.missouri.edu/people/brock
 [id3]: https://larspeterhansen.org/
@@ -14,7 +12,7 @@ For further detail of computation, see also: [online documentation](https://clim
 - [Quick user's guide](#quick-guide)
 
 ## <a name="prerequisite"></a>Prerequisite
-`Python == 3.8.x`, package manager such as `pip`,  and `jupyter notebook` to checkout the notebooks.
+`Python == 3.8.x`, package manager such as `pip`,  and `jupyter notebook` to checkout the notebooks. 
 
 To go to the documentation of this project, please go to: (link avaliable when published).
 
@@ -22,16 +20,14 @@ This project has been tested in an environment with
 > `Python == 3.8.7` and  `jupyter notebook == 5.7.10`
 
 ## <a name="acessing"></a>Acessing our project
-To access our notebook binder, click below:
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2?filepath=sec0_prep.ipynb)
 
 To store the notebook as well as codes in your local machine. You can do this by following steps below:
 
 1.  Open a Windows command prompt, Mac terminal or Linux terminal and change into the folder you would like to store the files.
  	-  You can do this using the command `cd` in the command prompt (on Windows) or terminal (on Mac and Linux).
         - For example, running `cd 'C:\Users\username\python'` (don’t forget '' around the path name to use an absolute path) would lead me to my designated folder.
-
+     
     ```bash
     $ cd [folder path name]
     ```
@@ -39,25 +35,25 @@ To store the notebook as well as codes in your local machine. You can do this by
 2.  Clone the github repository for the paper
     - If you don’t have github installed, try installing it from this page: https://git-scm.com/download.
     - You can do this by running below in the command prompt:
-
+    
     ```bash
-    $ git clone https://github.com/lphansen/WrestlingClimatie.git
+    $ git clone https://github.com/lphansen/ClimateUncertaintySpillover.git
     ```
-
+    
 3.  Change directories into the ‘Wrestling’ folder and install the required packages for the current user or your initiated virtual environment:
-
+    
     ```bash
-    $ cd WrestlingClimate
+    $ cd ClimateUncertaintySpillover
     $ pip install -r requirements.txt
     ```
-4. Access the notebooks, run the following under the folder `WrestlingClimate/`:
-
+4. Access the notebooks, run the following under the folder `ClimateUncertaintySpillover/`:
+    
     ```bash
     $ jupyter notebook
     ```
     and you will see the notebooks listed below.
 
-    Then click <button type = "button" name="runall">Run all</button> from <button type="runtime" name="runtime">runtime</button> to see our results.
+    Then click <button type = "button" name="runall">Run all</button> from <button type="runtime" name="runtime">runtime</button> to see our results. 
 
 ## <a name="quick-guide"></a>Quick user's guide
 
@@ -65,16 +61,15 @@ description of notebooks' contents
 
 The notebooks are separated according to section in the paper.
 - Section 1: [Introduction](sec1_Introduction.ipynb)
-- Section 2: [Climate Dynamics](sec2_UncertainClimateDynamics.ipynb)
-- Section 3: [Uncertain Damage](sec3_UncertainDamage.ipynb)
-- Section 4: [Illustrative Economy Ia: Uncertain Damages](sec4_IllustrativeEconIa.ipynb) and [Ib: Smooth Ambiguity](sec4_IllustrativeEconIb.ipynb)
-- Section 5: [Illustrative Economy II: Uncertainty Decomposition](sec5_IllustrativeEconII.ipynb)
-- Section 6: [Illustrative Economy III: Carbon abatement technology](sec6_IllustrativeEconIII.ipynb)
-- Section 7: [Illustrative Economy IV: exogenous emissions](sec7_IllustrativeEconIV.ipynb)
-- Section 8: [Illustrqtive Economy V: tail-end damages](sec8_IllustrativeEconV.ipynb)
-- Section 9: [Conclusion](sec9_Conclusion.ipynb)
+- Section 2: [Uncertain climate dynamics](sec2_UncertainClimateDynamics.ipynb)
+- Section 3: [Uncertain damage](sec3_UncertainDamage.ipynb)
+- Section 4: [Illustrative economy I: uncertain damages](sec4_IllustrativeEconIA.ipynb) and [smooth ambiguity](sec4_IllustrativeEconIB.ipynb)
+- Section 5: [Illustrative economy II: uncertainty decomposition](sec5_IllustrativeEconII.ipynb)
+- Section 6: [Illustrative economy III: carbon abatement technology](sec6_IllustrativeEconIII.ipynb)
+- Section 7: [Illustrative economy IV: tail-end damages](sec7_IllustrativeEconIV.ipynb)
+- Section 8: [Conclusion](sec8_Conclusion.ipynb)
 
 As well as appendices:
-- [Appendix A.](appendix1.ipynb#A) Complete model
-- [Appendix B.](appendix1.ipynb#B) Computation methods
-- [Appendix C.](appendix2_remark3p1) 2-state model in remark 3.1
+- Appendix A: [Complete model](appendixA.ipynb)
+- Appendix B: [Computational methods](appendixB.ipynb)
+- Appendix C: [When Y has two states](appendixC.ipynb)

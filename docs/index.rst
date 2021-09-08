@@ -17,13 +17,14 @@ For related research, also checkout: `Pricing Uncertainty Induced by Climate Cha
    sec1_Introduction
    sec2_UncertainClimateDynamics
    sec3_UncertainDamage
-   sec4_IllustrativeEconI
-   sec4_IllustrativeEconIb
+   sec4_IllustrativeEconIA
    sec5_IllustrativeEconII
    sec6_IllustrativeEconIII
-   sec7_Conclusion
-   appendix1
-   appendix2_smoothambiguity
+   sec7_IllustrativeEconIV
+   sec8_Conclusion
+   appendixA
+   appendixB
+   appendixC
 
    Modules <modules_index.rst>
    References <bib_file.rst>

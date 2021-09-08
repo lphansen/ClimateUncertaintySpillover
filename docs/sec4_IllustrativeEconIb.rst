@@ -1,5 +1,5 @@
-4B Illustrative economy Ib: smooth ambiguity
-============================================
+4.3 Smooth ambiguity
+--------------------
 
 This notebook is to suppliment discussion in `Section
 4 <sec4_IllustrativeEconI.ipynb>`__ by focusing on a different aspect –
@@ -11,26 +11,6 @@ paramters are :math:`\xi_a` and :math:`\xi_r`.
 Without specifically pointed out, :math:`\xi_r = 1` in this example. And
 the smooth ambiguity parameter :math:`\xi_a` values we experiment with
 are :math:`\{0.02, 0.01, 0.005, 0.0025\}`.
-
-4B.1 Post-jump continuation value functions
--------------------------------------------
-
-Conditioned on each of the damage functions,
-:math:`m = 1, 2, \dots, 20`. Solve for the corresponding
-:math:`\phi_m(y)`:
-
-.. math::
-
-
-   \begin{align*}
-   0 = \max_{\tilde e}  \min_h \min_{\omega_j, \sum_{\ell =1}^L \omega_\ell  = 1}
-   & - \delta \phi_m(y)    +  \eta \log \tilde e    \cr
-   & + \frac {d \phi_m(y)}{d y} {\tilde e}  \varsigma \cdot h  + {\frac {(\eta - 1)} \delta }\left[\gamma_1 +  \gamma_2 y + \gamma_3^m (y- {\overline y} ) \right] {\tilde e} \varsigma \cdot h + {\frac {\xi_r} 2} h'h \cr 
-   & + \frac {d \phi_m(y)}{d y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell {\tilde e} + {\frac 1 2} \frac {d^2 \phi_m(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
-   &+ {\frac {(\eta - 1)} \delta}  \left( \left[ \gamma_1 + \gamma_2 y + \gamma_3^m (y - \overline y) \right]   \sum_{\ell=1}^L \omega_\ell \theta_\ell {\tilde e} + {\frac 1 2} (\gamma_2 + 
-   \gamma_3^m) |\varsigma|^2 \tilde e^2 \right) \cr
-   &+ \xi_a \sum_{\ell = 1}^L \omega_\ell \left( \log \omega_\ell - \log \pi_\ell \right).
-   \end{align*}
 
 .. code:: ipython3
 
@@ -172,39 +152,6 @@ Conditioned on each of the damage functions,
     v_list = pickle.load(open("v_list_sa", "rb"))
     e_tilde_list = pickle.load(open("e_tilde_list_sa", "rb"))
 
-4B Pre-jump value function
---------------------------
-
-The pre-jump value function has a similar structure with two exceptions:
-- we include the intensity function discussed earlier and - we introduce
-robustness concerns for both the intensity and distribution over the
-alternative :math:`\gamma_3^m` coefficients.
-
-Given these modifications, we include:
-
-.. math::
-
-
-   \mathcal J (y) \sum_{m=1}^M g_m \pi_m \left[ \phi_m(\overline y) - \phi(y) \right]
-   + \xi_r {\mathcal J}(y)  \sum_{m=1}^M \pi_m \left( 1 - g_m + g_m \log g_m \right)\pi_m 
-
-in the HJB and solve for pre-jump value function :math:`\phi(y)` on
-:math:`[0, \overline{y}]`:
-
-.. math::
-
-
-   \begin{align*}
-   0 = \max_{\tilde e}  \min_h \min_{\omega_j, \sum_{\ell =1}^L \omega_\ell  = 1} \min_{g_m \geqslant 0}
-   & - \delta \phi(y)    +  \eta \log \tilde e    \cr
-   & + \frac {d \phi(y)}{d y} {\tilde e}  \varsigma \cdot h  + {\frac {(\eta - 1)} \delta }\left[\gamma_1 +  \gamma_2 y) \right] {\tilde e} \varsigma \cdot h + {\frac {\xi_r} 2} h'h \cr 
-   & + \frac {d \phi(y)}{d y}  \sum_{\ell=1}^L \omega_\ell  \theta_\ell {\tilde e} + {\frac 1 2} \frac {d^2 \phi(y)}{(dy)^2} |\varsigma|^2 \tilde e^2  \cr
-   &+ {\frac {(\eta - 1)} \delta}  \left( \left[ \gamma_1 + \gamma_2 y\right]   \sum_{\ell=1}^L \omega_\ell \theta_\ell {\tilde e} + {\frac 1 2} \gamma_2  |\varsigma|^2 \tilde e^2 \right) \cr
-   &+ \xi_a \sum_{\ell = 1}^L \omega_\ell \left( \log \omega_\ell - \log \pi_\ell \right)\cr
-   &+ \mathcal J (y) \sum_{m=1}^M g_m \pi_m \left[ \phi_m(\overline y) - \phi(y) \right]
-   + \xi_r {\mathcal J}(y)  \sum_{m=1}^M \pi_m \left( 1 - g_m + g_m \log g_m \right)\pi_m 
-   \end{align*}
-
 .. code:: ipython3
 
     ξ_a_list = [0.02, 0.01, 0.005, 0.0025]
@@ -250,8 +197,8 @@ in the HJB and solve for pre-jump value function :math:`\phi(y)` on
     # pickle.dump(pre_jump_res, open("pre_jump_res_sa", "wb"))
     pre_jump_res = pickle.load(open("pre_jump_res_sa", "rb"))
 
-4B.3 Emission and :math:`\log SCC` as a function of temperature anomaly
------------------------------------------------------------------------
+Emission and :math:`\log SCC` as a function of temperature anomaly
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: ipython3
 
@@ -326,8 +273,8 @@ in the HJB and solve for pre-jump value function :math:`\phi(y)` on
                             })                };                });            </script>        </div>
 
 
-4B.4 Emission and logarithm of social cost of carbon trajectories
------------------------------------------------------------------
+Emission and logarithm of social cost of carbon trajectories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The figure shows emission and :math:`\log SCC` over time before
 temperature anomaly reaches the upper bound of jump threshold,

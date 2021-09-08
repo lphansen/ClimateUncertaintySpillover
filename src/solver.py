@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+solver.py
+============================================
 Functions to numerically solve a nonlinear ODE via false transient scheme.
 
 .. seealso::
    For more details on false transient:
-   refer to :doc:`~app.appendices` (TODO:fix to ref).
+   refer to :doc:`appendix B <docs/appendixB.rst>` (TODO:fix to ref).
 
 
 The ODE we solve is as follows:
