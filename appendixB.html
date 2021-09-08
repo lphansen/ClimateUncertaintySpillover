@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appendix B. Computation methods &#8212; Climate Change Uncertainty Spillover in the Macroeconomy</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="_static/contentui.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/contentui.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appendix C: when \(Y\) has two states:" href="appendixC.html" />
+    <link rel="prev" title="Appendix A. Complete model" href="appendixA.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/mfr.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Climate Change Uncertainty Spillover in the Macroeconomy</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="index.html">
+   Welcome to the documentation for Climate Change Uncertainty Spillover in the Macroeconomy!
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec1_Introduction.html">
+   1 Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec2_UncertainClimateDynamics.html">
+   2 Uncertain climate dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec3_UncertainDamage.html">
+   3 Uncertain environmental and economic damages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec4_IllustrativeEconIA.html">
+   4 Illustrative economy I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec5_IllustrativeEconII.html">
+   5 Illustrative economy II: uncertainty decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec6_IllustrativeEconIII.html">
+   6 Illustrative economy III: carbon abatement technology
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec7_IllustrativeEconIV.html">
+   7 Illustrative economy IV: tail-end damages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sec8_Conclusion.html">
+   8 Conclusion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="appendixA.html">
+   Appendix A. Complete model
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Appendix B. Computation methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="appendixC.html">
+   Appendix C: when
+   <span class="math notranslate nohighlight">
+    \(Y\)
+   </span>
+   has two states:
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="modules_index.html">
+   Modules:
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bib_file.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/appendixB.rst"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/lphansen/ClimateUncertaintySpillover"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/lphansen/ClimateUncertaintySpillover/issues/new?title=Issue%20on%20page%20%2FappendixB.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="appendix-b-computation-methods">
+<h1>Appendix B. Computation methods<a class="headerlink" href="#appendix-b-computation-methods" title="Permalink to this headline">¶</a></h1>
+<p>The HJB for <span class="math notranslate nohighlight">\((y, n)\)</span> component does not has a straightforward
+solution. We use <strong>false transient method</strong> to solve the ODEs concerning
+<span class="math notranslate nohighlight">\((y,n)\)</span> in this paper.</p>
+<p>Take a general HJB that takes into consideration smooth ambiguity and
+brownian misspecification. Here we leave out the subscription <span class="math notranslate nohighlight">\(m\)</span>
+in <span class="math notranslate nohighlight">\(\phi(y)\)</span> as well as the upscription in <span class="math notranslate nohighlight">\(\gamma_3\)</span>.</p>
+<p>Recall that one HJB of interest for a damage specification
+<span class="math notranslate nohighlight">\(\gamma_3\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = \max_{\tilde e} \min_{\omega^a_\ell : \sum_{\ell=1}^L \omega^a_\ell = 1}  &amp;- \delta \phi(y) +  \eta \log\tilde e \\
+&amp; + \frac{1}{2} \left(\frac{d^2 \phi}{dy^2} + \frac{ (\eta - 1)}{\delta} \left(\gamma_2 + \gamma_3\mathbb{I}\{y&gt;\bar y\} \right) \right)(\tilde e)^2 |\varsigma|^2  \\
+&amp; - \frac{1}{2\xi_b} \left[ \frac{d\phi}{dy}    + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\})\right]^2 \cdot |\varsigma|^2 (\tilde e)^2 \\
+\\
+&amp; + \sum_{\ell=1}^{L} \omega_\ell^a \left(\frac{d\phi}{dy}+ \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} ) \right)\theta_\ell \tilde e   \\
+\\
+&amp; + \xi_a \sum_i \omega^a_\ell(\log \omega^a_\ell - \log \pi^a_\ell)
+\end{aligned}\end{split}\]</div>
+<p>The problem satisfies condition to switch max and min problem. In the
+code, we first compute the optimal <span class="math notranslate nohighlight">\(\tilde e\)</span> and then the
+optimizing <span class="math notranslate nohighlight">\(\omega_\ell\)</span>, so we follow this order here.</p>
+<p>The settup includes a tolerance level, <span class="math notranslate nohighlight">\(tolerance\)</span>, that defines
+<em>convergence</em> and a constant step size, <span class="math notranslate nohighlight">\(\epsilon\)</span>, for updating
+the value function.</p>
+<p>We start with an initial guess of value function <span class="math notranslate nohighlight">\(\phi_0(y)\)</span> and
+initial values of <span class="math notranslate nohighlight">\(\{ \omega_\ell\}_{\ell=1}^L\)</span>, and update the
+value function according to the following way: 1. For a given
+<span class="math notranslate nohighlight">\(\color{blue}{\phi_i(y)}\)</span>, compute the optimizing <span class="math notranslate nohighlight">\(\tilde e\)</span>
+according to its first order condition:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+0 = &amp;\frac{\eta}{\color{blue}{\tilde e}} + \sum_{\ell=1}^{L} \omega_\ell^a \left(\color{blue}{\frac{d\phi_i}{dy}}+ \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} ) \right)\theta_\ell  \\
+ &amp; +  \left(\color{blue}{\frac{d^2 \phi_i}{dy^2}} + \frac{ (\eta - 1)}{\delta} \left(\gamma_2 + \gamma_3 \mathbb{I}\{y&gt;\bar y\} \right)  - \frac{1}{\xi_b} \left[ \color{blue}{\frac{d\phi_i}{dy}} + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\})\right]^2 \right)|\varsigma|^2 \color{blue}{\tilde e}
+\end{aligned}\end{split}\]</div>
+<ol class="arabic simple" start="2">
+<li><p>After compute the optimizing <span class="math notranslate nohighlight">\(\tilde e\)</span> from above, we compute
+the optimizing <span class="math notranslate nohighlight">\(\omega_\ell\)</span> according to its first order
+condition:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\color{blue}{\omega_\ell} = \frac{\pi_\ell^a \exp\left( -\frac{1}{\xi_a}\left[ \color{blue}{\frac{d\phi_i}{dy}} + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} )\right] \color{blue}{\tilde e} \cdot \theta_\ell \right)}{\sum_{\ell=1}^L \pi_\ell^a \exp\left( -\frac{1}{\xi_a}\left[ \color{blue}{\frac{d\phi_i}{dy}}+ \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} )\right]\color{blue}{\tilde e} \cdot \theta_\ell \right)}, \quad \ell = 1,2,\dots,L\]</div>
+<ol class="arabic" start="3">
+<li><p>Plug the above computed <span class="math notranslate nohighlight">\(\tilde e\)</span> and
+<span class="math notranslate nohighlight">\(\{\omega_\ell\}_{\ell=1}^L\)</span> back into the above HJB. Update
+<span class="math notranslate nohighlight">\(\phi_i(y)\)</span> to <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> by solving the following
+ODE:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\frac{\color{red}{\phi_{i+1}(y)} - \color{blue}{\phi_i(y)}}{\epsilon} =   &amp;- \delta \color{red}{\phi_{i+1}(y)} +  \eta \log\color{blue}{\tilde e} \\
+&amp; + \frac{1}{2} \left(\color{red}{\frac{d^2 \phi_{i+1}}{dy^2}} + \frac{ (\eta - 1)}{\delta} \left(\gamma_2 + \gamma_3\mathbb{I}\{y&gt;\bar y\} \right) \right)(\color{blue}{\tilde e})^2 |\varsigma|^2  \\
+&amp; - \frac{1}{2\xi_b} \left[ \color{red}{\frac{d\phi_{i+1}}{dy}}    + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y-\bar y)\mathbb{I}\{y &gt; \bar y\})\right]^2 \cdot |\varsigma|^2 (\color{blue}{\tilde e})^2 \\
+\\
+&amp; + \sum_{\ell=1}^{L} \color{blue}{\omega_\ell^a} \left(\color{red}{\frac{d\phi_{i+1}}{dy}} + \frac{(\eta -1)}{\delta}(\gamma_1 + \gamma_2 y + \gamma_3 (y - \bar y)\mathbb{I}\{y &gt; \bar y\} ) \right)\theta_\ell \color{blue}{\tilde e}   \\
+\\
+&amp; + \xi_a \sum_i \color{blue}{\omega^a_\ell}(\log\color{blue}{\omega^a_\ell} - \log \pi^a_\ell)
+\end{aligned}\end{split}\]</div>
+<p>Blued <span class="math notranslate nohighlight">\(\color{blue}{\tilde e}\)</span> and
+<span class="math notranslate nohighlight">\(\color{blue}{\omega_\ell}\)</span> indicate they are computed using
+<span class="math notranslate nohighlight">\(\color{blue}{\phi_i(y)}\)</span>.</p>
+<p>The method we use to solve the ODE is <strong>biconjugate-gradient
+method</strong>. Use <code class="docutils literal notranslate"><span class="pre">?scipy.sparse.linalg.bicg</span></code> for document. See also
+wiki page for <a class="reference external" href="https://en.wikipedia.org/wiki/Biconjugate_gradient_method">biconjugate gradient
+method</a>.</p>
+</li>
+<li><p>Check whether the convergence condition is satisfied. We call
+left-hand side formula <em>left-hand side error</em>. Set a tolerance level,
+<span class="math notranslate nohighlight">\(tolerance\)</span>. We say that the algorithm converges, if:</p>
+<div class="math notranslate nohighlight">
+\[\frac{|\color{red}{\phi_{i+1}(y)} - \color{blue}{\phi_i(y)}| }{\epsilon} &lt; tolerance\]</div>
+<p>and we get the solution <span class="math notranslate nohighlight">\(\phi(y) = \phi_{i+1}(y)\)</span>. Otherwise,
+assign <span class="math notranslate nohighlight">\(\phi_{i+1}(y)\)</span> to <span class="math notranslate nohighlight">\(\phi_i(y)\)</span>, and repeat step
+1-4.</p>
+</li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># core loop in functions in `source/` can be described as follows</span>
+<span class="n">An</span> <span class="n">initial</span> <span class="n">guess</span><span class="p">:</span> <span class="n">ϕ</span>
+<span class="n">Intial</span> <span class="n">values</span> <span class="n">of</span> <span class="n">distorted</span> <span class="n">probabibity</span> <span class="n">of</span> <span class="n">ω_ℓ</span><span class="p">:</span> <span class="n">πc_o</span>
+<span class="n">constant</span> <span class="n">step</span> <span class="n">size</span><span class="p">:</span> <span class="n">ϵ</span>
+<span class="n">tolerance</span> <span class="n">level</span><span class="p">:</span> <span class="n">tol</span>
+<span class="n">left</span> <span class="n">hand</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># random value larger than tol</span>
+<span class="n">report</span> <span class="n">numbers</span> <span class="n">of</span> <span class="n">iteration</span><span class="p">:</span> <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">left</span> <span class="n">hand</span> <span class="n">side</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+    <span class="n">compute</span>  <span class="n">dϕdy</span> <span class="c1"># first crder derivative</span>
+    <span class="n">compute</span> <span class="n">dϕdyy</span> <span class="c1"># second order derivative</span>
+    <span class="n">compute</span> <span class="n">e_tilde</span>
+    <span class="n">compute</span> <span class="n">optimizing</span> <span class="n">ω_ℓ</span><span class="p">:</span> <span class="n">πc</span>
+    <span class="n">solve</span> <span class="n">the</span> <span class="n">ODE</span> <span class="n">by</span> <span class="n">conjugate</span> <span class="n">gradient</span> <span class="n">to</span> <span class="n">get</span> <span class="n">ϕ_new</span>
+    <span class="n">update</span> <span class="n">left</span> <span class="n">hand</span> <span class="n">error</span>
+    <span class="n">compute</span> <span class="n">right</span> <span class="n">hand</span> <span class="n">error</span>
+    <span class="n">ϕ</span> <span class="o">=</span> <span class="n">ϕ_new</span>
+    <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="appendixA.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Appendix A. Complete model</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="appendixC.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Appendix C: when <span class="math notranslate nohighlight">\(Y\)</span> has two states:</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Suri Chen<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
