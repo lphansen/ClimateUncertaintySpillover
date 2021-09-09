@@ -3,8 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. admonition::
-    .. image:: https://mybinder.org/badge_logo.svg
+.. admonition:: \ \  
+
+    This project project can be accessed through mybinder.org. Click to load the project: |binder|
+
+.. |binder| image:: https://mybinder.org/badge_logo.svg
      :target: https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2
 
 Welcome to the documentation for *Climate Change Uncertainty Spillover in the Macroeconomy*!
@@ -21,7 +24,7 @@ For related research, also checkout: `Pricing Uncertainty Induced by Climate Cha
    sec1_Introduction
    sec2_UncertainClimateDynamics
    sec3_UncertainDamage
-   sec4_IllustrativeEconIA
+   sec4_IllustrativeEconI
    sec5_IllustrativeEconII
    sec6_IllustrativeEconIII
    sec7_IllustrativeEconIV
@@ -40,3 +43,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+    
+

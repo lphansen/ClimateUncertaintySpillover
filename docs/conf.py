@@ -37,6 +37,7 @@ extensions = [
     'sphinxcontrib.bibtex',
     'sphinx.ext.intersphinx',
     'sphinxcontrib.contentui',
+    'sphinx_togglebutton',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -58,7 +59,6 @@ import sphinx_material
 html_context = sphinx_material.get_html_context()
 html_theme_path = sphinx_material.html_theme_path()
 html_theme = 'sphinx_material'
-html_logo = "mfr.png"
 html_theme_options = {
     'navigation_with_keys': True,
     'nav_title': 'UncertaintySpillover',
@@ -79,6 +79,7 @@ html_sidebars = {
         'localtoc.html',
         'searchbox.html',
         'logo-text.html',
+        "mfr.png",
     ]
 }
 # Add any paths that contain custom static files (such as style sheets) here,

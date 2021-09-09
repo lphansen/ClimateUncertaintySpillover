@@ -865,12 +865,12 @@ def plot_ems_app(pre_jump_res, y_grid_short, ξ_a_list, dt=1, model_res=True, y_
     fig = go.Figure()
     loc_11 = np.abs(y_grid_short - 1.1).argmin()
     loc_end = np.abs(y_grid_short - y_underline).argmin()
-
+    color = ["#d62728", "darkgreen", "darkorange", "navy", "#9467bd"]
     for i, ξ_a_i in enumerate(ξ_a_list):
         if ξ_a_i == 100_000:
             name = "baseline"
         else:
-            name = r"ξᵣ = {}".format(ξ_a_i)
+            name = r"ξₐ = {}".format(ξ_a_i)
         if model_res:
             y = pre_jump_res[ξ_a_i]["model_res"]["e_tilde"][loc_11 :loc_end + 1]
             x = y_grid_short[loc_11 :loc_end + 1]
@@ -903,6 +903,9 @@ def plot_ems_app(pre_jump_res, y_grid_short, ξ_a_list, dt=1, model_res=True, y_
     return fig
 
 def plot_logscc(fig, pre_jump_res,  y_grid_short, y_underline, ξ_a_list, args_scc, smooth_ambiguity=False):
+    
+    color = ["#d62728", "darkgreen", "darkorange", "navy", "#9467bd"]
+
     def logSCC(y_grid, e_tilde, args=()):
         α, η, i_over_k, K0, γ_1, γ_2 = args
         C0 = (α - i_over_k) * K0

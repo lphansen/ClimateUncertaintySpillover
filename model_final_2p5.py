@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
+# %%
 
-# In[5]:
+# %%
 
 
 import numpy as np
@@ -15,7 +16,7 @@ from src.utilities import find_nearest_value
 from src.simulation_2d import simulation_dice_prob
 
 
-# In[2]:
+# %%
 
 
 ##################
@@ -81,7 +82,7 @@ lambda_bar_second = 1e-9
 vartheta_bar_second = 0.
 
 
-# In[3]:
+# %%
 
 
 # Solve post damage, post second tech jump models
@@ -97,7 +98,7 @@ for i, γ_3_i in enumerate(γ_3):
     model_post_damage_post_second_tech.append(model_res)
 
 
-# In[4]:
+# %%
 
 
 # Solve post damage, post first tech jump models
@@ -115,7 +116,7 @@ for i, γ_3_i in enumerate(γ_3):
     model_post_damage_post_first_tech.append(model_res)
 
 
-# In[5]:
+# %%
 
 
 # Solve post damage pre tech jump models
@@ -130,7 +131,7 @@ for i, γ_3_i in enumerate(γ_3):
     model_post_damage_pre_tech.append(model_res)
 
 
-# In[6]:
+# %%
 
 
 # Solve pre damage, post second tech models
@@ -147,7 +148,7 @@ model_pre_damage_post_second_tech = hjb_pre_damage_post_tech(k_grid, y_grid_shor
                                                              ϵ=1., fraction=.05, tol=1e-6, max_iter=2_000, print_iteration=True)
 
 
-# In[7]:
+# %%
 
 
 # Solve pre damage, post first tech models
@@ -167,7 +168,7 @@ model_pre_damage_post_first_tech = hjb_pre_damage_pre_tech(k_grid, y_grid_short,
                                                            ϵ=.1, fraction=.05, tol=1e-6, max_iter=2_000, print_iteration=False)
 
 
-# In[8]:
+# %%
 
 
 # Solve pre damage, pre tech models
@@ -189,7 +190,7 @@ model_pre_damage_pre_tech = hjb_pre_damage_pre_tech(k_grid, y_grid_short, model_
 
 # ## Simulation
 
-# In[9]:
+# %%
 
 
 # Case 1) : damage jump intensity & probability (no tech jump, no damage jump)
@@ -213,7 +214,7 @@ intensity_distortion = np.mean(gt, axis=0)
 distorted_damage_probs = gt / np.mean(gt, axis=0) / n_model
 
 
-# In[10]:
+# %%
 
 
 np.save('new_intensity_dmg_2p5.npy', intensity_dmg)
@@ -221,7 +222,7 @@ np.save(f'new_dmg_intensity_distort_{ξ_p}.npy', intensity_distortion)
 np.save('et_nodmg_no_tech_2p5', et)
 
 
-# In[11]:
+# %%
 
 
 # Case 2) : tech jump intensity & probability (no tech jump, no damage jump)
@@ -246,9 +247,7 @@ _, kt_new, yt_new, _, gt_tech_new, _, _ = simulation_dice_prob(sim_args, k_grid,
                                       K0=np.exp(kt[arrival]), y0=yt[arrival], T=T_plots)
 
 
-# In[12]:
-
-
+# %%
 np.save('new_gt_tech_2p5.npy', gt_tech[0])
 np.save('new_gt_tech_new_2p5.npy', gt_tech_new[0])
 
