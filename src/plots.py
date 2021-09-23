@@ -632,7 +632,9 @@ def plot14(
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=tech_prob_first[:41],
                              name='baseline',
-                             line=dict(width=2.5, color=colors[0])),
+                             line=dict(width=2.5, color=colors[0]),
+                             hovertemplate="Year: %{x}, prob: %{y:.2f}",
+                            ),
                   col=1,
                   row=1)
     fig.add_trace(go.Scatter(
@@ -640,6 +642,7 @@ def plot14(
         y=distorted_tech_prob_first_7p5[:41],
         name='ξᵣ = 7.5',
         line=dict(width=2.5, color=colors[1]),
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=1)
@@ -647,7 +650,9 @@ def plot14(
     fig.add_trace(go.Scatter(x=np.arange(0, 40),
                              y=distorted_tech_prob_first_5[:41],
                              name='ξᵣ = 5',
-                             line=dict(width=2.5, color=colors[2]),),
+                             line=dict(width=2.5, color=colors[2]),
+                             hovertemplate="Year: %{x}, prob: %{y:.2f}",
+                            ),
                   row=1,
                   col=1)
 
@@ -655,7 +660,8 @@ def plot14(
         x=np.arange(0, 40),
         y=distorted_tech_prob_first_2p5[:41],
         name='ξᵣ = 2.5',
-        line=dict(width=2.5, color=colors[3]),   
+        line=dict(width=2.5, color=colors[3]),
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=1)
@@ -668,7 +674,7 @@ def plot14(
         name='baseline',
         showlegend=False,
         line=dict(width=2.5, color=colors[0]),
-
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=2)
@@ -678,6 +684,7 @@ def plot14(
         name='ξᵣ = 7.5',
         showlegend=False,
         line=dict(width=2.5, color=colors[1]),
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=2)
@@ -687,6 +694,7 @@ def plot14(
         name='ξᵣ = 5',
         showlegend=False,
         line=dict(width=2.5, color=colors[2]),
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=2)
@@ -696,6 +704,7 @@ def plot14(
         name='ξᵣ = 2.5',
         showlegend=False,
         line=dict(width=2.5, color=colors[3]),
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=2)
@@ -703,7 +712,8 @@ def plot14(
     # 3
     fig.add_trace(go.Scatter(x=np.arange(0, 40), y=dmg_prob[:41], name='baseline',
                              showlegend=False,
-        line=dict(width=2.5, color=colors[0]),
+                             line=dict(width=2.5, color=colors[0]),
+                             hovertemplate="Year: %{x}, prob: %{y:.2f}",
                             ),
                   row=1,
                   col=3)
@@ -711,7 +721,9 @@ def plot14(
                              y=distorted_dmg_prob_7p5[:41],
                              name='ξᵣ = 7.5',
                             showlegend=False,
-        line=dict(width=2.5, color=colors[1]),),
+                            line=dict(width=2.5, color=colors[1]),
+                            hovertemplate="Year: %{x}, prob: %{y:.2f}",
+                            ),
                   row=1,
                   col=3)
     fig.add_trace(go.Scatter(
@@ -720,6 +732,7 @@ def plot14(
         name='ξᵣ = 5',
         showlegend=False,
         line=dict(width=2.5, color=colors[2]),
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=3)
@@ -729,6 +742,7 @@ def plot14(
         name='ξᵣ = 2.5',
         showlegend=False,
         line=dict(width=2.5, color=colors[3]),
+        hovertemplate="Year: %{x}, prob: %{y:.2f}",
     ),
                   row=1,
                   col=3)
@@ -746,8 +760,8 @@ def plot14(
         plot_bgcolor="white",
     )
 
-    fig.update_xaxes(showline=True, linecolor="black", title="Years")
-    fig.update_yaxes(showline=True, linecolor="black", range=[0, 1])
+    fig.update_xaxes(showline=True, linecolor="black", title="Years", showspikes=True)
+    fig.update_yaxes(showline=True, linecolor="black", range=[0, 1], showspikes=True)
     return fig
 
 def plot15(θ_list, γ_3, distorted_damage_probs, πct):
@@ -761,6 +775,7 @@ def plot15(θ_list, γ_3, distorted_damage_probs, πct):
         name='baseline',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate="%{x:.2f}, prob: %{y:.3f}",
     )
 
     trace_5 = go.Histogram(
@@ -774,12 +789,13 @@ def plot15(θ_list, γ_3, distorted_damage_probs, πct):
         name='distorted',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate="%{x:.2f}, prob: %{y:.3f}",
     )
     
     fig.add_trace(trace_damage, 1, 1)
     fig.add_trace(trace_5, 1, 1)
     
-    
+    # 2 histogram
     trace_base = go.Histogram(
         x=θ_list * 1000,
         histnorm='probability density',
@@ -789,6 +805,7 @@ def plot15(θ_list, γ_3, distorted_damage_probs, πct):
         name='baseline',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate="%{x:.2f}, density: %{y:.3f}",
     )
 
     trace_worstcase = go.Histogram(
@@ -802,6 +819,7 @@ def plot15(θ_list, γ_3, distorted_damage_probs, πct):
         name='1000 year',
         legendgroup=1,
         opacity=0.5,
+        hovertemplate="%{x:.2f}, density: %{y:.3f}",
     )
 
     fig.add_trace(trace_base, 1, 2)
@@ -954,12 +972,16 @@ def plot_basic_ems(simulation_res_high, simulation_res_low,T):
         return "Error"
     fig = go.Figure()
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_high['et'][0:T],
-                             name = "Threshold 2.0",line=dict(color="red")))
+                             name = "Threshold 2.0",line=dict(color="red"),
+                             hovertemplate="Year: %{x}<br>Emission: %{y:.2f}</br>"
+                            ))
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_low['et'][0:T], 
-                             name = "Threshold 1.5",line=dict(color="blue")))
+                             name = "Threshold 1.5",line=dict(color="blue"),
+                             hovertemplate="Year: %{x}<br>Emission: %{y:.2f}</br>",
+                            ))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
-    fig.update_xaxes(showline=True, title="Years")
-    fig.update_yaxes(showline=True, title="Emissions", linecolor="black")
+    fig.update_xaxes(showline=True, title="Years", showspikes=True)
+    fig.update_yaxes(showline=True, title="Emissions", linecolor="black", showspikes=True)
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
@@ -969,12 +991,16 @@ def plot_basic_y(simulation_res_high, simulation_res_low,T):
         return "Error"
     fig = go.Figure()
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_high['yt'][0:T],
-                             name = "Threshold 2.0",line=dict(color="red")))
+                             name = "Threshold 2.0",line=dict(color="red"),
+                             hovertemplate="Year: %{x}<br>Temperature anomaly: %{y:.2f}</br>"
+                            ))
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= simulation_res_low['yt'][0:T], 
-                             name = "Threshold 1.5",line=dict(color="blue")))
+                             name = "Threshold 1.5",line=dict(color="blue"),
+                             hovertemplate="Year: %{x}<br>Temperature anomaly: %{y:.2f}</br>"
+                            ))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
-    fig.update_xaxes(showline=True, title="Years")
-    fig.update_yaxes(showline=True, title="Temperature anomaly", linecolor="black")
+    fig.update_xaxes(showline=True, title="Years", showspikes=True)
+    fig.update_yaxes(showline=True, title="Temperature anomaly", linecolor="black", showspikes=True)
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 
@@ -990,12 +1016,16 @@ def plot_basic_DMG(simulation_res_high, simulation_res_low,T, y_bar_high, y_bar_
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= np.exp(-DF_high[0:T]),
-                             name = "Threshold 2.0",line=dict(color="red")))
+                             name = "Threshold 2.0",line=dict(color="red"),
+                             hovertemplate="Year: %{x}<br>Damage: %{y:.4f}</br>"
+                            ))
     fig.add_trace(go.Scatter(x = np.linspace(0,T, T+1), y= np.exp(-DF_low[0:T]), 
-                             name = "Threshold 1.5",line=dict(color="blue")))
+                             name = "Threshold 1.5",line=dict(color="blue"),
+                             hovertemplate="Year: %{x}<br>Damage: %{y:.4f}</br>"
+                            ))
     fig.update_xaxes(showline=True, showgrid=True, linecolor="black")
-    fig.update_xaxes(showline=True, title="Years")
-    fig.update_yaxes(showline=True, title="Proportional reduction in economic output", linecolor="black")
+    fig.update_xaxes(showline=True, title="Years", showspikes=True)
+    fig.update_yaxes(showline=True, title="Proportional reduction in economic output", linecolor="black", showspikes=True)
     fig.update_layout(width=800, height=500, legend=dict(traceorder="reversed"))
     return fig
 

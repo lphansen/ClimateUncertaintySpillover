@@ -245,64 +245,76 @@ class EvolutionState:
 
         e_fun_pre_damage, e_fun_post_damage = fun_args
         [e, y, temp_anol] = self.variables
-
-        # Compute variables at t+1
-        if self.damage_jump_state == 'pre':
-            e_fun = e_fun_pre_damage
-        elif self.damage_jump_state == 'post':
-            e_fun = e_fun_post_damage[self.damage_jump_loc]
-        else:
-            raise ValueError(
-                'Invalid damage jump state. Should be one of [pre, post]')
-
-        e_new = e_fun(y)
-        y_new = y + e_new * θ_mean * self.dt
-        temp_anol_new = temp_anol + e_new * θ_mean * self.dt
-        variables_new = [e_new, y_new, temp_anol_new]
-        res_template = EvolutionState(self.t+ self.dt,
-                                      self.prob,
-                                      self.damage_jump_state,
-                                      self.damage_jump_loc,
-                                      variables_new,
-                                      self.y_underline,
-                                      self.y_overline)
-
-        states_new = []
-
+        prob_old = self.prob
+        damage_loc_old = self.damage_jump_loc
+        damage_state_old = self.damage_jump_state
         # Update probabilities
-        temp = damage_intensity(y_new, self.y_underline)
-
+        temp = damage_intensity(y, self.y_underline)
         damage_jump_prob = temp * self.dt
         if damage_jump_prob > 1:
             damage_jump_prob = 1
-        # damage has not jumped
+        # Compute variables at t+1
         if self.damage_jump_state == 'pre' and damage_jump_prob != 0:
-            # Damage jumps
+            states_new = []
+            # jump
             for i in range(self.DAMAGE_MODEL_NUM):
-                temp = res_template.copy()
-                temp.prob *= self.DAMAGE_PROB[i] * damage_jump_prob
-                temp.damage_jump_state = 'post'
-                temp.damage_jump_loc = i
-                temp.variables[1] = self.y_overline
-                states_new.append(temp)
-
-            # Damage does not jump
-            temp = res_template.copy()
-            temp.prob *= (1 - damage_jump_prob)
-            temp.damage_jump_state = 'pre'
-            states_new.append(temp)
-        # damage has jumped
+                e_fun = e_fun_post_damage[i]
+                y_new = 2
+                e_new = e_fun(y_new)
+                temp_anol_new = temp_anol + e_new * θ_mean * self.dt
+                prob_new = self.DAMAGE_PROB[i] * damage_jump_prob * prob_old
+                damage_state = "post"
+                damage_loc = i
+                variables_new = [e_new, y_new, temp_anol_new]
+                state = EvolutionState(self.t+ self.dt,
+                                      prob_new,
+                                      damage_state,
+                                      damage_loc,
+                                      variables_new,
+                                      self.y_underline,
+                                      self.y_overline)
+                states_new.append(state)
+            # no jump
+            e_fun = e_fun_pre_damage
+            e_new = e_fun(y)
+            y_new = y + e_new * θ_mean * self.dt
+            temp_anol_new = temp_anol + e_new * θ_mean * self.dt
+            prob_new = (1 - damage_jump_prob) * prob_old
+            damage_state = "pre"
+            damage_loc = None
+            variables_new = [e_new, y_new, temp_anol_new]
+            state = EvolutionState(self.t+ self.dt,
+                                      prob_new,
+                                      damage_state,
+                                      damage_loc,
+                                      variables_new,
+                                      self.y_underline,
+                                      self.y_overline)
+            states_new.append(state)
         else:
-            temp = res_template.copy()
-            temp.prob *= 1
-            states_new.append(temp)
+            # jump happened
+            if self.damage_jump_state == "post":
+                e_fun = e_fun_post_damage[damage_loc_old]
+            else:
+                e_fun = e_fun_pre_damage
+            e_new = e_fun(y)
+            y_new = y + e_new * θ_mean * self.dt
+            temp_anol_new = temp_anol + e_new * θ_mean * self.dt
+            prob_new = 1 * prob_old
+            variables_new = [e_new, y_new, temp_anol_new]
+            state = EvolutionState(self.t+ self.dt,
+                                      prob_new,
+                                      damage_state_old,
+                                      damage_loc_old,
+                                      variables_new,
+                                      self.y_underline,
+                                      self.y_overline)
+            states_new = [state]
+
 
         return states_new
 
 
-"""
-module for simulation
-"""
 def simulate_jump_2(model_res_pre, model_res_post, y_upper, θ_list, ME=None,  y_start=1.1,  T=100, dt=1):
     """
     Simulate temperature anomaly, emission, distorted probabilities of climate models,
@@ -404,139 +416,3 @@ def simulate_jump_2(model_res_pre, model_res_post, y_upper, θ_list, ME=None,  y
     else:
         simulation_res = dict(yt=yt[0:K], et=et[0:K], πct=πct[0:K], πdt=πdt[0:K], ht=ht[0:K], threshold = threshold)
     return simulation_res
-
-
-# @ray.remote
-def simulation_jump_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, y_lower=1.5, y_upper=2.0):
-    Et = np.ones(T+1)
-    y1t = np.zeros(T+1 )
-    Damage_func = np.zeros(T+1 )
-    if len(df[0])>10:
-        years = np.linspace(0,T, T+1, dtype=int)
-    else:
-        years = [0, 10,20,30,40,50, 60, 70, 80]
-    e_fun = interpolate.interp1d(years, df[model, 0:T+1])
-    r1 = 1.5
-    r2 = 2.
-    γ3 = 0
-    Jump = 0
-    for i in range(T+1 ):
-        if Jump == 0:
-            Et[i] = e_fun(i)
-            Intensity = r1 * (np.exp(r2 / 2 * (y1_0 - y_lower) ** 2) - 1) * (y1_0 >= y_lower)
-            rng = np.random.default_rng(iterer)
-            jump_prob = Intensity * dt
-            jump_prob = jump_prob * (jump_prob <= 1) + (jump_prob > 1)
-            Jump     = rng.choice([0,1], size=1, p=[1 - jump_prob, jump_prob])
-            y1t[i] = y1_0
-            y1_0 = y1_0 + Et[i] * θ * dt
-            else_loop = 0
-            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2
-            K = i
-        elif Jump >= 1:
-            if else_loop == 0:
-                Jump = 1
-                K = i
-                γ3 = rng.choice(γ3_list)
-
-            Et[i] = e_fun(i)
-            y1t[i] = y1_0
-            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 + γ3/2 * (y1t[i] - y_upper)**2 * (y1t[i] > y_upper)
-            y1_0 = y1_0 + Et[i] * θ * dt
-            else_loop = 1
-    print(iterer)
-    result = dict(model=model, Et=Et, y1t=y1t, Damages=Damage_func, γ3=γ3, K=K)
-
-    return (result)
-
-
-def Γ(y, γ_3, γ_1=0.00017675, γ_2=2*0.0022, y_overline=2.):
-    logN = γ_1 * y + γ_2/2 * y**2 + γ_3/2 * (y - y_overline)**2 * (y > y_overline)
-    return logN
-
-def Intensity(y, r1=1.5, r2=2.5, y_underline=1.5):
-    return r1 * (np.exp(r2 / 2 *
-                       (y - y_underline)**2) - 1) * (y >= y_underline)
-
-def one_path(Et, θ, args=(), dt=1, Y0=1.1):
-    γ_1, γ_2, γ_3_list = args
-    T = len(Et)
-    Yt = np.zeros(T+1)
-    logNt = np.zeros(T+1)
-    Yt[0] = Y0
-    logNt[0] = Γ(Yt[0], 0)
-    jumped = False
-    γ_3_j = 0
-    for i in range(T):
-        J_y = Intensity(Yt[i])
-        jump_prob = J_y * dt
-        jump_prob = jump_prob * (jump_prob <= 1) + (jump_prob > 1)
-        if jump_prob > 0 and jumped == False:
-            # could jump:
-            jump_bool = np.random.choice([False,True], size=1, p=[1 - jump_prob, jump_prob])
-            if jump_bool:
-                # jump occurs
-                # to one of the damage functions
-                j = np.random.randint(len(γ_3_list))
-                γ_3_j = γ_3_list[j]
-                logNt[i] = Γ(Yt[i], γ_3_j)
-                Yt[i+1] = 2
-                jumped = True
-            else:
-                logNt[i] = Γ(Yt[i], γ_3_j)
-                Yt[i+1] = Yt[i] + θ * Et[i] *dt
-        else:
-            logNt[i] = Γ(Yt[i], γ_3_j)
-            Yt[i+1] = Yt[i] + θ * Et[i] *dt
-    logNt[i+1] = Γ(Yt[i+1], γ_3_j)
-    return Yt, logNt
-
-@ray.remote
-def simulation_jump_pulse_exo(df, γ1, γ2, γ3_list, θ, iterer, model, y1_0, T, dt, y_lower=1.5, y_upper=2.0):
-    Et = np.ones(T+1)
-    y1t = np.zeros(T+1 )
-    Damage_func = np.zeros(T+1 )
-    if len(df[0])>10:
-        years = np.linspace(0,T, T+1, dtype=int)
-    else:
-        years = [0, 10,20,30,40,50, 60, 70, 80]
-    e_fun = interpolate.interp1d(years, df[model, 0:T+1])
-    r1 = 1.5
-    r2 = 2.
-    γ3 = 0
-    Jump = 0
-    for i in range(T + 1):
-        print(i)
-        if Jump == 0:
-            if i == 0:
-                Et[i] = e_fun(i) + 1
-            else:
-                Et[i] = e_fun(i)
-            Intensity = r1 * (np.exp(r2 / 2 * (y1_0 - y_lower) ** 2) - 1) * (y1_0 >= y_lower)
-            rng = np.random.default_rng(iterer)
-            jump_prob = Intensity * dt
-            jump_prob = jump_prob * (jump_prob <= 1) + (jump_prob > 1)
-            Jump      = rng.choice([0,1], size=1, p=[1 - jump_prob, jump_prob])
-            y1t[i] = y1_0
-            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2
-            y1_0 = y1_0 + Et[i] * θ * dt
-            else_loop = 0
-            K = i
-        elif Jump >= 1:
-            if else_loop == 0:
-                Jump = 1
-                K = i
-                γ3 = rng.choice(γ3_list)
-
-            Et[i] = e_fun(i)
-            y1t[i] = y1_0
-            Damage_func[i] = γ1* y1t[i] + γ2/2 * y1t[i]**2 + γ3/2 * (y1t[i] - y_upper)**2 * (y1t[i] > y_upper)
-            y1_0 = y1_0 + Et[i] * θ * dt
-            else_loop = 1
-    result = dict(model=model, Et=Et, y1t=y1t, Damages=Damage_func, γ3=γ3, K=K)
-
-    return (result)
-
-
-
-

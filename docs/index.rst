@@ -7,8 +7,15 @@
 
     This project project can be accessed through mybinder.org. Click to load the project: |binder|
 
+    We also have a jupyter book version: |jupyterbook|.
+
+
+
 .. |binder| image:: https://mybinder.org/badge_logo.svg
      :target: https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2
+
+.. |jupyterbook| image:: ../jybook/badge.svg
+    :target: https://lphansen.github.io/ClimateUncertaintySpillover/
 
 Welcome to the documentation for *Climate Change Uncertainty Spillover in the Macroeconomy*!
 ============================================================================================

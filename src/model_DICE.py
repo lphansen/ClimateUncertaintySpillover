@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-# In[5]:
 import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 import numpy as np
 import pandas as pd
 
-from model_tech_dice import hjb_post_damage_post_tech, hjb_post_damage_pre_tech
-from model_tech_dice import hjb_pre_damage_post_tech, hjb_pre_damage_pre_tech
-from utilities import find_nearest_value
-from simulation_2d import simulation_dice_prob
+import model_tech_dice as mtd
+import utilities as utls
+import simulation_2d as s2d
 import argparse
 
 parser = argparse.ArgumentParser(description="Solve and simulate DICE model in section 9")
@@ -68,7 +65,7 @@ prop_damage_upper = np.exp(-Γ(2.5, 2., γ_1, γ_2, γ_3_lower))
 γ_3[0] = 0
 πd_o = np.ones(n_model)/n_model
 
-θ = pd.read_csv('data/model144.csv', header=None).to_numpy()[:, 0]/1000.
+θ = pd.read_csv('../data/model144.csv', header=None).to_numpy()[:, 0]/1000.
 πc_o = np.ones_like(θ)/len(θ)
 σ_y = 1.2*np.mean(θ)
 
@@ -100,7 +97,7 @@ for i, γ_3_i in enumerate(γ_3):
         v_guess = None
     else:
         v_guess = model_res['v']
-    model_res = hjb_post_damage_post_tech(k_grid, y_grid_long, model_args, v0=v_guess, ϵ=1., fraction=.05,
+    model_res = mtd.hjb_post_damage_post_tech(k_grid, y_grid_long, model_args, v0=v_guess, ϵ=1., fraction=.05,
                                           tol=1e-6, max_iter=2000, print_iteration=False)
     model_post_damage_post_second_tech.append(model_res)
 
@@ -228,7 +225,7 @@ distorted_damage_probs = gt / np.mean(gt, axis=0) / n_model
 
 file_intensity = open(f'data/new_intensity_dmg_{ξ_p}.npy', "wb")
 np.save(file_intensity, intensity_dmg)
-file_dmg_intensity_distort = open(f'data/new_dmg_intensity_distort_{ξ_p}.npy', "wb") 
+file_dmg_intensity_distort = open(f'data/new_dmg_intensity_distort_{ξ_p}.npy', "wb")
 np.save(file_dmg_intensity_distort, intensity_distortion)
 
 
@@ -259,8 +256,8 @@ _, kt_new, yt_new, _, gt_tech_new, _, _ = simulation_dice_prob(sim_args, k_grid,
 
 # In[12]:
 
-file_gt_tech = open(f'data/new_gt_tech_{ξ_p}.npy',"wb")
+file_gt_tech = open(f'../data/new_gt_tech_{ξ_p}.npy',"wb")
 np.save(file_gt_tech, gt_tech[0])
-file_gt_tech_new = open(f'data/new_gt_tech_new_{ξ_p}.npy', "wb")
+file_gt_tech_new = open(f'../data/new_gt_tech_new_{ξ_p}.npy', "wb")
 np.save(file_gt_tech_new, gt_tech_new[0])
 
