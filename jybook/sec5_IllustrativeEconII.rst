@@ -1,7 +1,15 @@
+
+.. admonition:: \   
+
+    This notebook presents compuations in section 8 of the paper.
+    This notebook can be accessed through mybinder.org. Click to load the project: |binder|
+
+.. |binder| image:: https://mybinder.org/badge_logo.svg
+     :target: https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2?filepath=sec5_IllustrativeEconII.ipynb
+
 5 Illustrative economy II: uncertainty decomposition
 ====================================================
 
-This notebook presents compuations in section 8 of the paper.
 
 | An advantage to the more structured approach implemented as smooth
   ambiguity is that it allows us to “open the hood” so to speak on
