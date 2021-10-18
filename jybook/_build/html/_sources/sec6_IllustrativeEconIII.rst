@@ -4,6 +4,7 @@
 
 .. |binder| image:: https://mybinder.org/badge_logo.svg
      :target: https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2?filepath=sec6_IllustrativeEconIII.ipynb
+
 6 Illustrative economy III: carbon abatement technology
 =======================================================
 
@@ -344,11 +345,6 @@ for the damage function curvature jump. The baseline probabilities for
 the right panel are computed using the state dependent intensities when
 we set :math:`\xi_a = \xi_r = \infty.`
 
-.. code:: ipython3
-
-    # code for figure 15
-    from src.plots import plot15
-    plot15(θ, γ_3, distorted_damage_probs, πct)
 
 
 

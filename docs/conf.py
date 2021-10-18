@@ -93,3 +93,4 @@ bibtex_bibfiles = ['climate.bib']
 # nbsphinx
 nbsphinx_allow_errors = True
 nbsphinx_kernel_name = "python"
+mathjax_path = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
