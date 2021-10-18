@@ -7,7 +7,7 @@ module for simulation
 """
 import numpy as np
 import pandas as pd
-import ray
+# import ray
 from scipy import interpolate
 from .utilities import J
 
@@ -222,12 +222,11 @@ class EvolutionState:
         self.y_underline = y_underline
         self.y_overline = y_overline
 
-    def set_damage(self, damage_model_num):
+    def set_damage(self, damage_model_num, damage_prob_fun):
         """set damage model number
         """
         self.DAMAGE_MODEL_NUM = damage_model_num
-        self.DAMAGE_PROB = np.ones(
-            self.DAMAGE_MODEL_NUM) / self.DAMAGE_MODEL_NUM
+        self.DAMAGE_PROB = damage_prob_fun
 
     def set_time_step(self, dt):
         self.dt = dt
@@ -241,9 +240,10 @@ class EvolutionState:
                               self.y_underline,
                               self.y_overline)
 
-    def evolve(self, θ_mean, fun_args):
+    def evolve(self, θ_mean, fun_args, damage_distortion=(False, None)):
 
         e_fun_pre_damage, e_fun_post_damage = fun_args
+        DISTORTED, damage_prob_func = damage_distortion
         [e, y, temp_anol] = self.variables
         prob_old = self.prob
         damage_loc_old = self.damage_jump_loc
@@ -253,6 +253,12 @@ class EvolutionState:
         damage_jump_prob = temp * self.dt
         if damage_jump_prob > 1:
             damage_jump_prob = 1
+        if DISTORTED:
+            DAMAGE_PROB = np.zeros(self.DAMAGE_MODEL_NUM)
+            for i in range(self.DAMAGE_MODEL_NUM):
+                DAMAGE_PROB[i] = damage_prob_func[i](temp_anol)
+        else:
+            DAMAGE_PROB = self.DAMAGE_PROB
         # Compute variables at t+1
         if self.damage_jump_state == 'pre' and damage_jump_prob != 0:
             states_new = []
@@ -262,7 +268,7 @@ class EvolutionState:
                 y_new = 2
                 e_new = e_fun(y_new)
                 temp_anol_new = temp_anol + e_new * θ_mean * self.dt
-                prob_new = self.DAMAGE_PROB[i] * damage_jump_prob * prob_old
+                prob_new = DAMAGE_PROB[i] * damage_jump_prob * prob_old
                 damage_state = "post"
                 damage_loc = i
                 variables_new = [e_new, y_new, temp_anol_new]
