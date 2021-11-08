@@ -80,7 +80,6 @@ six==1.16.0
 sniffio==1.2.0
 snooty-lextudio==1.11.4.dev0
 snowballstemmer==2.1.0
-SolveLinSys @ file:///C:/Users/Suri/Dropbox/climate_projects/temp/ClimateUncertaintySpillover/src/cppcore
 Sphinx==4.2.0
 sphinx-autobuild==2021.3.14
 sphinxcontrib-applehelp==1.0.2
