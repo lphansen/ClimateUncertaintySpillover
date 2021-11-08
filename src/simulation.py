@@ -207,7 +207,6 @@ def damage_intensity(y, y_underline):
     r2 = 2.5
     return r1 * (np.exp(r2/2 * (y - y_underline)**2) - 1) * (y >= y_underline)
 
-
 class EvolutionState:
     DAMAGE_MODEL_NUM = 20
     DAMAGE_PROB = np.ones(20) / 20
@@ -422,3 +421,117 @@ def simulate_jump_2(model_res_pre, model_res_post, y_upper, θ_list, ME=None,  y
     else:
         simulation_res = dict(yt=yt[0:K], et=et[0:K], πct=πct[0:K], πdt=πdt[0:K], ht=ht[0:K], threshold = threshold)
     return simulation_res
+
+def jump_once(e_short, e_long, θ, πc_func, πd_distort, 
+                Y0=1.1, T=100, dt=1, Y_underline=1.5, Y_overline=2.):
+    periods = int( T / dt )
+    NUM_DAMAGE = len(πd_distort(Y0))
+    Yt = np.zeros(periods + 1)
+    Tempt = np.zeros(periods + 1)
+    Et = np.zeros(periods + 1)
+    Yt[0] = Y0
+    JUMPED = 0
+    damage_loc = np.full(periods+1, None)
+    πc = πc_func(Y0) # (144, ) array
+    # random draw climate parameters
+    climate_loc = np.random.choice(len(θ), 1, p=πc)
+    θ_j = θ[climate_loc]
+    for t in range(periods):
+        if Yt[t] <= Y_underline:
+            e_func = e_short
+            Et[t] = e_func(Yt[t])
+            Yt[t+1] = Yt[t] + θ_j * Et[t] * dt
+            Tempt[t+1] = Tempt[t] + θ_j * Et[t] * dt
+        else:
+            # jump prob
+            if JUMPED == 0:
+                jump_prob = damage_intensity(Yt[t], Y_underline) * dt
+                JUMPED = np.random.choice(2, p=[1 - jump_prob, jump_prob])
+                if JUMPED == 1:
+                    # jumped
+                    damage_prob = πd_distort(Yt[t])
+                    damage_loc[t] = np.random.choice(NUM_DAMAGE, 1, p=damage_prob)[0]
+                    e_func = e_long[damage_loc[t]]
+                    Yt[t+1] = 2.
+                    Et[t] = e_func(2.)
+                    Tempt[t+1] = Tempt[t] + θ_j * Et[t] * dt
+                else:
+                    Et[t] = e_short(Yt[t])
+                    Yt[t+1] = Yt[t] + θ_j * Et[t] * dt
+                    Tempt[t+1] = Tempt[t] + θ_j * Et[t] * dt
+                   
+            else:
+                # jumped
+                Et[t] = e_func(Yt[t])
+                Yt[t+1] = Yt[t] + θ_j * Et[t] * dt
+                Tempt[t+1] = Tempt[t] + θ_j * Et[t] * dt
+                damage_loc[t] =  damage_loc[t - 1]
+    Et[periods] = e_func(Yt[periods])
+    damage_loc[periods] = damage_loc[periods - 1]
+      
+    return damage_loc, climate_loc, Et, Yt, Tempt
+
+
+
+def jump_once_theta(e_short, e_long, θ, πc_func_short, πc_func_long, πd_distort, 
+                Y0=1.1, T=100, dt=1, Y_underline=1.5, Y_overline=2.):
+    periods = int( T / dt )
+    NUM_DAMAGE = len(πd_distort(Y0))
+    Yt = np.zeros(periods + 1)
+    Tempt = np.zeros(periods + 1)
+    Et = np.zeros(periods + 1)
+    Yt[0] = Y0
+    Tempt[0] = Y0
+    JUMPED = 0
+    damage_loc = np.full(periods+1, None)
+    climate_loc = np.full(periods + 1, None)
+    for t in range(periods):
+        if Yt[t] <= Y_underline:
+            e_func = e_short
+            Et[t] = e_func(Yt[t])
+            πc_func = πc_func_short
+            πc = πc_func(Yt[t])
+            Yt[t+1] = Yt[t] + np.average(θ, weights=πc) * Et[t] * dt
+            Tempt[t+1] = Tempt[t] + np.average(θ, weights=πc) * Et[t] * dt
+        else:
+            # jump prob
+            if JUMPED == 0:
+                jump_prob = damage_intensity(Yt[t], Y_underline) * dt
+                if jump_prob > 1:
+                    jump_prob = 1
+                elif Yt[t] >= Y_overline:
+                    jump_prob = 1
+                JUMPED = np.random.choice(2, p=[1 - jump_prob, jump_prob])
+                if JUMPED == 1:
+                    # jumped
+                    damage_prob = πd_distort(Yt[t])
+                    damage_loc[t] = np.random.choice(NUM_DAMAGE, 1, p=damage_prob)[0]
+                    # climate probability revealed
+                    πc_func = πc_func_long[damage_loc[t]]
+                    πc = πc_func(2.)
+                    climate_loc[t] = np.random.choice(len(θ), 1, p=πc)[0]
+                    e_func = e_long[damage_loc[t]]
+                    Yt[t+1] = 2.
+                    Et[t] = e_func(2.)
+                    θ_j = θ[climate_loc[t]]
+                    Tempt[t+1] = Tempt[t] + θ_j * Et[t] * dt
+                else:
+                    Et[t] = e_short(Yt[t])
+                    πc_func = πc_func_short
+                    πc = πc_func(Yt[t])
+                    Yt[t+1] = Yt[t] + np.average(θ, weights=πc) * Et[t] * dt
+                    Tempt[t+1] = Tempt[t] + np.average(θ, weights=πc) * Et[t] * dt
+                   
+            else:
+                # jumped
+                Et[t] = e_func(Yt[t])
+                πc = πc_func(Yt[t])
+                Yt[t+1] = Yt[t] + np.average(θ, weights=πc) * Et[t] * dt
+                Tempt[t+1] = Tempt[t] + np.average(θ, weights=πc) * Et[t] * dt
+                damage_loc[t] =  damage_loc[t - 1]
+                climate_loc[t] = climate_loc[t - 1]
+    Et[periods] = e_func(Yt[periods])
+    damage_loc[periods] = damage_loc[periods - 1]
+    climate_loc[periods] = climate_loc[periods - 1]
+      
+    return damage_loc, climate_loc, Et, Yt, Tempt

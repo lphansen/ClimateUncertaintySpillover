@@ -11,7 +11,7 @@ __pycache__/
 build/
 _build/
 **/_build/
-_static/
+# _static/
 _template/
 develop-eggs/
 dist/
@@ -163,3 +163,4 @@ dmypy.json
 .virtual_documents/
 tags
 .DS_Store
+.vscode

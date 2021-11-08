@@ -72,6 +72,11 @@ def solve_post_jump(y_grid, γ_3, func, args_list):
     return ϕ_list, ems_list
 
 
+def solve_post_jump_full(y_grid, func, args_list):
+    res_list = ode_y_parallel(func, args_list)
+    return res_list
+    
+    
 def J(y_arr, y_underline=1.5):
     r1 = 1.5
     r2 = 2.5

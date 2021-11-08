@@ -30,13 +30,11 @@ author = 'SuriChen'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'nbsphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinxcontrib.bibtex',
     'sphinx.ext.intersphinx',
-    'sphinxcontrib.contentui',
     'sphinx_togglebutton',
 ]
 
