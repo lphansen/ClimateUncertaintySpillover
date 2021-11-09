@@ -1,3 +1,11 @@
+
+.. admonition:: \   
+
+    This notebook can be accessed through mybinder.org. Click to load the project: |binder|
+
+.. |binder| image:: https://mybinder.org/badge_logo.svg
+     :target: https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2?filepath=appendixA.ipynb
+
 Appendix A. Complete model
 ==========================
 

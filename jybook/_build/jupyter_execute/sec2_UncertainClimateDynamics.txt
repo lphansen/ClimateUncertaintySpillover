@@ -1,4 +1,0 @@
-import plotly.offline as pyo
-pyo.init_notebook_mode()
-from src.plots import plot2
-plot2()
