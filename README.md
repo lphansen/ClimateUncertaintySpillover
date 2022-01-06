@@ -5,7 +5,7 @@ Check out online demonstration: [![Read the Docs](https://img.shields.io/readthe
 
 We also have a jupyter book version: [![Jupyter Book Badge](jybook/badge.svg)](https://lphansen.github.io/ClimateUncertaintySpillover/)
 
-Check out our binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2)
+Check out our binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/lphansen/ClimateUncertaintySpillover.git/macroAnnual_v2/sec0_prep.ipynb)
 
 [id1]: https://wpcarey.asu.edu/people/profile/3490536
 [id2]: https://economics.missouri.edu/people/brock
