@@ -35,7 +35,7 @@ To store the notebook as well as codes in your local machine. You can do this by
         - For example, running `cd 'C:\Users\username\python'` (don’t forget '' around the path name to use an absolute path) would lead me to my designated folder.
      
     ```bash
-    $ cd [folder path name]
+    cd [folder path name]
     ```
 
 2.  Clone the github repository for the paper
@@ -43,19 +43,24 @@ To store the notebook as well as codes in your local machine. You can do this by
     - You can do this by running below in the command prompt:
     
     ```bash
-    $ git clone https://github.com/lphansen/ClimateUncertaintySpillover.git
+    git clone https://github.com/lphansen/ClimateUncertaintySpillover.git
     ```
     
 3.  Change directories into the ‘Wrestling’ folder and install the required packages for the current user or your initiated virtual environment:
     
     ```bash
-    $ cd ClimateUncertaintySpillover
-    $ pip install -r requirements.txt
+    cd ClimateUncertaintySpillover
+    pip install -r requirements.txt
     ```
-4. Access the notebooks, run the following under the folder `ClimateUncertaintySpillover/`:
+4. Download the large data files from [Google Drive](https://drive.google.com/drive/folders/1vjr8PrlmX4ABRN2S6L0aCDf6omQJHA1R):
+```
+gdown -O ./data/ --folder 1vjr8PrlmX4ABRN2S6L0aCDf6omQJHA1R
+```
+
+5. Access the notebooks, run the following under the folder `ClimateUncertaintySpillover/`:
     
     ```bash
-    $ jupyter notebook
+    jupyter notebook
     ```
     and you will see the notebooks listed below.
 
