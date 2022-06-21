@@ -330,7 +330,7 @@ def solve_hjb_y_jump(y, model_args=(), v0=None, ϵ=.5, tol=1e-8, max_iter=10_000
 
         bc = - ξ_p * np.log(np.sum(πd_o[:, -1] * np.exp(- 1. / ξ_p * ϕ_i[:, -1])))
 
-        v = false_transient(A, B, C, D, v0, ε, dy, (0, bc), (False, False))
+        v = false_transient(A, B, C, D, v0, ϵ, dy, (0, bc), (False, False))
 
         rhs_error = A * v + B * dvdy + C * dvddy + D
         rhs_error = np.max(abs(rhs_error))

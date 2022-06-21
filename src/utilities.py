@@ -81,3 +81,4 @@ def J(y_arr, y_underline=1.5):
     r1 = 1.5
     r2 = 2.5
     return r1*(np.exp(r2/2*(y_arr - y_underline)**2) - 1) * (y_arr >= y_underline)
+

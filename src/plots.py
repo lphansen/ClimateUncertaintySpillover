@@ -199,7 +199,7 @@ def plot5(pre_jump_res):
         marker=dict(color="#d62728", line=dict(color='grey', width=1)),
         showlegend=True,
         xbins=dict(size=0.15),
-        name='$baseline$',
+        name='baseline',
         legendgroup=1,
         opacity=0.5,
         hovertemplate="%{y:.2f}",
@@ -207,7 +207,7 @@ def plot5(pre_jump_res):
     fig.add_trace(trace_base, 1, 1)
 
     for ξ_r in ξ_r_list: 
-        name = '$distorted, \n ξᵣ = {:.1f}$'.format(ξ_r)
+        name = 'distorted, \n $ξᵣ = {:.1f}$'.format(ξ_r)
         if ξ_r == 100_000:
             name = "$baseline, ξᵣ = +\infty$"
         
