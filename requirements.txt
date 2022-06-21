@@ -68,8 +68,8 @@ packaging==21.3
 pandas==1.4.2
 pandocfilters==1.5.0
 parso==0.8.3
-petsc4py==3.17.0
-petsclinearsystem==0.0.0
+# petsc4py==3.17.0
+# petsclinearsystem==0.0.0
 pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==9.1.1
