@@ -153,7 +153,7 @@ Given these modifications, we include:
 
 
    \mathcal J (y) \sum_{m=1}^M g_m \pi_m \left[ \phi_m(\overline y) - \phi(y) \right]
-   + \xi_r {\mathcal J}(y)  \sum_{m=1}^M \pi_m \left( 1 - g_m + g_m \log g_m \right)\pi_m 
+   + \xi_r {\mathcal J}(y)  \sum_{m=1}^M \pi_m \left( 1 - g_m + g_m \log g_m \right)
 
 in the HJB and solve for pre-jump value function :math:`\phi(y)` on
 :math:`[0, \overline{y}]`:
